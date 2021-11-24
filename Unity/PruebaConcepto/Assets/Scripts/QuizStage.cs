@@ -57,7 +57,7 @@ public class QuizStage : MonoBehaviour
             i++;
         }
 
-        //En caso de que haya resuelto biene el quiz
+        //En caso de que haya resuelto bien el quiz
         if (i == quizAnswers.Count) print("Well Done");
     }
 
