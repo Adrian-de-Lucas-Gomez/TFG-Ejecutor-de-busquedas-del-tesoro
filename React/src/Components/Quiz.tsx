@@ -70,7 +70,7 @@ export const Quiz = () =>{
         //Para que no se refresque la pagina en el onSubmit
         e.preventDefault()
 
-        if (question != "" && answers.length >= 2 && answers.length <= 6){
+        if (question !== "" && answers.length >= 2 && answers.length <= 6){
             console.log("Llamada a export to JSON")
             downloadFile(JSON.stringify({pregunta:question, respuestas:answers}, null, 2),'answers.json','text/json')
         }
