@@ -28,7 +28,7 @@
     },
     {
       "tipo": "QuizStage",
-      "pregunta": "¿Qué demonios estoy haciendo?",
+      "pregunta": "¿Qué demonios estoy haciendo 2?",
       "respuestas": [
         {
           "text": "Consolas",
@@ -51,6 +51,32 @@
           "isCorrect": true
         }
       ]
-      }
+      },
+      {
+        "tipo": "QuizStage",
+        "pregunta": "¿Qué demonios estoy haciendo 3?",
+        "respuestas": [
+          {
+            "text": "Consolas",
+            "isCorrect": false
+          },
+          {
+            "text": "No poner el synchronized en moviles",
+            "isCorrect": false
+          },
+          {
+            "text": "Cargar los mapas en el motor",
+            "isCorrect": false
+          },
+          {
+            "text": "< 30fps",
+            "isCorrect": false
+          },
+          {
+            "text": "Todas las anteriores",
+            "isCorrect": true
+          }
+        ]
+        }
   ]
 }
