@@ -1,25 +1,56 @@
 {
-  "pregunta": "¿Qué demonios estoy haciendo?",
-  "respuestas": [
-    {
-      "text": "Consolas",
-      "isCorrect": false
+  
+  "fases": [{
+    "tipo": "QuizStage",
+    "pregunta": "¿Qué demonios estoy haciendo?",
+    "respuestas": [
+      {
+        "text": "Consolas",
+        "isCorrect": false
+      },
+      {
+        "text": "No poner el synchronized en moviles",
+        "isCorrect": false
+      },
+      {
+        "text": "Cargar los mapas en el motor",
+        "isCorrect": false
+      },
+      {
+        "text": "< 30fps",
+        "isCorrect": false
+      },
+      {
+        "text": "Todas las anteriores",
+        "isCorrect": true
+      }
+    ]
     },
     {
-      "text": "No poner el synchronized en moviles",
-      "isCorrect": false
-    },
-    {
-      "text": "Cargar los mapas en el motor",
-      "isCorrect": false
-    },
-    {
-      "text": "< 30fps",
-      "isCorrect": false
-    },
-    {
-      "text": "Todas las anteriores",
-      "isCorrect": true
-    }
+      "tipo": "QuizStage",
+      "pregunta": "¿Qué demonios estoy haciendo?",
+      "respuestas": [
+        {
+          "text": "Consolas",
+          "isCorrect": false
+        },
+        {
+          "text": "No poner el synchronized en moviles",
+          "isCorrect": false
+        },
+        {
+          "text": "Cargar los mapas en el motor",
+          "isCorrect": false
+        },
+        {
+          "text": "< 30fps",
+          "isCorrect": false
+        },
+        {
+          "text": "Todas las anteriores",
+          "isCorrect": true
+        }
+      ]
+      }
   ]
 }

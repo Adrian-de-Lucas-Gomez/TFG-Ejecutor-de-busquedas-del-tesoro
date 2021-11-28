@@ -19,6 +19,11 @@ public class QuizStage : MonoBehaviour
     List<GameObject> quizAnswers = new List<GameObject>();  //Lista de gameobjects que representaran las posibles respuestas de la fase
     Vector2 UIPosition = new Vector2();                     //Posicion que vamos a utilizar para situar cada una de nuestras respuestas
 
+    private void Start()
+    {
+        quizInit((QuizInfo)GameManager.getNextAdventureStageInfo());
+    }
+
 
     public void quizInit(QuizInfo data)
     {
@@ -59,7 +64,7 @@ public class QuizStage : MonoBehaviour
         if (i == quizAnswers.Count)
         {
             print("Well Done");
-            SceneManager.LoadScene("QuizStage"); 
+            GameManager.continueToNextPhase(); 
         }
     }
 
