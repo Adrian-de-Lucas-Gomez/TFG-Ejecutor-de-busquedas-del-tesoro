@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 
+    [Tooltip("Lista de informacion de las fases por las que vamos a pasar")]
     public static List<AdventureStage> adventureStages = new List<AdventureStage>();
 
     static GameManager _instance;
@@ -19,7 +20,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Metodo que devuelve los datos que le corresponden a la siguiente fase
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Datos de la fase que ha de ejecutarse ahora</returns>
     public static AdventureStage getNextAdventureStageInfo()
     {
         if (adventureStages.Count <= 0) return null;
@@ -29,6 +30,10 @@ public class GameManager : MonoBehaviour
         return nextStage;
     }
 
+    /// <summary>
+    /// La fase ha terminado asi que cargamos la escena que permita ejecutar la siguiente
+    /// o nos vamos a la escena del final en caso de que no nos queden datos
+    /// </summary>
     public static void continueToNextPhase()
     {
         //En caso de que se haya terminado nos vamos a la escena de fin
@@ -40,18 +45,18 @@ public class GameManager : MonoBehaviour
     }
 
 
-
     void Awake()
     {
+        //en caso de qu ela instancia no exista nos ponemos nosotros como instancia
         if (_instance == null)
         {
             _instance = this;
             DontDestroyOnLoad(this);
         }
+        //Si hay algo ya en esta posicion yo me destruyo
         else
-        {
             Destroy(this);
-        }
+
     }
 
 
