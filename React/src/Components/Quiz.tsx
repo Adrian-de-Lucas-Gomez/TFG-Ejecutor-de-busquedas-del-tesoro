@@ -1,18 +1,8 @@
 import React, {Fragment, useState } from "react"
 
 export const Quiz = () =>{
-    /*    
-    interface QR{
-        link:string;
-    }
 
-    interface Quiz{
-        pregunta:string;
-        respuestas:Answer[];
-    }
-    */
-
-    interface Answer{
+    interface Answer {
         text: string;
         isCorrect: boolean;
     }
@@ -75,7 +65,7 @@ export const Quiz = () =>{
             downloadFile(JSON.stringify({pregunta:question, respuestas:answers}, null, 2),'answers.json','text/json')
         }
         else{
-            console.log("Eres inutil rellena bien")
+            console.log("Rellena bien")
         }
     }
 

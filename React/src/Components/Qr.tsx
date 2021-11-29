@@ -1,46 +1,54 @@
-import QRCode from "react-qr-code";
-import React, {useState, useRef, Fragment } from "react"
+import QRCode from "qrcode.react";
+import {useState, useRef} from "react"
+
 export const QR = () =>{
-
-    //const qrRef = React.createRef<HTMLDivElement>();
+    //Referencia en el DOM al div que contiene el QR que renderizamos
+    const qrRef = useRef(null);
+    //Donde guardamos el texto a codificar en QR
     const [text, setText] = useState<string>("");
-
-    type FormElement = React.FormEvent<HTMLFormElement>;
     
-    const QR = (
-        <QRCode id="qr-gen" value={text} size={256} bgColor="#282c34" fgColor="#fff" level="H"  />
-    )
-
-    //No funciona ninguno de los dos pero por lo menos con este genero un archivo png
-    //aunque no se como meterle los datos al qr
-    const downloadQR = (e:FormElement) =>{
-        e.preventDefault()
-        //const divQR = document.getElementById("qr-gen");
-        //console.log(QR)
-        //const blob = new Blob([QR.props], { type: 'image/jpeg' })
-        //const image = new Image();
-        ////image.src = URL.createObjectURL(blob);
-        //const a = document.createElement('a')
-        //a.download = "QR.jpeg"
-        //a.href = window.URL.createObjectURL(blob)
-        //const clickEvt = new MouseEvent('click', {
-        //  view: window,
-        //  bubbles: true,
-        //  cancelable: true,
-        //})
-        //a.dispatchEvent(clickEvt)
-        //a.remove()
-    }
+    //Metodo que se encarga de convertir el qr a formato png y descargarlo
+    const downloadQRCode = (evt: React.FormEvent) => {
+        //No refrescamos la pagina
+        evt.preventDefault();
+        //@ts-ignore (Esto es pa que no salte un error de typescript, sin esto no compila)
+        //Cogemos el primer elemento canvas que cuelga del div al que esta asociado la referencia
+        // (qrcode.react esta representado como un <canvas></canvas>, si estuviese representado
+        //con otra etiqueta habria que poner esa)
+        let canvas = qrRef.current.querySelector("canvas");
+        
+        //devuelve un data URI el cual contiene una representación de una imagen en png
+        let image:string = canvas.toDataURL("image/png");
+        
+        //Creamos un componente <a> html al que vamos a asignar la informacion
+        //del QR qur vamos a descargar
+        let anchor:HTMLAnchorElement = document.createElement("a");
+        //le asignamos como referencia el qr ya convertido en imagen
+        anchor.href = image;
+        //Le ponemos el nombre con el que la vamos a descargar
+        anchor.download = text +`.png`;
+        //Metemos el componente <a> en el cuerpo de nuestro html de react
+        document.body.appendChild(anchor);
+        //Clicamos sobre el para descargarlo
+        anchor.click();
+        //Quitamos el componente <a> puesto que ya ha cumplido su funcion
+        document.body.removeChild(anchor);
+      };
  
     return (
+
+        
     <div >
-        <form onSubmit={downloadQR}>
-            <h3>Añada aqui el link al que reedirige el  QR:</h3>
+        <h3>Añada aqui el link al que reedirige el  QR:</h3>
+        <form onSubmit={e => e.preventDefault()}>
             <input className="form-control" type="text" required value={text} onChange ={ e =>setText(e.target.value)}></input>
         </form>
-        <div>
-            {QR}
+        <div ref={qrRef}>
+            <QRCode value={text} size={400} bgColor="#282c34" fgColor="#fff" level="H"  />
         </div>
+        <form onSubmit= {downloadQRCode}>
+            <button className="btn btn-outline-primary mt-2" type="submit">Descargar QR</button>
+        </form>
     </div>
     )
 }
