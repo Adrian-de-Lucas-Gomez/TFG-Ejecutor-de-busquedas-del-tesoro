@@ -152,8 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ff6d5fd9c44017489b5c278d732b66f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  quizPrefab: {fileID: 0}
-  canvas: {fileID: 0}
+  adventure: {fileID: 11400000, guid: 8d576e0d0132043478dc633c7457df45, type: 2}
 --- !u!4 &626822709
 Transform:
   m_ObjectHideFlags: 0
