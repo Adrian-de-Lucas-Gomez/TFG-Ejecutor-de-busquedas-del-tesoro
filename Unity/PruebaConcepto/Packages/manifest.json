@@ -1,6 +1,6 @@
 {
-  "dependencies": {
-    "com.ptc.vuforia.engine": "git+https://git-packages.developer.vuforia.com#9.7.5",
+    "dependencies": {
+    "com.ptc.vuforia.engine": "git+https://git-packages.developer.vuforia.com#9.8.11",
     "com.unity.2d.animation": "5.0.9",
     "com.unity.2d.pixel-perfect": "4.0.1",
     "com.unity.2d.psdimporter": "4.1.2",

@@ -1,13 +1,13 @@
 {
   "dependencies": {
     "com.ptc.vuforia.engine": {
-      "version": "git+https://git-packages.developer.vuforia.com#9.7.5",
+      "version": "git+https://git-packages.developer.vuforia.com#9.8.11",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.unity.ugui": "1.0.0"
       },
-      "hash": "02b833e3fcafa8fe4994e24699eb1ccd52a073e0"
+      "hash": "efa13d4486cf5af05d9f6cc2eb243dcd5e26f95b"
     },
     "com.unity.2d.animation": {
       "version": "5.0.9",
