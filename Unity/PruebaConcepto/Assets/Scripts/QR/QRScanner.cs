@@ -13,20 +13,15 @@ public class QRscanner : MonoBehaviour
     private PIXEL_FORMAT m_PixelFormat = PIXEL_FORMAT.GRAYSCALE;
     private bool m_RegisteredFormat = false;
 
-    public bool reading;
-    public string QRMessage;
-    public UnityEngine.UI.Text labelQrc;
-    public AudioSource audioSource;
+    private bool reading;
+    private string QRMessage;
+
+
     Thread qrThread;
     private Color32[] c;
     private int W, H;
     Image QCARoutput;
     bool updC;
-    bool gotResult = false;
-    void Start()
-    {
-
-    }
 
 
     void OnEnable()
@@ -43,7 +38,6 @@ public class QRscanner : MonoBehaviour
         qrThread.Start();
 
     }
-
 
     void OnDisable()
     {
@@ -76,7 +70,6 @@ public class QRscanner : MonoBehaviour
 
     void Update()
     {
-        CameraDevice.Instance.SetFocusMode(CameraDevice.FocusMode.FOCUS_MODE_CONTINUOUSAUTO);
         if (reading)
         {
             if (QCARoutput != null)
@@ -100,15 +93,6 @@ public class QRscanner : MonoBehaviour
                 }
             }
         }
-
-        //labelQrc.text = QRMessage;
-        Debug.Log(QRMessage);
-
-        if (gotResult)
-        {
-            //audioSource.Play();
-            gotResult = false;
-        }
     }
 
     Color32[] ImageToColor32(Vuforia.Image a)
@@ -124,8 +108,7 @@ public class QRscanner : MonoBehaviour
     }
     void DecodeQR()
     {
-        var barcodeReader = new BarcodeReader { AutoRotate = false, TryHarder = false };
-        barcodeReader.ResultFound += OnResultF;
+        var barcodeReader = new BarcodeReader();
         while (true)
         {
 
@@ -139,22 +122,16 @@ public class QRscanner : MonoBehaviour
                     {
                         QRMessage = result.Text;
 
+                        Debug.Log(QRMessage);
                     }
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError(e.Message);
+                    Debug.Log(e.Message);   //Siempre da aviso de el tamaño mayor que uno
                 }
             }
 
         }
-    }
-    void OnResultF(Result result)
-    {
-
-        Debug.Log(result.Text);
-        gotResult = true;
-
     }
     void ForceUpdateC()
     {
