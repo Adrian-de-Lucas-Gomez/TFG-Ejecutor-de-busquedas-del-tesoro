@@ -8,7 +8,7 @@ using ZXing.QrCode;
 using ZXing.Common;
 using UnityEngine.SceneManagement;
 
-public class QRscanner : MonoBehaviour
+public class QRScanner : MonoBehaviour
 {
     private PIXEL_FORMAT m_PixelFormat = PIXEL_FORMAT.GRAYSCALE;
     private bool m_RegisteredFormat = false;
