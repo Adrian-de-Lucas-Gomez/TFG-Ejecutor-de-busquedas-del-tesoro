@@ -2,7 +2,6 @@ import { useState } from "react"
 
 export const Counter = () =>{
 
-    //counter = 0
     const [counter, setCounter] = useState(0);
 
     const add = (num:number = 1):void => {

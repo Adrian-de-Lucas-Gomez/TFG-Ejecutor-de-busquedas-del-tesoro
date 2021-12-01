@@ -2,6 +2,7 @@ import QRCode from "qrcode.react";
 import {useState, useRef} from "react"
 
 export const QR = () =>{
+  
     //Referencia en el DOM al div que contiene el QR que renderizamos
     const qrRef = useRef(null);
     //Donde guardamos el texto a codificar en QR
@@ -11,7 +12,7 @@ export const QR = () =>{
     const downloadQRCode = (evt: React.FormEvent) => {
         //No refrescamos la pagina
         evt.preventDefault();
-        //@ts-ignore (Esto es pa que no salte un error de typescript, sin esto no compila)
+        //@ts-ignore (Esto es pa que no salte un error de typescript, sin esto no compila (porque asimila que es null))
         //Cogemos el primer elemento canvas que cuelga del div al que esta asociado la referencia
         // (qrcode.react esta representado como un <canvas></canvas>, si estuviese representado
         //con otra etiqueta habria que poner esa)
@@ -44,7 +45,7 @@ export const QR = () =>{
             <input className="form-control" type="text" required value={text} onChange ={ e =>setText(e.target.value)}></input>
         </form>
         <div ref={qrRef}>
-            <QRCode value={text} size={400} bgColor="#282c34" fgColor="#fff" level="H"  />
+            <QRCode value={text} size={400} fgColor="black" bgColor="white" level="H"  />
         </div>
         <form onSubmit= {downloadQRCode}>
             <button className="btn btn-outline-primary mt-2" type="submit">Descargar QR</button>
