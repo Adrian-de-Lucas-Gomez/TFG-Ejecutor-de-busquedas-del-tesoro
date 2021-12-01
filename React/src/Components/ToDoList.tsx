@@ -6,12 +6,6 @@ export const ToDoList = () =>{
         text: string;
         complete: boolean;
     }
-
-    /*
-    interface ToDoElementChild extends ToDoElement{
-        number: number;
-    }
-    */
     
     type FormElement = React.FormEvent<HTMLFormElement>;
     const [state, setState] = useState<string>("");
@@ -26,16 +20,10 @@ export const ToDoList = () =>{
     }
 
     const addToDo = (text:string):void =>{
-        //MINE:
-        //toDos.push({text, complete:false})
         setToDos([...toDos, {text, complete:false}]);
     }
 
     const checkTask = (index:number):void =>{
-        //MINE:
-        //toDos[index].complete = !toDos[index].complete;
-        //setToDos([...toDos]);
-
         const newToDos: ToDoElement[] = [...toDos];
         newToDos[index].complete = !newToDos[index].complete;
         setToDos(newToDos);
@@ -47,7 +35,8 @@ export const ToDoList = () =>{
         setToDos(newToDos);
     }
 
-    return (<div>
+    return (
+    <div>
        <h2>Lista de tareas pendientes:</h2>
        <form onSubmit={handleSummit}>
            <input className="form-control" type="text" required value={state} onChange ={ e =>setState(e.target.value)}></input>
@@ -64,5 +53,6 @@ export const ToDoList = () =>{
            </Fragment>
             ))}
        </section>
-    </div>)
+    </div>
+    )
 }
