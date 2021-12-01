@@ -10,6 +10,8 @@ using UnityEngine.SceneManagement;
 
 public class QRScanner : MonoBehaviour
 {
+    [SerializeField] QRStage myQRStage;
+
     private PIXEL_FORMAT m_PixelFormat = PIXEL_FORMAT.GRAYSCALE;
     private bool m_RegisteredFormat = false;
 
@@ -123,6 +125,8 @@ public class QRScanner : MonoBehaviour
                         QRMessage = result.Text;
 
                         Debug.Log(QRMessage);
+
+                        myQRStage.checkQR(QRMessage);
                     }
                 }
                 catch (Exception e)

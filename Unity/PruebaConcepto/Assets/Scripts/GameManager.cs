@@ -91,6 +91,13 @@ public class GameManager : MonoBehaviour
                         adventureStages.Enqueue(newQuiz);
                         break;
                     }
+                case "QRStage":
+					{
+                        QRInfo newQR = new QRInfo();
+                        newQR.readFromJSON((JObject)misFases[i]);
+                        adventureStages.Enqueue(newQR);
+                        break;
+					}
             }
         }
     }

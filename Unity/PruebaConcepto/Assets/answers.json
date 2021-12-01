@@ -22,6 +22,10 @@
       }
     ]
     },
+	{
+	"tipo": "QRStage",
+	"qrValue": "http://EstoEsUnaURL"
+    },
     {
       "tipo": "QuizStage",
       "pregunta": "¿Pregunta de prueba 2?",
@@ -39,32 +43,6 @@
           "isCorrect": true
         }
       ]
-      },
-      {
-        "tipo": "QuizStage",
-        "pregunta": "¿Pregunta de prueba 3?",
-        "respuestas": [
-          {
-            "text": "Primera respuesta",
-            "isCorrect": false
-          },
-          {
-            "text": "Segunda respuesta",
-            "isCorrect": false
-          },
-          {
-            "text": "Tercera respuesta (correcta)",
-            "isCorrect": true
-          },
-          {
-            "text": "Cuarta respuesta",
-            "isCorrect": false
-          },
-          {
-            "text": "Quinta respuesta",
-            "isCorrect": false
-          }
-        ]
-        }
+    }
   ]
 }

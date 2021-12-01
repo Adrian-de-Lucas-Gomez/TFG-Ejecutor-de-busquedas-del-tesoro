@@ -6,10 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/QR_Scene.unity
-    guid: 6a92f630d2c2ba047941d912a18522f9
     path: Assets/Scenes/Start.unity
     guid: 83ffd4c25eda58f46bf036851ad76af9
+  - enabled: 1
+    path: Assets/Scenes/QRStage.unity
+    guid: 6a92f630d2c2ba047941d912a18522f9
   - enabled: 1
     path: Assets/Scenes/QuizStage.unity
     guid: 2cda990e2423bbf4892e6590ba056729

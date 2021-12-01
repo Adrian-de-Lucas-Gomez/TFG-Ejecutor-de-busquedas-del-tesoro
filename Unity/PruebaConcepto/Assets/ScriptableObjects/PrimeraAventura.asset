@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 617cad1e976467045876b98f56886512, type: 3}
   m_Name: PrimeraAventura
   m_EditorClassIdentifier: 
-  adventureName: Nombre primera aventura
   adventureFile: {fileID: 4900000, guid: 632af9aaf17d3b642a86a33532983878, type: 3}
