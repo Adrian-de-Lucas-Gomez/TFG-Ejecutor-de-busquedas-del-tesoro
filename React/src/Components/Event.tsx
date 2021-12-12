@@ -1,16 +1,33 @@
 import {useState} from "react"
 import {Quiz} from "./Quiz"
 import {QR} from "./Qr"
+import { isConstructorDeclaration } from "typescript";
 
-export const Event = () =>{
+
+const  Event = (props:{foo: Function }) =>{
     const [elemToRender, setElemToRender] = useState<JSX.Element | null>(null);
-    
+    const [tipeOfFase, setTypeOffase] = useState<string>();
+
+    //Funcion de la App a la que vamos a mandar otras funciones que generen las diferentes partes del JSON
+    const [func, setFuncion] = useState<Function>(props.foo);
+    const [indice, setIndice] = useState<number>(0);
+
     const UpdateSelector = (evt: React.FormEvent<HTMLSelectElement>):void => {
         evt.preventDefault()
         let s:string = evt.currentTarget.value;
-        if(s === "QR") setElemToRender(<QR/>)
-        else if(s === "Quiz") setElemToRender(<Quiz/>)
-        else if(s === "Default") setElemToRender(null)
+        if(s === "QR"){ setElemToRender(<QR funcion = {props.foo} />); setTypeOffase("QR")}
+        else if(s === "Quiz") {setElemToRender(<Quiz funcion = {props.foo} />);setTypeOffase("Quiz")}
+        else if(s === "Default") {setElemToRender(null);setTypeOffase("")}
+    };
+
+
+
+     const getFase = ():{} => {
+        let coso = {}
+        if(tipeOfFase === "QR") coso = {Tipo:"Qr",Adios:"10000"}
+        else if(tipeOfFase === "Quiz") coso = {Tipo:"Quiz",Hola:"2"}
+        else if(tipeOfFase === "") coso = {}
+        return coso;
     };
 
     return (
@@ -24,3 +41,5 @@ export const Event = () =>{
         </div>
     )
 }
+
+export default Event;

@@ -1,6 +1,6 @@
 import React, {Fragment, useState } from "react"
 
-export const Quiz = () =>{
+export const Quiz = (props: {funcion:Function}) =>{
 
     interface Answer {
         text: string;
@@ -17,13 +17,24 @@ export const Quiz = () =>{
     //Array con las posibles respuestas a esa pregunta
     const [answers, setAnswers] = useState<Answer[]>([]);
 
+    
+    const [foo, setFuncion] = useState<Function>(props.funcion);
+
     const handleNewQuestion = (e:FormElement):void =>{
         e.preventDefault();
         addAnswer(currAnswer);
         setCurrAnswer("");
     }
 
+    //Funcion que genra algo de tipo JSON que va a pedir la App cuando vaya a generar un JSON con la aventura
+    function DataForJSON(){
+        return {Pregunta: "De que vas", Respuesta: "Hola que tal"};
+    }
+
     const addAnswer = (text:string):void =>{
+        console.log("Respuesta añadida");
+        console.log(foo);
+        foo(DataForJSON);
         setAnswers([...answers, {text, isCorrect:false}]);
     }
 
