@@ -31,7 +31,7 @@ function App() {
   
   //Añadir evento a la lista
   const addEvent = ():void =>{
-    setEventList([...eventList,[ eventCounter,<Event foo = {()=> AddFunction }/>]]);
+    setEventList([...eventList,[ eventCounter,<Event foo = {()=> AddFunctionFromEvent }/>]]);
     setEventCounter(eventCounter + 1);
   }
 
@@ -53,7 +53,7 @@ function App() {
 }
 
 ///Funcion que van a llamar los diferentes eventos para informar de la funcion que tiene cada evento para genrear su parte del json
-function AddFunction(newFunction:Function) {
+function AddFunctionFromEvent(newFunction:Function) {
   eventsFunctions.push(newFunction);
 } 
 

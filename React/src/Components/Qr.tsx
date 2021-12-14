@@ -1,5 +1,5 @@
 import QRCode from "qrcode.react";
-import {useState, useRef} from "react"
+import {useState, useRef, useEffect} from "react"
 
 export const QR = (props: {funcion:Function}) =>{
   
@@ -10,9 +10,15 @@ export const QR = (props: {funcion:Function}) =>{
 
     const [foo, setFuncion] = useState<Function>(props.funcion);
     
+
+    //Este metodo es llamado cada vez que un componente de tipo QR es montado, como "Constructora"
+    useEffect(() =>{
+        foo(DataForJSON);
+    },[])
+
+
     //Metodo que se encarga de convertir el qr a formato png y descargarlo
     const downloadQRCode = (evt: React.FormEvent) => {
-        foo(DataForJSON);
         //No refrescamos la pagina
         evt.preventDefault();
         //@ts-ignore (Esto es pa que no salte un error de typescript, sin esto no compila (porque asimila que es null))
@@ -41,7 +47,7 @@ export const QR = (props: {funcion:Function}) =>{
 
     //Funcion que genra algo de tipo JSON que va a pedir la App cuando vaya a generar un JSON con la aventura
     function DataForJSON(){
-        return {Nombre: "Soy un QR "};
+        return {QRCode: text};
     }
  
     return (

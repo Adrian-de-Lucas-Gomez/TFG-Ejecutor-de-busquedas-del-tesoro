@@ -1,4 +1,5 @@
-import React, {Fragment, useState } from "react"
+import { queries } from "@testing-library/react";
+import React, {Fragment, useState, useEffect } from "react"
 
 export const Quiz = (props: {funcion:Function}) =>{
 
@@ -12,13 +13,21 @@ export const Quiz = (props: {funcion:Function}) =>{
 
     //Donde almacenamos la pregunta
     const [question, setQuestion] = useState<string>("");
-    //Respuesta en proceso
-    const [currAnswer, setCurrAnswer] = useState<string>("");
     //Array con las posibles respuestas a esa pregunta
     const [answers, setAnswers] = useState<Answer[]>([]);
+    //Respuesta en proceso
+    const [currAnswer, setCurrAnswer] = useState<string>("");
 
     
-    const [foo, setFuncion] = useState<Function>(props.funcion);
+    const [quizAddFunction, setFuncion] = useState<Function>(props.funcion);
+
+
+    //Este metodo es llamado cada vez que un componente de tipo QR es montado, como "Constructora"
+    useEffect(() =>{
+        quizAddFunction(DataForJSON);
+        console.log("Acabo de añadirme");
+    },[])    
+
 
     const handleNewQuestion = (e:FormElement):void =>{
         e.preventDefault();
@@ -26,15 +35,21 @@ export const Quiz = (props: {funcion:Function}) =>{
         setCurrAnswer("");
     }
 
-    //Funcion que genra algo de tipo JSON que va a pedir la App cuando vaya a generar un JSON con la aventura
+    //Funcion que genera algo de tipo JSON que va a pedir la App cuando vaya a generar un JSON con la aventura
     function DataForJSON(){
-        return {Pregunta: "De que vas", Respuesta: "Hola que tal"};
+        console.log("Vamos a meter un quiz");
+        for(let i =0; i < answers.length;i++){
+            console.log("Tengo una respuesta: "+answers[i].text)
+        }
+        console.log("Mi pregunta:"+question);
+        let myData = {Pregunta: "", Respuestas: answers};
+        myData.Pregunta = question;
+        myData.Respuestas = answers;
+        return myData;
     }
 
     const addAnswer = (text:string):void =>{
         console.log("Respuesta añadida");
-        console.log(foo);
-        foo(DataForJSON);
         setAnswers([...answers, {text, isCorrect:false}]);
     }
 
