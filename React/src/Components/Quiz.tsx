@@ -1,7 +1,7 @@
 import { queries } from "@testing-library/react";
-import React, {Fragment, useState, useEffect } from "react"
+import React, {Fragment, useState, useEffect,useImperativeHandle, forwardRef } from "react"
 
-export const Quiz = (props: {funcion:Function}) =>{
+export const Quiz = forwardRef((props: {funcion:Function,cambio:Function, b:number, indice:number}, ref) =>{
 
     interface Answer {
         text: string;
@@ -19,16 +19,28 @@ export const Quiz = (props: {funcion:Function}) =>{
     const [currAnswer, setCurrAnswer] = useState<string>("");
 
     
+    
     const [quizAddFunction, setFuncion] = useState<Function>(props.funcion);
+    const [index, setIndex] = useState(props.indice);
 
 
+    //Esto me permite llamar a las funciones que haya dentro dese la App para poder recibir los JSONS con el formato y la informacion que me interese
+    useImperativeHandle(ref,() => ({
+        alterToggle(){
+            let respuesta = {Pregunta:"", respuestas:answers};
+            respuesta.Pregunta = question;
+            respuesta.respuestas = answers;
+            return respuesta;
+        },
+    }))
+    
     //Este metodo es llamado cada vez que un componente de tipo QR es montado, como "Constructora"
     useEffect(() =>{
-        quizAddFunction(DataForJSON);
-        console.log("Acabo de añadirme");
-    },[])    
-
-
+        quizAddFunction(DataParaJSON);
+        console.log("Como quiz acabo de añadirme");
+    },[])  
+    
+    
     const handleNewQuestion = (e:FormElement):void =>{
         e.preventDefault();
         addAnswer(currAnswer);
@@ -37,13 +49,19 @@ export const Quiz = (props: {funcion:Function}) =>{
 
     //Funcion que genera algo de tipo JSON que va a pedir la App cuando vaya a generar un JSON con la aventura
     function DataForJSON(){
-        console.log("Vamos a meter un quiz");
-        for(let i =0; i < answers.length;i++){
-            console.log("Tengo una respuesta: "+answers[i].text)
-        }
-        console.log("Mi pregunta:"+question);
-        let myData = {Pregunta: "", Respuestas: answers};
-        myData.Pregunta = question;
+
+        downloadFile(JSON.stringify({pregunta:question, respuestas:answers}, null, 2),'answers.json','text/json')
+        console.log("Vamos a meter un quiz, mi indice es "+ index);
+        console.log("Mi pregunta: "+question+", " + question.toString()+ ", " + question.valueOf()+" , " + {question}.question+ ", "+{question});
+        console.log("Referencia "+ JSON.stringify(question,null,2) +"," + JSON.stringify({question},null,2));
+        let myData = {Pregunta: question, Respuestas: answers, indi: index};
+        myData.Respuestas = answers;
+        
+        return myData;
+    }
+
+    const DataParaJSON = (): {} => {
+        var myData = {Pregunta: question, Respuestas: answers, indi: index};
         myData.Respuestas = answers;
         return myData;
     }
@@ -135,4 +153,4 @@ export const Quiz = (props: {funcion:Function}) =>{
         </div>
     )
 
-}
+});

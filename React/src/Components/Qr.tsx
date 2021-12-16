@@ -1,7 +1,7 @@
 import QRCode from "qrcode.react";
-import {useState, useRef, useEffect} from "react"
+import {useState, useRef, useEffect, forwardRef, useImperativeHandle} from "react"
 
-export const QR = (props: {funcion:Function}) =>{
+export const QR = forwardRef((props: {funcion:Function}, ref) =>{
   
     //Referencia en el DOM al div que contiene el QR que renderizamos
     const qrRef = useRef(null);
@@ -15,6 +15,14 @@ export const QR = (props: {funcion:Function}) =>{
     useEffect(() =>{
         foo(DataForJSON);
     },[])
+
+    useImperativeHandle(ref,() => ({
+        alterToggle(){
+            let respuesta = {CodigoQr:""};
+            respuesta.CodigoQr = text;
+            return respuesta;
+        },
+    }))
 
 
     //Metodo que se encarga de convertir el qr a formato png y descargarlo
@@ -66,4 +74,4 @@ export const QR = (props: {funcion:Function}) =>{
         </form>
     </div>
     )
-}
+});

@@ -1,5 +1,5 @@
 import Event from "./Components/Event"
-import {Fragment, useState} from "react"
+import {Fragment, useState, useRef} from "react"
 
 function App() {
 
@@ -9,7 +9,7 @@ function App() {
   //Array con los eventos de la gymncana
   const [eventList, setEventList] = useState<([number,JSX.Element])[]>([])
   const [eventsFunctions, setEventsFunctions] = useState<Function[]>([]);
-
+  
   
   //Para que react sepa que elementos tiene que identificar utiliza las keys para identificar los JSX.elements
   //(ver el render y el pintado del eventList), estos ids tienen que ser unicos y deben ser persistentes 
@@ -17,6 +17,9 @@ function App() {
   //Por tanto para solucionar eso, me creo una variable a modo de contador para que dada vez que añadamos
   //un evento tenga un identificador numerico unico
   const [eventCounter, setEventCounter] = useState<number>(0) 
+  const [addInfo, setAddInfo] = useState<number>(0) 
+  const childRef = useRef();
+  const [childReferencesList, setChildReferencesList] = useState<([number,JSX.Element])[]>([])
 
   
   //Setteamos la lista con todos los elementos que contenia menos aquel con el identificador id
@@ -31,7 +34,7 @@ function App() {
   
   //Añadir evento a la lista
   const addEvent = ():void =>{
-    setEventList([...eventList,[ eventCounter,<Event foo = {()=> AddFunctionFromEvent }/>]]);
+    setEventList([...eventList,[ eventCounter,<Event foo = {()=> AddFunctionFromEvent } camb ={()=> CanAddInfo } b = {addInfo} indice={eventCounter} ref = {childRef} />]]);
     setEventCounter(eventCounter + 1);
   }
 
@@ -57,19 +60,27 @@ function AddFunctionFromEvent(newFunction:Function) {
   eventsFunctions.push(newFunction);
 } 
 
+const CanAddInfo = ():number => {
+
+  return addInfo;
+}
+
+
 //Para exportar los datos a un JSON lo que hago es preparar un array, y en este array voy a meter las cosas que me vayan dando los eventos
 const exportToJson = (e:FormElement) => {
     //Para que no se refresque la pagina en el onSubmit
-    e.preventDefault()
-
+    e.preventDefault();
+    //@ts-ignore
+    console.log(childRef.current.alterToggle());
+    setAddInfo(addInfo +1);
     //Arrat de info de cada evento
-    var datos= []
-    for(let i =0;i<eventCounter;i++){
-      datos.push(eventsFunctions[i]());
-    }
-    //Una vez que tengo los datos de cada evento, preparo un JSON y lo descargo
-    var jsonFinal = {Gencana: "Nombre", fases: datos}
-    downloadFile(JSON.stringify(jsonFinal, null, 2),'answers.json','text/json')
+    // var datos= []
+    // for(let i =0;i<eventCounter;i++){
+    //   datos.push(eventsFunctions[i]());
+    // }
+    // //Una vez que tengo los datos de cada evento, preparo un JSON y lo descargo
+    // var jsonFinal = {Gencana: "Nombre", fases: datos}
+    // downloadFile(JSON.stringify(jsonFinal, null, 2),'answers.json','text/json')
 }
 
   return (
