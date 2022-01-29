@@ -488,10 +488,69 @@ const exportToJson = () => {
   downloadFile(JSON.stringify(jsonFinal, null, 2),'answers.json','text/json')
 }
 
+
+//Este método tiene como objetivo gestionar la escena a la que se quiere ir por medio del selector
+//Lo que hace es mirar que se acaba de seleccionar y dependiendo de lo escogido nos vamos a una escena 
+//u otra
+const UpdateSelector = (evt: React.FormEvent<HTMLSelectElement>):void => {
+  evt.preventDefault()
+  let s:string = evt.currentTarget.value;
+  let destiny=0;
+  if(s === "QR"){destiny=0;}
+  else if(s === "Quiz") {destiny=1;}
+  else if(s === "Default") {return;}
+  jump(destiny);
+};
+
+
+//MEtodo que aumenta en 1 la siguiente posicion en la que vamos a añadir una nueva fase a la aventur
+//En caso de que no este en el rango adecuado lo clampeamos 
+const AumentarPosSiguienteFase = ():void =>{
+  let value = getState<number>('WhereToPush',1)+1;
+  let current_state = getState<[{}]>('DATA', [{}]); 
+  if(value >current_state.length)value = current_state.length;
+  setState<number>('WhereToPush',value,1);
+  console.log(value);
+}
+
+//MEtodo que disminuye en 1 la siguiente posicion en la que vamos a añadir una nueva fase a la aventur
+//En caso de que no este en el rango adecuado lo dejamos como minimo en 1 
+const DisminuirPosSiguienteFase = ():void =>{
+  let value = getState<number>('WhereToPush',1)-1;
+  if(value <1)value = 1;
+  setState<number>('WhereToPush',value,1);
+  console.log(value);
+}
+
+
  
    return (
     <div className='Coso'>
 
+
+      {/* Este es el selector con el que nos podemos mover entre escenas */}
+      <select id="Selector" className="form-select" onChange={ UpdateSelector} >
+          <option value="Default">Default</option>
+          <option value="QR">QR</option>
+          <option value="Quiz">Quiz</option>
+      </select>
+
+
+      {/* Esta es la seccion que permite configurar la posicion de la siguiente fase que vayamos a incluir */}
+      <div className='rows'>
+        <h3 className='row'>Posicion de la siguiente fase de la aventura</h3>
+        <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFase}>
+          -
+        </button>
+        <p className='row'>{getState('WhereToPush',1)}º de los {getState<[{}]>('DATA', [{}]).length-1} actuales</p>
+        <button className='row' data-testid='>' onClick={AumentarPosSiguienteFase}>
+          +
+        </button>
+      </div>
+
+
+
+      {/* Estos son los hijos que representan las diferentes "escenas" por las que podemos pasar y configurar la  aventura */}
      <StepsContext.Provider value={context}>
        {config?.before && BeforeComponent(context)}
        {config?.navigation?.location === "before" &&
@@ -505,6 +564,8 @@ const exportToJson = () => {
        {config?.after && AfterComponent(context)}
      </StepsContext.Provider>
 
+
+      {/* Este es el boton con el que se puede pedir que se descargue el JSON que engloba la aventura */}
      <form onSubmit= {exportToJson}>
                 <button className="btn btn-outline-primary mt-2" type="submit">Creame un JSON hijo mio</button>
             </form>

@@ -26,29 +26,10 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
     
     //const [quizAddFunction, setFuncion] = useState<Function>(props.funcion);
     const [index, setIndex] = useState(props.order);
-    
-
-    //Nada mas montarme le pregunto al contenedor si ya existe el array en el que se van a almacenar todos los datos
-    //si NO existe lo creamos
-    useEffect(() => {
-        //Le digo que me de el valor de DATA y un valor por defecto en caso de NO encontrarlo, si obtengo el valor por defecto 
-        //le asigno el un valor inicial
-        if(props.getState<string>('DATA', "") === ""){}
-
-      }, []); 
 
         
     const modifyQuestion = (e:string):void =>{
         setQuestion(e);
-        // props.setState<string>('firstname', "Hola", '')
-
-        // //ME hago con el estado actual del array de info de la aventura
-        // let new_state = props.getState<string>('DATA', '{nombre: "hola"}'); 
-        // var casteado = {nombre:"Hola a todos", fases:[{}] };
-        // casteado.fases[props.order] = {pregunta:"Hola a todos"};
-        // var vueltaAString = JSON.stringify(casteado); 
-        // console.log(vueltaAString);
-        // props.setState<string>('DATA',vueltaAString,"");
     }
 
 
@@ -58,12 +39,6 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
         setCurrAnswer("");
     }
 
-
-    const DataParaJSON = (): {} => {
-        var myData = {Pregunta: question, Respuestas: answers, indi: index};
-        myData.Respuestas = answers;
-        return myData;
-    }
 
     const addAnswer = (text:string):void =>{
         console.log("Respuesta añadida");
@@ -97,11 +72,18 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
             let myData = {tipo:"QuizStage" ,Pregunta: question, Respuestas: answers};
 
             //Lo almaceno en la lista de fases que tengo disponibles
-            new_state.push(myData);
-            console.log(new_state);
-            
+            //new_state.push(myData);
+
+            //De esta forma se puede meter el estado en unaposicion concreta en lugar de hacerlo en el final siempre
+            let position = props.getState<number>('WhereToPush',1);
+            new_state.splice(position,0,myData);
+
             //Y tras modificar la copia del registro para que me contenga pongo esta copia como el registro de la aventura
             props.setState('DATA',new_state,[{}]);
+
+            //Importante aumentar el indice de donde estamos metiendo nuevos elementos a la aventura para que no 
+            //se metan todos en la posicion X y que luego estén TODOS EN ORDEN INVERSO
+            props.setState<number>('WhereToPush',props.getState<number>('WhereToPush',1)+1,1);
         }
         else{
             console.log("Rellena bien")

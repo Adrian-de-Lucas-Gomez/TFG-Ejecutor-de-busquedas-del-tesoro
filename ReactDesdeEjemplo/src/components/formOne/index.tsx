@@ -24,8 +24,8 @@ export const FormOne = (): JSX.Element => {
 
   return (
     <div className='steps_wrapper'>
-      <h2>Este es el formulario uno.</h2>
-      <p>Contiene dos pasos y almacena información relativa a nombre y apellido (paso 1), edad y lista de hobbies (paso 2).</p>
+      <h2>Configuración de Gymncana</h2>
+      <h4>Selector de fases</h4>
       <Steps config={config} genState={state} setGenState={setState}>
       <Step title='QR' component={QR} />
       <Step title='Quiz' component={Quiz} />

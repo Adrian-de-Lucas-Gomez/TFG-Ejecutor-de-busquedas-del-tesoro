@@ -63,8 +63,14 @@ const QR = (props: StepComponentProps): JSX.Element => {
             console.log(new_state);
 
             //Los añado a una copia del estado y establezco esta copia como el estadoa actual de las fases
-            new_state.push(myData);
+            //new_state.push(myData);
+            let position = props.getState<number>('WhereToPush',1);
+            new_state.splice(position,0,myData);
             props.setState('DATA',new_state,[{}]);
+
+            //Importante aumentar el indice de donde estamos metiendo nuevos elementos a la aventura para que no 
+            //se metan todos en la posicion X y que luego estén TODOS EN ORDEN INVERSO
+            props.setState<number>('WhereToPush',props.getState<number>('WhereToPush',1)+1,1);
         }
         else{
             console.log("Rellena bien")
@@ -81,11 +87,11 @@ const QR = (props: StepComponentProps): JSX.Element => {
         <div ref={qrRef}>
             <QRCode value={text} size={400} fgColor="black" bgColor="white" level="H"  />
         </div>
-        <form onSubmit= {guardaFase}>
-                <button className="btn btn-outline-primary mt-2" type="submit">Guardar Fase</button>
-            </form>
         <form onSubmit= {downloadQRCode}>
             <button className="btn btn-outline-primary mt-2" type="submit">Descargar QR</button>
+        </form>
+        <form onSubmit= {guardaFase}>
+                <button className="btn btn-outline-primary mt-2" type="submit">Guardar Fase</button>
         </form>
     </div>
     )
