@@ -15,6 +15,7 @@
  import React, { useContext, useEffect, useState } from "react";
  import { ComponentType, createContext, ReactElement } from "react";
 import { json } from "stream/consumers";
+import './Styles/Steps.css'
  
  
  //--------------------------------------------------------------
@@ -523,31 +524,116 @@ const DisminuirPosSiguienteFase = ():void =>{
 }
 
 
+//MEtodo que aumenta en 1 la siguiente posicion en la que vamos a añadir una nueva fase a la aventur
+//En caso de que no este en el rango adecuado lo clampeamos 
+const AumentarPosSiguienteFaseConfigurable = ():void =>{
+  let value = getState<number>('FaseConfigurable',1)+1;
+  let current_state = getState<[{}]>('DATA', [{}]); 
+  if(value >=current_state.length)value = current_state.length-1;
+  setState<number>('FaseConfigurable',value,1);
+  console.log(value);
+}
+
+//MEtodo que disminuye en 1 la siguiente posicion en la que vamos a añadir una nueva fase a la aventur
+//En caso de que no este en el rango adecuado lo dejamos como minimo en 1 
+const DisminuirPosSiguienteFaseConfigurable = ():void =>{
+  let value = getState<number>('FaseConfigurable',1)-1;
+  if(value <1)value = 1;
+  setState<number>('FaseConfigurable',value,1);
+  console.log(value);
+}
+
+//este método tiene como objetivo mirar qué fase es la que estamos seleccionando dentro de las que ya tenemos creadas
+// e ir a la escena que representa esa fase para poder reconfigurarla 
+const ConfigurarFase =():void =>{
+  //Pregunto por cual es la fase que estamos seleccionando y me quedo con las fases disponibles
+  let value = getState<number>('FaseConfigurable',1);
+  let new_state = getState<any>('DATA', [{}]); 
+  if(new_state.length <2) {
+    alert("No ha ninguna fase que configurar");
+    return;
+  }
+
+  //Indico que vamos a empezar a sobreescribir 
+  setState<boolean>('SobreEscribir',true,true);
+
+  //miro a qué escena me tengo que ir para reconfigurar la fase que estoy intentando seleccionar
+  let escena = 0;
+  if(new_state[value].tipo === "QRStage")           escena = 0;
+  else if(new_state[value].tipo === "QuizStage")    escena = 1;
+
+  jump(escena);
+}
+
+///////////////////////////este código es una prueba para la furuta carga de JSONS por parte del jugador a la web, no va aun//////////////////////////////
+// const onChange = (e:HTMLInputElement):void => {
+//   let files = e.files;
+//   console.log(files);
+//   const fileReader = new FileReader();
+//   fileReader.readAsText(e.files[0], "UTF-8");
+//   fileReader.onload = e => {}
+//   var filesArr = Array.prototype.slice.call(files);
+//   console.log(filesArr);
+// }
+
+// {/* @ts-ignore */}
+// let fileReader ;
+// {/* @ts-ignore */}
+// const handeFileRead = (e) => {
+//   {/* @ts-ignore */}
+//   const content = fileReader.result;
+//   console.log(content);
+//   console.log("esto son las fases");
+//   console.log(content["fases"]);
+// }
+
+
+// {/* @ts-ignore */}
+//    const handleChange =(event) =>
+//     {
+//         fileReader= new FileReader();
+//         fileReader.onloadend = handeFileRead;
+//         fileReader.readAsText(event);
+//     }
+////////////////////////////////////////////////////////////
  
    return (
     <div className='Coso'>
 
 
-      {/* Este es el selector con el que nos podemos mover entre escenas */}
-      <select id="Selector" className="form-select" onChange={ UpdateSelector} >
-          <option value="Default">Default</option>
-          <option value="QR">QR</option>
-          <option value="Quiz">Quiz</option>
-      </select>
+ {/* @ts-ignore */}
+    {/* <input type= 'file' id= 'file' className= 'input-file' accept= '.json' onChange={e => handleChange(e.target.files[0])} ></input> */}
+
+
+        {/* Este es el selector con el que nos podemos mover entre escenas */}
+        <h4>Selector de fases</h4>
+        <select id="Selector" className="form-select" onChange={ UpdateSelector}  >
+            <option value="Default">Default</option>
+            <option value="QR">QR</option>
+            <option value="Quiz">Quiz</option>
+        </select>
 
 
       {/* Esta es la seccion que permite configurar la posicion de la siguiente fase que vayamos a incluir */}
+      <h4>Posicion a insertar la siguiente fase de la aventura</h4>
       <div className='rows'>
-        <h3 className='row'>Posicion de la siguiente fase de la aventura</h3>
-        <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFase}>
-          -
-        </button>
-        <p className='row'>{getState('WhereToPush',1)}º de los {getState<[{}]>('DATA', [{}]).length-1} actuales</p>
-        <button className='row' data-testid='>' onClick={AumentarPosSiguienteFase}>
-          +
-        </button>
+        <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFase}> - </button>
+        <p className='row'>{getState('WhereToPush',1)}º </p>
+        <button className='row' data-testid='>' onClick={AumentarPosSiguienteFase}> + </button>
+        <p className='row'>de los {getState<[{}]>('DATA', [{}]).length-1} actuales</p>
       </div>
 
+
+      {/* Esta es la seccion que permite reconfigurar alguna fase ya existente */}
+      <h4>Fase que se quiere reconfigurar</h4>
+      <div className='rows'>
+        <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFaseConfigurable}> - </button>
+        <p className='row'>{getState('FaseConfigurable',1)}º </p>
+        <button className='row' data-testid='>' onClick={AumentarPosSiguienteFaseConfigurable}> + </button>
+        <p className='row'>de los {getState<[{}]>('DATA', [{}]).length-1} actuales</p>
+        <button className='row' data-testid='>' onClick={ConfigurarFase}> Configurar Fase </button>
+
+      </div>
 
 
       {/* Estos son los hijos que representan las diferentes "escenas" por las que podemos pasar y configurar la  aventura */}

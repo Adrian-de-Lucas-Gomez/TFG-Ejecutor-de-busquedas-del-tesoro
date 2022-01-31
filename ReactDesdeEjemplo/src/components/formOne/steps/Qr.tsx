@@ -11,6 +11,31 @@ const QR = (props: StepComponentProps): JSX.Element => {
     //Donde guardamos el texto a codificar en QR
     const [text, setText] = useState<string>("");
    type FormElement = React.FormEvent<HTMLFormElement>;
+   const [sobreEscribir, setSobreEscribir] = useState<boolean>(false);
+
+
+   useEffect(() => {
+
+    //En caso de que haya que sobreescribir algo, me guardo que estamos sobreescribiendo y cargo 
+    //los datos que ya había de esta fase      
+    if(props.getState<boolean>('SobreEscribir', false)){
+
+        //Indico que ya no es necesario sobreescribir nada, porque ya nos encargamos
+        setSobreEscribir(true);
+        props.setState('SobreEscribir', false, false);
+
+        //Me quedo con lo que haya que sobreescribir
+        let new_state = props.getState<any>('DATA', [{}]); 
+        let estadoACargar = new_state[props.getState<number>('FaseConfigurable',1)];
+
+        //Me guardo tando la pregunta como las respuestas que había configuradas
+        setText(estadoACargar.QRText);
+    }
+
+    //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
+    return () => {}
+  }, []);
+
 
 
     //Metodo que se encarga de convertir el qr a formato png y descargarlo
@@ -41,11 +66,6 @@ const QR = (props: StepComponentProps): JSX.Element => {
         document.body.removeChild(anchor);
       };
 
-    //Funcion que genra algo de tipo JSON que va a pedir la App cuando vaya a generar un JSON con la aventura
-    function DataForJSON(){
-        return {QRCode: text};
-    }
-
 
     //Metodo utilizado para guardar los datos que actuales del
     //QR en el registro de fases actual de la aventura
@@ -62,18 +82,26 @@ const QR = (props: StepComponentProps): JSX.Element => {
             let myData = {tipo:"QRStage" ,QRText: text};
             console.log(new_state);
 
-            //Los añado a una copia del estado y establezco esta copia como el estadoa actual de las fases
-            //new_state.push(myData);
-            let position = props.getState<number>('WhereToPush',1);
-            new_state.splice(position,0,myData);
+            //Los añado a una copia del estado y establezco esta copia como el estadoa actual de las fases            
+            if(sobreEscribir === true){
+                //De esta forma se puede meter el estado en unaposicion concreta en lugar de hacerlo en el final siempre
+                let position = props.getState<number>('FaseConfigurable',1);
+                new_state.splice(position,1,myData);
+            }
+            //Si no hay que sobreescribir nada simplemente pusheamos al final de los datos
+            else {
+                //Lo almaceno en la lista de fases que tengo disponibles
+                let position = props.getState<number>('WhereToPush',1);
+                new_state.splice(position, 0, myData);
+            }
+            
             props.setState('DATA',new_state,[{}]);
-
             //Importante aumentar el indice de donde estamos metiendo nuevos elementos a la aventura para que no 
             //se metan todos en la posicion X y que luego estén TODOS EN ORDEN INVERSO
             props.setState<number>('WhereToPush',props.getState<number>('WhereToPush',1)+1,1);
         }
         else{
-            console.log("Rellena bien")
+            alert("Rellena bien");
         }
     }
 

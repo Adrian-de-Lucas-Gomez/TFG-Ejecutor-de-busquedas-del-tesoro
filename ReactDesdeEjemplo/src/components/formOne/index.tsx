@@ -25,7 +25,6 @@ export const FormOne = (): JSX.Element => {
   return (
     <div className='steps_wrapper'>
       <h2>Configuración de Gymncana</h2>
-      <h4>Selector de fases</h4>
       <Steps config={config} genState={state} setGenState={setState}>
       <Step title='QR' component={QR} />
       <Step title='Quiz' component={Quiz} />

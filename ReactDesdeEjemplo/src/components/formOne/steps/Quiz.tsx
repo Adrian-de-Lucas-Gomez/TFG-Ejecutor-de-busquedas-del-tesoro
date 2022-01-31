@@ -22,13 +22,44 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
     //Respuesta en proceso
     const [currAnswer, setCurrAnswer] = useState<string>("");
 
+    const [sobreEscribir, setSobreEscribir] = useState<boolean>(false);
+
     
+    useEffect(() => {
+
+        //En caso de que haya que sobreescribir algo, me guardo que estamos sobreescribiendo y cargo 
+        //los datos que ya había de esta fase      
+        if(props.getState<boolean>('SobreEscribir', false)){
+
+            //Indico que ya no es necesario sobreescribir nada, porque ya nos encargamos
+            setSobreEscribir(true);
+            props.setState('SobreEscribir', false, false);
+
+            //Me quedo con lo que haya que sobreescribir
+            let new_state = props.getState<any>('DATA', [{}]); 
+            let estadoACargar = new_state[props.getState<number>('FaseConfigurable',1)]; 
+
+
+            //Me guardo tando la pregunta como las respuestas que había configuradas
+            setQuestion(estadoACargar.Pregunta);
+
+            //Cargo todas las respuestas que había almacenadas en el estado a configurar
+            let futurasRespuestas:Answer[] = [];
+            for(let i = 0; i < estadoACargar.Respuestas.length;i++){
+                futurasRespuestas.push((estadoACargar.Respuestas[i] as Answer));
+            }
+            setAnswers(futurasRespuestas);
+        }
+
+        //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
+        return () => {}
+      }, []);
     
     //const [quizAddFunction, setFuncion] = useState<Function>(props.funcion);
     const [index, setIndex] = useState(props.order);
 
         
-    const modifyQuestion = (e:string):void =>{
+    const modifyQuestion = (e:string):void =>{        
         setQuestion(e);
     }
 
@@ -55,7 +86,6 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
         const newAnswers: Answer[] = [...answers];
         newAnswers[index].isCorrect = !newAnswers[index].isCorrect;
         setAnswers(newAnswers);
-
     }
 
 
@@ -71,12 +101,19 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
             //Preparo el diccionario que voy a meter en el registro
             let myData = {tipo:"QuizStage" ,Pregunta: question, Respuestas: answers};
 
-            //Lo almaceno en la lista de fases que tengo disponibles
-            //new_state.push(myData);
+            console.log("Sobreescribir es igual a "+sobreEscribir);
+            if(sobreEscribir === true){
+                //De esta forma se puede meter el estado en unaposicion concreta en lugar de hacerlo en el final siempre
+                let position = props.getState<number>('FaseConfigurable',1);
+                new_state.splice(position,1,myData);
+            }
+            //Si no hay que sobreescribir nada simplemente pusheamos al final de los datos
+            else {
+                //Lo almaceno en la lista de fases que tengo disponibles
+                let position = props.getState<number>('WhereToPush',1);
+                new_state.splice(position, 0, myData);
+            }
 
-            //De esta forma se puede meter el estado en unaposicion concreta en lugar de hacerlo en el final siempre
-            let position = props.getState<number>('WhereToPush',1);
-            new_state.splice(position,0,myData);
 
             //Y tras modificar la copia del registro para que me contenga pongo esta copia como el registro de la aventura
             props.setState('DATA',new_state,[{}]);
@@ -86,7 +123,7 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
             props.setState<number>('WhereToPush',props.getState<number>('WhereToPush',1)+1,1);
         }
         else{
-            console.log("Rellena bien")
+            alert("Rellena bien");
         }
     }
 
