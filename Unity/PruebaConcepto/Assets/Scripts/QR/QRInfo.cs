@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 //Esta clase representa los datos con los que va a trabajar una fase de tipo QR
 [System.Serializable]
-public class QRInfo : AdventureStage
+public class QRInfo : AdventureInfo
 {
 
     public string QRValue = "";

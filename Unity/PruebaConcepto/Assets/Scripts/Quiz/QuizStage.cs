@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class QuizStage : MonoBehaviour
+public class QuizStage : Stage
 {
     [Tooltip ("Prefab de las posibles respuestas de un quiz")]
     [SerializeField]
@@ -21,17 +21,18 @@ public class QuizStage : MonoBehaviour
 
     private void Start()
     {
-        quizInit((QuizInfo)GameManager.getNextAdventureStageInfo());
+        GameManager.getInstance().SetCurrentStage(this);
     }
 
-
-    public void quizInit(QuizInfo data)
+    public override void Init(AdventureInfo data)
     {
-        quizData = data;
+        quizData = (QuizInfo)data;
         quizQuestionText.text = quizData.pregunta;
 
         //Despliego las posibles respuestas por pantalla
         UIPosition = new Vector2(0, 120);
+
+        quizAnswers.Clear();
         displayPossibleAnswers();
     }
 
@@ -64,8 +65,7 @@ public class QuizStage : MonoBehaviour
         if (i == quizAnswers.Count)
         {
             print("Well Done");
-            GameManager.continueToNextPhase(); 
+            GameManager.getInstance().continueToNextPhase(); 
         }
     }
-
 }

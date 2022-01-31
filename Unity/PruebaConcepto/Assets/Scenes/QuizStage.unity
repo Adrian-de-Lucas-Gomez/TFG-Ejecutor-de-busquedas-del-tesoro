@@ -299,7 +299,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -519,7 +519,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1385022186}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -555,9 +555,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ff6d5fd9c44017489b5c278d732b66f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  quizPrefab: {fileID: 6636796708580706453, guid: 99c326b2112a7414ea6dc377c42278cc,
-    type: 3}
-  canvas: {fileID: 261690398}
+  adventure: {fileID: 0}
 --- !u!4 &1588437876
 Transform:
   m_ObjectHideFlags: 0
@@ -565,7 +563,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1588437874}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 501.63943, y: 293.13516, z: -43.142357}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []

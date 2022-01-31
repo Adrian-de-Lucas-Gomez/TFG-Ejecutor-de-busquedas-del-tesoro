@@ -2,20 +2,9 @@
 using System.Collections.Generic;
 
 
-/// <summary>
-/// Padre de todos los bloques de informacion de cada fase
-/// </summary>
-[System.Serializable]
-public class AdventureStage
-{
-    //Nombre de la escena a la que nos debemos de ir para ejecutar esta fase
-    public string stage = "";
-}
-
-
 //Esta clase representa los datos con los que va a trabajar una fase de tipo quiz
 [System.Serializable]
-public class QuizInfo : AdventureStage
+public class QuizInfo : AdventureInfo
 {
     public string pregunta = "Default Question";                                //Pregunta del quiz
     public List<PosibleAnswer> respuestas = new List<PosibleAnswer>();          //Lista de respuestas que se van a ofrecer al jugador
