@@ -479,10 +479,10 @@ import './Styles/Steps.css'
 const exportToJson = () => {
   // //Una vez que tengo los datos de cada evento, preparo un JSON y lo descargo
   var datos= [];
-  let f = getState<[{}]>('DATA', [{}]); 
+  let f = getState<any>('DATA', []); 
   console.log(genState);
 
-  for(let i = 1; i < f.length;i++){
+  for(let i = 0; i < f.length;i++){
       datos.push(f[i]);
   }
   var jsonFinal = {Gencana: "Nombre", fases: datos}
@@ -507,19 +507,19 @@ const UpdateSelector = (evt: React.FormEvent<HTMLSelectElement>):void => {
 //MEtodo que aumenta en 1 la siguiente posicion en la que vamos a añadir una nueva fase a la aventur
 //En caso de que no este en el rango adecuado lo clampeamos 
 const AumentarPosSiguienteFase = ():void =>{
-  let value = getState<number>('WhereToPush',1)+1;
-  let current_state = getState<[{}]>('DATA', [{}]); 
+  let value = getState<number>('WhereToPush',0)+1;
+  let current_state = getState<any>('DATA', []); 
   if(value >current_state.length)value = current_state.length;
-  setState<number>('WhereToPush',value,1);
+  setState<number>('WhereToPush',value,0);
   console.log(value);
 }
 
 //MEtodo que disminuye en 1 la siguiente posicion en la que vamos a añadir una nueva fase a la aventur
 //En caso de que no este en el rango adecuado lo dejamos como minimo en 1 
 const DisminuirPosSiguienteFase = ():void =>{
-  let value = getState<number>('WhereToPush',1)-1;
-  if(value <1)value = 1;
-  setState<number>('WhereToPush',value,1);
+  let value = getState<number>('WhereToPush',0)-1;
+  if(value <0)value = 0;
+  setState<number>('WhereToPush',value,0);
   console.log(value);
 }
 
@@ -527,19 +527,20 @@ const DisminuirPosSiguienteFase = ():void =>{
 //MEtodo que aumenta en 1 la siguiente posicion en la que vamos a añadir una nueva fase a la aventur
 //En caso de que no este en el rango adecuado lo clampeamos 
 const AumentarPosSiguienteFaseConfigurable = ():void =>{
-  let value = getState<number>('FaseConfigurable',1)+1;
-  let current_state = getState<[{}]>('DATA', [{}]); 
-  if(value >=current_state.length)value = current_state.length-1;
-  setState<number>('FaseConfigurable',value,1);
+  let value = getState<number>('FaseConfigurable',0)+1;
+  let current_state = getState<any>('DATA', []); 
+  if(current_state.length === 0) value = 0;
+  else if(value >=current_state.length)value = current_state.length-1;
+  setState<number>('FaseConfigurable',value,0);
   console.log(value);
 }
 
 //MEtodo que disminuye en 1 la siguiente posicion en la que vamos a añadir una nueva fase a la aventur
 //En caso de que no este en el rango adecuado lo dejamos como minimo en 1 
 const DisminuirPosSiguienteFaseConfigurable = ():void =>{
-  let value = getState<number>('FaseConfigurable',1)-1;
-  if(value <1)value = 1;
-  setState<number>('FaseConfigurable',value,1);
+  let value = getState<number>('FaseConfigurable',0)-1;
+  if(value <0)value = 0;
+  setState<number>('FaseConfigurable',value,0);
   console.log(value);
 }
 
@@ -618,9 +619,9 @@ const ConfigurarFase =():void =>{
       <h4>Posicion a insertar la siguiente fase de la aventura</h4>
       <div className='rows'>
         <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFase}> - </button>
-        <p className='row'>{getState('WhereToPush',1)}º </p>
+        <p className='row'>{getState('WhereToPush',0)+1}º </p>
         <button className='row' data-testid='>' onClick={AumentarPosSiguienteFase}> + </button>
-        <p className='row'>de los {getState<[{}]>('DATA', [{}]).length-1} actuales</p>
+        <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
       </div>
 
 
@@ -628,9 +629,9 @@ const ConfigurarFase =():void =>{
       <h4>Fase que se quiere reconfigurar</h4>
       <div className='rows'>
         <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFaseConfigurable}> - </button>
-        <p className='row'>{getState('FaseConfigurable',1)}º </p>
+        <p className='row'>{getState('FaseConfigurable',0)+1}º </p>
         <button className='row' data-testid='>' onClick={AumentarPosSiguienteFaseConfigurable}> + </button>
-        <p className='row'>de los {getState<[{}]>('DATA', [{}]).length-1} actuales</p>
+        <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
         <button className='row' data-testid='>' onClick={ConfigurarFase}> Configurar Fase </button>
 
       </div>

@@ -25,7 +25,7 @@ const QR = (props: StepComponentProps): JSX.Element => {
         props.setState('SobreEscribir', false, false);
 
         //Me quedo con lo que haya que sobreescribir
-        let new_state = props.getState<any>('DATA', [{}]); 
+        let new_state = props.getState<any>('DATA', []); 
         let estadoACargar = new_state[props.getState<number>('FaseConfigurable',1)];
 
         //Me guardo tando la pregunta como las respuestas que había configuradas
@@ -77,7 +77,7 @@ const QR = (props: StepComponentProps): JSX.Element => {
         if (text !== ""){
             console.log("Llamada a guardar fase")
             //ME hago con el estado actual del array de info de la aventura
-            let new_state = props.getState<[{}]>('DATA', [{}]); 
+            let new_state = props.getState<any>('DATA', []); 
             //Preparo los datos que voy a añadir
             let myData = {tipo:"QRStage" ,QRText: text};
             console.log(new_state);
@@ -95,7 +95,7 @@ const QR = (props: StepComponentProps): JSX.Element => {
                 new_state.splice(position, 0, myData);
             }
             
-            props.setState('DATA',new_state,[{}]);
+            props.setState('DATA',new_state,[]);
             //Importante aumentar el indice de donde estamos metiendo nuevos elementos a la aventura para que no 
             //se metan todos en la posicion X y que luego estén TODOS EN ORDEN INVERSO
             props.setState<number>('WhereToPush',props.getState<number>('WhereToPush',1)+1,1);

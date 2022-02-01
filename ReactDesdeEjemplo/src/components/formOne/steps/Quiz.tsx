@@ -36,7 +36,7 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
             props.setState('SobreEscribir', false, false);
 
             //Me quedo con lo que haya que sobreescribir
-            let new_state = props.getState<any>('DATA', [{}]); 
+            let new_state = props.getState<any>('DATA', []); 
             let estadoACargar = new_state[props.getState<number>('FaseConfigurable',1)]; 
 
 
@@ -97,7 +97,7 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
         if (question !== "" && answers.length >= 2 && answers.length <= 6){
 
             //ME hago con el estado actual del array de info de la aventura
-            let new_state = props.getState<[{}]>('DATA', [{}]); 
+            let new_state = props.getState<any>('DATA', []); 
             //Preparo el diccionario que voy a meter en el registro
             let myData = {tipo:"QuizStage" ,Pregunta: question, Respuestas: answers};
 
@@ -116,7 +116,7 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
 
 
             //Y tras modificar la copia del registro para que me contenga pongo esta copia como el registro de la aventura
-            props.setState('DATA',new_state,[{}]);
+            props.setState('DATA',new_state,[]);
 
             //Importante aumentar el indice de donde estamos metiendo nuevos elementos a la aventura para que no 
             //se metan todos en la posicion X y que luego estén TODOS EN ORDEN INVERSO
