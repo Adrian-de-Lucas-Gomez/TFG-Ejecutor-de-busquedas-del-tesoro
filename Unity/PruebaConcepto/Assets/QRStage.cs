@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QRStage : MonoBehaviour
+public class QRStage : Stage
 {
     [Tooltip("Escaner de QR")]
     [SerializeField] QRScanner scanner;
@@ -13,19 +13,20 @@ public class QRStage : MonoBehaviour
 
     private void Start()
     {
-        qrInit((QRInfo)GameManager.getNextAdventureStageInfo());
+        GameManager.getInstance().SetCurrentStage(this);
     }
 
 	private void Update()
 	{
 		if(changeSceneRequest)
-            GameManager.continueToNextPhase();
+            GameManager.getInstance().continueToNextPhase();
     }
 
-	public void qrInit(QRInfo data)
+    public override void Init(AdventureInfo data)
     {
-        qrData = data;
+        qrData = (QRInfo)data;
         qrValue = qrData.QRValue;
+        changeSceneRequest = false;
     }
 
     public void checkQR(string qrMsg)
