@@ -12,7 +12,8 @@
  * acceso al mismo desde un nivel superior al ámbito del contexto de pasos que se define aquí.
  */
 
- import React, { useContext, useEffect, useState } from "react";
+ import { disconnect } from "process";
+import React, { useContext, useEffect, useState } from "react";
  import { ComponentType, createContext, ReactElement } from "react";
 import { json } from "stream/consumers";
 import './Styles/Steps.css'
@@ -598,39 +599,50 @@ const handleChange = (e:any):void => {
    return (
     <div className='Coso'>
 
-
- {/* @ts-ignore */}
-    <input type= 'file' id= 'file' className= 'input-file' accept= '.json' onChange={handleChange} ></input>
-
-
-        {/* Este es el selector con el que nos podemos mover entre escenas */}
+    <div className= 'grid'>
+      {/* Este es el selector con el que nos podemos mover entre escenas */}
+      <div className="areaA">
         <h4>Selector de fases</h4>
         <select id="Selector" className="form-select" onChange={ UpdateSelector} onSelect={UpdateSelector} >
             <option value="Default">Default</option>
             <option value="QR">QR</option>
             <option value="Quiz">Quiz</option>
         </select>
-
-
-      {/* Esta es la seccion que permite configurar la posicion de la siguiente fase que vayamos a incluir */}
-      <h4>Posicion a insertar la siguiente fase de la aventura</h4>
-      <div className='rows'>
-        <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFase}> - </button>
-        <p className='row'>{getState('WhereToPush',0)+1}º </p>
-        <button className='row' data-testid='>' onClick={AumentarPosSiguienteFase}> + </button>
-        <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
       </div>
 
 
-      {/* Esta es la seccion que permite reconfigurar alguna fase ya existente */}
-      <h4>Fase que se quiere reconfigurar</h4>
-      <div className='rows'>
-        <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFaseConfigurable}> - </button>
-        <p className='row'>{getState('FaseConfigurable',0)+1}º </p>
-        <button className='row' data-testid='>' onClick={AumentarPosSiguienteFaseConfigurable}> + </button>
-        <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
-        <button className='row' data-testid='>' onClick={ConfigurarFase}> Configurar Fase </button>
+      <div className="areaB">
+        <h4>Cargar aventura de archivo</h4>
+        <input type= 'file' id= 'file' className= 'input-file' accept= '.json' onChange={handleChange} ></input>
+      </div>
+    </div>
 
+
+      <div className= 'grid'>
+        {/* Esta es la seccion que permite configurar la posicion de la siguiente fase que vayamos a incluir */}
+        <div className="areaB">
+          <h4>Posicion a insertar la siguiente fase de la aventura</h4>
+          <div className='rows'>
+            <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFase}> - </button>
+            <p className='row'>{getState('WhereToPush',0)+1}º </p>
+            <button className='row' data-testid='>' onClick={AumentarPosSiguienteFase}> + </button>
+            <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
+          </div>
+        </div>
+
+
+        <div className="areaA">
+
+          {/* Esta es la seccion que permite reconfigurar alguna fase ya existente */}
+          <h4>Fase que se quiere reconfigurar</h4>
+          <div className='rows'>
+            <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFaseConfigurable}> - </button>
+            <p className='row'>{getState('FaseConfigurable',0)+1}º </p>
+            <button className='row' data-testid='>' onClick={AumentarPosSiguienteFaseConfigurable}> + </button>
+            <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
+            <button className='row' data-testid='>' onClick={ConfigurarFase}> Configurar Fase </button>
+          </div>
+        </div>
       </div>
 
 
@@ -651,7 +663,7 @@ const handleChange = (e:any):void => {
 
       {/* Este es el boton con el que se puede pedir que se descargue el JSON que engloba la aventura */}
      <form onSubmit= {exportToJson}>
-                <button className="btn btn-outline-primary mt-2" type="submit">Creame un JSON hijo mio</button>
+                <button  type="submit">Creame un JSON hijo mio</button>
             </form>
      </div>
 

@@ -1,0 +1,44 @@
+ .QRImage {
+    position: relative;
+    top: 0%;
+    left: 50%;
+    transform: translate(-50%, 0%);  
+ } 
+
+ .QRForm {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0%);  
+ } 
+
+ .QRButton {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0%);  
+ } 
+
+
+ .botonesQR {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0%);  
+    
+    display: grid;
+    width: 25%;
+    grid-template-columns: 50% 1fr;
+  }
+
+  .fondoA {
+    background-color: rgba(255, 153, 0, 0.493);
+  }
+  
+  .fondoB {
+    background-color: rgba(255, 0, 200, 0.507);
+  }
+
+
+
+ .Titulo {
+    position: relative;
+    text-align: center
+  }

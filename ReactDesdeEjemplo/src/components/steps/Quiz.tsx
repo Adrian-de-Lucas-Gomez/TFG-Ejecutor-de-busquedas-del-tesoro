@@ -1,7 +1,8 @@
 import { queries } from "@testing-library/react";
-import { StepComponentProps } from '../../Steps';
+import { StepComponentProps } from '../Steps';
 import React, {Fragment, useState, useEffect  } from "react"
 import { createSemicolonClassElement } from "typescript";
+import '../Styles/Quiz.css'
 
   
 
@@ -130,7 +131,7 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
 
     return (
         <div>
-            <h2>Configuracion de evento de quiz:</h2>
+            <h2 className="Titulo"  >Configuracion de evento de quiz:</h2>
             <form onSubmit={e => e.preventDefault() }>
                 <h3>Añada aqui la pregunta del cuestionario</h3>
                 <input className="form-control" type="text" required value={question} onChange ={ e =>modifyQuestion(e.target.value)}></input>
@@ -163,7 +164,7 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
             <br/>
             <br/>
             <form onSubmit= {guardaFase}>
-                <button className="btn btn-outline-primary mt-2" type="submit">Guardar Fase</button>
+                <button className='SaveButton' type="submit">Guardar Fase</button>
             </form>
         </div>
     )

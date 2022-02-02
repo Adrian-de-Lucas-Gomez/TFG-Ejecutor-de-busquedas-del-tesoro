@@ -1,6 +1,5 @@
-import { StepComponentProps } from '../../Steps';
+import { StepComponentProps } from '../Steps';
 
-// igual que en el caso 2, simplemente para demostrar el uso de los routers
 const Step1 = (props: StepComponentProps): JSX.Element => {
 
   return (

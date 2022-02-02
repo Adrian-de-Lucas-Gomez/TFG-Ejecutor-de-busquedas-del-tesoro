@@ -1,7 +1,8 @@
 import QRCode from "qrcode.react";
 import React, {useState, useRef, useEffect, forwardRef, useImperativeHandle} from "react"
-import { StepComponentProps } from '../../Steps';
+import { StepComponentProps } from '../Steps';
 import { queries } from "@testing-library/react";
+import '../Styles/QR.css'
 
 
 const QR = (props: StepComponentProps): JSX.Element => {
@@ -109,19 +110,28 @@ const QR = (props: StepComponentProps): JSX.Element => {
  
     return (
     <div >
-        <h3>Añada aqui el link al que reedirige el  QR:</h3>
+        <h3 className="Titulo" >Añada aqui el link al que reedirige el  QR:</h3>
         <form onSubmit={e => e.preventDefault()}>
-            <input className="form-control" type="text" required value={text} onChange ={ e =>setText(e.target.value)}></input>
+            <input  className='QRForm' type="text" required value={text} onChange ={ e =>setText(e.target.value)}></input>
         </form>
         <div ref={qrRef}>
-            <QRCode value={text} size={400} fgColor="black" bgColor="white" level="H"  />
+            <QRCode className='QRImage' value={text} size={400} fgColor="black" bgColor="white" level="H"  />
         </div>
-        <form onSubmit= {downloadQRCode}>
-            <button className="btn btn-outline-primary mt-2" type="submit">Descargar QR</button>
-        </form>
-        <form onSubmit= {guardaFase}>
-                <button className="btn btn-outline-primary mt-2" type="submit">Guardar Fase</button>
-        </form>
+
+        <div className = 'botonesQR'>
+            <div className="fondoB">
+                <form onSubmit= {guardaFase}>
+                        <button className='QRButton' type="submit">Guardar Fase</button>
+                </form>
+            </div>
+
+            <div className="fondoA">
+                <form onSubmit= {downloadQRCode}>
+                    <button className='QRButton' type="submit">Descargar QR</button>
+                </form>
+            </div>       
+        </div>
+
     </div>
     )
 };

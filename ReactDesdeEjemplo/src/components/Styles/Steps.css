@@ -1,3 +1,24 @@
 .rows .row {
     display: inline-block;
  }
+
+ .grid {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 50% 1fr;
+  }
+
+  .areaA {
+    background-color: rgba(0, 255, 0, 0.555);
+  }
+  
+  .areaB {
+    background-color: rgba(255, 0, 0, 0.521);
+  }
+
+
+  .BotonSacarJson {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0%);  
+ } 
