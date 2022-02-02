@@ -53,7 +53,8 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
 
         //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
         return () => {}
-      }, []);
+        //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
+      }, [props.getState<boolean>('SobreEscribir', false)]);
     
     //const [quizAddFunction, setFuncion] = useState<Function>(props.funcion);
     const [index, setIndex] = useState(props.order);

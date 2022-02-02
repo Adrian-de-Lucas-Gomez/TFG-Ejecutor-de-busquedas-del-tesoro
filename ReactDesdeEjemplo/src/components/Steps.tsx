@@ -567,35 +567,32 @@ const ConfigurarFase =():void =>{
 }
 
 ///////////////////////////este código es una prueba para la furuta carga de JSONS por parte del jugador a la web, no va aun//////////////////////////////
-// const onChange = (e:HTMLInputElement):void => {
-//   let files = e.files;
-//   console.log(files);
-//   const fileReader = new FileReader();
-//   fileReader.readAsText(e.files[0], "UTF-8");
-//   fileReader.onload = e => {}
-//   var filesArr = Array.prototype.slice.call(files);
-//   console.log(filesArr);
-// }
 
-// {/* @ts-ignore */}
-// let fileReader ;
-// {/* @ts-ignore */}
-// const handeFileRead = (e) => {
-//   {/* @ts-ignore */}
-//   const content = fileReader.result;
-//   console.log(content);
-//   console.log("esto son las fases");
-//   console.log(content["fases"]);
-// }
+const handleChange = (e:any):void => {
+  //Si de casualidad ha habido un error y es null lo que he obtenido no se hace nada
+  if(e === null){
+    alert("Problemas con el fichero");
+    return;
+  }
+  //Preparo el filereader que va a leer el JSON
+  const fileReader = new FileReader();
+  fileReader.readAsText(e.target.files[0], "UTF-8");
 
+  //Se lee el fichero que se acaba de subir
+  fileReader.onload = e => {    
+    
+    {/* @ts-ignore */}
+    let obj = JSON.parse(e.target.result as string);
 
-// {/* @ts-ignore */}
-//    const handleChange =(event) =>
-//     {
-//         fileReader= new FileReader();
-//         fileReader.onloadend = handeFileRead;
-//         fileReader.readAsText(event);
-//     }
+    //Tras parsear el json miro las fases que contiene este fichero y las añado a mi aventura
+    let nuevasFases = [];
+    for(let i = 0 ; i < obj.fases.length; i++){
+      nuevasFases.push(obj.fases[i]);
+    }
+    //Asigno lo leido al estado actual 
+    setState('DATA',nuevasFases, []);
+  };
+};
 ////////////////////////////////////////////////////////////
  
    return (
@@ -603,12 +600,12 @@ const ConfigurarFase =():void =>{
 
 
  {/* @ts-ignore */}
-    {/* <input type= 'file' id= 'file' className= 'input-file' accept= '.json' onChange={e => handleChange(e.target.files[0])} ></input> */}
+    <input type= 'file' id= 'file' className= 'input-file' accept= '.json' onChange={handleChange} ></input>
 
 
         {/* Este es el selector con el que nos podemos mover entre escenas */}
         <h4>Selector de fases</h4>
-        <select id="Selector" className="form-select" onChange={ UpdateSelector}  >
+        <select id="Selector" className="form-select" onChange={ UpdateSelector} onSelect={UpdateSelector} >
             <option value="Default">Default</option>
             <option value="QR">QR</option>
             <option value="Quiz">Quiz</option>

@@ -31,10 +31,11 @@ const QR = (props: StepComponentProps): JSX.Element => {
         //Me guardo tando la pregunta como las respuestas que había configuradas
         setText(estadoACargar.QRText);
     }
-
+    
     //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
     return () => {}
-  }, []);
+    //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
+  }, [props.getState<boolean>('SobreEscribir', false)]);
 
 
 
