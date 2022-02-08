@@ -6,16 +6,14 @@ import '../Styles/QR.css'
 
 
 const QR = (props: StepComponentProps): JSX.Element => {
-  
     //Referencia en el DOM al div que contiene el QR que renderizamos
     const qrRef = useRef(null);
     //Donde guardamos el texto a codificar en QR
     const [text, setText] = useState<string>("");
-   type FormElement = React.FormEvent<HTMLFormElement>;
-   const [sobreEscribir, setSobreEscribir] = useState<boolean>(false);
-
-
-   useEffect(() => {
+    type FormElement = React.FormEvent<HTMLFormElement>;
+    const [sobreEscribir, setSobreEscribir] = useState<boolean>(false);
+    
+    useEffect(() => {
 
     //En caso de que haya que sobreescribir algo, me guardo que estamos sobreescribiendo y cargo 
     //los datos que ya había de esta fase      

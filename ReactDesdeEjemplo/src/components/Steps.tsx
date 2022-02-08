@@ -500,6 +500,7 @@ const UpdateSelector = (evt: React.FormEvent<HTMLSelectElement>):void => {
   let destiny=0;
   if(s === "QR"){destiny=0;}
   else if(s === "Quiz") {destiny=1;}
+  else if( s == "ImageCharger"){destiny = 2;}
   else if(s === "Default") {return;}
   jump(destiny);
 };
@@ -607,6 +608,7 @@ const handleChange = (e:any):void => {
             <option value="Default">Default</option>
             <option value="QR">QR</option>
             <option value="Quiz">Quiz</option>
+            <option value="ImageCharger">Image Charger</option>
         </select>
       </div>
 

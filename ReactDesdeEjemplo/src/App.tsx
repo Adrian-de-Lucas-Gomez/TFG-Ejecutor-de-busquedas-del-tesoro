@@ -4,6 +4,7 @@ import NavigationComponent from './components/navigation/NavigationComponent';
 import { State, StepsConfig, Steps, Step } from './components/Steps';
 import Quiz from './components/steps/Quiz'
 import QR from './components/steps/Qr'
+import ImageCharger from './components/steps/ImageCharger';
 import './components/Styles/App.css'
 
 const App = (): JSX.Element => {
@@ -27,6 +28,7 @@ const App = (): JSX.Element => {
       <Steps config={config} genState={state} setGenState={setState}>
       <Step title='QR' component={QR} />
       <Step title='Quiz' component={Quiz} />
+      <Step title='ImageCharger' component={ImageCharger}/>
       </Steps>
 
     </div>
