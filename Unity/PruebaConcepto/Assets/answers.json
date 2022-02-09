@@ -1,6 +1,7 @@
 {
   
-  "fases": [{
+  "fases": [
+    {
     "tipo": "QuizStage",
     "pregunta": "¿Pregunta de prueba 1?",
     "respuestas": [
@@ -22,10 +23,6 @@
       }
     ]
     },
-	{
-	"tipo": "QRStage",
-	"qrValue": "http://EstoEsUnaURL"
-    },
     {
       "tipo": "QuizStage",
       "pregunta": "¿Pregunta de prueba 2?",
@@ -44,5 +41,10 @@
         }
       ]
     }
+    ,
+    {
+      "tipo": "QRStage",
+      "qrValue": "http://EstoEsUnaURL"
+        }
   ]
 }

@@ -21,7 +21,7 @@ public class QuizStage : Stage
 
     private void Start()
     {
-        GameManager.getInstance().SetCurrentStage(this);
+        //GameManager.getInstance().SetCurrentStage(this);
     }
 
     public override void Init(AdventureInfo data)
@@ -65,7 +65,8 @@ public class QuizStage : Stage
         if (i == quizAnswers.Count)
         {
             print("Well Done");
-            GameManager.getInstance().continueToNextPhase(); 
+            //GameManager.getInstance().continueToNextPhase();
+            GameManager.getInstance().GoToNextPhase();
         }
     }
 }

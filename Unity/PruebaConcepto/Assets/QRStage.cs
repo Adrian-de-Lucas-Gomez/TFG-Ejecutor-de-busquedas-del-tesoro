@@ -13,13 +13,14 @@ public class QRStage : Stage
 
     private void Start()
     {
-        GameManager.getInstance().SetCurrentStage(this);
+        //GameManager.getInstance().SetCurrentStage(this);
     }
 
 	private void Update()
 	{
 		if(changeSceneRequest)
-            GameManager.getInstance().continueToNextPhase();
+            //GameManager.getInstance().continueToNextPhase();
+            GameManager.getInstance().GoToNextPhase();
     }
 
     public override void Init(AdventureInfo data)
