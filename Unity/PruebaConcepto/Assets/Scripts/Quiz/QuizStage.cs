@@ -65,7 +65,6 @@ public class QuizStage : Stage
         if (i == quizAnswers.Count)
         {
             print("Well Done");
-            //GameManager.getInstance().continueToNextPhase();
             GameManager.getInstance().GoToNextPhase();
         }
     }

@@ -236,6 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   adventure: {fileID: 11400000, guid: 8d576e0d0132043478dc633c7457df45, type: 2}
+  sceneMainCamera: {fileID: 1289170864}
 --- !u!4 &1429632644
 Transform:
   m_ObjectHideFlags: 0

@@ -18,8 +18,7 @@ public class QRStage : Stage
 
 	private void Update()
 	{
-		if(changeSceneRequest)
-            //GameManager.getInstance().continueToNextPhase();
+        if (changeSceneRequest /*|| Input.GetMouseButtonDown(0) || Input.touchCount > 0*/)
             GameManager.getInstance().GoToNextPhase();
     }
 
