@@ -11,7 +11,7 @@ const App = (): JSX.Element => {
 
 
   const [state, setState] = useState<State>({
-    firstname: 'Nombre por defecto',
+    adventureName: 'Nombre por defecto',
     lastname: 'Apellido por defecto'
   });
 
@@ -22,11 +22,10 @@ const App = (): JSX.Element => {
     }
   };
 
+
+
   return (
     <div className='steps_wrapper'>
-    <a href="prueba.zip" download="CosaDescargada.zip">download cat.png</a>
-
-
       <h2 className='Titulo' >Configuración de Gymncana</h2>
       <Steps config={config} genState={state} setGenState={setState}>
       <Step title='QR' component={QR} />

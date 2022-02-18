@@ -8,11 +8,11 @@
     grid-template-columns: 50% 1fr;
   }
 
-  .areaA {
+  .greenBackGround {
     background-color: rgba(0, 255, 0, 0.555);
   }
   
-  .areaB {
+  .redBackGround {
     background-color: rgba(255, 0, 0, 0.521);
   }
 
