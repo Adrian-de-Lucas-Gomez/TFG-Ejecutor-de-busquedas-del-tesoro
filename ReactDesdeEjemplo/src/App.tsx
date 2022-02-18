@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import {Fragment, useState, useRef} from "react"
 import NavigationComponent from './components/navigation/NavigationComponent';
 import { State, StepsConfig, Steps, Step } from './components/Steps';
@@ -24,6 +24,9 @@ const App = (): JSX.Element => {
 
   return (
     <div className='steps_wrapper'>
+    <a href="prueba.zip" download="CosaDescargada.zip">download cat.png</a>
+
+
       <h2 className='Titulo' >Configuración de Gymncana</h2>
       <Steps config={config} genState={state} setGenState={setState}>
       <Step title='QR' component={QR} />
