@@ -2,6 +2,11 @@
   
   "fases": [
     {
+      "tipo": "ImageStage",
+      "imagen": "FDI"
+        }
+    ,
+    {
     "tipo": "QuizStage",
     "pregunta": "¿Pregunta de prueba 1?",
     "respuestas": [

@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/End.unity
     guid: 9d8d6c20841b1f34090e80e9cad6d1d0
   - enabled: 0
-    path: Assets/Scenes/AdventureEnd.unity
+    path: 
     guid: 2364d4c59a15fcf4a8d72defb2be3f54
+  - enabled: 1
+    path: Assets/Scenes/ImageStage.unity
+    guid: 77a7d31d945d50546825f538b996c55b
   m_configObjects: {}
