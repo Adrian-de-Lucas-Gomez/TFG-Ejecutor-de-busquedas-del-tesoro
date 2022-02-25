@@ -3,16 +3,18 @@
 echo Building react app...
 
 cd frontend
+call npm install
 call npm run build
 cd .. 
 
-echo Copying react app to backend directory...
+echo Moving react app to backend directory...
 
-xcopy /s /e /i .\frontend\build .\backend\build
+move .\frontend\build .\backend\build
 
 echo Launching express backend
 
 cd backend
+call npm install
 call npm run start
 
 PAUSE
