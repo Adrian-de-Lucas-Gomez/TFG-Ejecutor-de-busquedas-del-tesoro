@@ -12,7 +12,7 @@ console.log('Directorio de trabajo actual: ', __dirname);
 //Creamos backend con express
 const app = express()
 //Puerto en el que vamos a escuchar
-const port = 4000
+const port = 3000
 app.use(express.static(path.join(__dirname, 'build')));
 
 //BODY-PARSER
