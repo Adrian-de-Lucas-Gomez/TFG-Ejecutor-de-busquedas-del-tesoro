@@ -3,6 +3,7 @@ import bodyParser from "body-parser"
 import multer from "multer"
 import path from "path"
 import {fileURLToPath} from 'url';
+import { exec, execFile, fork, spawn } from "child_process";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -57,14 +58,33 @@ app.listen(port, ()=>{
 })
 
 app.get("/generate-zip", (req, res)=>{
-  console.log(req.query.zipName);
-  res.download(path.join(__dirname, 'build', 'Aventura.zip'), 'Aventura.zip', function (err) {
+
+  const execProcess = exec('GeneraZip.bat', { 'encoding': 'utf8' }, (error, stdout) => {
+    //console.log(`exec stdout: ${stdout}`);
+    //console.log(`error: ${error}`);
+  });
+
+  execProcess.on('exit', () => {
+    console.log('exec process exit');
+    res.download(path.join(__dirname, '../', 'Aventura.zip'), 'Aventura.zip', function (err) {
     if (err) {
       // Handle error, but keep in mind the response may be partially-sent
       // so check res.headersSent
-      console.log("ERROR");
+      console.log("ERROR ON DOWNLOAD ZIP");
     } else {
       // decrement a download credit, etc.
     }
+    });
   });
+
+  // res.download(path.join(__dirname, './', 'Aventura.zip'), 'Aventura.zip', function (err) {
+  //   if (err) {
+  //     // Handle error, but keep in mind the response may be partially-sent
+  //     // so check res.headersSent
+  //     console.log("ERROR ON DOWNLOAD ZIP");
+  //   } else {
+  //     // decrement a download credit, etc.
+  //   }
+  //   });
+
 })
