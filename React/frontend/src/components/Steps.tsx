@@ -17,7 +17,8 @@ import React, { useContext, useEffect, useState } from "react";
  import { ComponentType, createContext, ReactElement } from "react";
 import { json } from "stream/consumers";
 import './Styles/Steps.css'
- 
+import axios from "axios"
+
  
  //--------------------------------------------------------------
  //             Definición de un Paso Concreto
@@ -564,6 +565,7 @@ const ConfigurarFase =():void =>{
   let escena = 0;
   if(new_state[value].tipo === "QRStage")           escena = 0;
   else if(new_state[value].tipo === "QuizStage")    escena = 1;
+  else if(new_state[value].tipo === "ImageStage")    escena = 2;
 
   jump(escena);
 }
@@ -601,6 +603,43 @@ const loadAdventureFromFile = (e:any):void => {
 const modifyAdventureName = (e:string):void =>{        
   setState('adventureName',e, "Nombre por defecto");
 }
+
+
+//Este método tiene como objetivo preparar cosas especificas de alguna fase, como por ejemplo mandar las imagenes 
+//al backend para que las trate en el proyecto y poder preparar el json de la aventura datos que nos ayuden recurrir a dichas
+//imagenes
+const operacionesPreDescargaProyecto = (): void =>{
+  console.log("Atencion operaciones antes de descargar el proyecto");
+  //Tenemos que recorrer las posibles imagenes de la aventura y enviarlas al server para que haga algo con ellas
+  var fases = getState<any>('DATA', []); ;
+  var contadorImagenes = 0;
+  for(var i = 0; i< fases.length;i++){
+    var faseActual = fases[i];
+    if(faseActual.tipo === "ImageStage" &&  faseActual.Imagen instanceof File){   
+      //El nombre de la imagen va a ser el orden de esta en la aventura mas su misma extension
+      var finalImageName=faseActual.Imagen.name;
+      finalImageName = (contadorImagenes.toString())+( finalImageName.substring(finalImageName.indexOf('.')));
+      console.log("El nombre de la imagen es "+ finalImageName);
+
+      //mandamos la imagen al backend para que la trate de cara al proyecto
+        //Creamos un FORMDATA que sera el que finalmente enviemos en la peticion POST
+        const formData = new FormData(); 
+        //añadimos los campos imageCharger (identificador que se usa en el servidor para 
+        //saber que tiene que descargar )
+        formData.append('imageCharger', faseActual.Imagen , finalImageName);
+        //Hacemos una peticion POST a nuestro servidor 
+        axios.post("./image-upload", formData);
+        console.log("Post Request: DONE")     
+        
+        //Cambiamos la fase para que el json tenga la referencia a esta
+        faseActual = {tipo:"ImageStage" ,Imagen: finalImageName};
+        fases.splice(i,1,faseActual);
+        contadorImagenes++;
+    }
+  }
+  setState('DATA',fases,[]);
+}
+
 
 
    return (
@@ -682,7 +721,7 @@ const modifyAdventureName = (e:string):void =>{
       </form>
     
       {/* Este boton tiene como objetivo descargar el proyecto generado */}
-    <a href="ProyectoUnity.zip"  download={getState('adventureName',"Nombre por defecto")}>
+    <a href="ProyectoUnity.zip" onClick={operacionesPreDescargaProyecto} download={getState('adventureName',"Nombre por defecto")}>
         <button  type="button" >
         Descargar Aventura
       </button>      
