@@ -55,3 +55,16 @@ app.get("/", (req, res)=>{
 app.listen(port, ()=>{
     console.log("LISTENING ON PORT: " + port)
 })
+
+app.get("/generate-zip", (req, res)=>{
+  console.log(req.query.zipName);
+  res.download(path.join(__dirname, 'build', 'Aventura.zip'), 'Aventura.zip', function (err) {
+    if (err) {
+      // Handle error, but keep in mind the response may be partially-sent
+      // so check res.headersSent
+      console.log("ERROR");
+    } else {
+      // decrement a download credit, etc.
+    }
+  });
+})

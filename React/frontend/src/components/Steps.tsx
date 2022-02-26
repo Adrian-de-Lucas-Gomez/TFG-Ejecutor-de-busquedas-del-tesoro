@@ -17,6 +17,7 @@ import React, { useContext, useEffect, useState } from "react";
  import { ComponentType, createContext, ReactElement } from "react";
 import { json } from "stream/consumers";
 import './Styles/Steps.css'
+import axios from "axios"
  
  
  //--------------------------------------------------------------
@@ -490,6 +491,27 @@ const exportToJson = () => {
   downloadFile(JSON.stringify(jsonFinal, null, 2),'answers.json','text/json')
 }
 
+const generateZip = () => {
+  // //Una vez que tengo los datos de cada evento, preparo un JSON y lo descargo
+  var name = getState('adventureName',"Nombre por defecto");
+  
+  // axios.get("./generate-zip",  { params: { zipName: name } });
+  axios.get("./generate-zip", {
+    responseType: 'arraybuffer',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then (response => {
+     const type = response.headers['content-type']
+     const blob = new Blob([response.data], { type: type })
+     const link = document.createElement('a')
+     link.href = window.URL.createObjectURL(blob)
+     link.download = name + '.zip';
+     link.click();
+     link.remove();
+ })
+}
+
 
 //Este método tiene como objetivo gestionar la escena a la que se quiere ir por medio del selector
 //Lo que hace es mirar que se acaba de seleccionar y dependiendo de lo escogido nos vamos a una escena 
@@ -680,13 +702,20 @@ const modifyAdventureName = (e:string):void =>{
      <form onSubmit= {exportToJson}>
         <button  type="submit">Creame un JSON hijo mio</button>
       </form>
+      
+      {/* Este boton tiene como objetivo descargar el proyecto generado */}
+    <div>
+        <button  type="button" onClick={generateZip}>
+        Generar Aventura
+        </button>      
+    </div>
     
       {/* Este boton tiene como objetivo descargar el proyecto generado */}
-    <a href="ProyectoUnity.zip"  download={getState('adventureName',"Nombre por defecto")}>
+    {/* <a href="ProyectoUnity.zip"  download={getState('adventureName',"Nombre por defecto")}>
         <button  type="button" >
         Descargar Aventura
       </button>      
-    </a>
+    </a> */}
       
      </div>
    );
