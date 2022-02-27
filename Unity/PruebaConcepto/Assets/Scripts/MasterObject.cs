@@ -19,7 +19,7 @@ public class MasterObject : MonoBehaviour
     Stage myStage;
 
     //Tipos de fases en las que se puede encontrar este objeto
-    enum StageType {Start, QuizStage, QRStage, End };
+    enum StageType {Start, QuizStage, QRStage, ImageStage, End };
 
     //Fase que representa la escena en la que estamos, en sus representaciones de string como de enum
     [SerializeField]
@@ -46,6 +46,9 @@ public class MasterObject : MonoBehaviour
                 break;
             case StageType.QRStage:
                 myStageTypeStringRepresentation = "QRStage";
+                break;
+            case StageType.ImageStage:
+                myStageTypeStringRepresentation = "ImageStage";
                 break;
             case StageType.End:
                 myStageTypeStringRepresentation = "End";

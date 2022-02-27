@@ -96,6 +96,14 @@ public class GameManager : MonoBehaviour
                         adventureStages.Enqueue(newQR);
                         break;
                     }
+                case "ImageStage":
+                    {
+                        ImageInfo newImage = new ImageInfo();
+                        newImage.readFromJSON((JObject)misFases[i]);
+                        adventureStages.Enqueue(newImage);
+
+                        break;
+                    }
             }
         }
         adventureStages.Enqueue(end);
