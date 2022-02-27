@@ -59,7 +59,7 @@ app.listen(port, ()=>{
 
 app.get("/generate-zip", (req, res)=>{
 
-  const execProcess = exec('GeneraZip.sh', { 'encoding': 'utf8' }, (error, stdout) => {
+  const execProcess = exec('bash GeneraZip.sh', { 'encoding': 'utf8' }, (error, stdout) => {
     //console.log(`exec stdout: ${stdout}`);
     //console.log(`error: ${error}`);
   });
