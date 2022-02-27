@@ -1,6 +1,8 @@
 #!/bin/bash -x
 echo Building react app...
 
+rm -r ./backend/build
+
 cd frontend
 npm install
 npm run build
