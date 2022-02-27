@@ -478,16 +478,28 @@ import axios from "axios"
 
 
    //Para exportar los datos a un JSON lo que hago es preparar un array, y en este array voy a meter las cosas que me vayan dando los eventos
-const exportToJson = () => {
+const exportToJson = (e:any) => {
+  e.preventDefault();
   // //Una vez que tengo los datos de cada evento, preparo un JSON y lo descargo
   var datos= [];
   let f = getState<any>('DATA', []); 
   console.log(genState);
+  let contadorImagenes =0;
 
   for(let i = 0; i < f.length;i++){
-      datos.push(f[i]);
+    var faseActual = f[i];
+    //En caso de que sea una fase de tipo imagen
+    if(faseActual.tipo === "ImageStage" &&  faseActual.Imagen instanceof File){   
+      //El nombre de la imagen va a ser el orden de esta en la aventura mas su misma extension
+      var finalImageName=faseActual.Imagen.name;
+      finalImageName = (contadorImagenes.toString())+( finalImageName.substring(finalImageName.indexOf('.')));
+      //Cambiamos la fase para que el json tenga la referencia a esta
+      faseActual = {tipo:"ImageStage" ,Imagen: finalImageName};
+      contadorImagenes++;
+    }
+      datos.push(faseActual);
   }
-  var jsonFinal = {Gencana: "Nombre", fases: datos}
+  var jsonFinal = {Gencana: getState('adventureName', "Nombre por defecto") , fases: datos}
   downloadFile(JSON.stringify(jsonFinal, null, 2),'answers.json','text/json')
 }
 
@@ -634,10 +646,10 @@ const modifyAdventureName = (e:string):void =>{
 const operacionesPreDescargaProyecto = (): void =>{
   console.log("Atencion operaciones antes de descargar el proyecto");
   //Tenemos que recorrer las posibles imagenes de la aventura y enviarlas al server para que haga algo con ellas
-  var fases = getState<any>('DATA', []); ;
+  var fasesAventura = getState<any>('DATA', []); ;
   var contadorImagenes = 0;
-  for(var i = 0; i< fases.length;i++){
-    var faseActual = fases[i];
+  for(var i = 0; i< fasesAventura.length;i++){
+    var faseActual = fasesAventura[i];
     if(faseActual.tipo === "ImageStage" &&  faseActual.Imagen instanceof File){   
       //El nombre de la imagen va a ser el orden de esta en la aventura mas su misma extension
       var finalImageName=faseActual.Imagen.name;
@@ -656,11 +668,11 @@ const operacionesPreDescargaProyecto = (): void =>{
         
         //Cambiamos la fase para que el json tenga la referencia a esta
         faseActual = {tipo:"ImageStage" ,Imagen: finalImageName};
-        fases.splice(i,1,faseActual);
+        fasesAventura.splice(i,1,faseActual);
         contadorImagenes++;
     }
   }
-  setState('DATA',fases,[]);
+  setState('DATA',fasesAventura,[]);
 }
 
 
