@@ -492,6 +492,8 @@ const exportToJson = () => {
 }
 
 const generateZip = () => {
+
+  operacionesPreDescargaProyecto();
   // //Una vez que tengo los datos de cada evento, preparo un JSON y lo descargo
   var name = getState('adventureName',"Nombre por defecto");
   
