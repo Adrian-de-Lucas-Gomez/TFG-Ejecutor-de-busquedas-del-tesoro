@@ -605,6 +605,62 @@ const ConfigurarFase =():void =>{
   jump(escena);
 }
 
+//MEtodo que aumenta en 1 la siguiente posicion en la que vamos a añadir una nueva fase a la aventur
+//En caso de que no este en el rango adecuado lo clampeamos 
+const AumentarPosSiguienteFaseABorrar= ():void =>{
+  let value = getState<number>('FaseABorrar',0)+1;
+  let current_state = getState<any>('DATA', []); 
+  if(current_state.length === 0) value = 0;
+  else if(value >=current_state.length)value = current_state.length-1;
+  setState<number>('FaseABorrar',value,0);
+  console.log(value);
+}
+
+//MEtodo que disminuye en 1 la siguiente posicion en la que vamos a añadir una nueva fase a la aventur
+//En caso de que no este en el rango adecuado lo dejamos como minimo en 1 
+const DisminuirPosSiguienteFaseABorrar = ():void =>{
+  let value = getState<number>('FaseABorrar',0)-1;
+  if(value <0)value = 0;
+  setState<number>('FaseABorrar',value,0);
+  console.log(value);
+}
+
+  //este método tiene como objetivo mirar qué fase es la que estamos seleccionando dentro de las que ya tenemos creadas
+// e ir a la escena que representa esa fase para poder reconfigurarla 
+const BorrarFase =():void =>{
+  //Pregunto por cual es la fase que estamos seleccionando y me quedo con las fases disponibles
+  let value = getState<number>('FaseABorrar',1);
+  let new_state = getState<any>('DATA', []); 
+  if(new_state.length <1) {
+    alert("No ha ninguna fase que borrar");
+    return;
+  }
+  new_state.splice(value,1); 
+  setState('DATA',new_state, []);
+  ComprobarIndicesFases();
+}
+
+//este metodo tiene como objetivo comprobar que los indices de pusheo, reconfiguracion y borrado no se encuentran fuera de los límites del array de estados
+//para evitar que se trabajen con posiciones que no existen de este
+const ComprobarIndicesFases = () =>{
+  //Me hago tanto con el estado como con los indices 
+  let estado = getState<any>('DATA', []); 
+  let indiceBorrar = getState<number>('FaseABorrar',1);
+  let indiceReconfigurar = getState<number>('FaseConfigurable',1);
+  let indicePushear = getState<number>('WhereToPush',0)-1;
+  //Me encargo de que nadie este apuntando a una posicion invalida
+  let tamaño = estado.length;
+  if(indiceBorrar >= tamaño)indiceBorrar= tamaño-1;
+  if(indiceReconfigurar >= tamaño)indiceReconfigurar= tamaño-1;
+  if(indicePushear >= tamaño)indicePushear= tamaño-1;
+  //Guardo los posibles cambios que hayan pasado
+  setState<number>('FaseABorrar',indiceBorrar,0);
+  setState<number>('FaseConfigurable',indiceReconfigurar,0);
+  setState<number>('WhereToPush',indicePushear,0);
+}
+
+
+
 //Este método tiene como objetivo recibir un fichero json en el que se encuentra almacenada una aventura, en caso de que no haya ninguna aventura se
 //alertará dicendo que han habido problemas
 const loadAdventureFromFile = (e:any):void => {
@@ -710,7 +766,7 @@ const operacionesPreDescargaProyecto = (): void =>{
 
     {/* Grid configurado para que tenga un hoizontal layout que contiene tanto el selector de dónde queremos que se pushee la siguiente fase como el selector de fases existente
     con el que podemos configurar una de las fases que ya tengamos */}
-    <div className= 'grid'>
+    <div className= 'grid-container'>
 
       {/* Esta es la seccion que permite configurar la posicion de la siguiente fase que vayamos a incluir */}
       <div className="redBackGround">
@@ -721,20 +777,32 @@ const operacionesPreDescargaProyecto = (): void =>{
           <button className='row' data-testid='>' onClick={AumentarPosSiguienteFase}> + </button>
           <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
         </div>
-    </div>
+      </div>
 
-        {/* Esta es la seccion que permite reconfigurar alguna fase ya existente */}
-        <div className="greenBackGround">
-          <h4>Fase que se quiere reconfigurar</h4>
-          <div className='rows'>
-            <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFaseConfigurable}> - </button>
-            <p className='row'>{getState('FaseConfigurable',0)+1}º </p>
-            <button className='row' data-testid='>' onClick={AumentarPosSiguienteFaseConfigurable}> + </button>
-            <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
-            <button className='row' data-testid='>' onClick={ConfigurarFase}> Configurar Fase </button>
-          </div>
+      {/* Esta es la seccion que permite reconfigurar alguna fase ya existente */}
+      <div className="greenBackGround">
+        <h4>Fase que se quiere reconfigurar</h4>
+        <div className='rows'>
+          <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFaseConfigurable}> - </button>
+          <p className='row'>{getState('FaseConfigurable',0)+1}º </p>
+          <button className='row' data-testid='>' onClick={AumentarPosSiguienteFaseConfigurable}> + </button>
+          <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
+          <button className='row' data-testid='>' onClick={ConfigurarFase}> Configurar Fase </button>
         </div>
       </div>
+
+            {/* Esta es la seccion que permite reconfigurar alguna fase ya existente */}
+            <div className="redBackGround">
+        <h4>Fase que se quiere borrar</h4>
+        <div className='rows'>
+          <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFaseABorrar}> - </button>
+          <p className='row'>{getState('FaseABorrar',0)+1}º </p>
+          <button className='row' data-testid='>' onClick={AumentarPosSiguienteFaseABorrar}> + </button>
+          <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
+          <button className='row' data-testid='>' onClick={BorrarFase}> Borrar Fase </button>
+        </div>
+      </div>
+    </div>
 
       {/* Estos son los hijos que representan las diferentes "escenas" por las que podemos pasar y configurar la  aventura */}
      <StepsContext.Provider value={context}>
