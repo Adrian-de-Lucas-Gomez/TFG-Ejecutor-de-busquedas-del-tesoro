@@ -3,15 +3,11 @@
   "fases": [
     {
       "tipo": "QRStage",
-      "QRText": "Primero"
+      "QRText": "A"
     },
     {
       "tipo": "QRStage",
-      "QRText": "Segundo"
-    },
-    {
-      "tipo": "QRStage",
-      "QRText": "Tercero"
+      "QRText": "B"
     }
   ]
 }
