@@ -1,0 +1,17 @@
+{
+  "Gencana": "Nombre por defecto",
+  "fases": [
+    {
+      "tipo": "QRStage",
+      "QRText": "Primero"
+    },
+    {
+      "tipo": "QRStage",
+      "QRText": "Segundo"
+    },
+    {
+      "tipo": "QRStage",
+      "QRText": "Tercero"
+    }
+  ]
+}
