@@ -11,6 +11,8 @@ cp -r -u -f ../../Unity/PruebaConcepto/ProjectSettings/ ../tmp/ProjectSettings/
 
 cp -r -u -f ./Images/. ../tmp/Assets/Resources/AdventureImages/
 
+rm -f ../tmp/Assets/AdventureData.json
+
 cp -u -f ../AdventureData.json ../tmp/Assets/AdventureData.json
 
 cp -u -f  ../../Unity/PruebaConcepto/autoBuild.bat ../tmp/autoBuild.bat
