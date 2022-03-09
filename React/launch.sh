@@ -16,4 +16,4 @@ echo Launching express backend
 
 cd backend
 npm install
-nohub npm run start &
+nohup npm run start &
