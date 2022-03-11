@@ -40,18 +40,9 @@ const storage = multer.diskStorage({
   }
 })
 
-// const storageJson = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, 'AdventureData')
-//   },
-//   filename: (req, file, cb) => {
-//     console.log(file)
-//     cb(null, file.originalname)
-
-//   }
-// })
-
 const imageUpload = multer({storage: storage})
+
+var aventuraActual = {}
 
 //IMPORTANTE: el imageCharger que aparece como parametro de imageUpload.array()
 //tiene que aparecer en el FormData que creamos y posteriormente enviamos puesto
@@ -60,16 +51,15 @@ app.post('/image-upload', imageUpload.array("imageCharger"), (req, res) => {
   console.log("POST REQUEST recieved in: /image-upload")
 })
 
-
+//Peticion que tiene como objetivo revibir los datos relacionados con una aventura y generar un json que los contenga en el servidor
 app.post('/wtf-json', function(request, response){
-
+  aventuraActual = request.body.json;
   //Creamos un fichero json en un directorio que no este bajo el control del server para evitar problemas
   fs.writeFile('../AdventureData.json', request.body.json , function (err) {
     if (err) throw err;
     console.log('File is created successfully.');
   });
 });
-
 
 app.get("/", (req, res)=>{
   //Pagina estatica con lo desarrollado en react
@@ -81,8 +71,11 @@ app.listen(port, ()=>{
 })
 
 app.get("/generate-zip", (req, res)=>{
-
-  const execProcess = exec('bash GeneraZip.sh', { 'encoding': 'utf8' }, (error, stdout) => {
+ 
+  // Le paso al comando el nombre del directorio que hace falta crear y usar para almacenar la aventura
+  var commandWindows = '"GeneraZip.bat" '+  JSON.parse(aventuraActual).Gencana ;
+  
+  const execProcess = exec(commandWindows, { 'encoding': 'utf8' }, (error, stdout) => {
     //console.log(`exec stdout: ${stdout}`);
     //console.log(`error: ${error}`);
   });
@@ -98,19 +91,20 @@ app.get("/generate-zip", (req, res)=>{
       // decrement a download credit, etc.
     }
     });
+});
+
+  //Peticion para obtener los diferentes directorios dentro de la base de datos para poder luego decidir de cual reescribir la aventura
+  app.get("/aventuras-guardadas", (req, res)=>{
+    res.json({ Opciones:  fs.readdirSync('../BaseDeDatos/')}); }
+  );
+  
+  //Esta petición tiene como objetivo devolver el json que representa una aventura concreta
+  app.post('/dame-aventura', function(request, response){
+    var name = JSON.parse(request.body.json).Nombre ;
+    console.log("Aventura Solicitada para lectura: "+name);
+    var content = fs.readFileSync('../BaseDeDatos/'+name+'/AdventureData.json',{encoding:'utf8', flag:'r'});
+    response.json({ AventuraGuardada: content});
   });
 
 
-  
-
-  // res.download(path.join(__dirname, './', 'Aventura.zip'), 'Aventura.zip', function (err) {
-  //   if (err) {
-  //     // Handle error, but keep in mind the response may be partially-sent
-  //     // so check res.headersSent
-  //     console.log("ERROR ON DOWNLOAD ZIP");
-  //   } else {
-  //     // decrement a download credit, etc.
-  //   }
-  //   });
-
-})
+  })

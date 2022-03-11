@@ -1,0 +1,9 @@
+{
+  "Gencana": "Witam",
+  "fases": [
+    {
+      "tipo": "QRStage",
+      "QRText": "h"
+    }
+  ]
+}

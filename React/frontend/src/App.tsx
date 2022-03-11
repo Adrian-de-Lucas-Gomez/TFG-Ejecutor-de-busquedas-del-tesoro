@@ -4,6 +4,7 @@ import NavigationComponent from './components/navigation/NavigationComponent';
 import { State, StepsConfig, Steps, Step } from './components/Steps';
 import Quiz from './components/steps/Quiz'
 import QR from './components/steps/Qr'
+import AdventureCharger from './components/steps/AdventureCharger'
 import ImageCharger from './components/steps/ImageCharger';
 import './components/Styles/App.css'
 
@@ -28,6 +29,7 @@ const App = (): JSX.Element => {
     <div className='steps_wrapper'>
       <h2 className='Titulo' >Configuración de Gymncana</h2>
       <Steps config={config} genState={state} setGenState={setState}>
+        <Step title='AdventureCharger' component={AdventureCharger} />
         <Step title='QR' component={QR} />
         <Step title='Quiz' component={Quiz} />
         <Step title='ImageCharger' component={ImageCharger}/>

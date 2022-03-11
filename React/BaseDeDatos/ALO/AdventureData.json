@@ -1,0 +1,9 @@
+{
+  "Gencana": "ALO",
+  "fases": [
+    {
+      "tipo": "QRStage",
+      "QRText": "ALO"
+    }
+  ]
+}

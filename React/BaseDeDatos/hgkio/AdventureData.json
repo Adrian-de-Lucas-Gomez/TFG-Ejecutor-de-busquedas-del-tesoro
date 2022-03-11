@@ -1,0 +1,9 @@
+{
+  "Gencana": "hgkio",
+  "fases": [
+    {
+      "tipo": "QRStage",
+      "QRText": "a"
+    }
+  ]
+}

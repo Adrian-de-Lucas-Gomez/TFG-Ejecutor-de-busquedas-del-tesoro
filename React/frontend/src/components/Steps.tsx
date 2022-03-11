@@ -553,6 +553,25 @@ const generateZip = () => {
      link.click();
      link.remove();
  })
+
+ const response:any = axios.get("./aventuras-guardadas").then (response => {
+   console.log("Las opciones son "+response.data.Opciones);
+   var jsonFinal = {Nombre: response.data.Opciones[0] }
+   axios.post("./dame-aventura", {json:JSON.stringify(jsonFinal, null, 2)}).then(function (response) {
+    console.log("Me ha llegado que la aventura guardada es "+response.data.AventuraGuardada+" y es del tipo "+typeof(response.data.AventuraGuardada));
+    console.log("Y si lo àrsep es "+JSON.parse(response.data.AventuraGuardada)+ JSON.parse(response.data.AventuraGuardada).Gencana +  JSON.parse(response.data.AventuraGuardada).fases)
+    setState('DATA',JSON.parse(response.data.AventuraGuardada).fases, []);
+    modifyAdventureName(JSON.parse(response.data.AventuraGuardada).Gencana)
+    ComprobarIndicesFases();
+  })
+  .catch(function (error) {
+    //console.log(error);
+  });
+
+})
+
+
+
 }
 
 
@@ -767,7 +786,7 @@ const operacionesPreDescargaProyecto = (): void =>{
 
     {/* Seccion que representa la parte superior del formulario que permite especificar qué nombre queremos que tenga la aventura 
     si no ponemos nada el nombre será el original del archivo que vayamos a descargar*/}
-    <h3 className='Titulo' >Nombre de la aventura</h3>
+    <h3 className='Titulo' >Nombre de la aventura: {  getState('adventureName', "Nombre por defecto")}</h3>
     <form onSubmit={e => e.preventDefault()}>
           <input  className='QRForm' type="text"  onChange ={ e =>modifyAdventureName(e.target.value)}></input>
     </form>

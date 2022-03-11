@@ -1,0 +1,9 @@
+{
+  "Gencana": "Hola",
+  "fases": [
+    {
+      "tipo": "QRStage",
+      "QRText": "sda"
+    }
+  ]
+}

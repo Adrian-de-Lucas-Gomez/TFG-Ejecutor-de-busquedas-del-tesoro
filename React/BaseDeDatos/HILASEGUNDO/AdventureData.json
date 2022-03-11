@@ -1,0 +1,21 @@
+{
+  "Gencana": "HILASEGUNDO",
+  "fases": [
+    {
+      "tipo": "QRStage",
+      "QRText": "sdgf"
+    },
+    {
+      "tipo": "QRStage",
+      "QRText": "Segundo"
+    },
+    {
+      "tipo": "QRStage",
+      "QRText": "Tercero"
+    },
+    {
+      "tipo": "QRStage",
+      "QRText": "Cuarto"
+    }
+  ]
+}
