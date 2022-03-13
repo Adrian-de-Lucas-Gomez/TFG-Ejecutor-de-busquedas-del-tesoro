@@ -40,6 +40,16 @@ const storage = multer.diskStorage({
   }
 })
 
+const packageStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'Packages')
+  },
+  filename: (req, file, cb) => {
+    console.log(file)
+    cb(null, file.originalname)
+  }
+})
+
 // const storageJson = multer.diskStorage({
 //   destination: (req, file, cb) => {
 //     cb(null, 'AdventureData')
@@ -52,12 +62,18 @@ const storage = multer.diskStorage({
 // })
 
 const imageUpload = multer({storage: storage})
+const packageUpload = multer({storage: packageStorage})
 
 //IMPORTANTE: el imageCharger que aparece como parametro de imageUpload.array()
 //tiene que aparecer en el FormData que creamos y posteriormente enviamos puesto
 app.post('/image-upload', imageUpload.array("imageCharger"), (req, res) => {
   console.log(req.headers)
   console.log("POST REQUEST recieved in: /image-upload")
+})
+
+app.post('/package-upload', packageUpload.array("unityPackage"), (req, res) => {
+  console.log(req.headers)
+  console.log("POST REQUEST recieved in: /package-upload")
 })
 
 

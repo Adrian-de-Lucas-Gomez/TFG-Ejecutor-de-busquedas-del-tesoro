@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react"
 import { StepComponentProps } from '../Steps'
-import axios from "axios"
 
 const ImageCharger = (props: StepComponentProps): JSX.Element => {
 
@@ -22,7 +21,7 @@ const ImageCharger = (props: StepComponentProps): JSX.Element => {
             let estadoACargar = new_state[props.getState<number>('FaseConfigurable',1)]; 
 
 
-            //Me guardo la pregunta que había almacenada en el array de fases
+            //Me guardo la imagen que había almacenada en el array de fases
             setImagen(estadoACargar.Imagen);
         }
 

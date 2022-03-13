@@ -12,9 +12,9 @@
  * acceso al mismo desde un nivel superior al ámbito del contexto de pasos que se define aquí.
  */
 
- import { disconnect } from "process";
+import { disconnect } from "process";
 import React, { useContext, useEffect, useState } from "react";
- import { ComponentType, createContext, ReactElement } from "react";
+import { ComponentType, createContext, ReactElement } from "react";
 import { json } from "stream/consumers";
 import './Styles/Steps.css'
 import axios from "axios"
@@ -565,7 +565,8 @@ const UpdateSelector = (evt: React.FormEvent<HTMLSelectElement>):void => {
   let destiny=0;
   if(s === "QR"){destiny=0;}
   else if(s === "Quiz") {destiny=1;}
-  else if( s == "ImageCharger"){destiny = 2;}
+  else if( s === "ImageCharger"){destiny = 2;}
+  else if(s === "ImageTarget"){destiny = 3;}
   else if(s === "Default") {return;}
   jump(destiny);
 };
@@ -629,7 +630,8 @@ const ConfigurarFase =():void =>{
   let escena = 0;
   if(new_state[value].tipo === "QRStage")           escena = 0;
   else if(new_state[value].tipo === "QuizStage")    escena = 1;
-  else if(new_state[value].tipo === "ImageStage")    escena = 2;
+  else if(new_state[value].tipo === "ImageStage")   escena = 2;
+  else if(new_state[value].tipo === "ImageTarget")  escena = 3; 
 
   jump(escena);
 }
@@ -734,6 +736,7 @@ const operacionesPreDescargaProyecto = (): void =>{
   var fasesAventura = getState<any>('DATA', []); ;
   var contadorImagenes = 0;
   for(var i = 0; i< fasesAventura.length;i++){
+    console.log("Procesando fase: " + i)
     var faseActual = fasesAventura[i];
     if(faseActual.tipo === "ImageStage" &&  faseActual.Imagen instanceof File){   
       //El nombre de la imagen va a ser el orden de esta en la aventura mas su misma extension
@@ -742,19 +745,31 @@ const operacionesPreDescargaProyecto = (): void =>{
       console.log("El nombre de la imagen es "+ finalImageName);
 
       //mandamos la imagen al backend para que la trate de cara al proyecto
-        //Creamos un FORMDATA que sera el que finalmente enviemos en la peticion POST
-        const formData = new FormData(); 
-        //añadimos los campos imageCharger (identificador que se usa en el servidor para 
-        //saber que tiene que descargar )
-        formData.append('imageCharger', faseActual.Imagen , finalImageName);
-        //Hacemos una peticion POST a nuestro servidor 
-        axios.post("./image-upload", formData);
-        console.log("Post Request: DONE")     
-        
-        //Cambiamos la fase para que el json tenga la referencia a esta
-        faseActual = {tipo:"ImageStage" ,Imagen: finalImageName};
-        fasesAventura.splice(i,1,faseActual);
-        contadorImagenes++;
+      //Creamos un FORMDATA que sera el que finalmente enviemos en la peticion POST
+      const formData = new FormData(); 
+      //añadimos los campos imageCharger (identificador que se usa en el servidor para 
+      //saber que tiene que descargar )
+      formData.append('imageCharger', faseActual.Imagen , finalImageName);
+      //Hacemos una peticion POST a nuestro servidor 
+      axios.post("./image-upload", formData);
+      
+      //Cambiamos la fase para que el json tenga la referencia a esta
+      faseActual = {tipo:"ImageStage" ,Imagen: finalImageName};
+      fasesAventura.splice(i,1,faseActual);
+      contadorImagenes++;
+    }
+    else if(faseActual.tipo === "ImageTarget" && faseActual.Package instanceof File){
+      
+      const formData = new FormData(); 
+      //añadimos el campo unityPackage (identificador que se usa en el servidor para 
+      //saber que tiene que descargar )
+      formData.append('unityPackage', faseActual.Package , faseActual.Package.name);
+      //Hacemos una peticion POST a nuestro servidor 
+      axios.post("./package-upload", formData);
+      
+      //Cambiamos la fase para que el json tenga la referencia a esta
+      faseActual = {tipo:"ImageTarget" ,Key: faseActual.Key, Package: faseActual.Package.name, Target: faseActual.Target};
+      fasesAventura.splice(i,1,faseActual);
     }
   }
   setState('DATA',fasesAventura,[]);
@@ -783,6 +798,7 @@ const operacionesPreDescargaProyecto = (): void =>{
             <option value="QR">QR</option>
             <option value="Quiz">Quiz</option>
             <option value="ImageCharger">Image Charger</option>
+            <option value="ImageTarget">Vuforia Image Target</option>
         </select>
       </div>
 
