@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class QuizStage : Stage
 {
@@ -13,7 +14,7 @@ public class QuizStage : Stage
 
     [Tooltip("Texto del quiz en el se va a mostrar la pregunta")]
     [SerializeField]
-    Text quizQuestionText;
+    TextMeshProUGUI quizQuestionText;
 
     QuizInfo quizData;                                      //Datos del quiz
     List<GameObject> quizAnswers = new List<GameObject>();  //Lista de gameobjects que representaran las posibles respuestas de la fase

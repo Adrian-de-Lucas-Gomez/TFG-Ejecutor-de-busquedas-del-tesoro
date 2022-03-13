@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 /// <summary>
 /// Clase que representa una posible respuesta de un quiz
@@ -9,7 +10,7 @@ using UnityEngine.UI;
 public class QuizAnswer : MonoBehaviour
 {
     [Tooltip("Texto de la UI en el que se va a mostrar la respuesta")]
-    public Text myAnswerText;
+    public TextMeshProUGUI myAnswerText;
     [Tooltip("Togle que sirve para ver si hemos seleccionado la resouesta como seleccionada o no")]
     public Toggle myToggle;
 
