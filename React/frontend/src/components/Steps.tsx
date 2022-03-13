@@ -553,25 +553,6 @@ const generateZip = () => {
      link.click();
      link.remove();
  })
-
- const response:any = axios.get("./aventuras-guardadas").then (response => {
-   console.log("Las opciones son "+response.data.Opciones);
-   var jsonFinal = {Nombre: response.data.Opciones[0] }
-   axios.post("./dame-aventura", {json:JSON.stringify(jsonFinal, null, 2)}).then(function (response) {
-    console.log("Me ha llegado que la aventura guardada es "+response.data.AventuraGuardada+" y es del tipo "+typeof(response.data.AventuraGuardada));
-    console.log("Y si lo àrsep es "+JSON.parse(response.data.AventuraGuardada)+ JSON.parse(response.data.AventuraGuardada).Gencana +  JSON.parse(response.data.AventuraGuardada).fases)
-    setState('DATA',JSON.parse(response.data.AventuraGuardada).fases, []);
-    modifyAdventureName(JSON.parse(response.data.AventuraGuardada).Gencana)
-    ComprobarIndicesFases();
-  })
-  .catch(function (error) {
-    //console.log(error);
-  });
-
-})
-
-
-
 }
 
 
@@ -582,9 +563,10 @@ const UpdateSelector = (evt: React.FormEvent<HTMLSelectElement>):void => {
   evt.preventDefault()
   let s:string = evt.currentTarget.value;
   let destiny=0;
-  if(s === "QR"){destiny=0;}
-  else if(s === "Quiz") {destiny=1;}
-  else if( s == "ImageCharger"){destiny = 2;}
+  if(s === "AdventureCharger"){destiny=0;}
+  else if(s === "QR"){destiny=1;}
+  else if(s === "Quiz") {destiny=2;}
+  else if( s == "ImageCharger"){destiny = 3;}
   else if(s === "Default") {return;}
   jump(destiny);
 };
@@ -606,7 +588,6 @@ const DisminuirPosSiguienteFase = ():void =>{
   let value = getState<number>('WhereToPush',0)-1;
   if(value <0)value = 0;
   setState<number>('WhereToPush',value,0);
-  console.log(value);
 }
 
 
@@ -618,7 +599,6 @@ const AumentarPosSiguienteFaseConfigurable = ():void =>{
   if(current_state.length === 0) value = 0;
   else if(value >=current_state.length)value = current_state.length-1;
   setState<number>('FaseConfigurable',value,0);
-  console.log(value);
 }
 
 //MEtodo que disminuye en 1 la siguiente posicion en la que vamos a añadir una nueva fase a la aventur
@@ -627,7 +607,6 @@ const DisminuirPosSiguienteFaseConfigurable = ():void =>{
   let value = getState<number>('FaseConfigurable',0)-1;
   if(value <0)value = 0;
   setState<number>('FaseConfigurable',value,0);
-  console.log(value);
 }
 
 //este método tiene como objetivo mirar qué fase es la que estamos seleccionando dentro de las que ya tenemos creadas
@@ -636,7 +615,7 @@ const ConfigurarFase =():void =>{
   //Pregunto por cual es la fase que estamos seleccionando y me quedo con las fases disponibles
   let value = getState<number>('FaseConfigurable',1);
   let new_state = getState<any>('DATA', [{}]); 
-  if(new_state.length <2) {
+  if(new_state.length <1) {
     alert("No ha ninguna fase que configurar");
     return;
   }
@@ -646,9 +625,9 @@ const ConfigurarFase =():void =>{
 
   //miro a qué escena me tengo que ir para reconfigurar la fase que estoy intentando seleccionar
   let escena = 0;
-  if(new_state[value].tipo === "QRStage")           escena = 0;
-  else if(new_state[value].tipo === "QuizStage")    escena = 1;
-  else if(new_state[value].tipo === "ImageStage")    escena = 2;
+  if(new_state[value].tipo === "QRStage")           escena = 1;
+  else if(new_state[value].tipo === "QuizStage")    escena = 2;
+  else if(new_state[value].tipo === "ImageStage")    escena = 3;
 
   jump(escena);
 }
@@ -661,7 +640,6 @@ const AumentarPosSiguienteFaseABorrar= ():void =>{
   if(current_state.length === 0) value = 0;
   else if(value >=current_state.length)value = current_state.length-1;
   setState<number>('FaseABorrar',value,0);
-  console.log(value);
 }
 
 //MEtodo que disminuye en 1 la siguiente posicion en la que vamos a añadir una nueva fase a la aventur
@@ -670,7 +648,6 @@ const DisminuirPosSiguienteFaseABorrar = ():void =>{
   let value = getState<number>('FaseABorrar',0)-1;
   if(value <0)value = 0;
   setState<number>('FaseABorrar',value,0);
-  console.log(value);
 }
 
   //este método tiene como objetivo mirar qué fase es la que estamos seleccionando dentro de las que ya tenemos creadas
@@ -798,7 +775,7 @@ const operacionesPreDescargaProyecto = (): void =>{
       <div className="greenBackGround">
         <h4>Selector de fases</h4>
         <select id="Selector" className="form-select" onChange={ UpdateSelector} onSelect={UpdateSelector} >
-            <option value="Default">Default</option>
+            <option value="AdventureCharger">AdventureCharger</option>
             <option value="QR">QR</option>
             <option value="Quiz">Quiz</option>
             <option value="ImageCharger">Image Charger</option>

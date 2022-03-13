@@ -91,20 +91,18 @@ app.get("/generate-zip", (req, res)=>{
       // decrement a download credit, etc.
     }
     });
+  });
 });
 
-  //Peticion para obtener los diferentes directorios dentro de la base de datos para poder luego decidir de cual reescribir la aventura
-  app.get("/aventuras-guardadas", (req, res)=>{
-    res.json({ Opciones:  fs.readdirSync('../BaseDeDatos/')}); }
-  );
-  
-  //Esta petición tiene como objetivo devolver el json que representa una aventura concreta
-  app.post('/dame-aventura', function(request, response){
-    var name = JSON.parse(request.body.json).Nombre ;
-    console.log("Aventura Solicitada para lectura: "+name);
-    var content = fs.readFileSync('../BaseDeDatos/'+name+'/AdventureData.json',{encoding:'utf8', flag:'r'});
-    response.json({ AventuraGuardada: content});
-  });
+//Peticion para obtener los diferentes directorios dentro de la base de datos para poder luego decidir de cual reescribir la aventura
+app.get("/aventuras-guardadas", (req, res)=>{
+  res.json({ Opciones:  fs.readdirSync('../BaseDeDatos/')}); }
+);
 
-
-  })
+//Esta petición tiene como objetivo devolver el json que representa una aventura concreta
+app.post('/dame-aventura', function(request, response){
+  var name = JSON.parse(request.body.json).Nombre ;
+  console.log("Aventura Solicitada para lectura: "+name);
+  var content = fs.readFileSync('../BaseDeDatos/'+name+'/AdventureData.json',{encoding:'utf8', flag:'r'});
+  response.json({ AventuraGuardada: content});
+});
