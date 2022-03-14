@@ -5,17 +5,21 @@ import axios from "axios"
 
 const AdventureCharger = (props: StepComponentProps): JSX.Element => {
 
-
+    //Texto que representa la aventura que estamos seleccionando para cargar
     const [text, setText] = useState<string>("por defecto");
+    //Indice de la aventtra que estamos seleccionando
     const [indiceAventura, setIndiceAventura] = useState<number>(0);
+    //Lista de las aventuras que el server nos ha informado que existen y que podemos seleccionar y cargar
     const [aventurasDisponibles, setAventurasDisponibles] = useState<any>([]);
 
 
     //Nada más empezar lo que hago es pedirle al server las aventuras que tenemos disponibles para cargar 
     useEffect(() => {
       axios.get("./aventuras-guardadas").then (response => {
+        //Seteamos las aventuras que tenemos disponibles a lo que nos ha dicho el server
         console.log("Las opciones son "+response.data.Opciones);
         setAventurasDisponibles(response.data.Opciones);
+        //Ponemos el texto a una cosa u otra para informar al jugador de lo que se está seleccionando
         if(response.data.Opciones.length < 1)
           setText("No hay aventuras disponibles");  
         else {
@@ -32,7 +36,7 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
         //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
       }, []);
 
-
+//Metodo que tiene como objetivo preguntar al server por las opciones que hay disponibles en el momento de la solicitud
   const soliciarOpciones = ():void =>{        
     axios.get("./aventuras-guardadas").then (response => {
       console.log("Las opciones son "+response.data.Opciones);
@@ -55,8 +59,7 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
     console.log("Vamos a solicitar una carga de la aventura "+aventurasDisponibles[indiceAventura]);
     var jsonFinal = {Nombre: aventurasDisponibles[indiceAventura] }
     axios.post("./dame-aventura", {json:JSON.stringify(jsonFinal, null, 2)}).then(function (response) {
-      console.log("Me ha llegado que la aventura guardada es "+response.data.AventuraGuardada+" y es del tipo "+typeof(response.data.AventuraGuardada));
-      console.log("Y si lo àrsep es "+JSON.parse(response.data.AventuraGuardada)+ JSON.parse(response.data.AventuraGuardada).Gencana +  JSON.parse(response.data.AventuraGuardada).fases)
+      console.log("Me ha llegado que la aventura a cargar es "+response.data.AventuraGuardada);
       props.setState('DATA',JSON.parse(response.data.AventuraGuardada).fases, []);
       props.setState('adventureName',JSON.parse(response.data.AventuraGuardada).Gencana, "Nombre por defecto");
     });
