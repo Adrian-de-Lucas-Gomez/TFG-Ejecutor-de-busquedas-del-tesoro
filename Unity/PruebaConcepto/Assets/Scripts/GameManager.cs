@@ -194,6 +194,11 @@ public class GameManager : MonoBehaviour
             //Nos ocupamos de la cámara para que no de problemas en caso de que cambiemos de modo normal a AR y viceversa
             checkForARScene();
         }
+        else    //Si es la misma escena hay que recargar los recursos con el Init
+        {
+            Debug.Log("Misma fase, hay que recargarla");
+            InitCurrentStage();
+        }
 
         //Hay que hacerse cargo de empezar a cargar la siguiente escena en caso de que esta sea grande 
         checkLoadSceneOperations();
@@ -219,7 +224,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void checkLoadSceneOperations()
     {
-        //Nos hacemos cargo en caso de que haga falta el posible 10% de carga de la siguiente escena en cso de que esta hubiera estado en espera
+        //Nos hacemos cargo en caso de que haga falta el posible 10% de carga de la siguiente escena en caso de que esta hubiera estado en espera
         if (_preloadedScene.Value != null)
         {
             ActivatePreloadedScene();

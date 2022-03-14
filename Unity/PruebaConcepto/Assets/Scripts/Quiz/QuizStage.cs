@@ -28,6 +28,7 @@ public class QuizStage : Stage
     public override void Init(AdventureInfo data)
     {
         quizData = (QuizInfo)data;
+        quizQuestionText.text = quizQuestionText.text.Replace("\r", "");
         quizQuestionText.text = quizData.pregunta;
 
         //Despliego las posibles respuestas por pantalla

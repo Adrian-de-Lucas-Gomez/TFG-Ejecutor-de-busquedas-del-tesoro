@@ -20,7 +20,7 @@ public class QuizAnswer : MonoBehaviour
     /// <param name="newText"> Nuevo texto que queremos que tenga la respuesta</param>
     public void setAnswertext(string newText)
     {
-        myAnswerText.text = newText;
+        myAnswerText.text = newText.ToString();
     }
 
 
