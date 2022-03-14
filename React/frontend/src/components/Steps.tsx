@@ -756,6 +756,18 @@ const operacionesPreDescargaProyecto = (): void =>{
   setState('DATA',fasesAventura,[]);
 }
 
+const salvarAventura = () => {
+
+  operacionesPreDescargaProyecto();
+  mandarJson();
+  axios.get("./guardame-aventura", {
+    responseType: 'arraybuffer',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then (response => {})
+}
+
 
 
    return (
@@ -853,6 +865,9 @@ const operacionesPreDescargaProyecto = (): void =>{
         <button  type="button" onClick={generateZip}>
         Generar Aventura
         </button>      
+        <button  type="button" onClick={salvarAventura}>
+        Guardar Aventura
+        </button>     
     </div>
     
       {/* Este boton tiene como objetivo descargar el proyecto generado */}

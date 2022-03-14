@@ -1,13 +1,6 @@
 #!/bin/bash
 echo Generando Zip...
 
-#  Guardamos todos los elementos que forman la aventura en la "Base de datos" del server
-adventureName=$1
-echo el nombre de la aventura es $adventureName y el del parametro es $1 
-mkdir -v ../BaseDeDatos/$adventureName
-cp -r -f ./Images/. ../BaseDeDatos/$adventureName/ 
-cp -v -f ../AdventureData.json ../BaseDeDatos/$adventureName/AdventureData.json  
-
 #  Se crea un directorio temporal en el que se van a agrupar todas las cosas necesarias para crear la aventura
 mkdir ../tmp
 

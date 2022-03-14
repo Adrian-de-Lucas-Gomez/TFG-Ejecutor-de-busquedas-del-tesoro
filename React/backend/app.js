@@ -72,8 +72,8 @@ app.listen(port, ()=>{
 
 app.get("/generate-zip", (req, res)=>{
   // Le paso al comando el nombre del directorio que hace falta crear y usar para almacenar la aventura
-  //var command = "GeneraZip.bat " +  JSON.parse(aventuraActual).Gencana ;
-  var command = "bash GeneraZip.sh " +  JSON.parse(aventuraActual).Gencana ;
+  //var command = "GeneraZip.bat";
+  var command = "bash GeneraZip.sh";
   const execProcess = exec(command, { 'encoding': 'utf8' }, (error, stdout) => {
     //console.log(`exec stdout: ${stdout}`);
     //console.log(`error: ${error}`);
@@ -92,6 +92,32 @@ app.get("/generate-zip", (req, res)=>{
     });
   });
 });
+
+app.get("/guardame-aventura", (req, res)=>{
+  // Le paso al comando el nombre del directorio que hace falta crear y usar para almacenar la aventura
+  //var command = "GuardarAventura.bat " +  JSON.parse(aventuraActual).Gencana ;
+  var command = "bash GuardarAventura.sh " +  JSON.parse(aventuraActual).Gencana ;
+  console.log("Se busca guardar una aventura llamada "+JSON.parse(aventuraActual).Gencana);
+  const execProcess = exec(command, { 'encoding': 'utf8' }, (error, stdout) => {
+    //console.log(`exec stdout: ${stdout}`);
+    //console.log(`error: ${error}`);
+  });
+
+  // execProcess.on('exit', () => {
+  //   console.log('exec process exit');
+  //   res.download(path.join(__dirname, '../', 'Aventura.zip'), 'Aventura.zip', function (err) {
+  //   if (err) {
+  //     // Handle error, but keep in mind the response may be partially-sent
+  //     // so check res.headersSent
+  //     console.log("ERROR ON DOWNLOAD ZIP");
+  //   } else {
+  //     // decrement a download credit, etc.
+  //   }
+  //   });
+  // });
+});
+
+
 
 //Peticion para obtener los diferentes directorios dentro de la base de datos para poder luego decidir de cual reescribir la aventura
 app.get("/aventuras-guardadas", (req, res)=>{

@@ -1,12 +1,5 @@
 echo Generando Zip...
 
-set adventureName=%1
-
-@REM Guardamos todos los elementos que forman la aventura en la "Base de datos" del server
-mkdir ..\BaseDeDatos\%adventureName%
-xcopy .\Images ..\BaseDeDatos\%adventureName% /E /S /Q /Y
-xcopy ..\AdventureData.json ..\BaseDeDatos\%adventureName%  /Y
-
 @REM Se crea un directorio temporal en el que se van a agrupar todas las cosas necesarias para crear la aventura
 mkdir ..\tmp
 
