@@ -72,8 +72,8 @@ app.listen(port, ()=>{
 
 app.get("/generate-zip", (req, res)=>{
   // Le paso al comando el nombre del directorio que hace falta crear y usar para almacenar la aventura
-  //var command = '"GeneraZip.bat" '+  JSON.parse(aventuraActual).Gencana ;
-  var command = '"bash GeneraZip.sh" '+  JSON.parse(aventuraActual).Gencana ;
+  //var command = "GeneraZip.bat " +  JSON.parse(aventuraActual).Gencana ;
+  var command = "bash GeneraZip.sh " +  JSON.parse(aventuraActual).Gencana ;
   const execProcess = exec(command, { 'encoding': 'utf8' }, (error, stdout) => {
     //console.log(`exec stdout: ${stdout}`);
     //console.log(`error: ${error}`);

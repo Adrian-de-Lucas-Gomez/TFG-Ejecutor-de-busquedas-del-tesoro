@@ -1,5 +1,5 @@
 {
-  "Gencana": "AventuraDeMuestra",
+  "Gencana": "BlaBlaBla",
   "fases": [
     {
       "tipo": "QuizStage",
@@ -25,7 +25,7 @@
     },
     {
       "tipo": "QRStage",
-      "QRText": "QRDeMuestra"
+      "QRText": "QRDeMuestraModificado"
     }
   ]
 }
