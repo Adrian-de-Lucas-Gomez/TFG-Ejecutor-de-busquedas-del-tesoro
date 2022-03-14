@@ -126,8 +126,35 @@ app.get("/aventuras-guardadas", (req, res)=>{
 
 //Esta petición tiene como objetivo devolver el json que representa una aventura concreta
 app.post('/dame-aventura', function(request, response){
+
+  //Me hago con el nombre de la aventura que nos están pidiendo
   var name = JSON.parse(request.body.json).Nombre ;
   console.log("Aventura Solicitada para lectura: "+name);
   var content = fs.readFileSync('../BaseDeDatos/'+name+'/AdventureData.json',{encoding:'utf8', flag:'r'});
+
+  //Me quedo con el nombre de los archivos que hay en el directorio Images
+  //Voy uno por uno para eliminarlos y que no metan ruido a la futura build, en caso de que hayan archivos que no se usen
+  var filesToRemove = fs.readdirSync('./Images/');
+  for(var i = 0; i< filesToRemove.length;i++){
+    //Si no es el readme, lo elimino del directorio
+    if(filesToRemove[i] !== "README.txt"){
+      console.log("Removed file from backend/Images/ directory: "+filesToRemove[i]);
+      fs.unlinkSync('./Images/'+filesToRemove[i]);
+    }
+  }
+
+  //Me quedo con el nombre de los archivos que hay en el directorio de la base de datos y los paso
+  //al directorio Images para que cuando el jugador le de a crear aventura que todo esté listo para moverlo
+  //a la build
+  var files = fs.readdirSync('../BaseDeDatos/'+name+'/');
+  for(var i = 0; i< files.length;i++){
+    //Si no es la aventura, lo copio, solo me interesan las imágenes
+    if(files[i] !== "AdventureData.json"){
+      console.log('File Copy Successfully: '+files[i]);
+      fs.copyFile('../BaseDeDatos/'+name+'/'+files[i], './Images/'+files[i], (err) => {
+        if (err) console.log("An error ocurred copying a file");
+      });
+    }
+  }
   response.json({ AventuraGuardada: content});
 });
