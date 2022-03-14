@@ -249,7 +249,7 @@ public class GameManager : MonoBehaviour
             AdventureInfo[] a = adventureStages.ToArray();
             int i = 0;
             while (i < a.Length && a[i].stage != completedScene) i++;
-            mustUnload = i < a.Length;
+            mustUnload = i >= a.Length;
         }
 
         //Si es necesario descargarla me aseguro de que este cargada y entonces la descargo
