@@ -1,9 +1,0 @@
-{
-  "Gencana": "HelloWOrld",
-  "fases": [
-    {
-      "tipo": "QRStage",
-      "QRText": "HelloWorld"
-    }
-  ]
-}
