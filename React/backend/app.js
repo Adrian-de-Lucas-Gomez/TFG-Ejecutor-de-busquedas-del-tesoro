@@ -102,19 +102,43 @@ app.get("/guardame-aventura", (req, res)=>{
     //console.log(`exec stdout: ${stdout}`);
     //console.log(`error: ${error}`);
   });
+});
 
-  // execProcess.on('exit', () => {
-  //   console.log('exec process exit');
-  //   res.download(path.join(__dirname, '../', 'Aventura.zip'), 'Aventura.zip', function (err) {
-  //   if (err) {
-  //     // Handle error, but keep in mind the response may be partially-sent
-  //     // so check res.headersSent
-  //     console.log("ERROR ON DOWNLOAD ZIP");
-  //   } else {
-  //     // decrement a download credit, etc.
-  //   }
-  //   });
-  // });
+
+app.get("/guardame-aventuranode", async (req, res)=>{
+  //Sacamos el nombre de la aventura y determinamos el directorio en el que vamos a guardar las cosas
+  var name = JSON.parse(aventuraActual).Gencana;
+  var dir ="../BaseDeDatos/" + name;
+  await fs.mkdir(dir, (err) => {
+      if (err) {throw err;}
+      console.log("Directory created: "+dir);
+  });
+
+  //Me quedo con el nombre de los archivos que hay en el directorio Images
+  //Voy uno por uno para eliminarlos y que no metan ruido a la futura build, en caso de que hayan archivos que no se usen
+  var filesToSave = fs.readdirSync('./Images/');
+  for(var i = 0; i< filesToSave.length;i++){
+    console.log('File Copy Successfully: '+filesToSave[i]);
+    await fs.copyFile('./Images/'+filesToSave[i],'../BaseDeDatos/'+name+'/'+filesToSave[i], (err) => {
+      if (err) console.log("An error ocurred copying a file");
+    });
+  }
+
+  //Me quedo con el nombre de los archivos que hay en el directorio Images
+  //Voy uno por uno para eliminarlos y que no metan ruido a la futura build, en caso de que hayan archivos que no se usen
+  var filesToRemove = fs.readdirSync('./Images/');
+  for(var i = 0; i< filesToRemove.length;i++){
+    //Si no es el readme, lo elimino del directorio
+    if(filesToRemove[i] !== "README.txt"){
+      console.log("Removed file from backend/Images/ directory: "+filesToRemove[i]);
+      await fs.unlinkSync('./Images/'+filesToRemove[i]);
+    }
+  }
+
+  //Queda copiar el json que contiene la aventura
+  await fs.copyFile('../AdventureData.json','../BaseDeDatos/'+name+'/AdventureData.json', (err) => {
+    if (err) console.log("An error ocurred copying AdventureData file to the DataBase");
+  });
 });
 
 
@@ -151,7 +175,7 @@ app.post('/dame-aventura', function(request, response){
     //Si no es la aventura, lo copio, solo me interesan las imágenes
     if(files[i] !== "AdventureData.json"){
       console.log('File Copy Successfully: '+files[i]);
-      fs.copyFile('../BaseDeDatos/'+name+'/'+files[i], './Images/'+files[i], (err) => {
+      fs.copyFile('../BaseDeDatos/'+name+'/'+files[i] , './Images/'+files[i], (err) => {
         if (err) console.log("An error ocurred copying a file");
       });
     }

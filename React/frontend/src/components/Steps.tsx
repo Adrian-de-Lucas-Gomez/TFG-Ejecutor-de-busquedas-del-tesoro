@@ -503,7 +503,7 @@ const exportToJson = (e:any) => {
   downloadFile(JSON.stringify(jsonFinal, null, 2),'answers.json','text/json')
 }
 
-const mandarJson = () =>{
+const mandarJson = async () =>{
 
   console.log("Voy a intentar mandar el json");
   // //Una vez que tengo los datos de cada evento, preparo un JSON y lo descargo
@@ -724,7 +724,7 @@ const modifyAdventureName = (e:string):void =>{
 //Este método tiene como objetivo preparar cosas especificas de alguna fase, como por ejemplo mandar las imagenes 
 //al backend para que las trate en el proyecto y poder preparar el json de la aventura datos que nos ayuden recurrir a dichas
 //imagenes
-const operacionesPreDescargaProyecto = (): void =>{
+const operacionesPreDescargaProyecto = async () =>{
   console.log("Atencion operaciones antes de descargar el proyecto");
   //Tenemos que recorrer las posibles imagenes de la aventura y enviarlas al server para que haga algo con ellas
   var fasesAventura = getState<any>('DATA', []); ;
@@ -756,16 +756,16 @@ const operacionesPreDescargaProyecto = (): void =>{
   setState('DATA',fasesAventura,[]);
 }
 
-const salvarAventura = () => {
-
-  operacionesPreDescargaProyecto();
-  mandarJson();
-  axios.get("./guardame-aventura", {
+const salvarAventura = async () => {
+  await operacionesPreDescargaProyecto();
+  await mandarJson();
+  console.log("Hemos mandado el json y las imagenes");
+  await axios.get("./guardame-aventuranode", {
     responseType: 'arraybuffer',
     headers: {
       'Content-Type': 'application/json'
     }
-  }).then (response => {})
+  })
 }
 
 
