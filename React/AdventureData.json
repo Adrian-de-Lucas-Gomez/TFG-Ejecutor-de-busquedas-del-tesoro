@@ -1,13 +1,17 @@
 {
-  "Gencana": "Nombre por defecto",
+  "Gencana": "Prueba",
   "fases": [
     {
       "tipo": "QRStage",
-      "QRText": "A"
+      "QRText": "pruebas"
     },
     {
-      "tipo": "QRStage",
-      "QRText": "B"
+      "tipo": "ImageStage",
+      "Imagen": "0.jpg"
+    },
+    {
+      "tipo": "ImageStage",
+      "Imagen": "1.jpg"
     }
   ]
 }

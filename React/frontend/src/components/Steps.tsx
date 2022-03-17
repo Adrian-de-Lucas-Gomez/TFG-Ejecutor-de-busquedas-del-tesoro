@@ -503,58 +503,6 @@ const exportToJson = (e:any) => {
   downloadFile(JSON.stringify(jsonFinal, null, 2),'answers.json','text/json')
 }
 
-const mandarJson = () =>{
-
-  console.log("Voy a intentar mandar el json");
-  // //Una vez que tengo los datos de cada evento, preparo un JSON y lo descargo
-  var datos= [];
-  let f = getState<any>('DATA', []); 
-  console.log(genState);
-  let contadorImagenes =0;
-
-  for(let i = 0; i < f.length;i++){
-    var faseActual = f[i];
-    //En caso de que sea una fase de tipo imagen
-    if(faseActual.tipo === "ImageStage" &&  faseActual.Imagen instanceof File){   
-      //El nombre de la imagen va a ser el orden de esta en la aventura mas su misma extension
-      var finalImageName=faseActual.Imagen.name;
-      finalImageName = (contadorImagenes.toString())+( finalImageName.substring(finalImageName.indexOf('.')));
-      //Cambiamos la fase para que el json tenga la referencia a esta
-      faseActual = {tipo:"ImageStage" ,Imagen: finalImageName};
-      contadorImagenes++;
-    }
-      datos.push(faseActual);
-  }
-  var jsonFinal = {Gencana: getState('adventureName', "Nombre por defecto") , fases: datos}
-  
-  //Guardamos el contenido de la aventura (en formato string) en un json que es el que al final se manda
-  axios.post("./wtf-json", {json:JSON.stringify(jsonFinal, null, 2)});
-}
-
-const generateZip = () => {
-
-  mandarJson();
-  operacionesPreDescargaProyecto();
-  // //Una vez que tengo los datos de cada evento, preparo un JSON y lo descargo
-  var name = getState('adventureName',"Nombre por defecto");
-  
-  // axios.get("./generate-zip",  { params: { zipName: name } });
-  axios.get("./generate-zip", {
-    responseType: 'arraybuffer',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }).then (response => {
-     const type = response.headers['content-type']
-     const blob = new Blob([response.data], { type: type })
-     const link = document.createElement('a')
-     link.href = window.URL.createObjectURL(blob)
-     link.download = name + '.zip';
-     link.click();
-     link.remove();
- })
-}
-
 
 //Este método tiene como objetivo gestionar la escena a la que se quiere ir por medio del selector
 //Lo que hace es mirar que se acaba de seleccionar y dependiendo de lo escogido nos vamos a una escena 
@@ -563,9 +511,10 @@ const UpdateSelector = (evt: React.FormEvent<HTMLSelectElement>):void => {
   evt.preventDefault()
   let s:string = evt.currentTarget.value;
   let destiny=0;
-  if(s === "QR"){destiny=0;}
-  else if(s === "Quiz") {destiny=1;}
-  else if( s == "ImageCharger"){destiny = 2;}
+  if(s === "AdventureCharger"){destiny=0;}
+  else if(s === "QR"){destiny=1;}
+  else if(s === "Quiz") {destiny=2;}
+  else if( s == "ImageCharger"){destiny = 3;}
   else if(s === "Default") {return;}
   jump(destiny);
 };
@@ -587,7 +536,6 @@ const DisminuirPosSiguienteFase = ():void =>{
   let value = getState<number>('WhereToPush',0)-1;
   if(value <0)value = 0;
   setState<number>('WhereToPush',value,0);
-  console.log(value);
 }
 
 
@@ -599,7 +547,6 @@ const AumentarPosSiguienteFaseConfigurable = ():void =>{
   if(current_state.length === 0) value = 0;
   else if(value >=current_state.length)value = current_state.length-1;
   setState<number>('FaseConfigurable',value,0);
-  console.log(value);
 }
 
 //MEtodo que disminuye en 1 la siguiente posicion en la que vamos a añadir una nueva fase a la aventur
@@ -608,7 +555,6 @@ const DisminuirPosSiguienteFaseConfigurable = ():void =>{
   let value = getState<number>('FaseConfigurable',0)-1;
   if(value <0)value = 0;
   setState<number>('FaseConfigurable',value,0);
-  console.log(value);
 }
 
 //este método tiene como objetivo mirar qué fase es la que estamos seleccionando dentro de las que ya tenemos creadas
@@ -617,7 +563,7 @@ const ConfigurarFase =():void =>{
   //Pregunto por cual es la fase que estamos seleccionando y me quedo con las fases disponibles
   let value = getState<number>('FaseConfigurable',1);
   let new_state = getState<any>('DATA', [{}]); 
-  if(new_state.length <2) {
+  if(new_state.length <1) {
     alert("No ha ninguna fase que configurar");
     return;
   }
@@ -627,9 +573,9 @@ const ConfigurarFase =():void =>{
 
   //miro a qué escena me tengo que ir para reconfigurar la fase que estoy intentando seleccionar
   let escena = 0;
-  if(new_state[value].tipo === "QRStage")           escena = 0;
-  else if(new_state[value].tipo === "QuizStage")    escena = 1;
-  else if(new_state[value].tipo === "ImageStage")    escena = 2;
+  if(new_state[value].tipo === "QRStage")           escena = 1;
+  else if(new_state[value].tipo === "QuizStage")    escena = 2;
+  else if(new_state[value].tipo === "ImageStage")    escena = 3;
 
   jump(escena);
 }
@@ -642,7 +588,6 @@ const AumentarPosSiguienteFaseABorrar= ():void =>{
   if(current_state.length === 0) value = 0;
   else if(value >=current_state.length)value = current_state.length-1;
   setState<number>('FaseABorrar',value,0);
-  console.log(value);
 }
 
 //MEtodo que disminuye en 1 la siguiente posicion en la que vamos a añadir una nueva fase a la aventur
@@ -651,7 +596,6 @@ const DisminuirPosSiguienteFaseABorrar = ():void =>{
   let value = getState<number>('FaseABorrar',0)-1;
   if(value <0)value = 0;
   setState<number>('FaseABorrar',value,0);
-  console.log(value);
 }
 
   //este método tiene como objetivo mirar qué fase es la que estamos seleccionando dentro de las que ya tenemos creadas
@@ -728,7 +672,7 @@ const modifyAdventureName = (e:string):void =>{
 //Este método tiene como objetivo preparar cosas especificas de alguna fase, como por ejemplo mandar las imagenes 
 //al backend para que las trate en el proyecto y poder preparar el json de la aventura datos que nos ayuden recurrir a dichas
 //imagenes
-const operacionesPreDescargaProyecto = (): void =>{
+const operacionesPreDescargaProyecto = async () =>{
   console.log("Atencion operaciones antes de descargar el proyecto");
   //Tenemos que recorrer las posibles imagenes de la aventura y enviarlas al server para que haga algo con ellas
   var fasesAventura = getState<any>('DATA', []); ;
@@ -748,7 +692,8 @@ const operacionesPreDescargaProyecto = (): void =>{
         //saber que tiene que descargar )
         formData.append('imageCharger', faseActual.Imagen , finalImageName);
         //Hacemos una peticion POST a nuestro servidor 
-        axios.post("./image-upload", formData);
+        console.log("Antes de hacer POST Request")     
+        let result = await axios.post("./image-upload", formData);
         console.log("Post Request: DONE")     
         
         //Cambiamos la fase para que el json tenga la referencia a esta
@@ -758,8 +703,67 @@ const operacionesPreDescargaProyecto = (): void =>{
     }
   }
   setState('DATA',fasesAventura,[]);
+  console.log("Terminadas operaciones pre descarga");
 }
 
+const mandarJson = async () =>{
+  console.log("Voy a intentar mandar el json");
+  // //Una vez que tengo los datos de cada evento, preparo un JSON y lo descargo
+  var datos= [];
+  let f = getState<any>('DATA', []); 
+  console.log(genState);
+  let contadorImagenes =0;
+
+  for(let i = 0; i < f.length;i++){
+    var faseActual = f[i];
+    //En caso de que sea una fase de tipo imagen
+    if(faseActual.tipo === "ImageStage" &&  faseActual.Imagen instanceof File){   
+      //El nombre de la imagen va a ser el orden de esta en la aventura mas su misma extension
+      var finalImageName=faseActual.Imagen.name;
+      finalImageName = (contadorImagenes.toString())+( finalImageName.substring(finalImageName.indexOf('.')));
+      //Cambiamos la fase para que el json tenga la referencia a esta
+      faseActual = {tipo:"ImageStage" ,Imagen: finalImageName};
+      contadorImagenes++;
+    }
+      datos.push(faseActual);
+  }
+  var jsonFinal = {Gencana: getState('adventureName', "Nombre por defecto") , fases: datos}
+  
+  //Guardamos el contenido de la aventura (en formato string) en un json que es el que al final se manda
+  let result = await axios.post("./wtf-json", {json:JSON.stringify(jsonFinal, null, 2)});
+  console.log("JSON MANDADO");
+}
+
+
+const salvarAventura = async () => {
+  await operacionesPreDescargaProyecto();
+  await mandarJson();
+  await axios.get("./guardame-aventuranode");
+  console.log("Peticion mandada");
+}
+
+
+const generateZip = async () => {
+  //Mando los archivos que tenga, como las imagenes
+  await operacionesPreDescargaProyecto();
+  //Mando el json
+  await mandarJson();
+
+  //En este momento solo falta pedirle que me de un zip con todo lo que tenga
+ let zip = await axios.get("./generate-zip", {
+  responseType: 'arraybuffer',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+  });
+    const type = zip.headers['content-type']
+     const blob = new Blob([zip.data], { type: type })
+     const link = document.createElement('a')
+     link.href = window.URL.createObjectURL(blob)
+     link.download = getState('adventureName',"Nombre por defecto") + '.zip';
+     link.click();
+     link.remove();
+}
 
 
    return (
@@ -767,7 +771,7 @@ const operacionesPreDescargaProyecto = (): void =>{
 
     {/* Seccion que representa la parte superior del formulario que permite especificar qué nombre queremos que tenga la aventura 
     si no ponemos nada el nombre será el original del archivo que vayamos a descargar*/}
-    <h3 className='Titulo' >Nombre de la aventura</h3>
+    <h3 className='Titulo' >Nombre de la aventura: {  getState('adventureName', "Nombre por defecto")}</h3>
     <form onSubmit={e => e.preventDefault()}>
           <input  className='QRForm' type="text"  onChange ={ e =>modifyAdventureName(e.target.value)}></input>
     </form>
@@ -779,7 +783,7 @@ const operacionesPreDescargaProyecto = (): void =>{
       <div className="greenBackGround">
         <h4>Selector de fases</h4>
         <select id="Selector" className="form-select" onChange={ UpdateSelector} onSelect={UpdateSelector} >
-            <option value="Default">Default</option>
+            <option value="AdventureCharger">AdventureCharger</option>
             <option value="QR">QR</option>
             <option value="Quiz">Quiz</option>
             <option value="ImageCharger">Image Charger</option>
@@ -857,6 +861,9 @@ const operacionesPreDescargaProyecto = (): void =>{
         <button  type="button" onClick={generateZip}>
         Generar Aventura
         </button>      
+        <button  type="button" onClick={salvarAventura}>
+        Guardar Aventura
+        </button>     
     </div>
     
       {/* Este boton tiene como objetivo descargar el proyecto generado */}
