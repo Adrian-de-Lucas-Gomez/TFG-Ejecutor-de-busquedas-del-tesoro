@@ -39,20 +39,7 @@
     },
 {
       "tipo": "ImageStage",
-	"Imagen": "0.jpg"
-},
-
-{
-  "tipo": "ImageStage",
-"Imagen": "1.jpg"
-},
-{
-  "tipo": "ImageStage",
-"Imagen": "2.jpg"
-},
-{
-  "tipo": "ImageStage",
-"Imagen": "0.jpg"
+	"Imagen": "FDI.jpg"
 },
 {
       "tipo": "QRStage",

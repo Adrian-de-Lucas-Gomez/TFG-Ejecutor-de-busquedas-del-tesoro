@@ -736,6 +736,7 @@ const mandarJson = async () =>{
 
 
 const salvarAventura = async () => {
+  let reset = await axios.get("./reset");
   await operacionesPreDescargaProyecto();
   await mandarJson();
   await axios.get("./guardame-aventuranode");
@@ -744,6 +745,7 @@ const salvarAventura = async () => {
 
 
 const generateZip = async () => {
+  let reset = await axios.get("./reset");
   //Mando los archivos que tenga, como las imagenes
   await operacionesPreDescargaProyecto();
   //Mando el json

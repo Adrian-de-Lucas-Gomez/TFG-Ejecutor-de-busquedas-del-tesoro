@@ -84,6 +84,21 @@ app.get("/generate-zip", (req, res)=>{
   });
 });
 
+//Peticion para obtener los diferentes directorios dentro de la base de datos para poder luego decidir de cual reescribir la aventura
+app.get("/reset", (req, res)=>{
+  //Me quedo con el nombre de los archivos que hay en el directorio Images
+//Voy uno por uno para eliminarlos y que no metan ruido a la futura build, en caso de que hayan archivos que no se usen
+var filesToRemove = fs.readdirSync('./Images/');
+for(var i = 0; i< filesToRemove.length;i++){
+  //Si no es el readme, lo elimino del directorio
+  if(filesToRemove[i] !== "README.txt"){
+    console.log("Removed file from backend/Images/ directory: "+filesToRemove[i]);
+    fs.unlinkSync('./Images/'+filesToRemove[i]);
+  }
+}
+res.json({ key: "value" });
+});
+
 app.get("/guardame-aventura", (req, res)=>{
   // Le paso al comando el nombre del directorio que hace falta crear y usar para almacenar la aventura
   //var command = "GuardarAventura.bat " +  JSON.parse(aventuraActual).Gencana ;

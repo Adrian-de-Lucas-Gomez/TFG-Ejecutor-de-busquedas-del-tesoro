@@ -1,17 +1,45 @@
 {
-  "Gencana": "Prueba",
+  "Gencana": "AventuraCompleta",
   "fases": [
     {
-      "tipo": "QRStage",
-      "QRText": "pruebas"
+      "tipo": "QuizStage",
+      "Pregunta": "Hola",
+      "Respuestas": [
+        {
+          "text": "correcta",
+          "isCorrect": false
+        },
+        {
+          "text": "incorrecta",
+          "isCorrect": true
+        },
+        {
+          "text": "correcta",
+          "isCorrect": false
+        }
+      ]
     },
     {
       "tipo": "ImageStage",
-      "Imagen": "0.jpg"
+      "Imagen": "0.png"
     },
     {
-      "tipo": "ImageStage",
-      "Imagen": "1.jpg"
+      "tipo": "QuizStage",
+      "Pregunta": "Buenas Tardes",
+      "Respuestas": [
+        {
+          "text": "si",
+          "isCorrect": false
+        },
+        {
+          "text": "si",
+          "isCorrect": false
+        },
+        {
+          "text": "no",
+          "isCorrect": true
+        }
+      ]
     }
   ]
 }
