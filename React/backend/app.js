@@ -62,9 +62,9 @@ app.listen(port, ()=>{
 })
 
 app.get("/generate-zip", (req, res)=>{
-  
+
   try{
-    fs.unlinkSync('../Adventure.zip');
+    fs.unlinkSync('../Aventura.zip');
     console.log("Deleted zip");
   }
   catch{
