@@ -20,10 +20,6 @@ public class QuizStage : Stage
     List<GameObject> quizAnswers = new List<GameObject>();  //Lista de gameobjects que representaran las posibles respuestas de la fase
     Vector2 UIPosition = new Vector2();                     //Posicion que vamos a utilizar para situar cada una de nuestras respuestas
 
-    private void Start()
-    {
-        //GameManager.getInstance().SetCurrentStage(this);
-    }
 
     public override void Init(AdventureInfo data)
     {
@@ -34,8 +30,18 @@ public class QuizStage : Stage
         //Despliego las posibles respuestas por pantalla
         UIPosition = new Vector2(0, 120);
 
-        quizAnswers.Clear();
+        clearAnswers();
         displayPossibleAnswers();
+    }
+
+    private void clearAnswers()
+	{
+        foreach(GameObject o in quizAnswers)
+		{
+            Destroy(o);
+		}
+
+        quizAnswers.Clear();
     }
 
     private void displayPossibleAnswers()
