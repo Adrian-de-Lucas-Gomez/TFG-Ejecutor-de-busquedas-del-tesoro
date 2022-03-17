@@ -62,6 +62,15 @@ app.listen(port, ()=>{
 })
 
 app.get("/generate-zip", (req, res)=>{
+  
+  try{
+    fs.unlinkSync('../Adventure.zip');
+    console.log("Deleted zip");
+  }
+  catch{
+    console.log("Couldnt remove .zip from server");
+  }
+
   // Le paso al comando el nombre del directorio que hace falta crear y usar para almacenar la aventura
   //var command = "GeneraZip.bat";
   var command = "bash GeneraZip.sh";
