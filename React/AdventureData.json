@@ -1,13 +1,17 @@
 {
-  "Gencana": "VengaVAMOS",
+  "Gencana": "Prueba",
   "fases": [
     {
       "tipo": "QRStage",
-      "QRText": "este"
+      "QRText": "pruebas"
     },
     {
       "tipo": "ImageStage",
-      "Imagen": "0.png"
+      "Imagen": "0.jpg"
+    },
+    {
+      "tipo": "ImageStage",
+      "Imagen": "1.jpg"
     }
   ]
 }

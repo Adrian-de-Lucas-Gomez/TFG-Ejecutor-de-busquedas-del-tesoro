@@ -503,58 +503,6 @@ const exportToJson = (e:any) => {
   downloadFile(JSON.stringify(jsonFinal, null, 2),'answers.json','text/json')
 }
 
-const mandarJson = async () =>{
-
-  console.log("Voy a intentar mandar el json");
-  // //Una vez que tengo los datos de cada evento, preparo un JSON y lo descargo
-  var datos= [];
-  let f = getState<any>('DATA', []); 
-  console.log(genState);
-  let contadorImagenes =0;
-
-  for(let i = 0; i < f.length;i++){
-    var faseActual = f[i];
-    //En caso de que sea una fase de tipo imagen
-    if(faseActual.tipo === "ImageStage" &&  faseActual.Imagen instanceof File){   
-      //El nombre de la imagen va a ser el orden de esta en la aventura mas su misma extension
-      var finalImageName=faseActual.Imagen.name;
-      finalImageName = (contadorImagenes.toString())+( finalImageName.substring(finalImageName.indexOf('.')));
-      //Cambiamos la fase para que el json tenga la referencia a esta
-      faseActual = {tipo:"ImageStage" ,Imagen: finalImageName};
-      contadorImagenes++;
-    }
-      datos.push(faseActual);
-  }
-  var jsonFinal = {Gencana: getState('adventureName', "Nombre por defecto") , fases: datos}
-  
-  //Guardamos el contenido de la aventura (en formato string) en un json que es el que al final se manda
-  axios.post("./wtf-json", {json:JSON.stringify(jsonFinal, null, 2)});
-}
-
-const generateZip = () => {
-
-  mandarJson();
-  operacionesPreDescargaProyecto();
-  // //Una vez que tengo los datos de cada evento, preparo un JSON y lo descargo
-  var name = getState('adventureName',"Nombre por defecto");
-  
-  // axios.get("./generate-zip",  { params: { zipName: name } });
-  axios.get("./generate-zip", {
-    responseType: 'arraybuffer',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }).then (response => {
-     const type = response.headers['content-type']
-     const blob = new Blob([response.data], { type: type })
-     const link = document.createElement('a')
-     link.href = window.URL.createObjectURL(blob)
-     link.download = name + '.zip';
-     link.click();
-     link.remove();
- })
-}
-
 
 //Este método tiene como objetivo gestionar la escena a la que se quiere ir por medio del selector
 //Lo que hace es mirar que se acaba de seleccionar y dependiendo de lo escogido nos vamos a una escena 
@@ -744,7 +692,8 @@ const operacionesPreDescargaProyecto = async () =>{
         //saber que tiene que descargar )
         formData.append('imageCharger', faseActual.Imagen , finalImageName);
         //Hacemos una peticion POST a nuestro servidor 
-        axios.post("./image-upload", formData);
+        console.log("Antes de hacer POST Request")     
+        let result = await axios.post("./image-upload", formData);
         console.log("Post Request: DONE")     
         
         //Cambiamos la fase para que el json tenga la referencia a esta
@@ -754,20 +703,67 @@ const operacionesPreDescargaProyecto = async () =>{
     }
   }
   setState('DATA',fasesAventura,[]);
+  console.log("Terminadas operaciones pre descarga");
 }
+
+const mandarJson = async () =>{
+  console.log("Voy a intentar mandar el json");
+  // //Una vez que tengo los datos de cada evento, preparo un JSON y lo descargo
+  var datos= [];
+  let f = getState<any>('DATA', []); 
+  console.log(genState);
+  let contadorImagenes =0;
+
+  for(let i = 0; i < f.length;i++){
+    var faseActual = f[i];
+    //En caso de que sea una fase de tipo imagen
+    if(faseActual.tipo === "ImageStage" &&  faseActual.Imagen instanceof File){   
+      //El nombre de la imagen va a ser el orden de esta en la aventura mas su misma extension
+      var finalImageName=faseActual.Imagen.name;
+      finalImageName = (contadorImagenes.toString())+( finalImageName.substring(finalImageName.indexOf('.')));
+      //Cambiamos la fase para que el json tenga la referencia a esta
+      faseActual = {tipo:"ImageStage" ,Imagen: finalImageName};
+      contadorImagenes++;
+    }
+      datos.push(faseActual);
+  }
+  var jsonFinal = {Gencana: getState('adventureName', "Nombre por defecto") , fases: datos}
+  
+  //Guardamos el contenido de la aventura (en formato string) en un json que es el que al final se manda
+  let result = await axios.post("./wtf-json", {json:JSON.stringify(jsonFinal, null, 2)});
+  console.log("JSON MANDADO");
+}
+
 
 const salvarAventura = async () => {
   await operacionesPreDescargaProyecto();
   await mandarJson();
-  console.log("Hemos mandado el json y las imagenes");
-  await axios.get("./guardame-aventuranode", {
-    responseType: 'arraybuffer',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
+  await axios.get("./guardame-aventuranode");
+  console.log("Peticion mandada");
 }
 
+
+const generateZip = async () => {
+  //Mando los archivos que tenga, como las imagenes
+  await operacionesPreDescargaProyecto();
+  //Mando el json
+  await mandarJson();
+
+  //En este momento solo falta pedirle que me de un zip con todo lo que tenga
+ let zip = await axios.get("./generate-zip", {
+  responseType: 'arraybuffer',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+  });
+    const type = zip.headers['content-type']
+     const blob = new Blob([zip.data], { type: type })
+     const link = document.createElement('a')
+     link.href = window.URL.createObjectURL(blob)
+     link.download = getState('adventureName',"Nombre por defecto") + '.zip';
+     link.click();
+     link.remove();
+}
 
 
    return (

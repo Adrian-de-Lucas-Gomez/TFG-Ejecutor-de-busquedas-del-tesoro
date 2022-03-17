@@ -49,17 +49,8 @@ var aventuraActual = {}
 app.post('/image-upload', imageUpload.array("imageCharger"), (req, res) => {
   console.log(req.headers)
   console.log("POST REQUEST recieved in: /image-upload")
+  res.json({key:"value"});
 })
-
-//Peticion que tiene como objetivo revibir los datos relacionados con una aventura y generar un json que los contenga en el servidor
-app.post('/wtf-json', function(request, response){
-  aventuraActual = request.body.json;
-  //Creamos un fichero json en un directorio que no este bajo el control del server para evitar problemas
-  fs.writeFile('../AdventureData.json', request.body.json , function (err) {
-    if (err) throw err;
-    console.log('File is created successfully.');
-  });
-});
 
 app.get("/", (req, res)=>{
   //Pagina estatica con lo desarrollado en react
@@ -104,24 +95,39 @@ app.get("/guardame-aventura", (req, res)=>{
   });
 });
 
+//Peticion que tiene como objetivo revibir los datos relacionados con una aventura y generar un json que los contenga en el servidor
+app.post('/wtf-json', function(request, res){
+  aventuraActual = request.body.json;
+  try{
+    //Creamos un fichero json en un directorio que no este bajo el control del server para evitar problemas
+    fs.writeFileSync('../AdventureData.json', request.body.json);
+  }
+  catch{console.log("An error ocurred getting the adventure json")}
+  console.log("The adventure json was succesfully recieved");
+  res.json({key:"value"});
+});
 
-app.get("/guardame-aventuranode", async (req, res)=>{
+app.get("/guardame-aventuranode", (req, res)=>{
   //Sacamos el nombre de la aventura y determinamos el directorio en el que vamos a guardar las cosas
   var name = JSON.parse(aventuraActual).Gencana;
   var dir ="../BaseDeDatos/" + name;
-  await fs.mkdir(dir, (err) => {
-      if (err) {throw err;}
-      console.log("Directory created: "+dir);
-  });
+  try{
+    fs.mkdirSync(dir);
+  }
+  catch{ console.log("An error ocurred creating the directory: "+dir); }
+  console.log("Directory created: "+dir);
 
   //Me quedo con el nombre de los archivos que hay en el directorio Images
   //Voy uno por uno para eliminarlos y que no metan ruido a la futura build, en caso de que hayan archivos que no se usen
   var filesToSave = fs.readdirSync('./Images/');
   for(var i = 0; i< filesToSave.length;i++){
-    console.log('File Copy Successfully: '+filesToSave[i]);
-    await fs.copyFile('./Images/'+filesToSave[i],'../BaseDeDatos/'+name+'/'+filesToSave[i], (err) => {
-      if (err) console.log("An error ocurred copying a file");
-    });
+    let nombreF = filesToSave[i];
+    try{
+      fs.copyFileSync('./Images/'+filesToSave[i],'../BaseDeDatos/'+name+'/'+filesToSave[i]);
+    }
+    catch{console.log("An error ocurred copying a file:"+filesToSave[i]);}
+
+    console.log('File Copy Successfully: '+nombreF);
   }
 
   //Me quedo con el nombre de los archivos que hay en el directorio Images
@@ -130,15 +136,19 @@ app.get("/guardame-aventuranode", async (req, res)=>{
   for(var i = 0; i< filesToRemove.length;i++){
     //Si no es el readme, lo elimino del directorio
     if(filesToRemove[i] !== "README.txt"){
-      console.log("Removed file from backend/Images/ directory: "+filesToRemove[i]);
-      await fs.unlinkSync('./Images/'+filesToRemove[i]);
+      fs.unlinkSync('./Images/'+filesToRemove[i]);
+      console.log("Removed file from /Images/ directory: "+filesToRemove[i]);
     }
   }
-
   //Queda copiar el json que contiene la aventura
-  await fs.copyFile('../AdventureData.json','../BaseDeDatos/'+name+'/AdventureData.json', (err) => {
-    if (err) console.log("An error ocurred copying AdventureData file to the DataBase");
-  });
+  try{
+    fs.copyFileSync('../AdventureData.json','../BaseDeDatos/'+name+'/AdventureData.json');
+  }
+  catch{
+    console.log("An error ocurred copying AdventureData file to the DataBase");
+  }
+
+  res.json({key:"value"});
 });
 
 
