@@ -17,6 +17,8 @@ public class ImageStage : Stage
     {
         imageData = (ImageInfo)data;
 
+        Debug.Log(imageData.nombreImagen);
+
         imageObject.sprite = Resources.Load<Sprite>("AdventureImages/" + imageData.nombreImagen);
     }
 

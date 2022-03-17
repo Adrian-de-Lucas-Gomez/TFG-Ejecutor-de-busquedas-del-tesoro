@@ -15,7 +15,8 @@ public class ImageInfo : AdventureInfo
         stage = myInfo["tipo"].Value<string>();
 
         //Obtengo los datos del quiz
-        nombreImagen = myInfo["imagen"].Value<string>();
-
+        string aux = myInfo["Imagen"].Value<string>();
+        string[] splitArray = aux.Split('.');
+        nombreImagen = splitArray[0];
     }
 }
