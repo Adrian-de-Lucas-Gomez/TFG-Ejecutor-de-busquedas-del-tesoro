@@ -731,6 +731,18 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     setState('adventureName', e, "Nombre por defecto");
   }
 
+  /*
+    Metodo auxiliar para mandar distintos tipos de archivo al servidor. Tiene como parametros
+  */
+  const sendFileToServer = (identifier: string, file: File, fileName: string, route: string): void => {
+    //Mandamos el archivo file al backend para que la trate de cara al proyecto
+    //Creamos un FORMDATA que sera el que finalmente enviemos en la peticion POST
+    const formData = new FormData();
+    formData.append(identifier, file, fileName);
+    //Hacemos una peticion POST a nuestro servidor a la route especificada
+    axios.post(route, formData);
+  }
+
 
   //Este método tiene como objetivo preparar cosas especificas de alguna fase, como por ejemplo mandar las imagenes 
   //al backend para que las trate en el proyecto y poder preparar el json de la aventura datos que nos ayuden recurrir a dichas
@@ -739,30 +751,19 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     console.log("Atencion operaciones antes de descargar el proyecto");
     //Tenemos que recorrer las posibles imagenes de la aventura y enviarlas al server para que haga algo con ellas
     var fasesAventura = getState<any>('DATA', []);;
-    var contadorImagenes = 0;
+    var contadorImagenes = 0
     for (var i = 0; i < fasesAventura.length; i++) {
-      console.log("Procesando fase: " + i)
+      
       var faseActual = fasesAventura[i];
       if (faseActual.tipo === "ImageStage" && faseActual.Imagen instanceof File) {
-
-        //mandamos la imagen al backend para que la trate de cara al proyecto
-        //Creamos un FORMDATA que sera el que finalmente enviemos en la peticion POST
-        const formData = new FormData();
-        //añadimos los campos imageCharger (identificador que se usa en el servidor para 
-        //saber que tiene que descargar )
-        formData.append('imageCharger', faseActual.Imagen, faseActual.Imagen.name);
-        //Hacemos una peticion POST a nuestro servidor 
-        axios.post("./image-upload", formData);
-
+        var finalImageName=faseActual.Imagen.name;
+        finalImageName = (contadorImagenes.toString())+( finalImageName.substring(finalImageName.indexOf('.')));
+        console.log("El nombre de la imagen es "+ finalImageName);
+        sendFileToServer('imageCharger', faseActual.Imagen, finalImageName, "./image-upload")
+        contadorImagenes++
       }
       else if (faseActual.tipo === "ImageTarget" && faseActual.Package instanceof File) {
-
-        const formData = new FormData();
-        //añadimos el campo unityPackage (identificador que se usa en el servidor para 
-        //saber que tiene que descargar )
-        formData.append('unityPackage', faseActual.Package, faseActual.Package.name);
-        //Hacemos una peticion POST a nuestro servidor 
-        axios.post("./package-upload", formData);
+        sendFileToServer('unityPackage', faseActual.Package, faseActual.Package.name, "./package-upload")
       }
     }
     setState('DATA', fasesAventura, []);
