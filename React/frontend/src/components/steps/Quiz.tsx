@@ -153,7 +153,7 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
             <Fragment key={"Respuesta: " + index}>
                <div className="text-md-left" style={{textDecoration: answer.isCorrect ? "underline" : " "}}>{answer.text}</div>
                <button className="btn btn-outline-primary mt-2" onClick = {():void => setAnswerAsCorrect(index)}>
-                   <div>{!answer.isCorrect ? "Correcta" : "Incorrecta"}</div>
+                   <div>{!answer.isCorrect ? "Incorrecta" : "Correcta"}</div>
                </button>
                <button className = "btn btn-outline-danger mt-2" onClick={():void => removeAnswer(index)}>Borrar respuesta</button>
            </Fragment>

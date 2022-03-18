@@ -1,55 +1,49 @@
 {
-  
+  "Gencana": "Fiesta2223",
   "fases": [
     {
-      "tipo": "ImageStage",
-      "imagen": "FDI"
-        }
-    ,
-    {
-    "tipo": "QuizStage",
-    "pregunta": "¿Pregunta de prueba 1?",
-    "respuestas": [
-      {
-        "text": "Primera respuesta (correcta)",
-        "isCorrect": true
-      },
-      {
-        "text": "Segunda respuesta",
-        "isCorrect": false
-      },
-      {
-        "text": "Tercera respuesta",
-        "isCorrect": false
-      },
-      {
-        "text": "Cuarta respuesta",
-        "isCorrect": false
-      }
-    ]
-    },
-    {
       "tipo": "QuizStage",
-      "pregunta": "¿Pregunta de prueba 2?",
-      "respuestas": [
+      "Pregunta": "¿Que vas a hacer si suspendes móviles?",
+      "Respuestas": [
         {
-          "text": "Primera respuesta (correcta)",
-          "isCorrect": true
-        },
-        {
-          "text": "Segunda respuesta",
+          "text": "Probalemente fallecer",
           "isCorrect": false
         },
         {
-          "text": "Tercera respuesta (correcta)",
+          "text": "Irme al campo con las cabras",
+          "isCorrect": false
+        },
+        {
+          "text": "Me pondré a vender zapatos",
           "isCorrect": true
         }
       ]
-    }
-    ,
+    },
     {
-      "tipo": "QRStage",
-      "qrValue": "http://EstoEsUnaURL"
+      "tipo": "QuizStage",
+      "Pregunta": "¿De que vas perro?",
+      "Respuestas": [
+        {
+          "text": "nah",
+          "isCorrect": false
+        },
+        {
+          "text": "puede",
+          "isCorrect": true
+        },
+        {
+          "text": "Oh si",
+          "isCorrect": true
         }
+      ]
+    },
+{
+      "tipo": "ImageStage",
+	"Imagen": "FDI.jpg"
+},
+{
+      "tipo": "QRStage",
+	"qrValue": "http://EstoEsUnaURL"
+},
   ]
 }

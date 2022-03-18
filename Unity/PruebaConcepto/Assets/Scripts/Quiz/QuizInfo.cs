@@ -20,8 +20,8 @@ public class QuizInfo : AdventureInfo
         stage = myInfo["tipo"].Value<string>();
 
         //Obtengo los datos del quiz
-        pregunta = myInfo["pregunta"].Value<string>();
-        JArray misRespuestas = (JArray)myInfo["respuestas"];
+        pregunta = myInfo["Pregunta"].Value<string>();
+        JArray misRespuestas = (JArray)myInfo["Respuestas"];
         for (int i = 0; i < misRespuestas.Count; i++)
         {
             PosibleAnswer newAnswer = new PosibleAnswer();
