@@ -759,13 +759,14 @@ const generateZip = async () => {
   }
   });
     const type = zip.headers['content-type']
-     const blob = new Blob([zip.data], { type: type })
-     const link = document.createElement('a')
-     link.href = window.URL.createObjectURL(blob)
-     link.download = getState('adventureName',"Nombre por defecto") + '.zip';
-     link.click();
-     link.remove();
+    const blob = new Blob([zip.data], { type: type })
+    const link = document.createElement('a')
+    link.href = window.URL.createObjectURL(blob)
+    link.download = getState('adventureName',"Nombre por defecto") + '.zip';
+    link.click();
+    link.remove();
 }
+
 
 
    return (

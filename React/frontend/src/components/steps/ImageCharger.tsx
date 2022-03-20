@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from "react"
 import { StepComponentProps } from '../Steps'
 import axios from "axios"
+import pic from "../../Imagen.png";
 
 const ImageCharger = (props: StepComponentProps): JSX.Element => {
 
     const [image, setImagen] = useState<File | null >(null);
     const [sobreEscribir, setSobreEscribir] = useState<boolean>(false);
+
 
     useEffect(() => {
 
@@ -22,7 +24,8 @@ const ImageCharger = (props: StepComponentProps): JSX.Element => {
             let estadoACargar = new_state[props.getState<number>('FaseConfigurable',1)]; 
 
 
-            //Me guardo la pregunta que había almacenada en el array de fases
+            //Me guardo la imagen que había almacenada en el estado actual
+            if (estadoACargar.Imagen instanceof File)
             setImagen(estadoACargar.Imagen);
         }
 
@@ -73,11 +76,34 @@ const ImageCharger = (props: StepComponentProps): JSX.Element => {
         props.setState<number>('WhereToPush',props.getState<number>('WhereToPush',1)+1,1);
     }
 
+    const prueba = async () =>{
+        let reset = await axios.get("./getFile/nombredeprueba", {
+            responseType: 'arraybuffer',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            params: {json:"JSON.stringify(jsonFinal, null, 2)"}
+            });
+        const type = reset.headers['content-type']
+        const blob = new Blob([reset.data], { type: type })
+        const link = document.createElement('a')
+        console.log("Esto es lo que me han dado como fichero "+reset);
+        console.log("Esto es el data "+reset.data);
+        console.log("Esto es el blob "+blob);
+        setImagen(new File([blob], "nombre"));
+      }
+
+
     return (
         <aside id="modal" className="modal">
             <div className="content-modal">
                 <input type="file" onChange={changeImagen} />
                 <button onClick={uploadImage}>GUARDAR IMAGEN</button>
+                <button onClick={uploadImage}>Descargar ejemplo</button>
+                <img src= {image !==null ? window.URL.createObjectURL(image) : pic }/>
+                <button  type="button" onClick={prueba}>
+                    Pedir imagen
+                </button>           
             </div>
         </aside>
     )

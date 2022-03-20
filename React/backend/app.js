@@ -61,6 +61,7 @@ app.listen(port, ()=>{
   console.log("LISTENING ON PORT: " + port)
 })
 
+
 app.get("/generate-zip", (req, res)=>{
 
   try{
@@ -181,6 +182,32 @@ app.get("/guardame-aventuranode", (req, res)=>{
 app.get("/aventuras-guardadas", (req, res)=>{
   res.json({ Opciones:  fs.readdirSync('../BaseDeDatos/')}); }
 );
+
+
+app.get('/getFile/:name', function (req, res, next) {
+
+  console.log("El nombre es  "+ req.params.name); 
+  var filesToRemove = fs.readdirSync('./Images/');
+  for(var i = 0; i< filesToRemove.length;i++){
+    //Si no es el readme, lo elimino del directorio
+    console.log("Posibilidad: "+filesToRemove[i]);
+  }
+
+  //Me hago con el nombre de la aventura que nos están pidiendo
+  //var name = JSON.parse(request.body.json).Nombre ;
+  //var fileName = req.params.name
+  var fileName = './Images/'+req.params.name;
+  res.download(fileName, req.params.name, function (err) {
+    if (err) {
+      // Handle error, but keep in mind the response may be partially-sent
+      // so check res.headersSent
+      console.log("ERROR ON DOWNLOAD image");
+    } else {
+      // decrement a download credit, etc.
+    }
+  });
+})
+
 
 //Esta petición tiene como objetivo devolver el json que representa una aventura concreta
 app.post('/dame-aventura', function(request, response){

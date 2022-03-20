@@ -1,0 +1,13 @@
+{
+  "Gencana": "ImagenAlterado",
+  "fases": [
+    {
+      "tipo": "ImageStage",
+      "Imagen": "0.png"
+    },
+    {
+      "tipo": "ImageStage",
+      "Imagen": "1.png"
+    }
+  ]
+}

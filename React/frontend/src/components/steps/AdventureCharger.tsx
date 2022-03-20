@@ -50,7 +50,7 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
 
   //Método que mira la aventura que estamos seleccionando en cada momento y le pide al server que nos la de
   //en caso de que no exista alerta al usuario de que no hay nada que cargar
-  const cargarAventura = ():void =>{       
+  const cargarAventura = async () =>{       
     if(aventurasDisponibles.length <1 ){
       alert("No hay aventuras disponibles"); 
       return;
@@ -58,16 +58,36 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
     //Le pido al server una aventura con un nombre que se le indica, y cuando nos llegue la cargamos en nuestro estado global de react
     console.log("Vamos a solicitar una carga de la aventura "+aventurasDisponibles[indiceAventura]);
     var jsonFinal = {Nombre: aventurasDisponibles[indiceAventura] }
-    axios.post("./dame-aventura", {json:JSON.stringify(jsonFinal, null, 2)}).then(function (response) {
-      console.log("Me ha llegado que la aventura a cargar es "+response.data.AventuraGuardada);
-      props.setState('DATA',JSON.parse(response.data.AventuraGuardada).fases, []);
-      props.setState('adventureName',JSON.parse(response.data.AventuraGuardada).Gencana, "Nombre por defecto");
-    });
 
+    //Solicito el json de la aventura en cuestion
+    const response = await axios.post("./dame-aventura", {json:JSON.stringify(jsonFinal, null, 2)});
+    props.setState('adventureName',JSON.parse(response.data.AventuraGuardada).Gencana, "Nombre por defecto");
+    console.log("Me ha llegado que la aventura a cargar es "+response.data.AventuraGuardada);
+    
+    //Miro por el json para buscar las  imagenes que contiene la aventura
+    var fases = JSON.parse(response.data.AventuraGuardada).fases;
+    for(let i = 0; i < fases.length;i++){
+      var faseActual = fases[i];
+      //En caso de que sea una fase de tipo imagen
+      if(faseActual.tipo === "ImageStage"){   
+        //pido al server que me de una imagen que s ellame asi
+        var imageName=faseActual.Imagen;
+        let reset = await axios.get("./getFile/"+imageName, {responseType: 'arraybuffer',headers: {'Content-Type': 'application/json'},params: {json:"JSON.stringify(jsonFinal, null, 2)"}});
+        const type = reset.headers['content-type']
+        const blob = new Blob([reset.data], { type: type })
+        //Genero un archivo con dicha imagen que me han dado y me lo guardo
+        let myData = {tipo:"ImageStage" ,Imagen: new File([blob], imageName)};
+        fases.splice(i,1,myData);
+        console.log("Acabamos de recuperar una imagen: "+imageName);
+      }
+    }
+    
     //Como hemos cargado cosas vamos a resetear los indices relacionados con la configuración de la aventura
     props.setState<number>('WhereToPush',0,0);
     props.setState<number>('FaseConfigurable',0,0);
     props.setState<number>('FaseABorrar',0,0);
+    props.setState('DATA',fases, []);
+    console.log("Las fases se han quedado como: "+fases);
   }
 
 //Métodos para alterar el índice de selección de aventura
