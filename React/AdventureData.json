@@ -1,13 +1,9 @@
 {
-  "Gencana": "OtraCosa",
+  "Gencana": "Hola",
   "fases": [
     {
       "tipo": "QRStage",
-      "QRText": "prueba"
-    },
-    {
-      "tipo": "ImageStage",
-      "Imagen": "0.png"
+      "QRText": "hola"
     }
   ]
 }

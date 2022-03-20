@@ -26,7 +26,7 @@ const ImageCharger = (props: StepComponentProps): JSX.Element => {
 
             //Me guardo la imagen que había almacenada en el estado actual
             if (estadoACargar.Imagen instanceof File)
-            setImagen(estadoACargar.Imagen);
+                setImagen(estadoACargar.Imagen);
         }
 
         //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
@@ -67,7 +67,6 @@ const ImageCharger = (props: StepComponentProps): JSX.Element => {
             new_state.splice(position, 0, myData);
         }
 
-
         //Y tras modificar la copia del registro para que me contenga pongo esta copia como el registro de la aventura
         props.setState('DATA',new_state,[]);
 
@@ -76,34 +75,13 @@ const ImageCharger = (props: StepComponentProps): JSX.Element => {
         props.setState<number>('WhereToPush',props.getState<number>('WhereToPush',1)+1,1);
     }
 
-    const prueba = async () =>{
-        let reset = await axios.get("./getFile/nombredeprueba", {
-            responseType: 'arraybuffer',
-            headers: {
-            'Content-Type': 'application/json'
-            },
-            params: {json:"JSON.stringify(jsonFinal, null, 2)"}
-            });
-        const type = reset.headers['content-type']
-        const blob = new Blob([reset.data], { type: type })
-        const link = document.createElement('a')
-        console.log("Esto es lo que me han dado como fichero "+reset);
-        console.log("Esto es el data "+reset.data);
-        console.log("Esto es el blob "+blob);
-        setImagen(new File([blob], "nombre"));
-      }
-
 
     return (
         <aside id="modal" className="modal">
             <div className="content-modal">
                 <input type="file" onChange={changeImagen} />
-                <button onClick={uploadImage}>GUARDAR IMAGEN</button>
-                <button onClick={uploadImage}>Descargar ejemplo</button>
-                <img src= {image !==null ? window.URL.createObjectURL(image) : pic }/>
-                <button  type="button" onClick={prueba}>
-                    Pedir imagen
-                </button>           
+                <img src= {image !==null ? window.URL.createObjectURL(image) : pic }/>   
+                <button onClick={uploadImage}>Guardar Fase</button>
             </div>
         </aside>
     )

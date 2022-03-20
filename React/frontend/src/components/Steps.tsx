@@ -739,7 +739,7 @@ const salvarAventura = async () => {
   let reset = await axios.get("./reset");
   await operacionesPreDescargaProyecto();
   await mandarJson();
-  await axios.get("./guardame-aventuranode");
+  await axios.get("./guardame-aventura");
   console.log("Peticion mandada");
 }
 
