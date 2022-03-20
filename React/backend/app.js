@@ -4,7 +4,9 @@ import multer from "multer"
 import path from "path"
 import {fileURLToPath} from 'url';
 import { exec, execFile, fork, spawn } from "child_process";
-import fs from "fs"
+import fs from "fs";
+
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -61,8 +63,8 @@ app.listen(port, ()=>{
   console.log("LISTENING ON PORT: " + port)
 })
 
-app.get("/generate-zip", (req, res)=>{
 
+app.get("/generate-zip", (req, res)=>{
   try{
     fs.unlinkSync('../Aventura.zip');
     console.log("Deleted zip");
@@ -70,24 +72,15 @@ app.get("/generate-zip", (req, res)=>{
   catch{
     console.log("Couldnt remove .zip from server");
   }
-
   // Le paso al comando el nombre del directorio que hace falta crear y usar para almacenar la aventura
   //var command = "GeneraZip.bat";
   var command = "bash GeneraZip.sh";
-  const execProcess = exec(command, { 'encoding': 'utf8' }, (error, stdout) => {
-    //console.log(`exec stdout: ${stdout}`);
-    //console.log(`error: ${error}`);
-  });
-
+  const execProcess = exec(command, { 'encoding': 'utf8' }, (error, stdout) => {});
   execProcess.on('exit', () => {
     console.log('exec process exit');
     res.download(path.join(__dirname, '../', 'Aventura.zip'), 'Aventura.zip', function (err) {
     if (err) {
-      // Handle error, but keep in mind the response may be partially-sent
-      // so check res.headersSent
       console.log("ERROR ON DOWNLOAD ZIP");
-    } else {
-      // decrement a download credit, etc.
     }
     });
   });
@@ -108,17 +101,6 @@ for(var i = 0; i< filesToRemove.length;i++){
 res.json({ key: "value" });
 });
 
-app.get("/guardame-aventura", (req, res)=>{
-  // Le paso al comando el nombre del directorio que hace falta crear y usar para almacenar la aventura
-  //var command = "GuardarAventura.bat " +  JSON.parse(aventuraActual).Gencana ;
-  var command = "bash GuardarAventura.sh " +  JSON.parse(aventuraActual).Gencana ;
-  console.log("Se busca guardar una aventura llamada "+JSON.parse(aventuraActual).Gencana);
-  const execProcess = exec(command, { 'encoding': 'utf8' }, (error, stdout) => {
-    //console.log(`exec stdout: ${stdout}`);
-    //console.log(`error: ${error}`);
-  });
-});
-
 //Peticion que tiene como objetivo revibir los datos relacionados con una aventura y generar un json que los contenga en el servidor
 app.post('/wtf-json', function(request, res){
   aventuraActual = request.body.json;
@@ -131,7 +113,9 @@ app.post('/wtf-json', function(request, res){
   res.json({key:"value"});
 });
 
-app.get("/guardame-aventuranode", (req, res)=>{
+
+//Peticion que recibe una aventura y crea un nuevo directorio en la base de datos para meter en este el json de esta y todos los ficheros incolucrados
+app.get("/guardame-aventura", (req, res)=>{
   //Sacamos el nombre de la aventura y determinamos el directorio en el que vamos a guardar las cosas
   var name = JSON.parse(aventuraActual).Gencana;
   var dir ="../BaseDeDatos/" + name;
@@ -181,6 +165,19 @@ app.get("/guardame-aventuranode", (req, res)=>{
 app.get("/aventuras-guardadas", (req, res)=>{
   res.json({ Opciones:  fs.readdirSync('../BaseDeDatos/')}); }
 );
+
+
+//Peticion para obtener algun que otro fichero que se encuentre almacenado en la carpeta Images
+app.get('/getFile/:name', function (req, res, next) {
+  //Saco la ruta en la que se encuentra lo que nos están pidiendo y le digo a quien lo haya pedido que lo descargue
+  var filePath = './Images/'+req.params.name;
+  res.download(filePath, req.params.name, function (err) {
+    if (err) {
+      console.log("ERROR ON DOWNLOAD image");
+    } 
+  });
+})
+
 
 //Esta petición tiene como objetivo devolver el json que representa una aventura concreta
 app.post('/dame-aventura', function(request, response){

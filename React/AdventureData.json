@@ -1,45 +1,9 @@
 {
-  "Gencana": "AventuraCompleta",
+  "Gencana": "Hola",
   "fases": [
     {
-      "tipo": "QuizStage",
-      "Pregunta": "Hola",
-      "Respuestas": [
-        {
-          "text": "correcta",
-          "isCorrect": false
-        },
-        {
-          "text": "incorrecta",
-          "isCorrect": true
-        },
-        {
-          "text": "correcta",
-          "isCorrect": false
-        }
-      ]
-    },
-    {
-      "tipo": "ImageStage",
-      "Imagen": "0.png"
-    },
-    {
-      "tipo": "QuizStage",
-      "Pregunta": "Buenas Tardes",
-      "Respuestas": [
-        {
-          "text": "si",
-          "isCorrect": false
-        },
-        {
-          "text": "si",
-          "isCorrect": false
-        },
-        {
-          "text": "no",
-          "isCorrect": true
-        }
-      ]
+      "tipo": "QRStage",
+      "QRText": "hola"
     }
   ]
 }
