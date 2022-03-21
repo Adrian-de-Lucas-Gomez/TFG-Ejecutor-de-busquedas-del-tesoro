@@ -523,10 +523,10 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
         faseActual = { tipo: "ImageStage", Imagen: finalImageName };
         contadorImagenes++;
       }
-      else if (faseActual.tipo === "ImageTarget" && faseActual.Package instanceof File) {
+      else if (faseActual.tipo === "ImageTargetStage" && faseActual.Package instanceof File) {
 
         //Cambiamos la fase para que el json tenga la referencia a esta
-        faseActual = { tipo: "ImageTarget", Key: faseActual.Key, Package: faseActual.Package.name, Target: faseActual.Target };
+        faseActual = { tipo: "ImageTargetStage", Key: faseActual.Key, Package: faseActual.Package.name, Target: faseActual.Target };
       }
       datos.push(faseActual);
     }
@@ -733,7 +733,7 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
         sendFileToServer('imageCharger', faseActual.Imagen, finalImageName, "./image-upload")
         contadorImagenes++
       }
-      else if (faseActual.tipo === "ImageTarget" && faseActual.Package instanceof File) {
+      else if (faseActual.tipo === "ImageTargetStage" && faseActual.Package instanceof File) {
         sendFileToServer('unityPackage', faseActual.Package, faseActual.Package.name, "./package-upload")
       }
     }

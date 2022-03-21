@@ -104,6 +104,13 @@ public class GameManager : MonoBehaviour
 
                         break;
                     }
+                case "ImageTargetStage":
+                    {
+                        ImageTargetInfo newTarget = new ImageTargetInfo();
+                        newTarget.readFromJSON((JObject)misFases[i]);
+                        adventureStages.Enqueue(newTarget);
+                        break;
+                    }
             }
         }
         adventureStages.Enqueue(end);

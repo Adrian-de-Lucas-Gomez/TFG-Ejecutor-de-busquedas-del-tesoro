@@ -1,4 +1,5 @@
 using Newtonsoft.Json.Linq;
+using UnityEngine;
 public class ImageTargetInfo : AdventureInfo
 {
     public string nombreTarget;

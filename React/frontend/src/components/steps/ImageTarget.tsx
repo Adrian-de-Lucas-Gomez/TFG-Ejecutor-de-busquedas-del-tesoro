@@ -51,7 +51,7 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
             //ME hago con el estado actual del array de info de la aventura
             let new_state = props.getState<any>('DATA', []); 
             //Preparo los datos que voy a añadir
-            let myData = {tipo:"ImageTarget" ,Key: key, Package:unityPackage, Target: targetName};
+            let myData = {tipo:"ImageTargetStage" ,Key: key, Package:unityPackage, Target: targetName};
             console.log(new_state);
 
             //Los añado a una copia del estado y establezco esta copia como el estadoa actual de las fases            
