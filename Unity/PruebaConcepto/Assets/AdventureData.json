@@ -1,49 +1,11 @@
 {
-  "Gencana": "Fiesta2223",
+  "Gencana": "Nombre por defecto",
   "fases": [
     {
-      "tipo": "QuizStage",
-      "Pregunta": "¿Que vas a hacer si suspendes móviles?",
-      "Respuestas": [
-        {
-          "text": "Probalemente fallecer",
-          "isCorrect": false
-        },
-        {
-          "text": "Irme al campo con las cabras",
-          "isCorrect": false
-        },
-        {
-          "text": "Me pondré a vender zapatos",
-          "isCorrect": true
-        }
-      ]
-    },
-    {
-      "tipo": "QuizStage",
-      "Pregunta": "¿De que vas perro?",
-      "Respuestas": [
-        {
-          "text": "nah",
-          "isCorrect": false
-        },
-        {
-          "text": "puede",
-          "isCorrect": true
-        },
-        {
-          "text": "Oh si",
-          "isCorrect": true
-        }
-      ]
-    },
-{
-      "tipo": "ImageStage",
-	"Imagen": "FDI.jpg"
-},
-{
-      "tipo": "QRStage",
-	"qrValue": "http://EstoEsUnaURL"
-},
+      "tipo": "ImageTargetStage",
+      "Key": "Ae95I1T/////AAABmcG2mBJb3UoFv6M4ZsPOEJKFswyU2T3hp757RDMwUtxtFGwZtB9JonqLEFaRvfjiQfsD+4B+ZdeDCQhvGLbqgE7j4gZ41WL4NPNs1z2YdQY91XMEEcp8JtrgdNLMzExZH9ECqXFvmOS6Mjzf5n9+3Sl/dfGdBy50S4ylNxfG2ThVq0Cu7ZDiOjhD4EndhZuBTENh0kXG350xUsEQDvEjlueXiiFGvQOUy81cZHNjvX2+gyOLAq852Aj05Ew0QSDqzd+wAyoCFvsmgtkqeNx1cVrE2JMB6xGTvRunUY+48uivzchMxS7MvIlPu8n5YtEzkq+R6TQNoJZunJ5GHI1UAsz0sDHHk3Cqjv/AXPzlf+ZS",
+      "Package": "EIRV-2020_2021.unitypackage",
+      "Target": "CartelVuforia"
+    }
   ]
 }

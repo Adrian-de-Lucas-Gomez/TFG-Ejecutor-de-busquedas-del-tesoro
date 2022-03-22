@@ -6,6 +6,7 @@ import Quiz from './components/steps/Quiz'
 import QR from './components/steps/Qr'
 import AdventureCharger from './components/steps/AdventureCharger'
 import ImageCharger from './components/steps/ImageCharger';
+import ImageTarget from './components/steps/ImageTarget';
 import './components/Styles/App.css'
 
 const App = (): JSX.Element => {
@@ -33,6 +34,7 @@ const App = (): JSX.Element => {
         <Step title='QR' component={QR} />
         <Step title='Quiz' component={Quiz} />
         <Step title='ImageCharger' component={ImageCharger}/>
+        <Step title='ImageTarget' component={ImageTarget}/>
       </Steps>
 
     </div>

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Vuforia;
 
 public class GameManager : MonoBehaviour
 {
@@ -42,6 +43,12 @@ public class GameManager : MonoBehaviour
         if (_instance == null)
         {
             _instance = this;
+            /*
+             * Necesitamos cargar la aventura antes de que se cree cualquier escena puesto
+             * que la key de vuforia debe asignarse antes de que se cree cualquier escena que 
+             * use vuforia
+             */
+            loadAdventure();
             DontDestroyOnLoad(this);
         }
         //Si hay algo ya en esta posicion yo me destruyo
@@ -53,7 +60,6 @@ public class GameManager : MonoBehaviour
     {
         _preloadedScene = new KeyValuePair<string, AsyncOperation>("", null);
 
-        loadAdventure();
         loadAllSmallScenes();
     }
 
@@ -102,6 +108,15 @@ public class GameManager : MonoBehaviour
                         newImage.readFromJSON((JObject)misFases[i]);
                         adventureStages.Enqueue(newImage);
 
+                        break;
+                    }
+                case "ImageTargetStage":
+                    {
+                        ImageTargetInfo newTarget = new ImageTargetInfo();
+                        newTarget.readFromJSON((JObject)misFases[i]);
+                        //TO DO: reconfigurar la generación del JSON de react y sacar la key fuera de las fases
+                        VuforiaConfiguration.Instance.Vuforia.LicenseKey = newTarget.keyPackage;
+                        adventureStages.Enqueue(newTarget);
                         break;
                     }
             }

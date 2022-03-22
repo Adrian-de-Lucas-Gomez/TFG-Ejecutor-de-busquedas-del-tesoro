@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ImageStage.unity
     guid: 77a7d31d945d50546825f538b996c55b
+  - enabled: 1
+    path: Assets/Scenes/ImageTargetStage.unity
+    guid: fdd8f0138b13f0e42bd74fabb76e3d6a
   m_configObjects: {}
