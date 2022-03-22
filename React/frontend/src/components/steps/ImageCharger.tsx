@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from "react"
 import { StepComponentProps } from '../Steps'
+import axios from "axios"
+import pic from "../../Imagen.png";
 
 const ImageCharger = (props: StepComponentProps): JSX.Element => {
 
     const [image, setImagen] = useState<File | null >(null);
     const [sobreEscribir, setSobreEscribir] = useState<boolean>(false);
+
 
     useEffect(() => {
 
@@ -21,8 +24,9 @@ const ImageCharger = (props: StepComponentProps): JSX.Element => {
             let estadoACargar = new_state[props.getState<number>('FaseConfigurable',1)]; 
 
 
-            //Me guardo la imagen que había almacenada en el array de fases
-            setImagen(estadoACargar.Imagen);
+            //Me guardo la imagen que había almacenada en el estado actual
+            if (estadoACargar.Imagen instanceof File)
+                setImagen(estadoACargar.Imagen);
         }
 
         //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
@@ -63,7 +67,6 @@ const ImageCharger = (props: StepComponentProps): JSX.Element => {
             new_state.splice(position, 0, myData);
         }
 
-
         //Y tras modificar la copia del registro para que me contenga pongo esta copia como el registro de la aventura
         props.setState('DATA',new_state,[]);
 
@@ -72,11 +75,13 @@ const ImageCharger = (props: StepComponentProps): JSX.Element => {
         props.setState<number>('WhereToPush',props.getState<number>('WhereToPush',1)+1,1);
     }
 
+
     return (
         <aside id="modal" className="modal">
             <div className="content-modal">
                 <input type="file" onChange={changeImagen} />
-                <button onClick={uploadImage}>GUARDAR IMAGEN</button>
+                <img src= {image !==null ? window.URL.createObjectURL(image) : pic }/>   
+                <button onClick={uploadImage}>Guardar Fase</button>
             </div>
         </aside>
     )

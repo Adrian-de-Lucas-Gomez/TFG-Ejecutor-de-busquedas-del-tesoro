@@ -741,13 +741,13 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
   }
 
 
-  const salvarAventura = async () => {
-    let reset = await axios.get("./reset");
-    await operacionesPreDescargaProyecto();
-    await mandarJson();
-    await axios.get("./guardame-aventuranode");
-    console.log("Peticion mandada");
-  }
+const salvarAventura = async () => {
+  let reset = await axios.get("./reset");
+  await operacionesPreDescargaProyecto();
+  await mandarJson();
+  await axios.get("./guardame-aventura");
+  console.log("Peticion mandada");
+}
 
 
   const generateZip = async () => {
