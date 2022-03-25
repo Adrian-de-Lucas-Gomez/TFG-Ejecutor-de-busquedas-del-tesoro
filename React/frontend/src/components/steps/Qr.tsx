@@ -108,8 +108,9 @@ const QR = (props: StepComponentProps): JSX.Element => {
  
     return (
     <div >
-        <form style={{marginTop:'0.5%',marginBottom:'0.5%'}} onSubmit={e => e.preventDefault()}>
-            <input placeholder="Añada aqui el texto o enlace al que reedirige el QR..." className='QRForm' type="text" size={60} required value={text} onChange ={ e =>setText(e.target.value)}></input>
+        <h3 style={{marginBottom:'0.5%',fontSize:'200%'}} className="Titulo" >Configuración de fase QR</h3>
+        <form className="center" style={{marginBottom:'1%'}} onSubmit={e => e.preventDefault()}>
+            <input placeholder="Añada aqui el texto o enlace al que reedirige el QR..." className='input-text' type="text" size={60} required value={text} onChange ={ e =>setText(e.target.value)}></input>
         </form>
         <div ref={qrRef}>
             <QRCode className='QRImage' value={text} size={400} fgColor="black" bgColor="white" level="H"  />
@@ -118,7 +119,7 @@ const QR = (props: StepComponentProps): JSX.Element => {
         <div className = 'botonesQR center'>
             <div>
                 <form style={{textAlign:'center'}} onSubmit= {guardaFase}>
-                        <button type="submit" className="my-btn btn-outline-pink" style={{fontSize:'150%'}}>Guardar fase</button>
+                    <button type="submit" className="my-btn btn-outline-pink" style={{fontSize:'150%'}}>Guardar fase</button>
                 </form>
             </div>
 

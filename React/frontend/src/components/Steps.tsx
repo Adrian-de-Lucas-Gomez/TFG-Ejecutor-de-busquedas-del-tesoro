@@ -786,7 +786,6 @@ const salvarAventura = async () => {
       <body className="bodyBackGround">
         {/* Seccion que representa la parte superior del formulario que permite especificar qué nombre queremos que tenga la aventura 
       si no ponemos nada el nombre será el original del archivo que vayamos a descargar*/}
-        {/* <h3 className='Titulo'>Nombre de la aventura: getState('adventureName', "Nombre por defecto")</h3> */}
         <form style={{textAlign:'center'}} onSubmit={e => e.preventDefault()}>
           <input className='nameForm' type="text" placeholder="Nombre de aventura" maxLength={20} size={23} onChange={e => modifyAdventureName(e.target.value)}></input>
         </form>
@@ -797,7 +796,7 @@ const salvarAventura = async () => {
           {/* Este es el selector con el que nos podemos mover entre escenas */}
           <div className="greenBackGround center">
             <p className="Titulo" style={{fontSize:'130%',marginTop:'0.9%', marginBottom:'1%'}}>Fases disponibles:</p>
-            <select className="mySelect" id="Selector" style={{marginTop:'1%', marginBottom:'1%'}} onChange={UpdateSelector} onSelect={UpdateSelector} >
+            <select className="mySelect" id="Selector" style={{marginTop:'1%', marginBottom:'1%'}} onChange={UpdateSelector} onSelect={UpdateSelector}>
               <option value="" disabled selected>Crear fase...</option>
               <option value="AdventureCharger">AdventureCharger</option>
               <option value="QR">QR</option>
@@ -805,8 +804,8 @@ const salvarAventura = async () => {
               <option value="ImageCharger">Image Charger</option>
               <option value="ImageTarget">Vuforia Image Target</option>
             </select>
-            <p className="Titulo" style={{fontSize:'130%',marginTop:'0.9%', marginBottom:'1%', marginLeft:'15%'}}>Fases actuales:</p>
-            <select className="mySelect" id="Selector" style={{marginTop:'1%', marginBottom:'1%', marginLeft:'0.5%'}} onChange={UpdateSelector} onSelect={UpdateSelector} >
+            <p className="Titulo" style={{fontSize:'130%',marginTop:'0.9%', marginBottom:'1%', marginLeft:'20%'}}>Fases actuales:</p>
+            <select className="mySelect" id="Selector" style={{marginTop:'1%', marginBottom:'1%', marginLeft:'1%'}} onChange={UpdateSelector} onSelect={UpdateSelector} >
               <option value="" hidden>Lista de fases</option>
               <option value="Test">Test</option>
             </select>

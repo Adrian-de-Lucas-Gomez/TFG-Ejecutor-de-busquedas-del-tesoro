@@ -5,14 +5,6 @@
     transform: translate(-50%, 0%);  
  } 
 
- .QRForm {
-    position: relative;
-    border-radius: 1%;
-    font-size: 125%;
-    color: #7700ff;
-    background-color: #fcfce5;
- } 
-
  .QRButton {
     position: relative;
     left: 50%;
@@ -35,9 +27,7 @@
     background-color: rgba(255, 0, 200, 0.507);
   }
 
-
-
  .Titulo {
     position: relative;
-    text-align: center
+    text-align: center;
   }

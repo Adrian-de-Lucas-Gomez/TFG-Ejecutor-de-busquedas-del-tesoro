@@ -51,6 +51,13 @@
   background-color: #fcfce5;
 } 
 
+input.btn-check{
+  width: 26px;
+  height:26px;
+}
+
+input.btn-check:focus{ outline-width: 0;}
+
 select:focus{ outline-style: groove; outline-color: aqua;}
 input:focus{ outline-style: groove; outline-color:blueviolet; outline-width: 3px;}
 
@@ -61,6 +68,17 @@ input:focus{ outline-style: groove; outline-color:blueviolet; outline-width: 3px
   border-radius: 5%;
   background-color: #fcfce5;
   cursor: pointer;
+}
+
+.btn-outline-red {
+  border-color: #FF0075;
+  color: #FF0075;
+  font-weight: bold;
+}
+
+.btn-outline-red:hover {
+  background-color: #FF0075;
+  color: #fcfce5;
 }
 
 .btn-outline-pink {
@@ -84,6 +102,14 @@ input:focus{ outline-style: groove; outline-color:blueviolet; outline-width: 3px
   background-color: #FF7744;
   color: #fcfce5;
 }
+
+.input-text {
+  position: relative;
+  border-radius: 1%;
+  font-size: 125%;
+  color: #7700ff;
+  background-color: #fcfce5;
+} 
 
 .center {
   display:flex;
