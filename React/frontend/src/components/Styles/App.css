@@ -25,8 +25,12 @@
 }
 
 .Titulo {
+  margin-top: 0.1%;
   position: relative;
-  text-align: center
+  text-align: center;
+  font-size: 350%;
+  color: rgb(119, 0, 255);
+  font-weight: bold;
 }
 
 .App-link {

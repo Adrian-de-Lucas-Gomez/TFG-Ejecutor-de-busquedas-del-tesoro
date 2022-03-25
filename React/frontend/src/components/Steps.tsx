@@ -775,112 +775,127 @@ const salvarAventura = async () => {
 
 
   return (
-    <div className='Coso'>
+    <div>
+      <head>
+      {/*<!-- Required meta tags -->*/}
+        <meta charSet="utf-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
 
-      {/* Seccion que representa la parte superior del formulario que permite especificar qué nombre queremos que tenga la aventura 
-    si no ponemos nada el nombre será el original del archivo que vayamos a descargar*/}
-      <h3 className='Titulo' >Nombre de la aventura: {getState('adventureName', "Nombre por defecto")}</h3>
-      <form onSubmit={e => e.preventDefault()}>
-        <input className='QRForm' type="text" onChange={e => modifyAdventureName(e.target.value)}></input>
-      </form>
+      {/* <!-- Bootstrap CSS --> */}
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossOrigin="anonymous"></link>
+      </head>
+      <body className="bodyBackGround">
+        {/* Seccion que representa la parte superior del formulario que permite especificar qué nombre queremos que tenga la aventura 
+      si no ponemos nada el nombre será el original del archivo que vayamos a descargar*/}
+        <h3 className='Titulo'>Nombre de la aventura: {/*getState('adventureName', "Nombre por defecto")*/}</h3>
+        <form style={{textAlign:'center'}} onSubmit={e => e.preventDefault()}>
+          <input className='nameForm' type="text" placeholder="Nombre de aventura" maxLength={20} size={23} onChange={e => modifyAdventureName(e.target.value)}></input>
+        </form>
 
 
-      {/* Grid configurado para que tenga un hoizontal layout que contiene tanto el selector de fase a configurar como el elemento para cargar una aventura desde fichero */}
-      <div className='grid'>
-        {/* Este es el selector con el que nos podemos mover entre escenas */}
-        <div className="greenBackGround">
-          <h4>Selector de fases</h4>
-          <select id="Selector" className="form-select" onChange={UpdateSelector} onSelect={UpdateSelector} >
-            <option value="AdventureCharger">AdventureCharger</option>
-            <option value="QR">QR</option>
-            <option value="Quiz">Quiz</option>
-            <option value="ImageCharger">Image Charger</option>
-            <option value="ImageTarget">Vuforia Image Target</option>
-          </select>
-        </div>
+        {/* Grid configurado para que tenga un hoizontal layout que contiene tanto el selector de fase a configurar como el elemento para cargar una aventura desde fichero */}
+        <div className='grid'>
+          {/* Este es el selector con el que nos podemos mover entre escenas */}
+          <div className="greenBackGround">
+            <h4>Selector de fases</h4>
+            <select id="Selector" className="form-select" onChange={UpdateSelector} onSelect={UpdateSelector} >
+              <option value="AdventureCharger">AdventureCharger</option>
+              <option value="QR">QR</option>
+              <option value="Quiz">Quiz</option>
+              <option value="ImageCharger">Image Charger</option>
+              <option value="ImageTarget">Vuforia Image Target</option>
+            </select>
+          </div>
 
-        {/* Parte que representa el cargador de aventuras a partir de un fichero */}
-        <div className="redBackGround">
-          <h4>Cargar aventura de archivo</h4>
-          <input type='file' id='file' className='input-file' accept='.json' onChange={loadAdventureFromFile} ></input>
-        </div>
-      </div>
-
-      {/* Grid configurado para que tenga un hoizontal layout que contiene tanto el selector de dónde queremos que se pushee la siguiente fase como el selector de fases existente
-    con el que podemos configurar una de las fases que ya tengamos */}
-      <div className='grid-container'>
-
-        {/* Esta es la seccion que permite configurar la posicion de la siguiente fase que vayamos a incluir */}
-        <div className="redBackGround">
-          <h4>Posicion a insertar la siguiente fase de la aventura</h4>
-          <div className='rows'>
-            <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFase}> - </button>
-            <p className='row'>{getState('WhereToPush', 0) + 1}º </p>
-            <button className='row' data-testid='>' onClick={AumentarPosSiguienteFase}> + </button>
-            <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
+          {/* Parte que representa el cargador de aventuras a partir de un fichero */}
+          <div className="redBackGround">
+            <h4>Cargar aventura de archivo</h4>
+            <input type='file' id='file' className='input-file' accept='.json' onChange={loadAdventureFromFile} ></input>
           </div>
         </div>
 
-        {/* Esta es la seccion que permite reconfigurar alguna fase ya existente */}
-        <div className="greenBackGround">
-          <h4>Fase que se quiere reconfigurar</h4>
-          <div className='rows'>
-            <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFaseConfigurable}> - </button>
-            <p className='row'>{getState('FaseConfigurable', 0) + 1}º </p>
-            <button className='row' data-testid='>' onClick={AumentarPosSiguienteFaseConfigurable}> + </button>
-            <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
-            <button className='row' data-testid='>' onClick={ConfigurarFase}> Configurar Fase </button>
+        {/* Grid configurado para que tenga un hoizontal layout que contiene tanto el selector de dónde queremos que se pushee la siguiente fase como el selector de fases existente
+      con el que podemos configurar una de las fases que ya tengamos */}
+        <div className='grid-container'>
+
+          {/* Esta es la seccion que permite configurar la posicion de la siguiente fase que vayamos a incluir */}
+          <div className="redBackGround">
+            <h4>Posicion a insertar la siguiente fase de la aventura</h4>
+            <div className='rows'>
+              <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFase}> - </button>
+              <p className='row'>{getState('WhereToPush', 0) + 1}º </p>
+              <button className='row' data-testid='>' onClick={AumentarPosSiguienteFase}> + </button>
+              <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
+            </div>
+          </div>
+
+          {/* Esta es la seccion que permite reconfigurar alguna fase ya existente */}
+          <div className="greenBackGround">
+            <h4>Fase que se quiere reconfigurar</h4>
+            <div className='rows'>
+              <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFaseConfigurable}> - </button>
+              <p className='row'>{getState('FaseConfigurable', 0) + 1}º </p>
+              <button className='row' data-testid='>' onClick={AumentarPosSiguienteFaseConfigurable}> + </button>
+              <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
+              <button className='row' data-testid='>' onClick={ConfigurarFase}> Configurar Fase </button>
+            </div>
+          </div>
+
+          {/* Esta es la seccion que permite reconfigurar alguna fase ya existente */}
+          <div className="redBackGround">
+            <h4>Fase que se quiere borrar</h4>
+            <div className='rows'>
+              <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFaseABorrar}> - </button>
+              <p className='row'>{getState('FaseABorrar', 0) + 1}º </p>
+              <button className='row' data-testid='>' onClick={AumentarPosSiguienteFaseABorrar}> + </button>
+              <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
+              <button className='row' data-testid='>' onClick={BorrarFase}> Borrar Fase </button>
+            </div>
           </div>
         </div>
 
-        {/* Esta es la seccion que permite reconfigurar alguna fase ya existente */}
-        <div className="redBackGround">
-          <h4>Fase que se quiere borrar</h4>
-          <div className='rows'>
-            <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFaseABorrar}> - </button>
-            <p className='row'>{getState('FaseABorrar', 0) + 1}º </p>
-            <button className='row' data-testid='>' onClick={AumentarPosSiguienteFaseABorrar}> + </button>
-            <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
-            <button className='row' data-testid='>' onClick={BorrarFase}> Borrar Fase </button>
-          </div>
+        {/* Estos son los hijos que representan las diferentes "escenas" por las que podemos pasar y configurar la  aventura */}
+        <StepsContext.Provider value={context}>
+          {config?.before && BeforeComponent(context)}
+          {config?.navigation?.location === "before" &&
+            NavigationComponent(context)}
+          {React.Children.map(children, (child, order) => (
+            <StepContext.Provider value={{ order: order }}>
+              {child}
+            </StepContext.Provider>
+          ))}
+          {config?.navigation?.location === "after" && NavigationComponent(context)}
+          {config?.after && AfterComponent(context)}
+        </StepsContext.Provider>
+
+        {/* Este es el boton con el que se puede pedir que se descargue el JSON que engloba la aventura */}
+        <form onSubmit={exportToJson}>
+          <button type="submit">Creame un JSON hijo mio</button>
+        </form>
+
+        {/* Este boton tiene como objetivo descargar el proyecto generado */}
+        <div>
+          <button type="button" onClick={generateZip}>
+            Generar Aventura
+          </button>
+          <button type="button" onClick={salvarAventura}>
+            Guardar Aventura
+          </button>
         </div>
-      </div>
 
-      {/* Estos son los hijos que representan las diferentes "escenas" por las que podemos pasar y configurar la  aventura */}
-      <StepsContext.Provider value={context}>
-        {config?.before && BeforeComponent(context)}
-        {config?.navigation?.location === "before" &&
-          NavigationComponent(context)}
-        {React.Children.map(children, (child, order) => (
-          <StepContext.Provider value={{ order: order }}>
-            {child}
-          </StepContext.Provider>
-        ))}
-        {config?.navigation?.location === "after" && NavigationComponent(context)}
-        {config?.after && AfterComponent(context)}
-      </StepsContext.Provider>
+        {/* Este boton tiene como objetivo descargar el proyecto generado */}
+        {/* <a href="ProyectoUnity.zip"  download={getState('adventureName',"Nombre por defecto")}>
+          <button  type="button" >
+          Descargar Aventura
+        </button>      
+      </a> */}
 
-      {/* Este es el boton con el que se puede pedir que se descargue el JSON que engloba la aventura */}
-      <form onSubmit={exportToJson}>
-        <button type="submit">Creame un JSON hijo mio</button>
-      </form>
+        {/* <!-- Option 1: Bootstrap Bundle with Popper --> */}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossOrigin="anonymous"></script>
 
-      {/* Este boton tiene como objetivo descargar el proyecto generado */}
-      <div>
-        <button type="button" onClick={generateZip}>
-          Generar Aventura
-        </button>
-        <button type="button" onClick={salvarAventura}>
-          Guardar Aventura
-        </button>
-      </div>
+      </body>
 
-      {/* Este boton tiene como objetivo descargar el proyecto generado */}
-      {/* <a href="ProyectoUnity.zip"  download={getState('adventureName',"Nombre por defecto")}>
-        <button  type="button" >
-        Descargar Aventura
-      </button>      
-    </a> */}
+     
 
     </div>
   );

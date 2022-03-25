@@ -23,6 +23,19 @@
     background-color: rgba(255, 0, 0, 0.521);
   }
 
+  .bodyBackGround {
+    background-color: rgb(197, 239, 255);
+  }
+
+  .nameForm {
+    position: relative;
+    text-align: center;
+    border-radius: 1%;
+    font-size: 200%;
+    color: rgb(119, 0, 255);
+    font-weight: bold;
+ } 
+
 
   .BotonSacarJson {
     position: relative;
