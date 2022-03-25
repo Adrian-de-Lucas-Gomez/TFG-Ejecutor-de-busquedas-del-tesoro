@@ -108,24 +108,23 @@ const QR = (props: StepComponentProps): JSX.Element => {
  
     return (
     <div >
-        <h3 className="Titulo" >Añada aqui el link al que reedirige el  QR:</h3>
-        <form onSubmit={e => e.preventDefault()}>
-            <input  className='QRForm' type="text" required value={text} onChange ={ e =>setText(e.target.value)}></input>
+        <form style={{marginTop:'0.5%',marginBottom:'0.5%'}} onSubmit={e => e.preventDefault()}>
+            <input placeholder="Añada aqui el texto o enlace al que reedirige el QR..." className='QRForm' type="text" size={60} required value={text} onChange ={ e =>setText(e.target.value)}></input>
         </form>
         <div ref={qrRef}>
             <QRCode className='QRImage' value={text} size={400} fgColor="black" bgColor="white" level="H"  />
         </div>
 
-        <div className = 'botonesQR'>
-            <div className="fondoB">
-                <form onSubmit= {guardaFase}>
-                        <button className='QRButton' type="submit">Guardar Fase</button>
+        <div className = 'botonesQR center'>
+            <div>
+                <form style={{textAlign:'center'}} onSubmit= {guardaFase}>
+                        <button type="submit" className="my-btn btn-outline-pink" style={{fontSize:'150%'}}>Guardar fase</button>
                 </form>
             </div>
 
-            <div className="fondoA">
-                <form onSubmit= {downloadQRCode}>
-                    <button className='QRButton' type="submit">Descargar QR</button>
+            <div style={{marginLeft:'4%'}}>
+                <form style={{textAlign:'center'}} onSubmit= {downloadQRCode}>
+                    <button type="submit" className="my-btn btn-outline-orange" style={{fontSize:'150%'}}>Descargar QR</button>
                 </form>
             </div>       
         </div>

@@ -15,7 +15,7 @@
 import { disconnect } from "process";
 import React, { useContext, useEffect, useState } from "react";
 import { ComponentType, createContext, ReactElement } from "react";
-import { json } from "stream/consumers";
+import { json, text } from "stream/consumers";
 import './Styles/Steps.css'
 import axios from "axios"
 
@@ -773,7 +773,6 @@ const salvarAventura = async () => {
     link.remove();
   }
 
-
   return (
     <div>
       <head>
@@ -782,12 +781,12 @@ const salvarAventura = async () => {
         <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
 
       {/* <!-- Bootstrap CSS --> */}
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossOrigin="anonymous"></link>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" /*rel="stylesheet"*/ integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossOrigin="anonymous"></link>
       </head>
       <body className="bodyBackGround">
         {/* Seccion que representa la parte superior del formulario que permite especificar qué nombre queremos que tenga la aventura 
       si no ponemos nada el nombre será el original del archivo que vayamos a descargar*/}
-        <h3 className='Titulo'>Nombre de la aventura: {/*getState('adventureName', "Nombre por defecto")*/}</h3>
+        {/* <h3 className='Titulo'>Nombre de la aventura: getState('adventureName', "Nombre por defecto")</h3> */}
         <form style={{textAlign:'center'}} onSubmit={e => e.preventDefault()}>
           <input className='nameForm' type="text" placeholder="Nombre de aventura" maxLength={20} size={23} onChange={e => modifyAdventureName(e.target.value)}></input>
         </form>
@@ -796,21 +795,27 @@ const salvarAventura = async () => {
         {/* Grid configurado para que tenga un hoizontal layout que contiene tanto el selector de fase a configurar como el elemento para cargar una aventura desde fichero */}
         <div className='grid'>
           {/* Este es el selector con el que nos podemos mover entre escenas */}
-          <div className="greenBackGround">
-            <h4>Selector de fases</h4>
-            <select id="Selector" className="form-select" onChange={UpdateSelector} onSelect={UpdateSelector} >
+          <div className="greenBackGround center">
+            <p className="Titulo" style={{fontSize:'130%',marginTop:'0.9%', marginBottom:'1%'}}>Fases disponibles:</p>
+            <select className="mySelect" id="Selector" style={{marginTop:'1%', marginBottom:'1%'}} onChange={UpdateSelector} onSelect={UpdateSelector} >
+              <option value="" disabled selected>Crear fase...</option>
               <option value="AdventureCharger">AdventureCharger</option>
               <option value="QR">QR</option>
               <option value="Quiz">Quiz</option>
               <option value="ImageCharger">Image Charger</option>
               <option value="ImageTarget">Vuforia Image Target</option>
             </select>
+            <p className="Titulo" style={{fontSize:'130%',marginTop:'0.9%', marginBottom:'1%', marginLeft:'15%'}}>Fases actuales:</p>
+            <select className="mySelect" id="Selector" style={{marginTop:'1%', marginBottom:'1%', marginLeft:'0.5%'}} onChange={UpdateSelector} onSelect={UpdateSelector} >
+              <option value="" hidden>Lista de fases</option>
+              <option value="Test">Test</option>
+            </select>
           </div>
 
           {/* Parte que representa el cargador de aventuras a partir de un fichero */}
-          <div className="redBackGround">
-            <h4>Cargar aventura de archivo</h4>
-            <input type='file' id='file' className='input-file' accept='.json' onChange={loadAdventureFromFile} ></input>
+          <div className="orangeBackGround center">
+            <text style={{marginTop:'1%', marginBottom:'1%',fontSize:'120%', fontWeight:'bold'}}>Cargar aventura .json:</text>
+            <input type='file' id='file' className='input-file' accept='.json' style={{marginTop:'1%', marginBottom:'1%',marginLeft:'1%',fontSize:'120%'}} onChange={loadAdventureFromFile} ></input>
           </div>
         </div>
 

@@ -18,24 +18,77 @@
   .greenBackGround {
     background-color: rgba(0, 255, 0, 0.555);
   }
+
+  .orangeBackGround {
+    background-color: #ffdb8e;
+  }
   
   .redBackGround {
     background-color: rgba(255, 0, 0, 0.521);
   }
 
   .bodyBackGround {
-    background-color: rgb(197, 239, 255);
+    background-color: #c5efff;
   }
 
   .nameForm {
     position: relative;
     text-align: center;
     border-radius: 1%;
-    font-size: 200%;
-    color: rgb(119, 0, 255);
+    font-size: 220%;
+    color: #7700ff;
     font-weight: bold;
+    background-color: #fcfce5;
  } 
 
+ .mySelect {
+  font-size: 120%;
+  color: rgb(119, 0, 255);
+  font-weight: bold;
+  border: 2px solid transparent;
+  border-radius: 5%;
+  border-color: blueviolet;
+  background-color: #fcfce5;
+} 
+
+select:focus{ outline-style: groove; outline-color: aqua;}
+input:focus{ outline-style: groove; outline-color:blueviolet; outline-width: 3px;}
+
+.my-btn {
+  font-size: 120%;
+  color: black;
+  border: 2px solid transparent;
+  border-radius: 5%;
+  background-color: #fcfce5;
+  cursor: pointer;
+}
+
+.btn-outline-pink {
+  border-color: #e712ae;
+  color: #e712ae;
+  font-weight: bold;
+}
+
+.btn-outline-pink:hover {
+  background-color: #e712ae;
+  color: #fcfce5;
+}
+
+.btn-outline-orange {
+  border-color: #FF7744;
+  color: #FF7744;
+  font-weight: bold;
+}
+
+.btn-outline-orange:hover {
+  background-color: #FF7744;
+  color: #fcfce5;
+}
+
+.center {
+  display:flex;
+  justify-content: center;
+  }
 
   .BotonSacarJson {
     position: relative;

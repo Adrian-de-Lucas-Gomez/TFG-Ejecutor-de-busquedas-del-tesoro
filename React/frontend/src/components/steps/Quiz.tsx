@@ -163,8 +163,8 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
             <br/>
             <br/>
             <br/>
-            <form onSubmit= {guardaFase}>
-                <button className='SaveButton' type="submit">Guardar Fase</button>
+            <form style={{textAlign:'center'}} onSubmit= {guardaFase}>
+                <button type="submit" className="my-btn btn-outline-custom" style={{marginTop:'1%', marginBottom:'1%'}}>Guardar Fase</button>
             </form>
         </div>
     )

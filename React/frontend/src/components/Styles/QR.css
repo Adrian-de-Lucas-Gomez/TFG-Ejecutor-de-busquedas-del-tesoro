@@ -7,8 +7,10 @@
 
  .QRForm {
     position: relative;
-    transform: translate(-50%, 0%);
     border-radius: 1%;
+    font-size: 125%;
+    color: #7700ff;
+    background-color: #fcfce5;
  } 
 
  .QRButton {
@@ -20,12 +22,9 @@
 
  .botonesQR {
     position: relative;
-    left: 50%;
-    transform: translate(-50%, 0%);  
-    
-    display: grid;
-    width: 25%;
-    grid-template-columns: 50% 1fr;
+    display: flex;
+    margin-top: 0.5%;
+    margin-bottom: 0.5%;
   }
 
   .fondoA {
