@@ -148,10 +148,10 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
                 {answers.map((answer: Answer, index:number) => (
                 <Fragment key={"Respuesta: " + index}>
                 <div>
-                        <button className = "my-btn btn-outline-red" style={{marginLeft:'5%'}} onClick={():void => removeAnswer(index)}>Borrar respuesta</button> 
-                        <text className="Titulo" style={{fontSize:'130%', marginLeft:'1%'}}>{!answer.isCorrect ? "Incorrecta" : "Correcta"}</text>     
-                        <input style={{marginLeft:'1%'}} type="checkbox" className="btn-check" id="btn-check-outlined" autoComplete="off" onClick = {():void => setAnswerAsCorrect(index)}></input>
-                        <text className="Titulo" style={{fontSize:'130%', marginLeft:'1%'}}>{answer.text}</text>
+                    <button className = "my-btn btn-outline-red" style={{marginLeft:'5%'}} onClick={():void => removeAnswer(index)}>Borrar respuesta</button> 
+                    <text className="Titulo" style={{fontSize:'130%', marginLeft:'1%'}}>{!answer.isCorrect ? "Incorrecta" : "Correcta"}</text>     
+                    <input style={{marginLeft:'1%'}} type="checkbox" className="btn-check" id="btn-check-outlined" autoComplete="off" onClick = {():void => setAnswerAsCorrect(index)}></input>
+                    <text className="Titulo" style={{fontSize:'130%', marginLeft:'1%'}}>{answer.text}</text>
                 </div>
                 </Fragment>
                 ))}

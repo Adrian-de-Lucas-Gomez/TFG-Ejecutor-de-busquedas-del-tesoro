@@ -99,27 +99,21 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
  
     return (
     <div >
-        <h3 className="Titulo" >Configuración de un target de vuforia</h3>
-        <form onSubmit={e => e.preventDefault()}>
-            <h2>Introduzca aquí la key de vuforia</h2>
-            <input  className='Key' type="text" required value={key} onChange ={ e =>setKey(e.target.value)}></input>
+        <h3 style={{marginBottom:'0.5%',fontSize:'200%'}} className="Titulo" >Configuración de fase Vuforia Image Target</h3>
+        
+        <form className="center" onSubmit={e => e.preventDefault()}>
+            <input size={80} placeholder="Introduzca aquí la key de vuforia..." className='input-text' type="text" required value={key} onChange ={ e =>setKey(e.target.value)}></input>
         </form>
 
-        <form onSubmit={e => e.preventDefault()}>
-            <h2>Introduzca aquí el nombre del target a usar</h2>
-            <input  className='Target' type="text" required value={targetName} onChange ={ e =>setTargetName(e.target.value)}></input>
+        <form style={{marginTop:'1%'}} className="center" onSubmit={e => e.preventDefault()}>
+            <input size={80} placeholder="Introduzca aquí el nombre del target a usar..." className='input-text' type="text" required value={targetName} onChange ={ e =>setTargetName(e.target.value)}></input>
         </form>
 
-        <div className="content-modal">
-            <input type="file" onChange={changeUnityPackage} />
-        </div>
-
-        <div className = 'botonesTarget'>
-            <div className="fondoB">
-                <form onSubmit= {guardaFase}>
-                        <button type="submit">Guardar Fase</button>
-                </form>
-            </div>    
+        <div>
+            <form style={{textAlign:'center',marginTop:'1%', marginBottom:'0.5%'}} onSubmit= {guardaFase}>
+                <input style={{fontSize:'150%'}} type="file" onChange={changeUnityPackage} />
+                <button type="submit" className="my-btn btn-outline-pink" style={{fontSize:'150%', marginLeft:'1%'}}>Guardar fase</button>
+            </form>
         </div>
 
     </div>
