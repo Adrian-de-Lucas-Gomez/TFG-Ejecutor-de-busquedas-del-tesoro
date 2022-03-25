@@ -78,10 +78,15 @@ const ImageCharger = (props: StepComponentProps): JSX.Element => {
 
     return (
         <aside id="modal" className="modal">
-            <div className="content-modal">
-                <input type="file" onChange={changeImagen} />
+            <h3 style={{marginBottom:'0.5%',fontSize:'200%'}} className="Titulo" >Configuración de fase Image Charger</h3>
+            <div style={{marginTop:'0.5%'}} className="content-modal center">
                 <img src= {image !==null ? window.URL.createObjectURL(image) : pic }/>   
-                <button onClick={uploadImage}>Guardar Fase</button>
+            </div>
+            <div>
+                <form style={{textAlign:'center',marginTop:'0.5%', marginBottom:'0.5%'}} onSubmit= {uploadImage}>
+                    <input style={{fontSize:'150%'}} type="file" onChange={changeImagen} />
+                    <button type="submit" className="my-btn btn-outline-pink" style={{fontSize:'150%', marginLeft:'1%'}}>Guardar fase</button>
+                </form>
             </div>
         </aside>
     )
