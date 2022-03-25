@@ -811,12 +811,6 @@ const salvarAventura = async () => {
               <option value="Test">Test</option>
             </select>
           </div>
-
-          {/* Parte que representa el cargador de aventuras a partir de un fichero */}
-          <div className="orangeBackGround center">
-            <text style={{marginTop:'1%', marginBottom:'1%',fontSize:'120%', fontWeight:'bold'}}>Cargar aventura .json:</text>
-            <input type='file' id='file' className='input-file' accept='.json' style={{marginTop:'1%', marginBottom:'1%',marginLeft:'1%',fontSize:'120%'}} onChange={loadAdventureFromFile} ></input>
-          </div>
         </div>
 
         {/* Grid configurado para que tenga un hoizontal layout que contiene tanto el selector de dónde queremos que se pushee la siguiente fase como el selector de fases existente
@@ -872,12 +866,7 @@ const salvarAventura = async () => {
           {config?.navigation?.location === "after" && NavigationComponent(context)}
           {config?.after && AfterComponent(context)}
         </StepsContext.Provider>
-
-        {/* Este es el boton con el que se puede pedir que se descargue el JSON que engloba la aventura */}
-        <form onSubmit={exportToJson}>
-          <button type="submit">Creame un JSON hijo mio</button>
-        </form>
-
+        
         {/* Este boton tiene como objetivo descargar el proyecto generado */}
         <div>
           <button type="button" onClick={generateZip}>

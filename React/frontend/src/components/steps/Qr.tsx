@@ -77,7 +77,7 @@ const QR = (props: StepComponentProps): JSX.Element => {
         if (text !== ""){
             console.log("Llamada a guardar fase")
             //ME hago con el estado actual del array de info de la aventura
-            let new_state = props.getState<any>('DATA', []); 
+            let new_state = props.getState<any>('DATA', []);
             //Preparo los datos que voy a añadir
             let myData = {tipo:"QRStage" ,QRText: text};
             console.log(new_state);
