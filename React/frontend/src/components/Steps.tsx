@@ -804,11 +804,7 @@ const salvarAventura = async () => {
               <option value="ImageCharger">Image Charger</option>
               <option value="ImageTarget">Vuforia Image Target</option>
             </select>
-            <p className="Titulo" style={{fontSize:'130%',marginTop:'0.9%', marginBottom:'1%', marginLeft:'20%'}}>Fases actuales:</p>
-            <select className="mySelect" id="Selector" style={{marginTop:'1%', marginBottom:'1%', marginLeft:'1%'}} onChange={UpdateSelector} onSelect={UpdateSelector} >
-              <option value="" hidden>Lista de fases</option>
-              <option value="Test">Test</option>
-            </select>
+            
           </div>
         </div>
 

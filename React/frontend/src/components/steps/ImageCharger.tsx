@@ -49,6 +49,7 @@ const ImageCharger = (props: StepComponentProps): JSX.Element => {
     }
 
     const uploadImage = () =>{
+        
         //ME hago con el estado actual del array de info de la aventura
         let new_state = props.getState<any>('DATA', []); 
         //Preparo el diccionario que voy a meter en el registro
@@ -83,7 +84,7 @@ const ImageCharger = (props: StepComponentProps): JSX.Element => {
                 <img src= {image !==null ? window.URL.createObjectURL(image) : pic }/>   
             </div>
             <div>
-                <form style={{textAlign:'center',marginTop:'0.5%', marginBottom:'0.5%'}} onSubmit= {uploadImage}>
+                <form style={{textAlign:'center',marginTop:'0.5%', marginBottom:'0.5%'}} onSubmit= { e =>{e.preventDefault(); uploadImage();}}>
                     <input style={{fontSize:'150%'}} type="file" onChange={changeImagen} />
                     <button type="submit" className="my-btn btn-outline-pink" style={{fontSize:'150%', marginLeft:'1%'}}>Guardar fase</button>
                 </form>
