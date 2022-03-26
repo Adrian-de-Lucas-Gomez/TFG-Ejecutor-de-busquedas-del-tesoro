@@ -29,7 +29,7 @@ const App = (): JSX.Element => {
 
   return (
     <div className='steps_wrapper'>
-      <h2 className='Titulo' >Configuración de Gymncana</h2>
+      <h2 className='Titulo' style={{marginTop:'0.5%',marginBottom:'1%'}} >Configuración de Gymncana</h2>
       <Steps config={config} genState={state} setGenState={setState}>
         <Step title='AdventureSummary' component={AdventureSummary} />
         <Step title='AdventureCharger' component={AdventureCharger} />

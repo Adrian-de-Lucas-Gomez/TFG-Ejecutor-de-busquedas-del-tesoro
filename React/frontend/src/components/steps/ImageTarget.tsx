@@ -99,7 +99,7 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
  
     return (
     <div >
-        <h3 style={{marginBottom:'0.5%',fontSize:'200%'}} className="Titulo" >Configuración de fase Vuforia Image Target</h3>
+        <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'200%'}} className="Titulo" >Configuración de fase Vuforia Image Target</h3>
         
         <form className="center" onSubmit={e => e.preventDefault()}>
             <input size={80} placeholder="Introduzca aquí la key de vuforia..." className='input-text' type="text" required value={key} onChange ={ e =>setKey(e.target.value)}></input>

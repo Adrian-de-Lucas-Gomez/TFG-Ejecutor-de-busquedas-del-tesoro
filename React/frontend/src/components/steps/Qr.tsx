@@ -108,7 +108,7 @@ const QR = (props: StepComponentProps): JSX.Element => {
  
     return (
     <div >
-        <h3 style={{marginBottom:'0.5%',fontSize:'200%'}} className="Titulo" >Configuración de fase QR</h3>
+        <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'200%'}} className="Titulo" >Configuración de fase QR</h3>
         <form className="center" style={{marginBottom:'1%'}} onSubmit={e => e.preventDefault()}>
             <input placeholder="Añada aqui el texto o enlace al que reedirige el QR..." className='input-text' type="text" size={60} required value={text} onChange ={ e =>setText(e.target.value)}></input>
         </form>

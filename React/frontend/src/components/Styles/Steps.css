@@ -81,6 +81,30 @@ input:focus{ outline-style: groove; outline-color:blueviolet; outline-width: 3px
   color: #fcfce5;
 }
 
+.btn-outline-brown {
+  border-color: #7B5A00;
+  color: #7B5A00;
+  font-weight: bold;
+}
+
+.btn-outline-brown:hover {
+  background-color: #7B5A00;
+  color: #fcfce5;
+}
+
+
+
+.btn-outline-green {
+  border-color: #00B693;
+  color: #00B693;
+  font-weight: bold;
+}
+
+.btn-outline-green:hover {
+  background-color: #00B693;
+  color: #fcfce5;
+}
+
 .btn-outline-pink {
   border-color: #e712ae;
   color: #e712ae;

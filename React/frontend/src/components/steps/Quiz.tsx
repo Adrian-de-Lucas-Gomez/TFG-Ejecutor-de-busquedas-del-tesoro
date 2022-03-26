@@ -131,15 +131,15 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
 
     return (
         <div>
-            <h3 style={{marginBottom:'0.5%',fontSize:'200%'}} className="Titulo" >Configuración de fase Quiz</h3>
+            <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'200%'}} className="Titulo" >Configuración de fase Quiz</h3>
             <div className="center">
                 <form onSubmit={e => e.preventDefault()}>
                     <input placeholder="Pregunta del cuestionario..." className='input-text' type="text" size={60} required value={question} onChange ={ e =>modifyQuestion(e.target.value)}></input>
                 </form>
             </div>
-            <h2 style={{marginBottom:'0.5%',fontSize:'180%'}} className="Titulo">Pregunta actual: {question}</h2>
+            <h2 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'180%'}} className="Titulo">Pregunta actual: {question}</h2>
 
-            <form className="center" onSubmit={handleNewQuestion}>
+            <form  style={{marginBottom:'1%'}} className="center" onSubmit={handleNewQuestion}>
                 <input placeholder="Respuesta posible..." className='input-text' type="text" size={60} required value={currAnswer} onChange={e =>setCurrAnswer(e.target.value)}></input>
                 <button style={{marginLeft:'0.3%'}} className="my-btn btn-outline-orange" type="submit">Añadir respuesta</button>
             </form>
@@ -148,7 +148,7 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
                 {answers.map((answer: Answer, index:number) => (
                 <Fragment key={"Respuesta: " + index}>
                 <div>
-                    <button className = "my-btn btn-outline-red" style={{marginLeft:'5%'}} onClick={():void => removeAnswer(index)}>Borrar respuesta</button> 
+                    <button className = "my-btn btn-outline-red" style={{marginLeft:'20%'}} onClick={():void => removeAnswer(index)}>Borrar respuesta</button> 
                     <text className="Titulo" style={{fontSize:'130%', marginLeft:'1%'}}>{!answer.isCorrect ? "Incorrecta" : "Correcta"}</text>     
                     <input style={{marginLeft:'1%'}} type="checkbox" className="btn-check" id="btn-check-outlined" autoComplete="off" onClick = {():void => setAnswerAsCorrect(index)}></input>
                     <text className="Titulo" style={{fontSize:'130%', marginLeft:'1%'}}>{answer.text}</text>

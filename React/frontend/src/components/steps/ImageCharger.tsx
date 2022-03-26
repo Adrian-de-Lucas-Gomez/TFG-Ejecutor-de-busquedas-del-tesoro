@@ -79,7 +79,7 @@ const ImageCharger = (props: StepComponentProps): JSX.Element => {
 
     return (
         <aside id="modal" className="modal">
-            <h3 style={{marginBottom:'0.5%',fontSize:'200%'}} className="Titulo" >Configuración de fase Image Charger</h3>
+            <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'200%'}} className="Titulo" >Configuración de fase Image Charger</h3>
             <div style={{marginTop:'0.5%'}} className="content-modal center">
                 <img src= {image !==null ? window.URL.createObjectURL(image) : pic }/>   
             </div>

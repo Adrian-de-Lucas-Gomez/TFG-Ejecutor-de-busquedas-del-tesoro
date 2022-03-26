@@ -13,7 +13,7 @@
  */
 
 import { disconnect } from "process";
-import React, { useContext, useEffect, useState } from "react";
+import React,{ useContext, useEffect, useState}  from "react";
 import { ComponentType, createContext, ReactElement } from "react";
 import { json, text } from "stream/consumers";
 import './Styles/Steps.css'
@@ -536,14 +536,7 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     console.log("JSON MANDADO");
   }
 
-
-
-  //Este método tiene como objetivo gestionar la escena a la que se quiere ir por medio del selector
-  //Lo que hace es mirar que se acaba de seleccionar y dependiendo de lo escogido nos vamos a una escena 
-  //u otra
-  const UpdateSelector = (evt: React.FormEvent<HTMLSelectElement>): void => {
-    evt.preventDefault()
-    let s: string = evt.currentTarget.value;
+  const jumpWithString = (s: string): void => {
     let destiny = 0;
     if(s === "AdventureSummary") {destiny = 0;}
     if (s === "AdventureCharger") { destiny = 1; }
@@ -553,6 +546,23 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     else if (s == "ImageTarget") { destiny = 5; }
     else if (s === "Default") { return; }
     jump(destiny);
+  };
+
+  //Este método tiene como objetivo gestionar la escena a la que se quiere ir por medio del selector
+  //Lo que hace es mirar que se acaba de seleccionar y dependiendo de lo escogido nos vamos a una escena 
+  //u otra
+  const UpdateSelector = (evt: React.FormEvent<HTMLSelectElement>): void => {
+    evt.preventDefault();
+    let s: string = evt.currentTarget.value;
+    jumpWithString(s);
+  };
+
+  //Metodo para ir a un paso concreto a través de un boton
+  const BtnToStep = (evt: React.FormEvent<HTMLButtonElement>): void => {
+    evt.preventDefault();
+    let s: string = evt.currentTarget.value;
+    (document.getElementById('Selector') as HTMLSelectElement).value = "Crear fase...";
+    jumpWithString(s);
   };
 
 
@@ -697,12 +707,6 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     };
   };
 
-  //Metodo que toma el texto que se esté escribiendo en el form para indicar el nombre que queremos que tenga la aventura y lo
-  //guarda para que la futura aventura que vayamos a descargar tenga dicho nombre
-  const modifyAdventureName = (e: string): void => {
-    setState('adventureName', e, "Nombre por defecto");
-  }
-
   /*
     Metodo auxiliar para mandar distintos tipos de archivo al servidor. Tiene como parametros
   */
@@ -785,28 +789,22 @@ const salvarAventura = async () => {
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" /*rel="stylesheet"*/ integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossOrigin="anonymous"></link>
       </head>
       <body className="bodyBackGround">
-        {/* Seccion que representa la parte superior del formulario que permite especificar qué nombre queremos que tenga la aventura 
-      si no ponemos nada el nombre será el original del archivo que vayamos a descargar*/}
-        <form style={{textAlign:'center'}} onSubmit={e => e.preventDefault()}>
-          <input className='nameForm' type="text" placeholder="Nombre de aventura" maxLength={20} size={23} onChange={e => modifyAdventureName(e.target.value)}></input>
-        </form>
-
-
         {/* Grid configurado para que tenga un hoizontal layout que contiene tanto el selector de fase a configurar como el elemento para cargar una aventura desde fichero */}
-        <div className='grid'>
+        <div className='orangeBackGround grid'>
           {/* Este es el selector con el que nos podemos mover entre escenas */}
-          <div className="greenBackGround center">
-            <p className="Titulo" style={{fontSize:'130%',marginTop:'0.9%', marginBottom:'1%'}}>Fases disponibles:</p>
-            <select className="mySelect" id="Selector" defaultValue={0}  style={{marginTop:'1%', marginBottom:'1%'}} onChange={UpdateSelector} onSelect={UpdateSelector}>
-              <option value="Crear fase..." disabled >Crear fase...</option>
-              <option value="AdventureSummary">Resumen</option>
-              <option value="AdventureCharger">Cargar Aventura</option>
+          <div className="center">
+            <p className="Titulo" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%'}}>Fases disponibles:</p>
+            <select className="mySelect" id="Selector" style={{marginTop:'1%', marginBottom:'1%', marginLeft:'1%'}} onChange={UpdateSelector} onSelect={UpdateSelector}>
+              <option value="Crear fase..." hidden selected>Crear fase...</option>
               <option value="QR">QR</option>
               <option value="Quiz">Quiz</option>
               <option value="ImageCharger">Image Charger</option>
               <option value="ImageTarget">Vuforia Image Target</option>
             </select>
-            
+          </div>
+          <div className="center">
+            <button value="AdventureCharger" onClick={BtnToStep} type="button" className="my-btn btn-outline-brown" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%'}}>Cargar aventura</button>
+            <button value="AdventureSummary" onClick={BtnToStep} type="button" className="my-btn btn-outline-green" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%', marginLeft:'10%'}}>Estado de aventura</button>
           </div>
         </div>
 
@@ -822,8 +820,6 @@ const salvarAventura = async () => {
             <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
           </div>
         </div>
-
-    
 
         {/* Estos son los hijos que representan las diferentes "escenas" por las que podemos pasar y configurar la  aventura */}
         <StepsContext.Provider value={context}>
