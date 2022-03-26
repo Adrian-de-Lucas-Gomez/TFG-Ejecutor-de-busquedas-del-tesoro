@@ -98,13 +98,6 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
     console.log("La aventura a la que apuntamos ahora es "+aventurasDisponibles[result]);
     setText(aventurasDisponibles[result]);
   } 
-  const IMAGES = [
-    "IMG_5774.jpg",
-    "IMG_6305.jpg",
-    "IMG_6701.jpg",
-    "IMG_6732.jpg",
-    "IMG_6795.jpg"
-  ];
   return (
     <div className="redBackGround">
         <h4>Cargar Aventura Del Servidor: {text}</h4>
@@ -117,12 +110,6 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
           
           {/* Boton para mandar a que nos carguen una aventura en concreto */}
           <button className='row' onClick={cargarAventura} data-testid='>' > Cargar aventura </button>
-          <Prueba></Prueba>
-          {
-            //@ts-ignore 
-          props.getState<any>('DATA', []).map(image => (
-            <h4>{image.tipo}</h4>
-          ))}
         </div>
       </div>
   );

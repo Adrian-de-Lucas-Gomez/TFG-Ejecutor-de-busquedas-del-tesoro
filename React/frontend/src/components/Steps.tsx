@@ -545,11 +545,12 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     evt.preventDefault()
     let s: string = evt.currentTarget.value;
     let destiny = 0;
-    if (s === "AdventureCharger") { destiny = 0; }
-    else if (s === "QR") { destiny = 1; }
-    else if (s === "Quiz") { destiny = 2; }
-    else if (s == "ImageCharger") { destiny = 3; }
-    else if (s == "ImageTarget") { destiny = 4; }
+    if(s === "AdventureSummary") {destiny = 0;}
+    if (s === "AdventureCharger") { destiny = 1; }
+    else if (s === "QR") { destiny = 2; }
+    else if (s === "Quiz") { destiny = 3; }
+    else if (s == "ImageCharger") { destiny = 4; }
+    else if (s == "ImageTarget") { destiny = 5; }
     else if (s === "Default") { return; }
     jump(destiny);
   };
@@ -796,9 +797,10 @@ const salvarAventura = async () => {
           {/* Este es el selector con el que nos podemos mover entre escenas */}
           <div className="greenBackGround center">
             <p className="Titulo" style={{fontSize:'130%',marginTop:'0.9%', marginBottom:'1%'}}>Fases disponibles:</p>
-            <select className="mySelect" id="Selector" style={{marginTop:'1%', marginBottom:'1%'}} onChange={UpdateSelector} onSelect={UpdateSelector}>
-              <option value="" disabled selected>Crear fase...</option>
-              <option value="AdventureCharger">AdventureCharger</option>
+            <select className="mySelect" id="Selector" defaultValue={0}  style={{marginTop:'1%', marginBottom:'1%'}} onChange={UpdateSelector} onSelect={UpdateSelector}>
+              <option value="Crear fase..." disabled >Crear fase...</option>
+              <option value="AdventureSummary">Resumen</option>
+              <option value="AdventureCharger">Cargar Aventura</option>
               <option value="QR">QR</option>
               <option value="Quiz">Quiz</option>
               <option value="ImageCharger">Image Charger</option>
@@ -810,43 +812,18 @@ const salvarAventura = async () => {
 
         {/* Grid configurado para que tenga un hoizontal layout que contiene tanto el selector de dónde queremos que se pushee la siguiente fase como el selector de fases existente
       con el que podemos configurar una de las fases que ya tengamos */}
-        <div className='grid-container'>
-
-          {/* Esta es la seccion que permite configurar la posicion de la siguiente fase que vayamos a incluir */}
-          <div className="redBackGround">
-            <h4>Posicion a insertar la siguiente fase de la aventura</h4>
-            <div className='rows'>
-              <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFase}> - </button>
-              <p className='row'>{getState('WhereToPush', 0) + 1}º </p>
-              <button className='row' data-testid='>' onClick={AumentarPosSiguienteFase}> + </button>
-              <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
-            </div>
-          </div>
-
-          {/* Esta es la seccion que permite reconfigurar alguna fase ya existente */}
-          <div className="greenBackGround">
-            <h4>Fase que se quiere reconfigurar</h4>
-            <div className='rows'>
-              <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFaseConfigurable}> - </button>
-              <p className='row'>{getState('FaseConfigurable', 0) + 1}º </p>
-              <button className='row' data-testid='>' onClick={AumentarPosSiguienteFaseConfigurable}> + </button>
-              <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
-              <button className='row' data-testid='>' onClick={ConfigurarFase}> Configurar Fase </button>
-            </div>
-          </div>
-
-          {/* Esta es la seccion que permite reconfigurar alguna fase ya existente */}
-          <div className="redBackGround">
-            <h4>Fase que se quiere borrar</h4>
-            <div className='rows'>
-              <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFaseABorrar}> - </button>
-              <p className='row'>{getState('FaseABorrar', 0) + 1}º </p>
-              <button className='row' data-testid='>' onClick={AumentarPosSiguienteFaseABorrar}> + </button>
-              <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
-              <button className='row' data-testid='>' onClick={BorrarFase}> Borrar Fase </button>
-            </div>
+        {/* Esta es la seccion que permite configurar la posicion de la siguiente fase que vayamos a incluir */}
+        <div className="redBackGround">
+          <h4>Posicion a insertar la siguiente fase de la aventura</h4>
+          <div className='rows'>
+            <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFase}> - </button>
+            <p className='row'>{getState('WhereToPush', 0) + 1}º </p>
+            <button className='row' data-testid='>' onClick={AumentarPosSiguienteFase}> + </button>
+            <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
           </div>
         </div>
+
+    
 
         {/* Estos son los hijos que representan las diferentes "escenas" por las que podemos pasar y configurar la  aventura */}
         <StepsContext.Provider value={context}>
@@ -862,16 +839,6 @@ const salvarAventura = async () => {
           {config?.after && AfterComponent(context)}
         </StepsContext.Provider>
         
-        {/* Este boton tiene como objetivo descargar el proyecto generado */}
-        <div>
-          <button type="button" onClick={generateZip}>
-            Generar Aventura
-          </button>
-          <button type="button" onClick={salvarAventura}>
-            Guardar Aventura
-          </button>
-        </div>
-
         {/* Este boton tiene como objetivo descargar el proyecto generado */}
         {/* <a href="ProyectoUnity.zip"  download={getState('adventureName',"Nombre por defecto")}>
           <button  type="button" >
