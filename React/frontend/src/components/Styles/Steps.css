@@ -71,13 +71,13 @@ input:focus{ outline-style: groove; outline-color:blueviolet; outline-width: 3px
 }
 
 .btn-outline-red {
-  border-color: #FF0075;
-  color: #FF0075;
+  border-color: #E30000;
+  color: #E30000;
   font-weight: bold;
 }
 
 .btn-outline-red:hover {
-  background-color: #FF0075;
+  background-color: #E30000;
   color: #fcfce5;
 }
 

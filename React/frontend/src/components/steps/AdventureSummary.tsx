@@ -183,15 +183,15 @@ const eliminarFase = (e:number)=>{
             <Prueba fase = {faseActual} funcionMofify={configurarFase} funcionDelete = {eliminarFase} index={ind} />          
         ))}
 
-  {/* Este boton tiene como objetivo descargar el proyecto generado */}
-  <div>
-          <button type="button" onClick={generateZip}>
+      {/* Este boton tiene como objetivo descargar el proyecto generado */}
+      <div style={{marginTop:'2%'}}>
+          <button className="my-btn btn-outline-orange" style={{fontSize:'170%'}} type="button" onClick={generateZip}>
             Generar Aventura
           </button>
-          <button type="button" onClick={salvarAventura}>
+          <button className="my-btn btn-outline-pink" style={{fontSize:'170%',marginLeft:'15%'}} type="button" onClick={salvarAventura}>
             Guardar Aventura
           </button>
-        </div>
+      </div>
     </div>
   );
 };

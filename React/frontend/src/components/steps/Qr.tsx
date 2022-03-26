@@ -118,16 +118,15 @@ const QR = (props: StepComponentProps): JSX.Element => {
 
         <div className = 'botonesQR center'>
             <div>
+                <form style={{textAlign:'center'}} onSubmit= {downloadQRCode}>
+                    <button type="submit" className="my-btn btn-outline-orange" style={{fontSize:'150%'}}>Descargar QR</button>
+                </form>
+            </div>
+            <div style={{marginLeft:'4%'}}>
                 <form style={{textAlign:'center'}} onSubmit= {guardaFase}>
                     <button type="submit" className="my-btn btn-outline-pink" style={{fontSize:'150%'}}>Guardar fase</button>
                 </form>
             </div>
-
-            <div style={{marginLeft:'4%'}}>
-                <form style={{textAlign:'center'}} onSubmit= {downloadQRCode}>
-                    <button type="submit" className="my-btn btn-outline-orange" style={{fontSize:'150%'}}>Descargar QR</button>
-                </form>
-            </div>       
         </div>
 
     </div>

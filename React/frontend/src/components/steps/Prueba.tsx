@@ -20,8 +20,8 @@ const Prueba = (props: { fase:any, funcionMofify:any, funcionDelete: any, index:
         </Card.Body>
       </Card> */}
           <h1>Fase {indice}: {props.fase.tipo}</h1>
-          <button  onClick={()=>{props.funcionMofify(indice)}} data-testid='>' > Hacer Cambios </button>
-          <button  onClick={()=>{props.funcionDelete(indice)}} data-testid='>' > Borrar Fase </button>
+          <button className = "my-btn btn-outline-brown" onClick={()=>{props.funcionMofify(indice)}} data-testid='>' > Hacer Cambios </button>
+          <button className = "my-btn btn-outline-red" style={{marginLeft:'1%'}} onClick={()=>{props.funcionDelete(indice)}} data-testid='>' > Borrar Fase </button>
       </div>
   );
 };

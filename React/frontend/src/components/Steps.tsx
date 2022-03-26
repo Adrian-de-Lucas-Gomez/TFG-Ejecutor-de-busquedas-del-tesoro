@@ -801,6 +801,7 @@ const salvarAventura = async () => {
               <option value="ImageCharger">Image Charger</option>
               <option value="ImageTarget">Vuforia Image Target</option>
             </select>
+            <button type="button" hidden className="my-btn btn-outline-pink" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%', marginLeft:'2%'}}>Guardar fase</button>
           </div>
           <div className="center">
             <button value="AdventureCharger" onClick={BtnToStep} type="button" className="my-btn btn-outline-brown" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%'}}>Cargar aventura</button>
