@@ -167,13 +167,16 @@ const eliminarFase = (e:number)=>{
         props.setState('adventureName', e, "Nombre por defecto");
       }
 
+      const getAdventureName = (): string => {
+        return props.getState('adventureName', "Nombre por defecto");
+      }
 
   return (
     <div className = "App" >
         {/* Seccion que representa la parte superior del formulario que permite especificar qué nombre queremos que tenga la aventura 
         si no ponemos nada el nombre será el original del archivo que vayamos a descargar*/}
-        <form style={{textAlign:'center', marginTop:'1%'}} onSubmit={e => e.preventDefault()}>
-          <input className='nameForm' type="text" placeholder="Nombre de aventura" maxLength={20} size={23} onChange={e => modifyAdventureName(e.target.value)}></input>
+        <form style={{textAlign:'center', marginTop:'1%', fontSize:'120%'}} onSubmit={e => e.preventDefault()}>
+          <input className='nameForm' type="text" value={getAdventureName()} placeholder="Nombre de aventura" maxLength={30} size={35} onChange={e => modifyAdventureName(e.target.value)}></input>
         </form>
         <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'250%'}} className="Titulo" >Fases actuales:</h3>
         {/* Conjunto de bloques que muestran las fases que tenemos disponibles */}
