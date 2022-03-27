@@ -2,6 +2,10 @@
   "Gencana": "Nombre por defecto",
   "fases": [
     {
+      "tipo": "QRStage",
+      "QRText": "a"
+    },
+    {
       "tipo": "QuizStage",
       "Pregunta": "EGDFG",
       "Respuestas": [
@@ -18,10 +22,6 @@
           "isCorrect": false
         }
       ]
-    },
-    {
-      "tipo": "QRStage",
-      "QRText": "a"
     },
     {
       "tipo": "QRStage",
