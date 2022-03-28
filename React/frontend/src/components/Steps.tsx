@@ -542,6 +542,7 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     //se metan todos en la posicion X y que luego estén TODOS EN ORDEN INVERSO
     setState<number>('WhereToPush',getState<number>('WhereToPush',1)+1,1);
 
+    (document.getElementById('Selector') as HTMLSelectElement).value = "Crear fase...";
     jumpWithString("AdventureSummary");
   } 
 
