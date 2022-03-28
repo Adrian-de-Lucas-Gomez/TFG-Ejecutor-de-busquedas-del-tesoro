@@ -27,7 +27,7 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
         case "ImageStage":
           props.jump(4);
           break;
-        case "ImageTarget":
+        case "ImageTargetStage":
           props.jump(5);
           break;
     }
@@ -130,6 +130,12 @@ const eliminarFase = (e:number)=>{
     
     
     const salvarAventura = async () => {
+      let nombreAventura = props.getState('adventureName', "Nombre por defecto");
+      if(nombreAventura === "Nombre por defecto"){
+        alert("Nombre de la aventura sin asignar");
+        return;
+      }
+
       let reset = await axios.get("./reset");
       await operacionesPreDescargaProyecto();
       await mandarJson();
@@ -139,6 +145,11 @@ const eliminarFase = (e:number)=>{
     
     
       const generateZip = async () => {
+        let nombreAventura = props.getState('adventureName', "Nombre por defecto");
+        if(nombreAventura === "Nombre por defecto"){
+          alert("Nombre de la aventura sin asignar");
+          return;
+        }
         let reset = await axios.get("./reset");
         //Mando los archivos que tenga, como las imagenes
         await operacionesPreDescargaProyecto();

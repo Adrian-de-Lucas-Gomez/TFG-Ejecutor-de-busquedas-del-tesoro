@@ -27,14 +27,15 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
 
     
     useEffect(() => {
-
+        // let info = {Alert: true, MensageAlert: "Quiz debe tener una pregunta y al menos 2 respuestas posibles", datosFase: {} };
+        // props.setState<any>('faseConfigurandose',info,{});
         //En caso de que haya que sobreescribir algo, me guardo que estamos sobreescribiendo y cargo 
         //los datos que ya había de esta fase      
         if(props.getState<boolean>('SobreEscribir', false)){
 
             //Indico que ya no es necesario sobreescribir nada, porque ya nos encargamos
-            setSobreEscribir(true);
-            props.setState('SobreEscribir', false, false);
+            //setSobreEscribir(true);
+            //props.setState('SobreEscribir', false, false);
 
             //Me quedo con lo que haya que sobreescribir
             let new_state = props.getState<any>('DATA', []); 
@@ -63,6 +64,7 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
         
     const modifyQuestion = (e:string):void =>{        
         setQuestion(e);
+        prepareForSave(question,answers);
     }
 
 
@@ -75,59 +77,32 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
 
     const addAnswer = (text:string):void =>{
         console.log("Respuesta añadida");
-        setAnswers([...answers, {text, isCorrect:false}]);
+        const newAnswers =[...answers, {text, isCorrect:false}];
+        setAnswers(newAnswers);
+        prepareForSave(question,newAnswers);
     }
 
     const removeAnswer = (index:number): void =>{
         const newAnswers: Answer[] = [...answers];
         newAnswers.splice(index, 1);
         setAnswers(newAnswers);
+        prepareForSave(question,newAnswers);
     }
 
     const setAnswerAsCorrect = (index:number):void =>{
         const newAnswers: Answer[] = [...answers];
         newAnswers[index].isCorrect = !newAnswers[index].isCorrect;
         setAnswers(newAnswers);
+        prepareForSave(question,newAnswers);
+    }
+
+    const prepareForSave = (preguntaQuiz:string, respuestas:any) => {
+        let myData = {tipo:"QuizStage" ,Pregunta: preguntaQuiz, Respuestas: respuestas};
+        let info = {Alert: false, texto: "Hola", datosFase: myData };
+        props.setState<any>('faseConfigurandose',info,{});
     }
 
 
-    //Metodo utilizado para guardar los datos que actuales del
-    //quiz en el registro de fases actual de la aventura
-    const guardaFase = (e:FormElement) => {
-        //Para que no se refresque la pagina en el onSubmit
-        e.preventDefault()
-        if (question !== "" && answers.length >= 2 && answers.length <= 6){
-
-            //ME hago con el estado actual del array de info de la aventura
-            let new_state = props.getState<any>('DATA', []); 
-            //Preparo el diccionario que voy a meter en el registro
-            let myData = {tipo:"QuizStage" ,Pregunta: question, Respuestas: answers};
-
-            console.log("Sobreescribir es igual a "+sobreEscribir);
-            if(sobreEscribir === true){
-                //De esta forma se puede meter el estado en unaposicion concreta en lugar de hacerlo en el final siempre
-                let position = props.getState<number>('FaseConfigurable',1);
-                new_state.splice(position,1,myData);
-            }
-            //Si no hay que sobreescribir nada simplemente pusheamos al final de los datos
-            else {
-                //Lo almaceno en la lista de fases que tengo disponibles
-                let position = props.getState<number>('WhereToPush',1);
-                new_state.splice(position, 0, myData);
-            }
-
-
-            //Y tras modificar la copia del registro para que me contenga pongo esta copia como el registro de la aventura
-            props.setState('DATA',new_state,[]);
-
-            //Importante aumentar el indice de donde estamos metiendo nuevos elementos a la aventura para que no 
-            //se metan todos en la posicion X y que luego estén TODOS EN ORDEN INVERSO
-            props.setState<number>('WhereToPush',props.getState<number>('WhereToPush',1)+1,1);
-        }
-        else{
-            alert("Rellena bien");
-        }
-    }
 
     return (
         <div>
@@ -157,9 +132,9 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
                 ))}
             </div>
 
-            <form style={{textAlign:'center'}} onSubmit= {guardaFase}>
+            {/* <form style={{textAlign:'center'}} onSubmit= {guardaFase}>
                 <button type="submit" className="my-btn btn-outline-pink" style={{fontSize:'150%', marginTop:'1%'}}>Guardar fase</button>
-            </form>
+            </form> */}
             
         </div>
     )
