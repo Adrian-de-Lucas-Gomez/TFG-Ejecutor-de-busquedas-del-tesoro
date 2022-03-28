@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
 
         //Comprobamos antes de empezar si la primera escena de la aventura es de las pesadas
         //Si es asi se pone a precargar
-        checkLoadSceneOperations()
+        checkLoadSceneOperations();
     }
 
     /// <summary>
