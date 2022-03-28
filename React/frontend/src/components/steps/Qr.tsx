@@ -69,9 +69,9 @@ const QR = (props: StepComponentProps): JSX.Element => {
 
     const prepareForSave = (texto: string) => {
         setText(texto);
-        let myData = {tipo:"QRStage" ,QRText: texto};
-        let info = {Alert: false, MensageAlert: "Rellena bien el texto del QR", datosFase: myData };
-        props.setState<any>('faseConfigurandose',info,{});
+        let jsonData = {tipo:"QRStage" ,QRText: texto};
+        let myData = {Alert: false, MensageAlert: "Rellena bien el texto del QR", datosFase: jsonData };
+        props.setState<any>('faseConfigurandose',myData,{});
     }
 
 

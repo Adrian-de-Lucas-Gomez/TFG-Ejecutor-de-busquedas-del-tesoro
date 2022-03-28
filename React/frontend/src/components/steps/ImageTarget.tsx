@@ -10,8 +10,6 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
     const [targetName, setTargetName] = useState<string>("")
 
     type FormElement = React.FormEvent<HTMLFormElement>;
-    //Actualizar datos
-    const [sobreEscribir, setSobreEscribir] = useState<boolean>(false);
     
 
     useEffect(() => {
@@ -19,10 +17,6 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
     //En caso de que haya que sobreescribir algo, me guardo que estamos sobreescribiendo y cargo 
     //los datos que ya había de esta fase      
     if(props.getState<boolean>('SobreEscribir', false)){
-
-        //Indico que ya no es necesario sobreescribir nada, porque ya nos encargamos
-        setSobreEscribir(true);
-        props.setState('SobreEscribir', false, false);
 
         //Me quedo con lo que haya que sobreescribir
         let new_state = props.getState<any>('DATA', []); 
@@ -63,9 +57,9 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
 
 
     const prepareForSave = (llave: string, paquete: File | null , nombreTarget:string ) => {
-        let myData = {tipo:"ImageTargetStage" ,Key: llave, Package:paquete, Target: nombreTarget};
-        let info = {Alert: false, texto: "Hola", datosFase: myData };
-        props.setState<any>('faseConfigurandose',info,{});
+        let jsonData = {tipo:"ImageTargetStage" ,Key: llave, Package:paquete, Target: nombreTarget};
+        let myData = {Alert: false, texto: "Hola", datosFase: jsonData };
+        props.setState<any>('faseConfigurandose',myData,{});
     }
 
  
@@ -84,7 +78,6 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
         <div>
             <form style={{textAlign:'center',marginTop:'1%', marginBottom:'0.5%'}} >
                 <input style={{fontSize:'150%'}} type="file" onChange={changeUnityPackage} />
-                {/* <button type="submit" className="my-btn btn-outline-pink" style={{fontSize:'150%', marginLeft:'1%'}}>Guardar fase</button> */}
             </form>
         </div>
 

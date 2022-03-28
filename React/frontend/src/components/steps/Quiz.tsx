@@ -22,9 +22,6 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
     const [answers, setAnswers] = useState<Answer[]>([]);
     //Respuesta en proceso
     const [currAnswer, setCurrAnswer] = useState<string>("");
-
-    const [sobreEscribir, setSobreEscribir] = useState<boolean>(false);
-
     
     useEffect(() => {
         // let info = {Alert: true, MensageAlert: "Quiz debe tener una pregunta y al menos 2 respuestas posibles", datosFase: {} };
@@ -32,10 +29,6 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
         //En caso de que haya que sobreescribir algo, me guardo que estamos sobreescribiendo y cargo 
         //los datos que ya había de esta fase      
         if(props.getState<boolean>('SobreEscribir', false)){
-
-            //Indico que ya no es necesario sobreescribir nada, porque ya nos encargamos
-            //setSobreEscribir(true);
-            //props.setState('SobreEscribir', false, false);
 
             //Me quedo con lo que haya que sobreescribir
             let new_state = props.getState<any>('DATA', []); 
@@ -61,19 +54,16 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
     //const [quizAddFunction, setFuncion] = useState<Function>(props.funcion);
     const [index, setIndex] = useState(props.order);
 
-        
     const modifyQuestion = (e:string):void =>{        
         setQuestion(e);
         prepareForSave(question,answers);
     }
-
 
     const handleNewQuestion = (e:FormElement):void =>{
         e.preventDefault();
         addAnswer(currAnswer);
         setCurrAnswer("");
     }
-
 
     const addAnswer = (text:string):void =>{
         console.log("Respuesta añadida");
@@ -97,9 +87,9 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
     }
 
     const prepareForSave = (preguntaQuiz:string, respuestas:any) => {
-        let myData = {tipo:"QuizStage" ,Pregunta: preguntaQuiz, Respuestas: respuestas};
-        let info = {Alert: false, texto: "Hola", datosFase: myData };
-        props.setState<any>('faseConfigurandose',info,{});
+        let jsonData = {tipo:"QuizStage" ,Pregunta: preguntaQuiz, Respuestas: respuestas};
+        let myData = {Alert: false, texto: "Hola", datosFase: jsonData };
+        props.setState<any>('faseConfigurandose',myData,{});
     }
 
 
@@ -130,12 +120,7 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
                 </div>
                 </Fragment>
                 ))}
-            </div>
-
-            {/* <form style={{textAlign:'center'}} onSubmit= {guardaFase}>
-                <button type="submit" className="my-btn btn-outline-pink" style={{fontSize:'150%', marginTop:'1%'}}>Guardar fase</button>
-            </form> */}
-            
+            </div>        
         </div>
     )
 

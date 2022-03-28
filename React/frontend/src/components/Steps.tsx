@@ -533,11 +533,16 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
       new_state.splice(position, 0, newData.datosFase);
     }
     console.log("Los datos ahora son: "+JSON.stringify(new_state));
+
+    //Establezco que los datos de la aventura son aquellos que ya había y el nuevo que acabo de añadir
     setState('DATA',new_state,[]);
     setState<boolean>('SobreEscribir',false,false);
+
     //Importante aumentar el indice de donde estamos metiendo nuevos elementos a la aventura para que no 
     //se metan todos en la posicion X y que luego estén TODOS EN ORDEN INVERSO
     setState<number>('WhereToPush',getState<number>('WhereToPush',1)+1,1);
+
+    jumpWithString("AdventureSummary");
   } 
 
   return (
@@ -563,7 +568,7 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
               <option value="ImageCharger">Image Charger</option>
               <option value="ImageTarget">Vuforia Image Target</option>
             </select>
-            <button type="button"   onClick={guardarFase} className="my-btn btn-outline-pink" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%', marginLeft:'2%'}}>Guardar fase</button>
+            <button type="button" onClick={guardarFase} className="my-btn btn-outline-pink" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%', marginLeft:'2%'}}>Guardar fase</button>
           </div>
           <div className="center">
             <button value="AdventureCharger" onClick={BtnToStep} type="button" className="my-btn btn-outline-brown" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%'}}>Cargar aventura</button>
