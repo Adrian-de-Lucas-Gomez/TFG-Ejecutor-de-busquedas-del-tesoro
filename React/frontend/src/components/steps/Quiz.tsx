@@ -22,19 +22,13 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
     const [answers, setAnswers] = useState<Answer[]>([]);
     //Respuesta en proceso
     const [currAnswer, setCurrAnswer] = useState<string>("");
-
-    const [sobreEscribir, setSobreEscribir] = useState<boolean>(false);
-
     
     useEffect(() => {
-
+        // let info = {Alert: true, MensageAlert: "Quiz debe tener una pregunta y al menos 2 respuestas posibles", datosFase: {} };
+        // props.setState<any>('faseConfigurandose',info,{});
         //En caso de que haya que sobreescribir algo, me guardo que estamos sobreescribiendo y cargo 
         //los datos que ya había de esta fase      
         if(props.getState<boolean>('SobreEscribir', false)){
-
-            //Indico que ya no es necesario sobreescribir nada, porque ya nos encargamos
-            setSobreEscribir(true);
-            props.setState('SobreEscribir', false, false);
 
             //Me quedo con lo que haya que sobreescribir
             let new_state = props.getState<any>('DATA', []); 
@@ -60,11 +54,10 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
     //const [quizAddFunction, setFuncion] = useState<Function>(props.funcion);
     const [index, setIndex] = useState(props.order);
 
-        
     const modifyQuestion = (e:string):void =>{        
         setQuestion(e);
+        prepareForSave(question,answers);
     }
-
 
     const handleNewQuestion = (e:FormElement):void =>{
         e.preventDefault();
@@ -72,100 +65,62 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
         setCurrAnswer("");
     }
 
-
     const addAnswer = (text:string):void =>{
         console.log("Respuesta añadida");
-        setAnswers([...answers, {text, isCorrect:false}]);
+        const newAnswers =[...answers, {text, isCorrect:false}];
+        setAnswers(newAnswers);
+        prepareForSave(question,newAnswers);
     }
 
     const removeAnswer = (index:number): void =>{
         const newAnswers: Answer[] = [...answers];
         newAnswers.splice(index, 1);
         setAnswers(newAnswers);
+        prepareForSave(question,newAnswers);
     }
 
     const setAnswerAsCorrect = (index:number):void =>{
         const newAnswers: Answer[] = [...answers];
         newAnswers[index].isCorrect = !newAnswers[index].isCorrect;
         setAnswers(newAnswers);
+        prepareForSave(question,newAnswers);
+    }
+
+    const prepareForSave = (preguntaQuiz:string, respuestas:any) => {
+        let jsonData = {tipo:"QuizStage" ,Pregunta: preguntaQuiz, Respuestas: respuestas};
+        let myData = {Alert: false, texto: "Hola", datosFase: jsonData };
+        props.setState<any>('faseConfigurandose',myData,{});
     }
 
 
-    //Metodo utilizado para guardar los datos que actuales del
-    //quiz en el registro de fases actual de la aventura
-    const guardaFase = (e:FormElement) => {
-        //Para que no se refresque la pagina en el onSubmit
-        e.preventDefault()
-        if (question !== "" && answers.length >= 2 && answers.length <= 6){
-
-            //ME hago con el estado actual del array de info de la aventura
-            let new_state = props.getState<any>('DATA', []); 
-            //Preparo el diccionario que voy a meter en el registro
-            let myData = {tipo:"QuizStage" ,Pregunta: question, Respuestas: answers};
-
-            console.log("Sobreescribir es igual a "+sobreEscribir);
-            if(sobreEscribir === true){
-                //De esta forma se puede meter el estado en unaposicion concreta en lugar de hacerlo en el final siempre
-                let position = props.getState<number>('FaseConfigurable',1);
-                new_state.splice(position,1,myData);
-            }
-            //Si no hay que sobreescribir nada simplemente pusheamos al final de los datos
-            else {
-                //Lo almaceno en la lista de fases que tengo disponibles
-                let position = props.getState<number>('WhereToPush',1);
-                new_state.splice(position, 0, myData);
-            }
-
-
-            //Y tras modificar la copia del registro para que me contenga pongo esta copia como el registro de la aventura
-            props.setState('DATA',new_state,[]);
-
-            //Importante aumentar el indice de donde estamos metiendo nuevos elementos a la aventura para que no 
-            //se metan todos en la posicion X y que luego estén TODOS EN ORDEN INVERSO
-            props.setState<number>('WhereToPush',props.getState<number>('WhereToPush',1)+1,1);
-        }
-        else{
-            alert("Rellena bien");
-        }
-    }
 
     return (
         <div>
-            <h2 className="Titulo"  >Configuracion de evento de quiz:</h2>
-            <form onSubmit={e => e.preventDefault() }>
-                <h3>Añada aqui la pregunta del cuestionario</h3>
-                <input className="form-control" type="text" required value={question} onChange ={ e =>modifyQuestion(e.target.value)}></input>
+            <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'200%'}} className="Titulo" >Configuración de fase Quiz</h3>
+            <div className="center">
+                <form onSubmit={e => e.preventDefault()}>
+                    <input placeholder="Pregunta del cuestionario..." className='input-text' type="text" size={60} required value={question} onChange ={ e =>modifyQuestion(e.target.value)}></input>
+                </form>
+            </div>
+            <h2 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'180%'}} className="Titulo">Pregunta actual: {question}</h2>
+
+            <form  style={{marginBottom:'1%'}} className="center" onSubmit={handleNewQuestion}>
+                <input placeholder="Respuesta posible..." className='input-text' type="text" size={60} required value={currAnswer} onChange={e =>setCurrAnswer(e.target.value)}></input>
+                <button style={{marginLeft:'0.3%'}} className="my-btn btn-outline-orange" type="submit">Añadir respuesta</button>
             </form>
 
-            <h2>Pregunta actual: {question}</h2>
-
-            <form onSubmit={handleNewQuestion}>
-                <input className= "form-control" type="text" required value={currAnswer} onChange={e =>setCurrAnswer(e.target.value)}></input>
-                <button className="btn btn-outline-primary mt-2" type="submit">Add Answer</button>
-            </form>
-            
-            <br/>
-            <br/>
-            <br/>
-
-            <section>
-            {answers.map((answer: Answer, index:number) => (
-            <Fragment key={"Respuesta: " + index}>
-               <div className="text-md-left" style={{textDecoration: answer.isCorrect ? "underline" : " "}}>{answer.text}</div>
-               <button className="btn btn-outline-primary mt-2" onClick = {():void => setAnswerAsCorrect(index)}>
-                   <div>{!answer.isCorrect ? "Incorrecta" : "Correcta"}</div>
-               </button>
-               <button className = "btn btn-outline-danger mt-2" onClick={():void => removeAnswer(index)}>Borrar respuesta</button>
-           </Fragment>
-            ))}
-            </section>
-
-            <br/>
-            <br/>
-            <br/>
-            <form onSubmit= {guardaFase}>
-                <button className='SaveButton' type="submit">Guardar Fase</button>
-            </form>
+            <div>
+                {answers.map((answer: Answer, index:number) => (
+                <Fragment key={"Respuesta: " + index}>
+                <div>
+                    <button className = "my-btn btn-outline-red" style={{marginLeft:'20%'}} onClick={():void => removeAnswer(index)}>Borrar respuesta</button> 
+                    <text className="Titulo" style={{fontSize:'130%', marginLeft:'1%'}}>{!answer.isCorrect ? "Incorrecta" : "Correcta"}</text>     
+                    <input style={{marginLeft:'1%'}} type="checkbox" className="btn-check" id="btn-check-outlined" autoComplete="off" onClick = {():void => setAnswerAsCorrect(index)}></input>
+                    <text className="Titulo" style={{fontSize:'130%', marginLeft:'1%'}}>{answer.text}</text>
+                </div>
+                </Fragment>
+                ))}
+            </div>        
         </div>
     )
 

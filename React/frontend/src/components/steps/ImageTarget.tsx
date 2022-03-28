@@ -10,8 +10,6 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
     const [targetName, setTargetName] = useState<string>("")
 
     type FormElement = React.FormEvent<HTMLFormElement>;
-    //Actualizar datos
-    const [sobreEscribir, setSobreEscribir] = useState<boolean>(false);
     
 
     useEffect(() => {
@@ -19,10 +17,6 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
     //En caso de que haya que sobreescribir algo, me guardo que estamos sobreescribiendo y cargo 
     //los datos que ya había de esta fase      
     if(props.getState<boolean>('SobreEscribir', false)){
-
-        //Indico que ya no es necesario sobreescribir nada, porque ya nos encargamos
-        setSobreEscribir(true);
-        props.setState('SobreEscribir', false, false);
 
         //Me quedo con lo que haya que sobreescribir
         let new_state = props.getState<any>('DATA', []); 
@@ -41,42 +35,6 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
     //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
   }, [props.getState<boolean>('SobreEscribir', false)]);
 
-
-    const guardaFase = (e:FormElement) => {
-        //Para que no se refresque la pagina en el onSubmit
-        e.preventDefault();
-
-        if(key !== "" && targetName !== "" && unityPackage !== null){
-            console.log("Llamada a guardar fase")
-            //ME hago con el estado actual del array de info de la aventura
-            let new_state = props.getState<any>('DATA', []); 
-            //Preparo los datos que voy a añadir
-            let myData = {tipo:"ImageTargetStage" ,Key: key, Package:unityPackage, Target: targetName};
-            console.log(new_state);
-
-            //Los añado a una copia del estado y establezco esta copia como el estadoa actual de las fases            
-            if(sobreEscribir === true){
-                //De esta forma se puede meter el estado en una posicion concreta en lugar de hacerlo en el final siempre
-                let position = props.getState<number>('FaseConfigurable',1);
-                new_state.splice(position,1,myData);
-            }
-            //Si no hay que sobreescribir nada simplemente pusheamos al final de los datos
-            else {
-                //Lo almaceno en la lista de fases que tengo disponibles
-                let position = props.getState<number>('WhereToPush',1);
-                new_state.splice(position, 0, myData);
-            }
-            
-            props.setState('DATA',new_state,[]);
-            //Importante aumentar el indice de donde estamos metiendo nuevos elementos a la aventura para que no 
-            //se metan todos en la posicion X y que luego estén TODOS EN ORDEN INVERSO
-            props.setState<number>('WhereToPush',props.getState<number>('WhereToPush',1)+1,1);
-        }
-        else{
-            alert("Rellena bien");
-        }
-    }
-
     //Cambio de UnityPackage
     const changeUnityPackage = (e:React.ChangeEvent<HTMLInputElement>):void => {  
         
@@ -88,6 +46,7 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
             if( extension === 'unitypackage'){
                 console.log("Updated file")
                 setUnityPackage( e.target.files?.item(0))
+                prepareForSave(key, e.target.files?.item(0), targetName);
             }
             else
                 alert("Por favor introduce un UnityPackage")
@@ -96,30 +55,30 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
         else setUnityPackage(null);
     }
 
+
+    const prepareForSave = (llave: string, paquete: File | null , nombreTarget:string ) => {
+        let jsonData = {tipo:"ImageTargetStage" ,Key: llave, Package:paquete, Target: nombreTarget};
+        let myData = {Alert: false, texto: "Hola", datosFase: jsonData };
+        props.setState<any>('faseConfigurandose',myData,{});
+    }
+
  
     return (
     <div >
-        <h3 className="Titulo" >Configuración de un target de vuforia</h3>
-        <form onSubmit={e => e.preventDefault()}>
-            <h2>Introduzca aquí la key de vuforia</h2>
-            <input  className='Key' type="text" required value={key} onChange ={ e =>setKey(e.target.value)}></input>
+        <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'200%'}} className="Titulo" >Configuración de fase Vuforia Image Target</h3>
+        
+        <form className="center" onSubmit={e => e.preventDefault()}>
+            <input size={80} placeholder="Introduzca aquí la key de vuforia..." className='input-text' type="text" required value={key} onChange ={ e =>{setKey(e.target.value); prepareForSave(e.target.value, unityPackage, targetName);}}></input>
         </form>
 
-        <form onSubmit={e => e.preventDefault()}>
-            <h2>Introduzca aquí el nombre del target a usar</h2>
-            <input  className='Target' type="text" required value={targetName} onChange ={ e =>setTargetName(e.target.value)}></input>
+        <form style={{marginTop:'1%'}} className="center" onSubmit={e => e.preventDefault()}>
+            <input size={80} placeholder="Introduzca aquí el nombre del target a usar..." className='input-text' type="text" required value={targetName} onChange ={ e =>{setTargetName(e.target.value);prepareForSave(key, unityPackage, e.target.value);}}></input>
         </form>
 
-        <div className="content-modal">
-            <input type="file" onChange={changeUnityPackage} />
-        </div>
-
-        <div className = 'botonesTarget'>
-            <div className="fondoB">
-                <form onSubmit= {guardaFase}>
-                        <button type="submit">Guardar Fase</button>
-                </form>
-            </div>    
+        <div>
+            <form style={{textAlign:'center',marginTop:'1%', marginBottom:'0.5%'}} >
+                <input style={{fontSize:'150%'}} type="file" onChange={changeUnityPackage} />
+            </form>
         </div>
 
     </div>

@@ -14,19 +14,20 @@ const QR = (props: StepComponentProps): JSX.Element => {
     const [sobreEscribir, setSobreEscribir] = useState<boolean>(false);
     
     useEffect(() => {
+    // let info = {Alert: true, MensageAlert: "Rellena bien el texto del QR", datosFase: {} };
+    // props.setState<any>('faseConfigurandose',info,{});
 
     //En caso de que haya que sobreescribir algo, me guardo que estamos sobreescribiendo y cargo 
     //los datos que ya había de esta fase      
     if(props.getState<boolean>('SobreEscribir', false)){
 
         //Indico que ya no es necesario sobreescribir nada, porque ya nos encargamos
-        setSobreEscribir(true);
-        props.setState('SobreEscribir', false, false);
+        //setSobreEscribir(true);
+        //props.setState('SobreEscribir', false, false);
 
         //Me quedo con lo que haya que sobreescribir
         let new_state = props.getState<any>('DATA', []); 
         let estadoACargar = new_state[props.getState<number>('FaseConfigurable',1)];
-
         //Me guardo tando la pregunta como las respuestas que había configuradas
         setText(estadoACargar.QRText);
     }
@@ -66,68 +67,36 @@ const QR = (props: StepComponentProps): JSX.Element => {
         document.body.removeChild(anchor);
       };
 
-
-    //Metodo utilizado para guardar los datos que actuales del
-    //QR en el registro de fases actual de la aventura
-    const guardaFase = (e:FormElement) => {
-        //Para que no se refresque la pagina en el onSubmit
-        e.preventDefault();
-
-        //Miro a ver si hay algo que pueda guardar
-        if (text !== ""){
-            console.log("Llamada a guardar fase")
-            //ME hago con el estado actual del array de info de la aventura
-            let new_state = props.getState<any>('DATA', []); 
-            //Preparo los datos que voy a añadir
-            let myData = {tipo:"QRStage" ,QRText: text};
-            console.log(new_state);
-
-            //Los añado a una copia del estado y establezco esta copia como el estadoa actual de las fases            
-            if(sobreEscribir === true){
-                //De esta forma se puede meter el estado en unaposicion concreta en lugar de hacerlo en el final siempre
-                let position = props.getState<number>('FaseConfigurable',1);
-                new_state.splice(position,1,myData);
-            }
-            //Si no hay que sobreescribir nada simplemente pusheamos al final de los datos
-            else {
-                //Lo almaceno en la lista de fases que tengo disponibles
-                let position = props.getState<number>('WhereToPush',1);
-                new_state.splice(position, 0, myData);
-            }
-            
-            props.setState('DATA',new_state,[]);
-            //Importante aumentar el indice de donde estamos metiendo nuevos elementos a la aventura para que no 
-            //se metan todos en la posicion X y que luego estén TODOS EN ORDEN INVERSO
-            props.setState<number>('WhereToPush',props.getState<number>('WhereToPush',1)+1,1);
-        }
-        else{
-            alert("Rellena bien");
-        }
+    const prepareForSave = (texto: string) => {
+        setText(texto);
+        let jsonData = {tipo:"QRStage" ,QRText: texto};
+        let myData = {Alert: false, MensageAlert: "Rellena bien el texto del QR", datosFase: jsonData };
+        props.setState<any>('faseConfigurandose',myData,{});
     }
+
 
  
     return (
     <div >
-        <h3 className="Titulo" >Añada aqui el link al que reedirige el  QR:</h3>
-        <form onSubmit={e => e.preventDefault()}>
-            <input  className='QRForm' type="text" required value={text} onChange ={ e =>setText(e.target.value)}></input>
+        <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'200%'}} className="Titulo" >Configuración de fase QR</h3>
+        <form className="center" style={{marginBottom:'1%'}} onSubmit={e => e.preventDefault()}>
+            <input placeholder="Añada aqui el texto o enlace al que reedirige el QR..." className='input-text' type="text" size={60} required value={text} onChange ={ e =>{prepareForSave(e.target.value);}}></input>
         </form>
         <div ref={qrRef}>
             <QRCode className='QRImage' value={text} size={400} fgColor="black" bgColor="white" level="H"  />
         </div>
 
-        <div className = 'botonesQR'>
-            <div className="fondoB">
-                <form onSubmit= {guardaFase}>
-                        <button className='QRButton' type="submit">Guardar Fase</button>
+        <div className = 'botonesQR center'>
+            <div>
+                <form style={{textAlign:'center'}} onSubmit= {downloadQRCode}>
+                    <button type="submit" className="my-btn btn-outline-orange" style={{fontSize:'150%'}}>Descargar QR</button>
                 </form>
             </div>
-
-            <div className="fondoA">
-                <form onSubmit= {downloadQRCode}>
-                    <button className='QRButton' type="submit">Descargar QR</button>
+            {/* <div style={{marginLeft:'4%'}}>
+                <form style={{textAlign:'center'}} onSubmit= {guardaFase}>
+                    <button type="submit" className="my-btn btn-outline-pink" style={{fontSize:'150%'}}>Guardar fase</button>
                 </form>
-            </div>       
+            </div> */}
         </div>
 
     </div>

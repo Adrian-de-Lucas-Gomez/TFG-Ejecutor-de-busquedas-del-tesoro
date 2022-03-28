@@ -26,7 +26,10 @@
 
 .Titulo {
   position: relative;
-  text-align: center
+  text-align: center;
+  font-size: 300%;
+  color: #7700ff;
+  font-weight: bold;
 }
 
 .App-link {
