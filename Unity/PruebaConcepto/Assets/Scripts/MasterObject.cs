@@ -19,7 +19,7 @@ public class MasterObject : MonoBehaviour
     Stage myStage;
 
     //Tipos de fases en las que se puede encontrar este objeto
-    enum StageType {Start, QuizStage, QRStage, ImageStage, ImageTargetStage, End };
+    enum StageType {Start, QuizStage, QRStage, ImageStage, ImageTargetStage, GPSStage, End };
 
     //Fase que representa la escena en la que estamos, en sus representaciones de string como de enum
     [SerializeField]
@@ -53,6 +53,9 @@ public class MasterObject : MonoBehaviour
             case StageType.ImageTargetStage:
                 myStageTypeStringRepresentation = "ImageTargetStage";
                 break;
+            case StageType.GPSStage:
+                myStageTypeStringRepresentation = "GPSStage";
+                break;
             case StageType.End:
                 myStageTypeStringRepresentation = "End";
                 break;
@@ -79,6 +82,8 @@ public class MasterObject : MonoBehaviour
             mySceneIsPlaying = false;
             sceneObjectsParent.SetActive(false);
         }
+
+        Debug.Log(myStageTypeStringRepresentation + " " + sceneObjectsParent.activeSelf);
     }
 
     //este método tiene como objetivo que las fases una vez hayan terminado de ejecutarse que avisen a este padre para que limpie la escena porque la fase se ha acabado

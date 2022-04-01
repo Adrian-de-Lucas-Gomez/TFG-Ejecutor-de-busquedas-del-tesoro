@@ -2,8 +2,9 @@
   "Gencana": "Nombre por defecto",
   "fases": [
     {
-      "tipo": "QRStage",
-      "QRText": "a"
+      "tipo": "GPSStage",
+      "GPSLongitude": "ola",
+      "GPSLatitude": "PUTA"
     },
     {
       "tipo": "QuizStage",

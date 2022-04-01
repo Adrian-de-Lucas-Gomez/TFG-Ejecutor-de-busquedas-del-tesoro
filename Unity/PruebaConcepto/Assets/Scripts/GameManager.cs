@@ -123,6 +123,13 @@ public class GameManager : MonoBehaviour
                         adventureStages.Enqueue(newTarget);
                         break;
                     }
+                case "GPSStage":
+                    {
+                        GPSInfo newGPS = new GPSInfo();
+                        newGPS.readFromJSON((JObject)misFases[i]);
+                        adventureStages.Enqueue(newGPS);
+                        break;
+                    }
             }
         }
         adventureStages.Enqueue(end);
