@@ -580,13 +580,13 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
         {/* Grid configurado para que tenga un hoizontal layout que contiene tanto el selector de dónde queremos que se pushee la siguiente fase como el selector de fases existente
       con el que podemos configurar una de las fases que ya tengamos */}
         {/* Esta es la seccion que permite configurar la posicion de la siguiente fase que vayamos a incluir */}
-        <div className="redBackGround">
+        <div >
           <h4>Posicion a insertar la siguiente fase de la aventura</h4>
-          <div className='rows'>
-            <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFase}> - </button>
-            <p className='row'>{getState('WhereToPush', 0) + 1}º </p>
-            <button className='row' data-testid='>' onClick={AumentarPosSiguienteFase}> + </button>
-            <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
+          <div >
+            <button  data-testid='<' onClick={DisminuirPosSiguienteFase}> - </button>
+            <p >{getState('WhereToPush', 0) + 1}º </p>
+            <button  data-testid='>' onClick={AumentarPosSiguienteFase}> + </button>
+            <p >de los {getState<any>('DATA', []).length} actuales</p>
           </div>
         </div>
 

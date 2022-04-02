@@ -1,7 +1,8 @@
 import { StepComponentProps } from '../Steps';
 import React, {useState, useRef, useEffect, forwardRef, useImperativeHandle} from "react"
 import axios from "axios"
-import Prueba from './Prueba'
+import CartaFase from './CartaFase'
+import CartaAventura from './CartaAventura';
 
 
 const AdventureCharger = (props: StepComponentProps): JSX.Element => {
@@ -98,18 +99,59 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
     console.log("La aventura a la que apuntamos ahora es "+aventurasDisponibles[result]);
     setText(aventurasDisponibles[result]);
   } 
-  return (
-    <div className="redBackGround">
-        <h4>Cargar Aventura Del Servidor: {text}</h4>
-        <div className='rows'>
-          <button className='row' onClick={disminuirIndice} data-testid='<'> - </button>
-          <p className='row'>{indiceAventura+1}º </p>
-          <button className='row' onClick={aumentarIndice} data-testid='>' > + </button>
-          <p className='row'>de las {aventurasDisponibles.length} disponibles</p>
 
-          
-          {/* Boton para mandar a que nos carguen una aventura en concreto */}
-          <button className='row' onClick={cargarAventura} data-testid='>' > Cargar aventura </button>
+  const ponerACargar = async (index:number)=>{
+    if(aventurasDisponibles.length <1 ){
+      alert("No hay aventuras disponibles"); 
+      return;
+    }
+    //Le pido al server una aventura con un nombre que se le indica, y cuando nos llegue la cargamos en nuestro estado global de react
+    var jsonFinal = {Nombre: aventurasDisponibles[index] }
+
+    //Solicito el json de la aventura en cuestion
+    const response = await axios.post("./dame-aventura", {json:JSON.stringify(jsonFinal, null, 2)});
+    props.setState('adventureName',JSON.parse(response.data.AventuraGuardada).Gencana, "Nombre por defecto");
+    
+    //Miro por el json para buscar las  imagenes que contiene la aventura
+    var fases = JSON.parse(response.data.AventuraGuardada).fases;
+    for(let i = 0; i < fases.length;i++){
+      var faseActual = fases[i];
+      //En caso de que sea una fase de tipo imagen
+      if(faseActual.tipo === "ImageStage"){   
+        //pido al server que me de una imagen que s ellame asi
+        var fileName=faseActual.Imagen;
+        let reset = await axios.get("./getFile/"+fileName, {responseType: 'arraybuffer',headers: {'Content-Type': 'application/json'},params: {json:"JSON.stringify(jsonFinal, null, 2)"}});
+        const type = reset.headers['content-type']
+        const blob = new Blob([reset.data], { type: type })
+
+        //Genero un archivo con dicho archivo que me han dado y me lo guardo
+        let myData = {tipo:"ImageStage" ,Imagen: new File([blob], fileName)};
+        fases.splice(i,1,myData);
+        console.log("Acabamos de recuperar una imagen: "+fileName);
+      }
+  }
+
+    //Como hemos cargado cosas vamos a resetear los indices relacionados con la configuración de la aventura
+    props.setState<number>('WhereToPush',0,0);
+    props.setState<number>('FaseConfigurable',0,0);
+    props.setState<number>('FaseABorrar',0,0);
+
+    //Me guardo las fases que acabamos de conseguir tras cargar la aventura
+    props.setState('DATA',fases, []);
+
+    //Esto nos lleva a la pantalla de resumen de fase
+    props.jump(0);
+}
+
+  return (
+    <div className = "App" >
+        <h1>Aventuras disponibles para cargar</h1>
+        <div >
+            {
+          //@ts-ignore 
+          aventurasDisponibles.map((faseActual,ind) => (
+            <CartaAventura fase = {faseActual} funcionCargarAventura={ponerACargar} index={ind} />          
+          ))}
         </div>
       </div>
   );
