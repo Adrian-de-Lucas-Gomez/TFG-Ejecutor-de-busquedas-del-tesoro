@@ -53,18 +53,18 @@ public class GPSScanner : MonoBehaviour
             Debug.Log(Input.location.status);
 
             // If the connection succeeded, this retrieves the device's current location and displays it in the Console window.
-            //print("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
-            UpdateCoordinates(Input.location.lastData.longitude, Input.location.lastData.latitude);
+            //print("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);           
+            InvokeRepeating("UpdateCoordinates", 0.0f, 2.0f);
         }
 
         // Stops the location service if there is no need to query location updates continuously.
         Input.location.Stop();
     }
 
-    void UpdateCoordinates(float longitude , float latitude)
+    void UpdateCoordinates()
     {
-        ActualLongitude = longitude;
-        ActualLatitude = latitude;
+        ActualLongitude = Input.location.lastData.longitude;
+        ActualLatitude = Input.location.lastData.latitude;
     }
 
     public float GetLatitude()
