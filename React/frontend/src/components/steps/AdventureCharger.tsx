@@ -1,6 +1,7 @@
 import { StepComponentProps } from '../Steps';
 import React, {useState, useRef, useEffect, forwardRef, useImperativeHandle} from "react"
 import axios from "axios"
+import Prueba from './Prueba'
 
 
 const AdventureCharger = (props: StepComponentProps): JSX.Element => {
@@ -97,7 +98,6 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
     console.log("La aventura a la que apuntamos ahora es "+aventurasDisponibles[result]);
     setText(aventurasDisponibles[result]);
   } 
-
   return (
     <div className="redBackGround">
         <h4>Cargar Aventura Del Servidor: {text}</h4>
@@ -107,6 +107,7 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
           <button className='row' onClick={aumentarIndice} data-testid='>' > + </button>
           <p className='row'>de las {aventurasDisponibles.length} disponibles</p>
 
+          
           {/* Boton para mandar a que nos carguen una aventura en concreto */}
           <button className='row' onClick={cargarAventura} data-testid='>' > Cargar aventura </button>
         </div>

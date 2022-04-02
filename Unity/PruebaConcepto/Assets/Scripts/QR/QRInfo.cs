@@ -18,6 +18,6 @@ public class QRInfo : AdventureInfo
         stage = myInfo["tipo"].Value<string>();
 
         //Obtengo los datos del qr
-        QRValue = myInfo["qrValue"].Value<string>();
+        QRValue = myInfo["QRText"].Value<string>();
     }
 }

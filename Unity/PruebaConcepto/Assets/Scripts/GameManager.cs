@@ -61,6 +61,10 @@ public class GameManager : MonoBehaviour
         _preloadedScene = new KeyValuePair<string, AsyncOperation>("", null);
 
         loadAllSmallScenes();
+
+        //Comprobamos antes de empezar si la primera escena de la aventura es de las pesadas
+        //Si es asi se pone a precargar
+        checkLoadSceneOperations();
     }
 
     /// <summary>
@@ -208,12 +212,14 @@ public class GameManager : MonoBehaviour
             checkToUnloadCompletedScene(completedScene);
             //Nos ocupamos de la cámara para que no de problemas en caso de que cambiemos de modo normal a AR y viceversa
             checkForARScene();
+
         }
         else    //Si es la misma escena hay que recargar los recursos con el Init
         {
             Debug.Log("Misma fase, hay que recargarla");
             InitCurrentStage();
         }
+
 
         //Hay que hacerse cargo de empezar a cargar la siguiente escena en caso de que esta sea grande 
         checkLoadSceneOperations();
@@ -242,11 +248,14 @@ public class GameManager : MonoBehaviour
         //Nos hacemos cargo en caso de que haga falta el posible 10% de carga de la siguiente escena en caso de que esta hubiera estado en espera
         if (_preloadedScene.Value != null)
         {
+            
             ActivatePreloadedScene();
             _preloadedScene = new KeyValuePair<string, AsyncOperation>("", null);
         }
-        //Miramos si la siguiente escena a esta necesita de precarga
-        if (adventureStages.ToArray().Length > 1 && adventureStages.ToArray()[1].stage == "QRStage")
+        //Miramos si la siguiente escena a esta necesita de precarga pero si es tambien pesada pero del mismo tipo no la precargamos
+        if (adventureStages.ToArray().Length > 1 && 
+            adventureStages.ToArray()[1].stage == "QRStage" && 
+            adventureStages.ToArray()[0].stage != "QRStage")
         {
             PreloadNextScene();
         }

@@ -7,6 +7,8 @@ public class QRStage : Stage
     [Tooltip("Escaner de QR")]
     [SerializeField] QRScanner scanner;
 
+    [SerializeField] GameObject nextPanel;
+
     QRInfo qrData;
     string qrValue;
     bool changeSceneRequest = false;
@@ -18,8 +20,14 @@ public class QRStage : Stage
 
 	private void Update()
 	{
-        if (changeSceneRequest /*|| Input.GetMouseButtonDown(0) || Input.touchCount > 0*/)
-            GameManager.getInstance().GoToNextPhase();
+        //if (changeSceneRequest /*|| Input.GetMouseButtonDown(0) || Input.touchCount > 0*/)
+        //    GameManager.getInstance().GoToNextPhase();
+    }
+
+    public void MoveToNextPhase()
+	{
+        nextPanel.SetActive(false);
+        GameManager.getInstance().GoToNextPhase();
     }
 
     public override void Init(AdventureInfo data)
@@ -35,6 +43,7 @@ public class QRStage : Stage
 		{
             Debug.Log("Well Done");
             changeSceneRequest = true;
+            nextPanel.SetActive(true);
         }
 	}
 }

@@ -76,10 +76,10 @@ public class QRScanner : MonoBehaviour
         {
             if (QCARoutput != null)
             {
-                if (updC)
+                if (updC)   //Si toca volver a tomar una muestra
                 {
                     updC = false;
-                    Invoke("ForceUpdateC", 1f);
+                    Invoke("ForceUpdateC", 1f);     //Cada x tiempo volvemos a activar el tomar una muestra (tema de rendimiento)
                     if (QCARoutput == null)
                     {
                         return;
