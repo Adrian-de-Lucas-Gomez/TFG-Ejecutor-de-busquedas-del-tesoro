@@ -83,7 +83,7 @@ public class MasterObject : MonoBehaviour
             sceneObjectsParent.SetActive(false);
         }
 
-        Debug.Log(myStageTypeStringRepresentation + " " + sceneObjectsParent.activeSelf);
+        //Debug.Log(myStageTypeStringRepresentation + " " + sceneObjectsParent.activeSelf);
     }
 
     //este método tiene como objetivo que las fases una vez hayan terminado de ejecutarse que avisen a este padre para que limpie la escena porque la fase se ha acabado

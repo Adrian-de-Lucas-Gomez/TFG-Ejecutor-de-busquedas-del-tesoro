@@ -6,14 +6,25 @@ public class GPSScanner : MonoBehaviour
     private float ActualLongitude;
     private float ActualLatitude;
 
-    IEnumerator Start()
+    public IEnumerator Start()
     {
-        // Check if the user has location service enabled.
-        if (!Input.location.isEnabledByUser)
+#if UNITY_EDITOR
+        // No permission handling needed in Editor
+#elif UNITY_ANDROID
+        if (!UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.CoarseLocation)) {
+            UnityEngine.Android.Permission.RequestUserPermission(UnityEngine.Android.Permission.CoarseLocation);
+        }
+
+        // First, check if user has location service enabled
+        if (!UnityEngine.Input.location.isEnabledByUser) {
+            // TODO Failure
+            Debug.LogFormat("Android and Location not enabled");
             yield break;
+        }
+#endif
 
         // Starts the location service.
-        Input.location.Start();
+        Input.location.Start(500f, 500f);
 
         // Waits until the location service initializes
         int maxWait = 20;
@@ -21,6 +32,7 @@ public class GPSScanner : MonoBehaviour
         {
             yield return new WaitForSeconds(1);
             maxWait--;
+            Debug.Log(maxWait.ToString());
         }
 
         // If the service didn't initialize in 20 seconds this cancels location service use.
@@ -38,8 +50,10 @@ public class GPSScanner : MonoBehaviour
         }
         else
         {
+            Debug.Log(Input.location.status);
+
             // If the connection succeeded, this retrieves the device's current location and displays it in the Console window.
-            print("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
+            //print("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
             UpdateCoordinates(Input.location.lastData.longitude, Input.location.lastData.latitude);
         }
 

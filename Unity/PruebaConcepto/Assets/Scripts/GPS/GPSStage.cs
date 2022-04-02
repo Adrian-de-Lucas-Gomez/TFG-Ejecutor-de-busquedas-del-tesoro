@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.Globalization;
 
 public class GPSStage : Stage
 {
@@ -40,6 +41,8 @@ public class GPSStage : Stage
 
     public override void Init(AdventureInfo data)
     {
+        StartCoroutine(scanner.Start());
+
         gpsData = (GPSInfo)data;
         GPSLongitude = gpsData.GPSLongitude;
         GPSLatitude = gpsData.GPSLatitude;
@@ -58,8 +61,12 @@ public class GPSStage : Stage
 
     private void CalculatePathDirection(float longitude, float latitude)
     {
-        Vector2 pathDir = new Vector2(float.Parse(gpsData.GPSLongitude) - longitude, 
-                                        float.Parse(gpsData.GPSLatitude) - latitude);
-        Debug.Log("X: " + pathDir.x.ToString() + "Y: " + pathDir.y.ToString());
+        float auxLongitude = float.Parse(gpsData.GPSLongitude, CultureInfo.InvariantCulture.NumberFormat);
+        float auxLatitude = float.Parse(gpsData.GPSLatitude, CultureInfo.InvariantCulture.NumberFormat);
+
+        //Debug.Log("N: " + auxLatitude.ToString() + " W: " + auxLongitude.ToString());
+
+        Vector2 pathDir = new Vector2(auxLongitude - longitude, auxLatitude - latitude);
+        //Debug.Log("X: " + pathDir.x.ToString() + " Y: " + pathDir.y.ToString());
     }
 }
