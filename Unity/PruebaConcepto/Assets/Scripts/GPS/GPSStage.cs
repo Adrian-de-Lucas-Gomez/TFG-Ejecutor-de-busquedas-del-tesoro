@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class GPSStage : Stage
 {
@@ -12,6 +13,11 @@ public class GPSStage : Stage
 
     [SerializeField] TextMeshProUGUI UILongitude;
     [SerializeField] TextMeshProUGUI UILatitude;
+
+    [SerializeField] TextMeshProUGUI UILongitudeObj;
+    [SerializeField] TextMeshProUGUI UILatitudeObj;
+
+    [SerializeField] RectTransform arrow;
 
     GPSInfo gpsData;
     string GPSLongitude = "";
@@ -24,8 +30,13 @@ public class GPSStage : Stage
         if (changeSceneRequest /*|| Input.GetMouseButtonDown(0) || Input.touchCount > 0*/)
             GameManager.getInstance().GoToNextPhase();
 
+        CalculatePathDirection(scanner.GetLongitude(), scanner.GetLatitude());
+
         CheckGPSLocalization(scanner.GetLongitude(), scanner.GetLatitude());
+
+        arrow.Rotate(new Vector3(0, 0, 1), (Mathf.PI / 2));
     }
+
 
     public override void Init(AdventureInfo data)
     {
@@ -33,15 +44,22 @@ public class GPSStage : Stage
         GPSLongitude = gpsData.GPSLongitude;
         GPSLatitude = gpsData.GPSLatitude;
 
-        UILongitude.text = GPSLongitude;
-        UILatitude.text = GPSLatitude;
+        UILongitudeObj.text = GPSLongitude;
+        UILatitudeObj.text = GPSLatitude;
 
         changeSceneRequest = false;
     }
 
-    public void CheckGPSLocalization(float longitude, float latitude)
+    private void CheckGPSLocalization(float longitude, float latitude)
     {
         UILongitude.text = longitude.ToString();
         UILatitude.text = latitude.ToString();
+    }
+
+    private void CalculatePathDirection(float longitude, float latitude)
+    {
+        Vector2 pathDir = new Vector2(float.Parse(gpsData.GPSLongitude) - longitude, 
+                                        float.Parse(gpsData.GPSLatitude) - latitude);
+        Debug.Log("X: " + pathDir.x.ToString() + "Y: " + pathDir.y.ToString());
     }
 }
