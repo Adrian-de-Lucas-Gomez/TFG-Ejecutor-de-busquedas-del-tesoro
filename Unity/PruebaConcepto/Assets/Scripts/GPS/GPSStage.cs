@@ -41,7 +41,7 @@ public class GPSStage : Stage
 
     public override void Init(AdventureInfo data)
     {
-        StartCoroutine(scanner.Start());
+        StartCoroutine(scanner.InitGPSTracking());
 
         gpsData = (GPSInfo)data;
         GPSLongitude = gpsData.GPSLongitude;
@@ -57,6 +57,9 @@ public class GPSStage : Stage
     {
         UILongitude.text = longitude.ToString();
         UILatitude.text = latitude.ToString();
+
+        //Aqui comprobaríamos si nuestra posicion es suficientemente cercana al objetivo
+        //scanner.stopGPSTracking();
     }
 
     private void CalculatePathDirection(float longitude, float latitude)

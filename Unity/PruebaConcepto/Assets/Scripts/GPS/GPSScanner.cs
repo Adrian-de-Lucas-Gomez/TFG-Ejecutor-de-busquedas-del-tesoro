@@ -6,7 +6,7 @@ public class GPSScanner : MonoBehaviour
     private float ActualLongitude;
     private float ActualLatitude;
 
-    public IEnumerator Start()
+    public IEnumerator InitGPSTracking()
     {
 #if UNITY_EDITOR
         // No permission handling needed in Editor
@@ -57,10 +57,15 @@ public class GPSScanner : MonoBehaviour
             InvokeRepeating("UpdateCoordinates", 0.0f, 2.0f);
         }
 
+        
+    }
+
+    public void stopGPSTracking()
+    {
+        CancelInvoke("UpdateCoordinates");
         // Stops the location service if there is no need to query location updates continuously.
         Input.location.Stop();
     }
-
     void UpdateCoordinates()
     {
         ActualLongitude = Input.location.lastData.longitude;
@@ -76,5 +81,6 @@ public class GPSScanner : MonoBehaviour
     {
         return ActualLongitude;
     }
+
 }
 
