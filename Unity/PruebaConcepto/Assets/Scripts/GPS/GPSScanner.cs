@@ -24,7 +24,7 @@ public class GPSScanner : MonoBehaviour
 #endif
 
         // Starts the location service.
-        Input.location.Start(500f, 500f);
+        Input.location.Start(1f, 1f);
 
         // Waits until the location service initializes
         int maxWait = 20;
