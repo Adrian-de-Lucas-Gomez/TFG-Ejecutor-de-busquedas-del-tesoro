@@ -1,9 +1,9 @@
 {
-  "Gencana": "Nhgdfgh",
+  "Gencana": "Imagen",
   "fases": [
     {
-      "tipo": "QRStage",
-      "QRText": "hgf"
+      "tipo": "ImageStage",
+      "Imagen": "0.jpg"
     }
   ]
 }

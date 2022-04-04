@@ -13,10 +13,10 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
 
   const configurarFase = (index:number)=>{
     //Preparamos las variables que las fases necesitan para que puedan obtener los datos necesarios
+    let new_state = props.getState<any>('DATA', []);
     props.setState('FaseConfigurable', index,0);
     props.setState<boolean>('SobreEscribir', true, true);
 
-    let new_state = props.getState<any>('DATA', []);
     switch(new_state[index].tipo){
       case "QRStage":
         props.jump(2);
@@ -62,13 +62,13 @@ const eliminarFase = (e:number)=>{
  /*
     Metodo auxiliar para mandar distintos tipos de archivo al servidor. Tiene como parametros
   */
-    const sendFileToServer = (identifier: string, file: File, fileName: string, route: string): void => {
+    const sendFileToServer = async (identifier: string, file: File, fileName: string, route: string) => {
         //Mandamos el archivo file al backend para que la trate de cara al proyecto
         //Creamos un FORMDATA que sera el que finalmente enviemos en la peticion POST
         const formData = new FormData();
         formData.append(identifier, file, fileName);
         //Hacemos una peticion POST a nuestro servidor a la route especificada
-        axios.post(route, formData);
+        let result = await axios.post(route, formData);
       }
     
       const mandarJson = async () => {
