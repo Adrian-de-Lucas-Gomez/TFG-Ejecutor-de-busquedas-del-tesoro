@@ -465,7 +465,7 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     else if (s === "QR") { destiny = 2; }
     else if (s === "Quiz") { destiny = 3; }
     else if (s == "ImageCharger") { destiny = 4; }
-    else if (s == "ImageTargetStage") { destiny = 5; }
+    else if (s == "ImageTarget") { destiny = 5; }
     else if (s === "Default") { return; }
 
     //Si saltamos a una fase a partir de esto significa que ya no estamos sobreescribiendo nada

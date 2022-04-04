@@ -78,6 +78,7 @@ const eliminarFase = (e:number)=>{
         var datos = [];
         let f = props.getState<any>('DATA', []);
         let contadorImagenes = 0;
+        let contadorTargets = 0;
     
         for (let i = 0; i < f.length; i++) {
           var faseActual = f[i];
@@ -90,14 +91,16 @@ const eliminarFase = (e:number)=>{
             faseActual = { tipo: "ImageStage", Imagen: finalImageName };
             contadorImagenes++;
           }
-          else if (faseActual.tipo === "ImageTargetStage" && faseActual.Package instanceof File) {
-    
+          else if (faseActual.tipo === "ImageTargetStage" && faseActual.Target instanceof File) {
+            var finalTargetName = faseActual.Target.name;
+            finalTargetName = (contadorTargets.toString()) + (finalTargetName.substring(finalTargetName.indexOf('.')));
             //Cambiamos la fase para que el json tenga la referencia a esta
-            faseActual = { tipo: "ImageTargetStage", Key: faseActual.Key, Package: faseActual.Package.name, Target: faseActual.Target };
+            faseActual = { tipo: "ImageTargetStage", Target: finalTargetName, AddText: faseActual.AddText, Text: faseActual.Text};
+            contadorTargets++;
           }
           datos.push(faseActual);
         }
-        var jsonFinal = { Gencana: props.getState('adventureName', "Nombre por defecto"), fases: datos }
+        var jsonFinal = { Gencana: props.getState('adventureName', "Nombre por defecto"),VuforiaKey: props.getState('vuforiaKey', ''), fases: datos }
     
         let result = await axios.post("./wtf-json", { json: JSON.stringify(jsonFinal, null, 2) });
         console.log("JSON MANDADO");
@@ -110,7 +113,8 @@ const eliminarFase = (e:number)=>{
         console.log("Atencion operaciones antes de descargar el proyecto");
         //Tenemos que recorrer las posibles imagenes de la aventura y enviarlas al server para que haga algo con ellas
         var fasesAventura = props.getState<any>('DATA', []);;
-        var contadorImagenes = 0
+        var contadorImagenes = 0;
+        var contadorTargets = 0;
         for (var i = 0; i < fasesAventura.length; i++) {
     
           var faseActual = fasesAventura[i];
@@ -121,8 +125,11 @@ const eliminarFase = (e:number)=>{
             sendFileToServer('imageCharger', faseActual.Imagen, finalImageName, "./image-upload")
             contadorImagenes++
           }
-          else if (faseActual.tipo === "ImageTargetStage" && faseActual.Package instanceof File) {
-            sendFileToServer('unityPackage', faseActual.Package, faseActual.Package.name, "./package-upload")
+          else if (faseActual.tipo === "ImageTargetStage" && faseActual.Target instanceof File) {
+            var finalImageName = faseActual.Target.name;
+            finalImageName = (contadorTargets.toString()) + (finalImageName.substring(finalImageName.indexOf('.')));
+            sendFileToServer('unityPackage', faseActual.Target, finalImageName, "./package-upload")
+            contadorTargets++;
           }
         }
         props.setState('DATA', fasesAventura, []);
@@ -134,6 +141,12 @@ const eliminarFase = (e:number)=>{
       if(nombreAventura === "Nombre por defecto"){
         alert("Nombre de la aventura sin asignar");
         return;
+      }
+
+      let vuforiaKey = props.getState('vuforiaKey', '');
+
+      if(vuforiaKey === '' || vuforiaKey.length !== 380){
+        alert("Key de Vuforia no valida")
       }
 
       let reset = await axios.get("./reset");
@@ -182,12 +195,23 @@ const eliminarFase = (e:number)=>{
         return props.getState('adventureName', "Nombre por defecto");
       }
 
+      const getVuforiaKey = (): string =>{
+        return props.getState('vuforiaKey', "");
+      }
+      const modifyVuforiaKey =(e:string):void =>{
+        props.setState('vuforiaKey', e, "");
+      }
+
   return (
     <div className = "App" >
         {/* Seccion que representa la parte superior del formulario que permite especificar qué nombre queremos que tenga la aventura 
         si no ponemos nada el nombre será el original del archivo que vayamos a descargar*/}
         <form style={{textAlign:'center', marginTop:'1%', fontSize:'120%'}} onSubmit={e => e.preventDefault()}>
           <input className='nameForm' type="text" value={getAdventureName()} placeholder="Nombre de aventura" maxLength={30} size={35} onChange={e => modifyAdventureName(e.target.value)}></input>
+        </form>
+        {/* Sección para introducir la key de vuforia necesaria para las fases que requieran de realidad aumentada*/}
+        <form style={{textAlign:'center', marginTop:'1%', fontSize:'120%'}} onSubmit={e => e.preventDefault()}>
+          <input className='nameForm' type="text" value={getVuforiaKey()} placeholder="Key de Vuforia" maxLength={380} size={35} onChange={e => modifyVuforiaKey(e.target.value)}></input>
         </form>
         <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'250%'}} className="Titulo" >Fases actuales:</h3>
         {/* Conjunto de bloques que muestran las fases que tenemos disponibles */}
