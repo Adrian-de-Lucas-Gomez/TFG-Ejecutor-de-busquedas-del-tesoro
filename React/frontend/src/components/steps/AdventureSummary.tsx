@@ -1,7 +1,7 @@
 import { StepComponentProps } from '../Steps';
 import React, {useState, useRef, useEffect, forwardRef, useImperativeHandle} from "react"
 import axios from "axios"
-import Prueba from './Prueba'
+import PhaseCard from './PhaseCard';
 
 const AdventureSummary = (props: StepComponentProps): JSX.Element => {
 
@@ -106,7 +106,7 @@ const eliminarFase = (e:number)=>{
       //Este método tiene como objetivo preparar cosas especificas de alguna fase, como por ejemplo mandar las imagenes 
       //al backend para que las trate en el proyecto y poder preparar el json de la aventura datos que nos ayuden recurrir a dichas
       //imagenes
-      const operacionesPreDescargaProyecto = (): void => {
+      const operacionesPreDescargaProyecto = async() => {
         console.log("Atencion operaciones antes de descargar el proyecto");
         //Tenemos que recorrer las posibles imagenes de la aventura y enviarlas al server para que haga algo con ellas
         var fasesAventura = props.getState<any>('DATA', []);;
@@ -182,8 +182,36 @@ const eliminarFase = (e:number)=>{
         return props.getState('adventureName', "Nombre por defecto");
       }
 
+
+      //Metodo que toma una posicion dentro del array de fases y una direccion y mueve la fase que se encuentre en dicha posicion hacia
+      //la dirección especificada si es posible
+      const moverFase = (index:number,dir:number):void =>{
+        let fases = props.getState<any>('DATA', []);
+        //Subimos la fase
+        let dest=0;
+        if(dir === -1){
+          dest = index-1;
+          if(dest<0) dest =0;
+        }
+        else if(dir === 1){
+          dest = index+1;
+          if(dest === fases.length)
+            dest = fases.length-1;
+        }
+
+        //Si no la hemos podido mover nos salimos
+        if(dest === index) return;
+
+        //Quito el elemento y lo pongo en una nueva posicion
+        var element = fases[index];
+        fases.splice(index, 1);
+        fases.splice(dest, 0, element);
+
+        props.setState('DATA', fases, []);
+      }
+
   return (
-    <div className = "App" >
+    <div >
         {/* Seccion que representa la parte superior del formulario que permite especificar qué nombre queremos que tenga la aventura 
         si no ponemos nada el nombre será el original del archivo que vayamos a descargar*/}
         <form style={{textAlign:'center', marginTop:'1%', fontSize:'120%'}} onSubmit={e => e.preventDefault()}>
@@ -191,11 +219,16 @@ const eliminarFase = (e:number)=>{
         </form>
         <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'250%'}} className="Titulo" >Fases actuales:</h3>
         {/* Conjunto de bloques que muestran las fases que tenemos disponibles */}
+
         {
-        //@ts-ignore 
-        props.getState<any>('DATA', []).map((faseActual,ind) => (
-            <Prueba fase = {faseActual} funcionMofify={configurarFase} funcionDelete = {eliminarFase} index={ind} />          
-        ))}
+          //@ts-ignore 
+          props.getState<any>('DATA', []).map((faseActual,ind) => (
+            <div>
+            <PhaseCard fase = {faseActual} funcionMofify={configurarFase} funcionDelete = {eliminarFase} funcionMover={moverFase} index={ind} ></PhaseCard>
+            <br></br>
+            </div>
+            // <CartaFase fase = {faseActual} funcionMofify={configurarFase} funcionDelete = {eliminarFase} funcionMover={moverFase} index={ind} />          
+            ))}
 
       {/* Este boton tiene como objetivo descargar el proyecto generado */}
       <div style={{marginTop:'2%'}}>

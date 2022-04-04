@@ -1,9 +1,9 @@
 {
-  "Gencana": "Hisoka",
+  "Gencana": "Nhgdfgh",
   "fases": [
     {
-      "tipo": "ImageStage",
-      "Imagen": "0.png"
+      "tipo": "QRStage",
+      "QRText": "hgf"
     }
   ]
 }
