@@ -1,9 +1,7 @@
 import { StepComponentProps } from '../Steps';
 import React, {useState, useRef, useEffect, forwardRef, useImperativeHandle} from "react"
 import axios from "axios"
-import CartaFase from './CartaFase'
-import CartaAventura from './CartaAventura';
-
+import AdventureCard from "./AdventureCard"
 
 const AdventureCharger = (props: StepComponentProps): JSX.Element => {
 
@@ -150,7 +148,10 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
             {
           //@ts-ignore 
           aventurasDisponibles.map((faseActual,ind) => (
-            <CartaAventura fase = {faseActual} funcionCargarAventura={ponerACargar} index={ind} />          
+            <div>
+            <AdventureCard aventura = {faseActual} funcionCargar={ponerACargar} index={ind}></AdventureCard>
+            <br></br>
+            </div>
           ))}
         </div>
       </div>
