@@ -27,8 +27,12 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
             //Me quedo con lo que haya que sobreescribir
             let new_state = props.getState<any>('DATA', []);
             let estadoACargar = new_state[props.getState<number>('FaseConfigurable', 1)];
-
-            //Cargamos el unityPackage
+            
+            //Nos aseguramos que lo que se esta configurando ahora es lo que nos hemos cargado
+            let myData = {Alert: false, MensageAlert: "", datosFase: estadoACargar };
+            props.setState<any>('faseConfigurandose',myData,{});
+            
+            //Cargamos el imageTarget
             if (estadoACargar.Target instanceof File) setImageTarget(estadoACargar.Target);
             
             setTextToShow(estadoACargar.Text);
