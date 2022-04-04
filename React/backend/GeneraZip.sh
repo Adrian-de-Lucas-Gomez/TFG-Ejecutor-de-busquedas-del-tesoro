@@ -13,8 +13,8 @@ cp -r -u -f ../../Unity/PruebaConcepto/ProjectSettings/ ../tmp/ProjectSettings/
 cp -r -u -f ./Images/. ../tmp/Assets/Resources/AdventureImages/
 
 #Copiamos los unityPackages que nos ha subido el usuario
-mkdir ../tmp/VuforiaPackages
-cp -r -u -f ./Packages ../tmp/VuforiaPackages
+mkdir ../tmp/Assets/StreamingAssets/Vuforia/
+cp -r -u -f ./Packages ../tmp/Assets/StreamingAssets/Vuforia/
 
 #  Muevo el json con los datos de la aventura a donde se encuentra el proyecto
 rm -f ../tmp/Assets/AdventureData.json
