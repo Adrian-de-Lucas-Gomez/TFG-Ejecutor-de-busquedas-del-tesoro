@@ -85,33 +85,25 @@ public class GPSStage : Stage
 
     private float toRadian(float angleIn10thofaDegree)
     {
-        // Angle in 10th
-        // of a degree
-        return (angleIn10thofaDegree *
-                       Mathf.PI) / 180;
+        return angleIn10thofaDegree * Mathf.PI / 180;
     }
-    float distance(float lat1, float lat2, float lon1, float lon2)
+    float distance(float lat1, float lon1, float lat2, float lon2)
     {
         // The math module contains
         // a function named toRadians
         // which converts from degrees
         // to radians.
-        lat1 = toRadian(lat1);
-        lon1 = toRadian(lon1);
 
-        lat2 = toRadian(lat2);
-        lon2 = toRadian(lon2);
+        float dlat = toRadian(lat2-lat1);
+        float dlon = toRadian(lon2- lon1);
 
         // Haversine formula
-        float dlon = lon2 - lon1;
-        float dlat = lat2 - lat1;
         float a = Mathf.Pow(Mathf.Sin(dlat / 2), 2) +
-                   Mathf.Cos(lat1) * Mathf.Cos(lat2) *
+                   Mathf.Cos(toRadian(lat1)) * Mathf.Cos(toRadian(lat2)) *
                    Mathf.Pow(Mathf.Sin(dlon / 2), 2);
 
-        float c = 2 * Mathf.Asin(Mathf.Sqrt(a));
+        float realDistance = 2 * Mathf.Asin(Mathf.Sqrt(a)) * 6371 * 1000;  //Lo queremos en metros no en KM
 
-        // calculate the result
-        return c * 6371 * 1000;  //Lo queremos en metros no en KM
+        return realDistance;  
     }
 }
