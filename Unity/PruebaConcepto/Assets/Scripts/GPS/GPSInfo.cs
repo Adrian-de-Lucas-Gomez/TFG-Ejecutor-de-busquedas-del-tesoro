@@ -1,14 +1,15 @@
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Globalization;
 
 //Esta clase representa los datos con los que va a trabajar una fase de tipo QR
 [System.Serializable]
 public class GPSInfo : AdventureInfo
 {
-
-    public string GPSLongitude = "";
-    public string GPSLatitude = "";
-
+    public float GPSLatitude;
+    public float GPSLongitude;
+    public float TriggerRadious;
+    public string LocationDescription;
 
     /// <summary>
     /// Metodo que recibe un objeto parseado de JSON y saca toda la informacion que necesite de este
@@ -20,8 +21,12 @@ public class GPSInfo : AdventureInfo
         stage = myInfo["tipo"].Value<string>();
 
         //Obtengo los datos de coordenadas
-        GPSLongitude = myInfo["GPSLongitude"].Value<string>();
+        GPSLatitude = float.Parse(myInfo["GPSLatitude"].Value<string>(), CultureInfo.InvariantCulture.NumberFormat);
 
-        GPSLatitude = myInfo["GPSLatitude"].Value<string>();
+        GPSLongitude = float.Parse(myInfo["GPSLongitude"].Value<string>(), CultureInfo.InvariantCulture.NumberFormat);
+
+        TriggerRadious = float.Parse(myInfo["radius"].Value<string>(), CultureInfo.InvariantCulture.NumberFormat);
+
+        LocationDescription = myInfo["description"].Value<string>();
     }
 }

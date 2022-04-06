@@ -3,8 +3,17 @@
   "fases": [
     {
       "tipo": "GPSStage",
-      "GPSLongitude": "-3.739247",
-      "GPSLatitude": "40.391119"
+      "GPSLongitude": "-3.732749",
+      "GPSLatitude": "40.452867",
+      "radius": "5.0",
+      "description":"Busca las escaleras del segundo edificio"
+    },
+    {
+      "tipo": "GPSStage",
+      "GPSLongitude": "-3.733802",
+      "GPSLatitude": "40.453029",
+      "radius": "5.0",
+      "description":"Busca la entrada principal de la facultad"
     },
     {
       "tipo": "QuizStage",

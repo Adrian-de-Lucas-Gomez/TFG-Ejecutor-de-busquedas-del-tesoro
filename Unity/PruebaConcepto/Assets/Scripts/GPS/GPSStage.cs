@@ -12,32 +12,30 @@ public class GPSStage : Stage
     [SerializeField] GPSScanner scanner;
 
 
-    [SerializeField] TextMeshProUGUI UILongitude;
-    [SerializeField] TextMeshProUGUI UILatitude;
-
-    [SerializeField] TextMeshProUGUI UILongitudeObj;
-    [SerializeField] TextMeshProUGUI UILatitudeObj;
+    [SerializeField] TextMeshProUGUI description;
 
     [SerializeField] TextMeshProUGUI PointsDistance;
 
-    //[SerializeField] RectTransform arrow;
+    [SerializeField] Image point;
+    [SerializeField] Animation anim;
 
-    GPSInfo gpsData;
-    float GPSLongitude;
-    float GPSLatitude;
+    private GPSInfo gpsData;
+    private float GPSLongitude;
+    private float GPSLatitude;
+    private float radius;
 
     bool changeSceneRequest = false;
 
     private void Update()
     {
-        if (changeSceneRequest /*|| Input.GetMouseButtonDown(0) || Input.touchCount > 0*/)
+        if (changeSceneRequest || Input.GetMouseButtonDown(0) /*|| Input.touchCount > 0*/)
+        {
+            //Desactivamos todo el sistema GPS para pasar limpios a la siguiente escena
+            scanner.stopGPSTracking();
             GameManager.getInstance().GoToNextPhase();
-
-        //CalculatePathDirection(scanner.GetLongitude(), scanner.GetLatitude());
+        }         
 
         CheckGPSLocalization(scanner.GetLongitude(), scanner.GetLatitude());
-
-        //arrow.Rotate(new Vector3(0, 0, 1), (Mathf.PI / 2));
     }
 
 
@@ -46,41 +44,41 @@ public class GPSStage : Stage
         StartCoroutine(scanner.InitGPSTracking());
 
         gpsData = (GPSInfo)data;
-        GPSLongitude = float.Parse(gpsData.GPSLongitude, CultureInfo.InvariantCulture.NumberFormat);
-        GPSLatitude = float.Parse(gpsData.GPSLatitude, CultureInfo.InvariantCulture.NumberFormat);
+        GPSLongitude = gpsData.GPSLongitude;
+        GPSLatitude = gpsData.GPSLatitude;
 
-        UILongitudeObj.text = GPSLongitude.ToString();
-        UILatitudeObj.text = GPSLatitude.ToString();
+        radius = gpsData.TriggerRadious;
+
+        description.text = gpsData.LocationDescription;
 
         changeSceneRequest = false;
     }
 
     private void CheckGPSLocalization(float longitude, float latitude)
     {
-        UILongitude.text = longitude.ToString();
-        UILatitude.text = latitude.ToString();
-
         //Aqui comprobaríamos si nuestra posicion es suficientemente cercana al objetivo
-        //Debug.Log(distance(lat1, lat2, lon1, lon2) + " K.M");
+
         float dist = distance(latitude, longitude, GPSLatitude, GPSLongitude);
         PointsDistance.text = dist.ToString() + " metros";
 
-        if (dist <= 5)
+        point.color = new Color(255 / dist, 0.0f, dist / 255, 1.0f);
+
+        if (dist > 100)
         {
-            scanner.stopGPSTracking();
+            anim["Pulse"].speed = 0.3f;
+        }
+        else
+        {
+            anim["Pulse"].speed = 30 / dist;
+            
+        }
+
+        //Si el jugador esta a 5 metros o menos del objetivo suponemos que lo ha encontrado
+        if (dist <= radius)
+        {
+            //Preparamos para salir de la escena
             changeSceneRequest = true;
         }
-    }
-    
-    private void CalculatePathDirection(float longitude, float latitude)
-    {
-        //float auxLongitude = float.Parse(gpsData.GPSLongitude, CultureInfo.InvariantCulture.NumberFormat);
-        //float auxLatitude = float.Parse(gpsData.GPSLatitude, CultureInfo.InvariantCulture.NumberFormat);
-
-        //Debug.Log("N: " + auxLatitude.ToString() + " W: " + auxLongitude.ToString());
-
-        //Vector2 pathDir = new Vector2(auxLongitude - longitude, auxLatitude - latitude);
-        //Debug.Log("X: " + pathDir.x.ToString() + " Y: " + pathDir.y.ToString());
     }
 
     private float toRadian(float angleIn10thofaDegree)
@@ -89,20 +87,15 @@ public class GPSStage : Stage
     }
     float distance(float lat1, float lon1, float lat2, float lon2)
     {
-        // The math module contains
-        // a function named toRadians
-        // which converts from degrees
-        // to radians.
-
         float dlat = toRadian(lat2-lat1);
         float dlon = toRadian(lon2- lon1);
 
         // Haversine formula
-        float a = Mathf.Pow(Mathf.Sin(dlat / 2), 2) +
+        float haversine = Mathf.Pow(Mathf.Sin(dlat / 2), 2) +
                    Mathf.Cos(toRadian(lat1)) * Mathf.Cos(toRadian(lat2)) *
                    Mathf.Pow(Mathf.Sin(dlon / 2), 2);
 
-        float realDistance = 2 * Mathf.Asin(Mathf.Sqrt(a)) * 6371 * 1000;  //Lo queremos en metros no en KM
+        float realDistance = 2 * Mathf.Asin(Mathf.Sqrt(haversine)) * 6371 * 1000;  //Lo queremos en metros no en kilometros
 
         return realDistance;  
     }
