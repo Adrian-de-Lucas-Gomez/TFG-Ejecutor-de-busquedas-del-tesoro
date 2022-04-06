@@ -26,4 +26,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ImageTargetStage.unity
     guid: fdd8f0138b13f0e42bd74fabb76e3d6a
+  - enabled: 1
+    path: Assets/Scenes/InputTextStage.unity
+    guid: 9b36bee7fce043d428f6c0d8e0aa7681
+  - enabled: 1
+    path: Assets/Scenes/SoundStage.unity
+    guid: ba361332c89b5b744927dda3ebae67ee
   m_configObjects: {}

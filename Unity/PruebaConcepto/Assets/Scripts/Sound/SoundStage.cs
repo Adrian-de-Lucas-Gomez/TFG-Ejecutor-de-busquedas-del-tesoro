@@ -13,11 +13,9 @@ public class SoundStage : Stage
     [SerializeField]
     AudioSource audioSource;
     [SerializeField]
-    TMP_InputField inputField;
-    [SerializeField]
-    TextMeshProUGUI info;
-    [SerializeField]
     GameObject playBtn;
+    [SerializeField]
+    GameObject pauseBtn;
     [SerializeField]
     GameObject nextBtn;
 
@@ -34,17 +32,19 @@ public class SoundStage : Stage
         audioSource.clip = audioClip;
     }
 
-    public void CheckCode()
+    public void PlaySound()
 	{
-        if(inputField.text == soundData.codigo)
-		{
-            inputField.interactable = false;
-            info.color = Color.green;
-            info.text = "Código correcto, pasa a la siguiente fase.";
-            playBtn.SetActive(false);
-            nextBtn.SetActive(true);
-		}
-	}
+        audioSource.Play();
+        playBtn.SetActive(false);
+        pauseBtn.SetActive(true);
+    }
+
+    public void PauseSound()
+	{
+        audioSource.Pause();
+        playBtn.SetActive(true);
+        pauseBtn.SetActive(false);
+    }
 
     public void NextScene()
     {
