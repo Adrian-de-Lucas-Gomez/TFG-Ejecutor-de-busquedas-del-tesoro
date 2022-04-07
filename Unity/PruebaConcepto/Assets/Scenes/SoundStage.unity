@@ -1269,8 +1269,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneObjectsParent: {fileID: 52310540}
-  myStage: {fileID: 0}
-  myStageType: 3
+  myStage: {fileID: 52310542}
+  myStageType: 5
 --- !u!114 &1828764450
 MonoBehaviour:
   m_ObjectHideFlags: 0

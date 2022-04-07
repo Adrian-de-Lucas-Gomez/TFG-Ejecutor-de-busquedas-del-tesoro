@@ -125,6 +125,20 @@ public class GameManager : MonoBehaviour
                         adventureStages.Enqueue(newTarget);
                         break;
                     }
+                case "SoundStage":
+                    {
+                        SoundInfo newSound = new SoundInfo();
+                        newSound.readFromJSON((JObject)misFases[i]);
+                        adventureStages.Enqueue(newSound);
+                        break;
+                    }
+                case "InputTextStage":
+                    {
+                        InputTextInfo newInputText = new InputTextInfo();
+                        newInputText.readFromJSON((JObject)misFases[i]);
+                        adventureStages.Enqueue(newInputText);
+                        break;
+                    }
             }
         }
         adventureStages.Enqueue(end);

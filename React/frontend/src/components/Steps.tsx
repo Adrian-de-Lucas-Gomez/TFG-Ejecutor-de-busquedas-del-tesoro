@@ -467,6 +467,7 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     else if (s == "ImageCharger") { destiny = 4; }
     else if (s == "ImageTargetStage") { destiny = 5; }
     else if (s == "SoundStage") { destiny = 6; }
+    else if (s == "InputTextStage") { destiny = 7; }
     else if (s === "Default") { return; }
 
     //Si saltamos a una fase a partir de esto significa que ya no estamos sobreescribiendo nada
@@ -570,6 +571,7 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
               <option value="ImageCharger">Image Charger</option>
               <option value="ImageTargetStage">Vuforia Image Target</option>
               <option value="SoundStage">Sound</option>
+              <option value="InputTextStage">InputText</option>
             </select>
             <button type="button" onClick={guardarFase} className="my-btn btn-outline-pink" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%', marginLeft:'2%'}}>Guardar fase</button>
           </div>
