@@ -145,7 +145,21 @@ app.get("/guardame-aventura", (req, res)=>{
   var name = JSON.parse(aventuraActual).Gencana;
   var dir = "../BaseDeDatos/" + name;
   try {
-    fs.mkdirSync(dir);
+    //Si ya existe el directorio hace falta eliminar todo lo que tenga dentro, porque aunque los archivos con el mismo nombre se sobreescriban y no den problemas
+    //aquellos que no se sobreescriban van a quedarse almacenados y provocar ruido en las futuras builds, van a estar presentes y no se van a usar, por lo que 
+    //lo único que van a hacer es ocupar espacio extra
+    if(fs.existsSync(dir)){
+      var filesToRemove = fs.readdirSync(dir);
+      for (var i = 0; i < filesToRemove.length; i++) {
+        //Si no es el readme, lo elimino del directorio
+        if (filesToRemove[i] !== "README.txt") {
+          fs.unlinkSync(dir+"/"+ filesToRemove[i]);
+          console.log("Removed file from /BaseDeDatos/ directory: " + filesToRemove[i]);
+        }
+      }
+    }
+    else
+      fs.mkdirSync(dir);
   }
   catch { console.log("An error ocurred creating the directory: " + dir); }
   console.log("Directory created: " + dir);

@@ -1,9 +1,9 @@
 {
-  "Gencana": "Hisoka",
+  "Gencana": "Imagen",
   "fases": [
     {
       "tipo": "ImageStage",
-      "Imagen": "0.png"
+      "Imagen": "0.jpg"
     }
   ]
 }

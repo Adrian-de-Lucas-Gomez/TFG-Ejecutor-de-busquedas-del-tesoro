@@ -21,15 +21,15 @@ const QR = (props: StepComponentProps): JSX.Element => {
     //los datos que ya había de esta fase      
     if(props.getState<boolean>('SobreEscribir', false)){
 
-        //Indico que ya no es necesario sobreescribir nada, porque ya nos encargamos
-        //setSobreEscribir(true);
-        //props.setState('SobreEscribir', false, false);
-
         //Me quedo con lo que haya que sobreescribir
         let new_state = props.getState<any>('DATA', []); 
         let estadoACargar = new_state[props.getState<number>('FaseConfigurable',1)];
         //Me guardo tando la pregunta como las respuestas que había configuradas
         setText(estadoACargar.QRText);
+
+        //Nos aseguramos que lo que se esta configurando ahora es lo que nos hemos cargado
+        let myData = {Alert: false, MensageAlert: "", datosFase: estadoACargar };
+        props.setState<any>('faseConfigurandose',myData,{});
     }
     
     //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente

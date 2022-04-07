@@ -465,7 +465,7 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     else if (s === "QR") { destiny = 2; }
     else if (s === "Quiz") { destiny = 3; }
     else if (s == "ImageCharger") { destiny = 4; }
-    else if (s == "ImageTargetStage") { destiny = 5; }
+    else if (s == "ImageTarget") { destiny = 5; }
     else if (s === "Default") { return; }
 
     //Si saltamos a una fase a partir de esto significa que ya no estamos sobreescribiendo nada
@@ -523,13 +523,13 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     //Los añado a una copia del estado y establezco esta copia como el estadoa actual de las fases            
     if(sobreEscribir === true){
       //De esta forma se puede meter el estado en unaposicion concreta en lugar de hacerlo en el final siempre
-      let position = getState<number>('FaseConfigurable',1);
+      let position = getState<number>('FaseConfigurable',0);
       new_state.splice(position,1,newData.datosFase);
     }
     //Si no hay que sobreescribir nada simplemente pusheamos al final de los datos
     else {
       //Lo almaceno en la lista de fases que tengo disponibles
-      let position = getState<number>('WhereToPush',1);
+      let position = getState<number>('WhereToPush',0);
       new_state.splice(position, 0, newData.datosFase);
     }
     console.log("Los datos ahora son: "+JSON.stringify(new_state));
@@ -540,7 +540,7 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
 
     //Importante aumentar el indice de donde estamos metiendo nuevos elementos a la aventura para que no 
     //se metan todos en la posicion X y que luego estén TODOS EN ORDEN INVERSO
-    setState<number>('WhereToPush',getState<number>('WhereToPush',1)+1,1);
+    setState<number>('WhereToPush',getState<number>('WhereToPush',0)+1,1);
 
     (document.getElementById('Selector') as HTMLSelectElement).value = "Crear fase...";
     jumpWithString("AdventureSummary");
@@ -580,13 +580,13 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
         {/* Grid configurado para que tenga un hoizontal layout que contiene tanto el selector de dónde queremos que se pushee la siguiente fase como el selector de fases existente
       con el que podemos configurar una de las fases que ya tengamos */}
         {/* Esta es la seccion que permite configurar la posicion de la siguiente fase que vayamos a incluir */}
-        <div className="redBackGround">
-          <h4>Posicion a insertar la siguiente fase de la aventura</h4>
-          <div className='rows'>
-            <button className='row' data-testid='<' onClick={DisminuirPosSiguienteFase}> - </button>
-            <p className='row'>{getState('WhereToPush', 0) + 1}º </p>
-            <button className='row' data-testid='>' onClick={AumentarPosSiguienteFase}> + </button>
-            <p className='row'>de los {getState<any>('DATA', []).length} actuales</p>
+        <div >
+          <h3  style={{textAlign:"center"}} >Posicion de la siguiente fase en la aventura</h3>
+          <div style={{display:"flex", flexDirection:"row", justifyContent:"center"  }}>
+            <button  data-testid='<'  onClick={DisminuirPosSiguienteFase}> {"<"} </button>
+            <p >{getState('WhereToPush', 0) + 1}º </p>
+            <button  data-testid='>' onClick={AumentarPosSiguienteFase}> {">"} </button>
+            <p > {"/"+getState<any>('DATA', []).length}</p>
           </div>
         </div>
 

@@ -1,10 +1,10 @@
 using Newtonsoft.Json.Linq;
-using UnityEngine;
 public class ImageTargetInfo : AdventureInfo
 {
     public string nombreTarget;
-    public string nombrePackage;
-    public string keyPackage;
+    public bool hasText;
+    public string text;
+    //public bool showImage;
 
     /// <summary>
     /// Metodo que recibe un objeto parseado de JSON y saca toda la informacion que necesite de este
@@ -15,13 +15,11 @@ public class ImageTargetInfo : AdventureInfo
         //Me quedo con la escena a la que me tengo que ir para ejecutarme
         stage = myInfo["tipo"].Value<string>();
 
-        //Obtengo los datos del imageTarget
-        string aux = myInfo["Package"].Value<string>();
-        string[] splitArray = aux.Split('.');
-
-        nombrePackage = splitArray[0];
+        //Obtengo los datos del target
         nombreTarget = myInfo["Target"].Value<string>();
-        keyPackage = myInfo["Key"].Value<string>();
-
+        hasText = myInfo["AddText"].Value<bool>();
+        text = myInfo["Text"].Value<string>();
+        //showImage = myInfo["ShowImage"].Value<bool>();
+       
     }
 }

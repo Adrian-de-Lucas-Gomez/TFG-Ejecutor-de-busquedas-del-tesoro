@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
 
     //Lista negra de las escenas que consideramos grandes y es necesario cargar y descargar a medida que can ocurriendo porque si no 
     //los recursos pueden llegar a ser gastados poe estas
-    List<string> bigScenes = new List<string>() { "QRStage" };
+    List<string> bigScenes = new List<string>() { "QRStage", "ImageTargetStage" };
 
 
     static GameManager _instance;
@@ -77,6 +77,10 @@ public class GameManager : MonoBehaviour
         string json = adventure.adventureFile.ToString();
         var adventureData = JObject.Parse(json);
 
+        //Asignamos key de vuforia
+        VuforiaConfiguration.Instance.Vuforia.LicenseKey = adventureData["VuforiaKey"].Value<string>();
+
+        Debug.Log(VuforiaConfiguration.Instance.Vuforia.LicenseKey);
 
         //Voy a recorrer todas las fases que existan en este json
         JArray misFases = (JArray)adventureData["fases"];
@@ -118,8 +122,6 @@ public class GameManager : MonoBehaviour
                     {
                         ImageTargetInfo newTarget = new ImageTargetInfo();
                         newTarget.readFromJSON((JObject)misFases[i]);
-                        //TO DO: reconfigurar la generación del JSON de react y sacar la key fuera de las fases
-                        VuforiaConfiguration.Instance.Vuforia.LicenseKey = newTarget.keyPackage;
                         adventureStages.Enqueue(newTarget);
                         break;
                     }
@@ -239,7 +241,7 @@ public class GameManager : MonoBehaviour
     {
         //Si la escena que toca es de esas que tienen una cámara AR significa que no tenemos que tener activa la cámara principal de la aventura
         bool mainCameraMustBeActive;
-        if (adventureStages.Peek().stage == "QRStage") mainCameraMustBeActive = false;
+        if (adventureStages.Peek().stage == "QRStage" || adventureStages.Peek().stage == "ImageTargetStage") mainCameraMustBeActive = false;
         else mainCameraMustBeActive = true;
 
         sceneMainCamera.SetActive(mainCameraMustBeActive);
@@ -260,9 +262,8 @@ public class GameManager : MonoBehaviour
             _preloadedScene = new KeyValuePair<string, AsyncOperation>("", null);
         }
         //Miramos si la siguiente escena a esta necesita de precarga pero si es tambien pesada pero del mismo tipo no la precargamos
-        if (adventureStages.ToArray().Length > 1 && 
-            adventureStages.ToArray()[1].stage == "QRStage" && 
-            adventureStages.ToArray()[0].stage != "QRStage")
+        if (adventureStages.ToArray().Length > 1 && bigScenes.Contains(adventureStages.ToArray()[1].stage)  &&
+            adventureStages.ToArray()[1].stage != adventureStages.ToArray()[0].stage)
         {
             PreloadNextScene();
         }
@@ -314,5 +315,6 @@ public class GameManager : MonoBehaviour
     {
         _preloadedScene.Value.allowSceneActivation = true;
     }
+
 
 }

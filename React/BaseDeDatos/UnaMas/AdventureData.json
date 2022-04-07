@@ -1,0 +1,13 @@
+{
+  "Gencana": "UnaMas",
+  "fases": [
+    {
+      "tipo": "ImageStage",
+      "Imagen": "0.png"
+    },
+    {
+      "tipo": "QRStage",
+      "QRText": "Primero"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 import { StepComponentProps } from '../Steps';
 import React, {useState, useRef, useEffect, forwardRef, useImperativeHandle} from "react"
 import axios from "axios"
-import Prueba from './Prueba'
+import PhaseCard from './PhaseCard';
 
 const AdventureSummary = (props: StepComponentProps): JSX.Element => {
 
@@ -13,10 +13,10 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
 
   const configurarFase = (index:number)=>{
     //Preparamos las variables que las fases necesitan para que puedan obtener los datos necesarios
+    let new_state = props.getState<any>('DATA', []);
     props.setState('FaseConfigurable', index,0);
     props.setState<boolean>('SobreEscribir', true, true);
 
-    let new_state = props.getState<any>('DATA', []);
     switch(new_state[index].tipo){
       case "QRStage":
         props.jump(2);
@@ -62,13 +62,13 @@ const eliminarFase = (e:number)=>{
  /*
     Metodo auxiliar para mandar distintos tipos de archivo al servidor. Tiene como parametros
   */
-    const sendFileToServer = (identifier: string, file: File, fileName: string, route: string): void => {
+    const sendFileToServer = async (identifier: string, file: File, fileName: string, route: string) => {
         //Mandamos el archivo file al backend para que la trate de cara al proyecto
         //Creamos un FORMDATA que sera el que finalmente enviemos en la peticion POST
         const formData = new FormData();
         formData.append(identifier, file, fileName);
         //Hacemos una peticion POST a nuestro servidor a la route especificada
-        axios.post(route, formData);
+        let result = await axios.post(route, formData);
       }
     
       const mandarJson = async () => {
@@ -78,6 +78,7 @@ const eliminarFase = (e:number)=>{
         var datos = [];
         let f = props.getState<any>('DATA', []);
         let contadorImagenes = 0;
+        let contadorTargets = 0;
     
         for (let i = 0; i < f.length; i++) {
           var faseActual = f[i];
@@ -90,14 +91,16 @@ const eliminarFase = (e:number)=>{
             faseActual = { tipo: "ImageStage", Imagen: finalImageName };
             contadorImagenes++;
           }
-          else if (faseActual.tipo === "ImageTargetStage" && faseActual.Package instanceof File) {
-    
+          else if (faseActual.tipo === "ImageTargetStage" && faseActual.Target instanceof File) {
+            var finalTargetName = faseActual.Target.name;
+            finalTargetName = (contadorTargets.toString()) + (finalTargetName.substring(finalTargetName.indexOf('.')));
             //Cambiamos la fase para que el json tenga la referencia a esta
-            faseActual = { tipo: "ImageTargetStage", Key: faseActual.Key, Package: faseActual.Package.name, Target: faseActual.Target };
+            faseActual = { tipo: "ImageTargetStage", Target: finalTargetName, AddText: faseActual.AddText, Text: faseActual.Text};
+            contadorTargets++;
           }
           datos.push(faseActual);
         }
-        var jsonFinal = { Gencana: props.getState('adventureName', "Nombre por defecto"), fases: datos }
+        var jsonFinal = { Gencana: props.getState('adventureName', "Nombre por defecto"),VuforiaKey: props.getState('vuforiaKey', ''), fases: datos }
     
         let result = await axios.post("./wtf-json", { json: JSON.stringify(jsonFinal, null, 2) });
         console.log("JSON MANDADO");
@@ -106,11 +109,12 @@ const eliminarFase = (e:number)=>{
       //Este método tiene como objetivo preparar cosas especificas de alguna fase, como por ejemplo mandar las imagenes 
       //al backend para que las trate en el proyecto y poder preparar el json de la aventura datos que nos ayuden recurrir a dichas
       //imagenes
-      const operacionesPreDescargaProyecto = (): void => {
+      const operacionesPreDescargaProyecto = async() => {
         console.log("Atencion operaciones antes de descargar el proyecto");
         //Tenemos que recorrer las posibles imagenes de la aventura y enviarlas al server para que haga algo con ellas
         var fasesAventura = props.getState<any>('DATA', []);;
-        var contadorImagenes = 0
+        var contadorImagenes = 0;
+        var contadorTargets = 0;
         for (var i = 0; i < fasesAventura.length; i++) {
     
           var faseActual = fasesAventura[i];
@@ -121,8 +125,11 @@ const eliminarFase = (e:number)=>{
             sendFileToServer('imageCharger', faseActual.Imagen, finalImageName, "./image-upload")
             contadorImagenes++
           }
-          else if (faseActual.tipo === "ImageTargetStage" && faseActual.Package instanceof File) {
-            sendFileToServer('unityPackage', faseActual.Package, faseActual.Package.name, "./package-upload")
+          else if (faseActual.tipo === "ImageTargetStage" && faseActual.Target instanceof File) {
+            var finalImageName = faseActual.Target.name;
+            finalImageName = (contadorTargets.toString()) + (finalImageName.substring(finalImageName.indexOf('.')));
+            sendFileToServer('unityPackage', faseActual.Target, finalImageName, "./package-upload")
+            contadorTargets++;
           }
         }
         props.setState('DATA', fasesAventura, []);
@@ -134,6 +141,12 @@ const eliminarFase = (e:number)=>{
       if(nombreAventura === "Nombre por defecto"){
         alert("Nombre de la aventura sin asignar");
         return;
+      }
+
+      let vuforiaKey = props.getState('vuforiaKey', '');
+
+      if(vuforiaKey === '' || vuforiaKey.length !== 380){
+        alert("Key de Vuforia no valida")
       }
 
       let reset = await axios.get("./reset");
@@ -182,20 +195,62 @@ const eliminarFase = (e:number)=>{
         return props.getState('adventureName', "Nombre por defecto");
       }
 
+      const getVuforiaKey = (): string =>{
+        return props.getState('vuforiaKey', "");
+      }
+      const modifyVuforiaKey =(e:string):void =>{
+        props.setState('vuforiaKey', e, "");
+      }
+      //Metodo que toma una posicion dentro del array de fases y una direccion y mueve la fase que se encuentre en dicha posicion hacia
+      //la dirección especificada si es posible
+      const moverFase = (index:number,dir:number):void =>{
+        let fases = props.getState<any>('DATA', []);
+        //Subimos la fase
+        let dest=0;
+        if(dir === -1){
+          dest = index-1;
+          if(dest<0) dest =0;
+        }
+        else if(dir === 1){
+          dest = index+1;
+          if(dest === fases.length)
+            dest = fases.length-1;
+        }
+
+        //Si no la hemos podido mover nos salimos
+        if(dest === index) return;
+
+        //Quito el elemento y lo pongo en una nueva posicion
+        var element = fases[index];
+        fases.splice(index, 1);
+        fases.splice(dest, 0, element);
+
+        props.setState('DATA', fases, []);
+      }
+
   return (
-    <div className = "App" >
+    <div >
         {/* Seccion que representa la parte superior del formulario que permite especificar qué nombre queremos que tenga la aventura 
         si no ponemos nada el nombre será el original del archivo que vayamos a descargar*/}
         <form style={{textAlign:'center', marginTop:'1%', fontSize:'120%'}} onSubmit={e => e.preventDefault()}>
           <input className='nameForm' type="text" value={getAdventureName()} placeholder="Nombre de aventura" maxLength={30} size={35} onChange={e => modifyAdventureName(e.target.value)}></input>
         </form>
+        {/* Sección para introducir la key de vuforia necesaria para las fases que requieran de realidad aumentada*/}
+        <form style={{textAlign:'center', marginTop:'1%', fontSize:'120%'}} onSubmit={e => e.preventDefault()}>
+          <input className='nameForm' type="text" value={getVuforiaKey()} placeholder="Key de Vuforia" maxLength={380} size={35} onChange={e => modifyVuforiaKey(e.target.value)}></input>
+        </form>
         <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'250%'}} className="Titulo" >Fases actuales:</h3>
         {/* Conjunto de bloques que muestran las fases que tenemos disponibles */}
+
         {
-        //@ts-ignore 
-        props.getState<any>('DATA', []).map((faseActual,ind) => (
-            <Prueba fase = {faseActual} funcionMofify={configurarFase} funcionDelete = {eliminarFase} index={ind} />          
-        ))}
+          //@ts-ignore 
+          props.getState<any>('DATA', []).map((faseActual,ind) => (
+            <div>
+            <PhaseCard fase = {faseActual} funcionMofify={configurarFase} funcionDelete = {eliminarFase} funcionMover={moverFase} index={ind} ></PhaseCard>
+            <br></br>
+            </div>
+            // <CartaFase fase = {faseActual} funcionMofify={configurarFase} funcionDelete = {eliminarFase} funcionMover={moverFase} index={ind} />          
+            ))}
 
       {/* Este boton tiene como objetivo descargar el proyecto generado */}
       <div style={{marginTop:'2%'}}>
