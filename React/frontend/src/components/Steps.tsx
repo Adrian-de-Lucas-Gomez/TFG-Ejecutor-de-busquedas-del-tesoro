@@ -466,6 +466,7 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     else if (s === "Quiz") { destiny = 3; }
     else if (s == "ImageCharger") { destiny = 4; }
     else if (s == "ImageTargetStage") { destiny = 5; }
+    else if (s == "SoundStage") { destiny = 6; }
     else if (s === "Default") { return; }
 
     //Si saltamos a una fase a partir de esto significa que ya no estamos sobreescribiendo nada
@@ -567,7 +568,8 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
               <option value="QR">QR</option>
               <option value="Quiz">Quiz</option>
               <option value="ImageCharger">Image Charger</option>
-              <option value="ImageTarget">Vuforia Image Target</option>
+              <option value="ImageTargetStage">Vuforia Image Target</option>
+              <option value="SoundStage">Sound</option>
             </select>
             <button type="button" onClick={guardarFase} className="my-btn btn-outline-pink" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%', marginLeft:'2%'}}>Guardar fase</button>
           </div>

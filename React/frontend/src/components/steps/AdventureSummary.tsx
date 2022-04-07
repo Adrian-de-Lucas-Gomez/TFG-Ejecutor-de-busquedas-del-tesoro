@@ -20,16 +20,19 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     switch(new_state[index].tipo){
       case "QRStage":
         props.jump(2);
-        break;
+      break;
         case "QuizStage":
         props.jump(3);
-        break;
-        case "ImageStage":
-          props.jump(4);
-          break;
-        case "ImageTargetStage":
-          props.jump(5);
-          break;
+      break;
+      case "ImageStage":
+        props.jump(4);
+      break;
+      case "ImageTargetStage":
+        props.jump(5);
+      break;
+      case "SoundStage":
+        props.jump(6);
+      break;
     }
   }
 

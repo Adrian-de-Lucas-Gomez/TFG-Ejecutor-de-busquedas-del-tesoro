@@ -5,6 +5,7 @@ import { State, StepsConfig, Steps, Step } from './components/Steps';
 import Quiz from './components/steps/Quiz'
 import QR from './components/steps/Qr'
 import AdventureCharger from './components/steps/AdventureCharger'
+import Sound from './components/steps/Sound'
 import AdventureSummary from './components/steps/AdventureSummary';
 import ImageCharger from './components/steps/ImageCharger';
 import ImageTarget from './components/steps/ImageTarget';
@@ -37,6 +38,7 @@ const App = (): JSX.Element => {
         <Step title='Quiz' component={Quiz} />
         <Step title='ImageCharger' component={ImageCharger}/>
         <Step title='ImageTarget' component={ImageTarget}/>
+        <Step title='Sound' component={Sound} />
       </Steps>
 
     </div>
