@@ -524,7 +524,7 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     //Los añado a una copia del estado y establezco esta copia como el estadoa actual de las fases            
     if(sobreEscribir === true){
       //De esta forma se puede meter el estado en unaposicion concreta en lugar de hacerlo en el final siempre
-      let position = getState<number>('FaseConfigurable',1);
+      let position = getState<number>('FaseConfigurable',0);
       new_state.splice(position,1,newData.datosFase);
     }
     //Si no hay que sobreescribir nada simplemente pusheamos al final de los datos

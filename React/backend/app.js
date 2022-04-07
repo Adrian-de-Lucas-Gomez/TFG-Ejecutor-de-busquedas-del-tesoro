@@ -90,8 +90,8 @@ app.get("/generate-zip", (req, res)=>{
     console.log("Couldnt remove .zip from server");
   }
   // Le paso al comando el nombre del directorio que hace falta crear y usar para almacenar la aventura
-  var command = "GeneraZip.bat";
-  //var command = "bash GeneraZip.sh";
+  //var command = "GeneraZip.bat";
+  var command = "bash GeneraZip.sh";
   const execProcess = exec(command, { 'encoding': 'utf8' }, (error, stdout) => {});
   execProcess.on('exit', () => {
     console.log('exec process exit');
@@ -145,7 +145,21 @@ app.get("/guardame-aventura", (req, res)=>{
   var name = JSON.parse(aventuraActual).Gencana;
   var dir = "../BaseDeDatos/" + name;
   try {
-    fs.mkdirSync(dir);
+    //Si ya existe el directorio hace falta eliminar todo lo que tenga dentro, porque aunque los archivos con el mismo nombre se sobreescriban y no den problemas
+    //aquellos que no se sobreescriban van a quedarse almacenados y provocar ruido en las futuras builds, van a estar presentes y no se van a usar, por lo que 
+    //lo único que van a hacer es ocupar espacio extra
+    if(fs.existsSync(dir)){
+      var filesToRemove = fs.readdirSync(dir);
+      for (var i = 0; i < filesToRemove.length; i++) {
+        //Si no es el readme, lo elimino del directorio
+        if (filesToRemove[i] !== "README.txt") {
+          fs.unlinkSync(dir+"/"+ filesToRemove[i]);
+          console.log("Removed file from /BaseDeDatos/ directory: " + filesToRemove[i]);
+        }
+      }
+    }
+    else
+      fs.mkdirSync(dir);
   }
   catch { console.log("An error ocurred creating the directory: " + dir); }
   console.log("Directory created: " + dir);

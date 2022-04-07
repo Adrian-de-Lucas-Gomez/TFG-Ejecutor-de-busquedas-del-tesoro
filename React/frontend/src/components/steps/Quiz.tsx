@@ -34,6 +34,9 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
             let new_state = props.getState<any>('DATA', []); 
             let estadoACargar = new_state[props.getState<number>('FaseConfigurable',1)]; 
 
+            //Nos aseguramos que lo que se esta configurando ahora es lo que nos hemos cargado
+            let myData = {Alert: false, MensageAlert: "", datosFase: estadoACargar };
+            props.setState<any>('faseConfigurandose',myData,{});
 
             //Me guardo tando la pregunta como las respuestas que había configuradas
             setQuestion(estadoACargar.Pregunta);
