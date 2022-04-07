@@ -19,23 +19,32 @@ public class GPSStage : Stage
     [SerializeField] Image point;
     [SerializeField] Animation anim;
 
+    //public float dist = 150.0f;   //Para hacer debug sin necesisad de tener el GPS
+
     private GPSInfo gpsData;
     private float GPSLongitude;
     private float GPSLatitude;
     private float radius;
 
-    bool changeSceneRequest = false;
+    private bool changeSceneRequest = false;
+
+    private float timeToChangeScene = 5.0f;     //TO DO: Se podría hacer general al acabar todas las fases de dejar 5seg y mostrar un mensaje o algo
 
     private void Update()
     {
-        if (changeSceneRequest || Input.GetMouseButtonDown(0) /*|| Input.touchCount > 0*/)
+        if (changeSceneRequest)
         {
-            //Desactivamos todo el sistema GPS para pasar limpios a la siguiente escena
-            scanner.stopGPSTracking();
-            GameManager.getInstance().GoToNextPhase();
-        }         
+            //Llevamos nosotros la cuenta del tiempo para evitar usar corrutinas
+            timeToChangeScene -= Time.deltaTime;
+        }
+        else
+        {
+            CheckGPSLocalization(scanner.GetLatitude(), scanner.GetLongitude());
+            if (Input.GetKeyDown(KeyCode.Space)) { changeSceneRequest = true; DestinationReached(); }   //Debug
+        }   
 
-        CheckGPSLocalization(scanner.GetLongitude(), scanner.GetLatitude());
+        //Esta parte es meramente para debug
+        if (timeToChangeScene <= 0.0f){ FinaliceStage(); }
     }
 
 
@@ -51,32 +60,61 @@ public class GPSStage : Stage
 
         description.text = gpsData.LocationDescription;
 
+        timeToChangeScene = 5.0f;
+
         changeSceneRequest = false;
     }
 
-    private void CheckGPSLocalization(float longitude, float latitude)
+    //Aqui actualizamos la interfaz para mostrar al usuario que ha llegado al objetivo
+    private void DestinationReached()
     {
-        //Aqui comprobaríamos si nuestra posicion es suficientemente cercana al objetivo
+        //Dejamos de actualizar las coordenadas GPS
+        scanner.stopGPSTracking();
 
-        float dist = distance(latitude, longitude, GPSLatitude, GPSLongitude);
-        PointsDistance.text = dist.ToString() + " metros";
+        //Iluminamos el tracker en verde para indicar completado
+        point.color = new Color(0.0f , 0.8f, 0.0f, 1.0f);
 
-        point.color = new Color(255 / dist, 0.0f, dist / 255, 1.0f);
+        //Ponemos un mensaje de felicitación para el jugador
+        PointsDistance.text = "¡Enhorabuena has logrado llegar al destino!";
 
-        if (dist > 100)
+        //Reseteamos la animación del anillo
+        anim["Pulse"].time = 0.0f;
+        anim["Pulse"].speed = 0.0f;
+    }
+
+
+    private void FinaliceStage()
+    {
+        GameManager.getInstance().GoToNextPhase();
+    }
+
+    //Aqui comprobaríamos si nuestra posicion es suficientemente cercana al objetivo 
+    private void CheckGPSLocalization(float latitude, float longitude)
+    {
+        float dist = 1000.0f;   //Una distancia ficticia
+
+        //Si ya está recibiendo coordenadas reales
+        if (latitude != 0 && longitude != 0)
         {
-            anim["Pulse"].speed = 0.3f;
+            //Calculamos la distancia de nuestra posicion a la objetivo
+            dist = distance(latitude, longitude, GPSLatitude, GPSLongitude);
+
+            PointsDistance.text = dist.ToString() + " metros";
         }
         else
         {
-            anim["Pulse"].speed = 30 / dist;
-            
+            PointsDistance.text = "*Esperando coordenadas GPS*";
         }
+
+        //Aplicamos un color al tracker segun la distancia al objetivo (Azul=frio=lejos  &  Rojo=calor=cerca)
+        point.color = new Color(10/dist, 0.0f, dist/150, 1.0f);
+
+        anim["Pulse"].speed = 30 / dist;    //A 30 ira a velocidad normal 1.0f (Mas cerca mas rápido y mas lejos mas lento)
 
         //Si el jugador esta a 5 metros o menos del objetivo suponemos que lo ha encontrado
         if (dist <= radius)
         {
-            //Preparamos para salir de la escena
+            DestinationReached();
             changeSceneRequest = true;
         }
     }
@@ -85,6 +123,9 @@ public class GPSStage : Stage
     {
         return angleIn10thofaDegree * Mathf.PI / 180;
     }
+
+    //Metodo que calcula la distancia entre dos puntos definidos por latitud y logitud usando la 
+    //formula de Haversine y devolviendo el resultado en metros
     float distance(float lat1, float lon1, float lat2, float lon2)
     {
         float dlat = toRadian(lat2-lat1);

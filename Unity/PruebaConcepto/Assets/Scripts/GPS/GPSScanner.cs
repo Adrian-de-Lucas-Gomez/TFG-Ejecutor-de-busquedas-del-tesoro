@@ -5,28 +5,19 @@ public class GPSScanner : MonoBehaviour
 {
     private float ActualLongitude;
     private float ActualLatitude;
+    private void UpdateCoordinates()
+    {
+        //Actializamos los valores de latitud y longitud que ha registrado el GPS
+        ActualLongitude = Input.location.lastData.longitude;
+        ActualLatitude = Input.location.lastData.latitude;
+    }
 
     public IEnumerator InitGPSTracking()
     {
-#if UNITY_EDITOR
-        // No permission handling needed in Editor
-#elif UNITY_ANDROID
-        if (!UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.CoarseLocation)) {
-            UnityEngine.Android.Permission.RequestUserPermission(UnityEngine.Android.Permission.CoarseLocation);
-        }
-
-        // First, check if user has location service enabled
-        if (!UnityEngine.Input.location.isEnabledByUser) {
-            // TODO Failure
-            Debug.LogFormat("Android and Location not enabled");
-            yield break;
-        }
-#endif
-
-        // Starts the location service.
+        //Arrancamos el sistema de localizacion de Unity con precision de un metro
         Input.location.Start(1f, 1f);
 
-        // Waits until the location service initializes
+        //Como el arranque no es instantaneo damos un margen para que se inicialize
         int maxWait = 20;
         while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
         {
@@ -35,41 +26,21 @@ public class GPSScanner : MonoBehaviour
             Debug.Log(maxWait.ToString());
         }
 
-        // If the service didn't initialize in 20 seconds this cancels location service use.
-        if (maxWait < 1)
-        {
-            print("Timed out");
-            yield break;
-        }
+        //Si se consumieron los 20 segundos y no se inicializo lo damos por fallido
+        if (maxWait < 1) { print("Timed out"); yield break; }
 
-        // If the connection failed this cancels location service use.
-        if (Input.location.status == LocationServiceStatus.Failed)
-        {
-            print("Unable to determine device location");
-            yield break;
-        }
-        else
-        {
-            Debug.Log(Input.location.status);
+        //Si no es capaz de corroborar la posicion es que ha fallado
+        if (Input.location.status == LocationServiceStatus.Failed) { print("Unable to determine device location"); yield break; }
 
-            // If the connection succeeded, this retrieves the device's current location and displays it in the Console window.
-            //print("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);           
-            InvokeRepeating("UpdateCoordinates", 1.0f, 2.0f);
-        }
-
-        
+        //Si está funcionando correctamente podemos comenzar a pedir actulizaciones periódicas de la posicion
+        else   InvokeRepeating("UpdateCoordinates", 1.0f, 1.0f);
     }
 
     public void stopGPSTracking()
     {
+        //Desactivamos la actualizacion periodica y paramos el sistema de localizacion
         CancelInvoke("UpdateCoordinates");
-        // Stops the location service if there is no need to query location updates continuously.
         Input.location.Stop();
-    }
-    void UpdateCoordinates()
-    {
-        ActualLongitude = Input.location.lastData.longitude;
-        ActualLatitude = Input.location.lastData.latitude;
     }
 
     public float GetLatitude()
