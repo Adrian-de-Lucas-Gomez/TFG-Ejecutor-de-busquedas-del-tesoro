@@ -6,6 +6,7 @@ import QRPic from "../../QRStageImage.png";
 import QuizPic from "../../QuizStageImage.png";
 import ImageChargerPic from "../../ImageChargerStageImage.png";
 import ImageTargetPic from "../../ImageTargetStageImage.png";
+import SoundPic from "../../SoundStageImage.png";
 import Errorimage from "../../Imagen.png"
 
 
@@ -22,7 +23,8 @@ const PhaseCard = (props: {fase:any,funcionMofify:any, funcionDelete: any,funcio
         if(miFase.tipo === "QuizStage") return QuizPic;
         if(miFase.tipo === "ImageStage") return ImageChargerPic
         if(miFase.tipo === "ImageTargetStage") return ImageTargetPic;
-        
+        if(miFase.tipo === "SoundStage") return SoundPic;
+
         return Errorimage;
     }
 

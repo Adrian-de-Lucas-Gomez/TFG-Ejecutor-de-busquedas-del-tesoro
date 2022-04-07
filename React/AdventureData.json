@@ -1,9 +1,14 @@
 {
-  "Gencana": "Imagen",
+  "Gencana": "David",
+  "VuforiaKey": "",
   "fases": [
     {
       "tipo": "ImageStage",
-      "Imagen": "0.jpg"
+      "Imagen": "0.png"
+    },
+    {
+      "tipo": "SoundStage",
+      "Sonido": "0.wav"
     }
   ]
 }

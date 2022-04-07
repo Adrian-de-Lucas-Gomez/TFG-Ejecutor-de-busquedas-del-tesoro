@@ -45,7 +45,6 @@ const Sound = (props: StepComponentProps): JSX.Element => {
   }, [props.getState<boolean>('SobreEscribir', false)]);
 
 
-
   const prepareForSave = (sonidoCargado: File | null) => {
     let jsonData = {tipo:"SoundStage" ,Sonido: sonidoCargado};
     let myData = {Alert: false, texto: "Hola", datosFase: jsonData };

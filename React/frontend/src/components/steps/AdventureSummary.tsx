@@ -82,6 +82,7 @@ const eliminarFase = (e:number)=>{
         let f = props.getState<any>('DATA', []);
         let contadorImagenes = 0;
         let contadorTargets = 0;
+        let contadorSonidos = 0;
     
         for (let i = 0; i < f.length; i++) {
           var faseActual = f[i];
@@ -101,6 +102,13 @@ const eliminarFase = (e:number)=>{
             faseActual = { tipo: "ImageTargetStage", Target: finalTargetName, AddText: faseActual.AddText, Text: faseActual.Text};
             contadorTargets++;
           }
+          else if (faseActual.tipo === "SoundStage" && faseActual.Sonido instanceof File) {
+            var finalSoundName = faseActual.Sonido.name;
+            finalSoundName = (contadorTargets.toString()) + (finalSoundName.substring(finalSoundName.indexOf('.')));
+            //Cambiamos la fase para que el json tenga la referencia a esta
+            faseActual = { tipo: "SoundStage", Sonido: finalSoundName};
+            contadorTargets++;
+          }
           datos.push(faseActual);
         }
         var jsonFinal = { Gencana: props.getState('adventureName', "Nombre por defecto"),VuforiaKey: props.getState('vuforiaKey', ''), fases: datos }
@@ -118,6 +126,7 @@ const eliminarFase = (e:number)=>{
         var fasesAventura = props.getState<any>('DATA', []);;
         var contadorImagenes = 0;
         var contadorTargets = 0;
+        var contadorSonidos = 0;
         for (var i = 0; i < fasesAventura.length; i++) {
     
           var faseActual = fasesAventura[i];
@@ -129,10 +138,16 @@ const eliminarFase = (e:number)=>{
             contadorImagenes++
           }
           else if (faseActual.tipo === "ImageTargetStage" && faseActual.Target instanceof File) {
-            var finalImageName = faseActual.Target.name;
-            finalImageName = (contadorTargets.toString()) + (finalImageName.substring(finalImageName.indexOf('.')));
-            sendFileToServer('unityPackage', faseActual.Target, finalImageName, "./package-upload")
+            var finalTargetName = faseActual.Target.name;
+            finalTargetName = (contadorTargets.toString()) + (finalTargetName.substring(finalTargetName.indexOf('.')));
+            sendFileToServer('unityPackage', faseActual.Target, finalTargetName, "./package-upload")
             contadorTargets++;
+          }
+          else if (faseActual.tipo === "SoundStage" && faseActual.Sonido instanceof File) {
+            var finalSoundName = faseActual.Sonido.name;
+            finalSoundName = (contadorTargets.toString()) + (finalSoundName.substring(finalSoundName.indexOf('.')));
+            sendFileToServer('sound', faseActual.Sonido, finalSoundName, "./sound-upload")
+            contadorSonidos++;
           }
         }
         props.setState('DATA', fasesAventura, []);

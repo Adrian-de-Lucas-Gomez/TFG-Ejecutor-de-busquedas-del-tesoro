@@ -52,8 +52,19 @@ const packageStorage = multer.diskStorage({
   }
 })
 
+const soundStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'Sounds')
+  },
+  filename: (req, file, cb) => {
+    console.log(file)
+    cb(null, file.originalname)
+  }
+})
+
 const imageUpload = multer({ storage: storage })
 const packageUpload = multer({ storage: packageStorage })
+const soundUpload = multer({ storage: soundStorage })
 
 var aventuraActual = {}
 
@@ -68,6 +79,11 @@ app.post('/image-upload', imageUpload.array("imageCharger"), (req, res) => {
 app.post('/package-upload', packageUpload.array("unityPackage"), (req, res) => {
   console.log(req.headers)
   console.log("POST REQUEST recieved in: /package-upload")
+})
+
+app.post('/sound-upload', soundUpload.array("sound"), (req, res) => {
+  console.log(req.headers)
+  console.log("POST REQUEST recieved in: /sound-upload")
 })
 
 
@@ -90,8 +106,8 @@ app.get("/generate-zip", (req, res)=>{
     console.log("Couldnt remove .zip from server");
   }
   // Le paso al comando el nombre del directorio que hace falta crear y usar para almacenar la aventura
-  //var command = "GeneraZip.bat";
-  var command = "bash GeneraZip.sh";
+  var command = "GeneraZip.bat";
+  //var command = "bash GeneraZip.sh";
   const execProcess = exec(command, { 'encoding': 'utf8' }, (error, stdout) => {});
   execProcess.on('exit', () => {
     console.log('exec process exit');
@@ -123,6 +139,14 @@ app.get("/reset", (req, res) => {
       fs.unlinkSync('./Packages/' + packagesToRemove[i]);
     }
   }
+
+  // var soundsToRemove = fs.readdirSync('./Packages/');
+  // for(let i  =0 ; i < soundsToRemove.length; i++){
+  //   if (soundsToRemove[i] !== "README.txt") {
+  //     console.log("Removed file from backend/Sounds/ directory: " + soundsToRemove[i]);
+  //     fs.unlinkSync('./Packages/' + soundsToRemove[i]);
+  //   }
+  // }
   res.json({ key: "value" });
 });
 
