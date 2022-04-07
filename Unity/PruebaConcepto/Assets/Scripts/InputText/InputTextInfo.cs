@@ -1,9 +1,8 @@
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
-public class SoundInfo : AdventureInfo
+public class InputTextInfo : AdventureInfo
 {
-    public string nombreSonido;
     public string codigo;
 
     /// <summary>
@@ -15,7 +14,7 @@ public class SoundInfo : AdventureInfo
         //Me quedo con la escena a la que me tengo que ir para ejecutarme
         stage = myInfo["tipo"].Value<string>();
 
-        //Obtengo los datos 
-        nombreSonido = myInfo["Sonido"].Value<string>();
+        //Obtengo los datos
+        codigo = myInfo["Codigo"].Value<string>();
     }
 }
