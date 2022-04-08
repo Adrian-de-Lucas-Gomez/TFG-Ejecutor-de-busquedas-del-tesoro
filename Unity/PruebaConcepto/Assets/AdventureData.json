@@ -11,18 +11,18 @@
     },
     {
       "tipo": "QuizStage",
-      "Pregunta": "EGDFG",
+      "Pregunta": "¿Donde se quedó el segundo edificio de la FDI?",
       "Respuestas": [
         {
-          "text": "DFGDFG",
+          "text": "Sobre el papel y ya",
           "isCorrect": true
         },
         {
-          "text": "DFGFDFG",
+          "text": "En comprar los kits de PS4",
           "isCorrect": false
         },
         {
-          "text": "DFGD",
+          "text": "Está pintado de camuflaje",
           "isCorrect": false
         }
       ]

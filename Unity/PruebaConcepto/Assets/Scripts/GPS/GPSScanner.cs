@@ -14,6 +14,14 @@ public class GPSScanner : MonoBehaviour
 
     public IEnumerator InitGPSTracking()
     {
+        // First, check if user has location service enabled
+        if (!UnityEngine.Input.location.isEnabledByUser)
+        {
+            // TODO Failure
+            Debug.LogFormat("Android and Location not enabled");
+            yield break;
+        }
+
         //Arrancamos el sistema de localizacion de Unity con precision de un metro
         Input.location.Start(1f, 1f);
 
