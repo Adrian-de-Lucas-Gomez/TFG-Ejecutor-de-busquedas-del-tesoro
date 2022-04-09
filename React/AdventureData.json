@@ -1,9 +1,13 @@
 {
-  "Gencana": "Imagen",
+  "Gencana": "Me muero",
+  "VuforiaKey": "",
   "fases": [
     {
-      "tipo": "ImageStage",
-      "Imagen": "0.jpg"
+      "tipo": "GPSStage",
+      "GPSLongitude": -3.724877931702313,
+      "GPSLatitude": 40.443906908648295,
+      "radius": "0.5",
+      "description": "La puerta de la facultad de medicina"
     }
   ]
 }
