@@ -1,4 +1,5 @@
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -125,9 +126,29 @@ public class GameManager : MonoBehaviour
                         adventureStages.Enqueue(newTarget);
                         break;
                     }
+                case "GPSStage":
+                    {
+                        GPSInfo newGPS = new GPSInfo();
+                        newGPS.readFromJSON((JObject)misFases[i]);
+                        adventureStages.Enqueue(newGPS);
+
+                    #if UNITY_ANDROID
+                        //Solo se necesita de preguntar si hay ese tipo de fase
+                        if (!UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.CoarseLocation)) { 
+                            StartCoroutine(AskGPSPermission());
+                        }
+                    #endif
+                        break;
+                    }
             }
         }
         adventureStages.Enqueue(end);
+    }
+
+    private IEnumerator AskGPSPermission()
+    {
+        UnityEngine.Android.Permission.RequestUserPermission(UnityEngine.Android.Permission.CoarseLocation);
+        yield break;
     }
 
     private void loadAllSmallScenes()

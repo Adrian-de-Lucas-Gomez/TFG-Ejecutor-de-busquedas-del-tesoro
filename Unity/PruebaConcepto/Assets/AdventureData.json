@@ -3,10 +3,40 @@
   "VuforiaKey":"Ae95I1T/////AAABmcG2mBJb3UoFv6M4ZsPOEJKFswyU2T3hp757RDMwUtxtFGwZtB9JonqLEFaRvfjiQfsD+4B+ZdeDCQhvGLbqgE7j4gZ41WL4NPNs1z2YdQY91XMEEcp8JtrgdNLMzExZH9ECqXFvmOS6Mjzf5n9+3Sl/dfGdBy50S4ylNxfG2ThVq0Cu7ZDiOjhD4EndhZuBTENh0kXG350xUsEQDvEjlueXiiFGvQOUy81cZHNjvX2+gyOLAq852Aj05Ew0QSDqzd+wAyoCFvsmgtkqeNx1cVrE2JMB6xGTvRunUY+48uivzchMxS7MvIlPu8n5YtEzkq+R6TQNoJZunJ5GHI1UAsz0sDHHk3Cqjv/AXPzlf+ZS",
   "fases": [
     {
-      "tipo": "ImageTargetStage",
-      "AddText": true,
-      "Text": "Texto de prueba que se muestra al encontrar el target",
-      "Target": "CartelVuforia_scaled.jpg"
+      "tipo": "GPSStage",
+      "GPSLongitude": "-3.732749",
+      "GPSLatitude": "40.452867",
+      "radius": "5.0",
+      "description":"Busca las escaleras del segundo edificio"
+    },
+    {
+      "tipo": "QuizStage",
+      "Pregunta": "¿Donde se quedó el segundo edificio de la FDI?",
+      "Respuestas": [
+        {
+          "text": "Sobre el papel y ya",
+          "isCorrect": true
+        },
+        {
+          "text": "En comprar los kits de PS4",
+          "isCorrect": false
+        },
+        {
+          "text": "Está pintado de camuflaje",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "tipo": "GPSStage",
+      "GPSLongitude": "-3.733802",
+      "GPSLatitude": "40.453029",
+      "radius": "5.0",
+      "description":"Busca la entrada principal de la facultad"
+    },
+    {
+      "tipo": "QRStage",
+      "QRText": "b"
     }
   ]
 }

@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ImageTargetStage.unity
     guid: fdd8f0138b13f0e42bd74fabb76e3d6a
+  - enabled: 1
+    path: Assets/Scenes/GPSStage.unity
+    guid: 7d6178acc03154843a4fc42ae549702c
   m_configObjects: {}

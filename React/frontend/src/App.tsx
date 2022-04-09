@@ -8,6 +8,7 @@ import AdventureCharger from './components/steps/AdventureCharger'
 import AdventureSummary from './components/steps/AdventureSummary';
 import ImageCharger from './components/steps/ImageCharger';
 import ImageTarget from './components/steps/ImageTarget';
+import GPS from './components/steps/GPS';
 import './components/Styles/App.css'
 
 const App = (): JSX.Element => {
@@ -37,6 +38,7 @@ const App = (): JSX.Element => {
         <Step title='Quiz' component={Quiz} />
         <Step title='ImageCharger' component={ImageCharger}/>
         <Step title='ImageTarget' component={ImageTarget}/>
+        <Step title='GPS' component={GPS}/>
       </Steps>
 
     </div>
