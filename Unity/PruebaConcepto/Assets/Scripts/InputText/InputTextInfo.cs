@@ -15,6 +15,6 @@ public class InputTextInfo : AdventureInfo
         stage = myInfo["tipo"].Value<string>();
 
         //Obtengo los datos
-        codigo = myInfo["Codigo"].Value<string>();
+        codigo = myInfo["Texto"].Value<string>();
     }
 }

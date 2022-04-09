@@ -33,6 +33,9 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
       case "SoundStage":
         props.jump(6);
       break;
+      case "InputTextStage":
+        props.jump(7);
+      break;
     }
   }
 
