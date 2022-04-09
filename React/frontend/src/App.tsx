@@ -10,6 +10,7 @@ import InputText from './components/steps/InputText';
 import AdventureSummary from './components/steps/AdventureSummary';
 import ImageCharger from './components/steps/ImageCharger';
 import ImageTarget from './components/steps/ImageTarget';
+import GPS from './components/steps/GPS';
 import './components/Styles/App.css'
 
 const App = (): JSX.Element => {
@@ -41,6 +42,7 @@ const App = (): JSX.Element => {
         <Step title='ImageTarget' component={ImageTarget}/>
         <Step title='Sound' component={Sound} />
         <Step title='InputText' component={InputText} />
+        <Step title='GPS' component={GPS}/>
       </Steps>
 
     </div>

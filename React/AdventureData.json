@@ -1,24 +1,13 @@
 {
-  "Gencana": "NuevaFase",
+  "Gencana": "Me muero",
   "VuforiaKey": "",
   "fases": [
     {
-      "tipo": "ImageTargetStage",
-      "Target": "0.png",
-      "AddText": true,
-      "Text": "TEXTO"
-    },
-    {
-      "tipo": "ImageStage",
-      "Imagen": "0.jpg"
-    },
-    {
-      "tipo": "SoundStage",
-      "Sonido": "1.mp3"
-    },
-    {
-      "tipo": "QRStage",
-      "QRText": "Hola"
+      "tipo": "GPSStage",
+      "GPSLongitude": -3.724877931702313,
+      "GPSLatitude": 40.443906908648295,
+      "radius": "0.5",
+      "description": "La puerta de la facultad de medicina"
     }
   ]
 }

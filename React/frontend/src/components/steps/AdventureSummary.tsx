@@ -1,23 +1,23 @@
 import { StepComponentProps } from '../Steps';
-import React, {useState, useRef, useEffect, forwardRef, useImperativeHandle} from "react"
+import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle } from "react"
 import axios from "axios"
 import PhaseCard from './PhaseCard';
 
 const AdventureSummary = (props: StepComponentProps): JSX.Element => {
 
-    //Nada más empezar lo que hago es pedirle al server las aventuras que tenemos disponibles para cargar 
-    useEffect(() => {
-        return () => {}
-        //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
-      }, []);
+  //Nada más empezar lo que hago es pedirle al server las aventuras que tenemos disponibles para cargar 
+  useEffect(() => {
+    return () => { }
+    //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
+  }, []);
 
-  const configurarFase = (index:number)=>{
+  const configurarFase = (index: number) => {
     //Preparamos las variables que las fases necesitan para que puedan obtener los datos necesarios
     let new_state = props.getState<any>('DATA', []);
-    props.setState('FaseConfigurable', index,0);
+    props.setState('FaseConfigurable', index, 0);
     props.setState<boolean>('SobreEscribir', true, true);
 
-    switch(new_state[index].tipo){
+    switch (new_state[index].tipo) {
       case "QRStage":
         props.jump(2);
       break;
@@ -36,15 +36,18 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
       case "InputTextStage":
         props.jump(7);
       break;
+      case "GPSStage":
+        props.jump(8);
+        break;
     }
   }
 
-const eliminarFase = (e:number)=>{
+  const eliminarFase = (e: number) => {
     let new_state = props.getState<any>('DATA', []);
-    new_state.splice(e,1);
-    props.setState('DATA',new_state,[]);
+    new_state.splice(e, 1);
+    props.setState('DATA', new_state, []);
     ComprobarIndicesFases();
-}
+  }
 
   //este metodo tiene como objetivo comprobar que los indices de pusheo, reconfiguracion y borrado no se encuentran fuera de los límites del array de estados
   //para evitar que se trabajen con posiciones que no existen de este
@@ -156,130 +159,141 @@ const eliminarFase = (e:number)=>{
         }
         props.setState('DATA', fasesAventura, []);
       }
-    
-    
-    const salvarAventura = async () => {
-      let nombreAventura = props.getState('adventureName', "Nombre por defecto");
-      if(nombreAventura === "Nombre por defecto"){
-        alert("Nombre de la aventura sin asignar");
-        return;
+      else if (faseActual.tipo === "ImageTargetStage" && faseActual.Target instanceof File) {
+        var finalImageName = faseActual.Target.name;
+        finalImageName = (contadorTargets.toString()) + (finalImageName.substring(finalImageName.indexOf('.')));
+        sendFileToServer('unityPackage', faseActual.Target, finalImageName, "./package-upload")
+        contadorTargets++;
       }
-      let vuforiaKey = props.getState('vuforiaKey', '');
-      if(vuforiaKey === '' || vuforiaKey.length !== 380){
-        alert("Key de Vuforia no valida")
-      }
-
-      let reset = await axios.get("./reset");
-      await operacionesPreDescargaProyecto();
-      await mandarJson();
-      await axios.get("./guardame-aventura");
-      console.log("Peticion mandada");
     }
-    
-    
-      const generateZip = async () => {
-        let nombreAventura = props.getState('adventureName', "Nombre por defecto");
-        if(nombreAventura === "Nombre por defecto"){
-          alert("Nombre de la aventura sin asignar");
-          return;
-        }
-        let reset = await axios.get("./reset");
-        //Mando los archivos que tenga, como las imagenes
-        await operacionesPreDescargaProyecto();
-        //Mando el json
-        await mandarJson();
-    
-        //En este momento solo falta pedirle que me de un zip con todo lo que tenga
-        let zip = await axios.get("./generate-zip", {
-          responseType: 'arraybuffer',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-        const type = zip.headers['content-type']
-        const blob = new Blob([zip.data], { type: type })
-        const link = document.createElement('a')
-        link.href = window.URL.createObjectURL(blob)
-        link.download = props.getState('adventureName', "Nombre por defecto") + '.zip';
-        link.click();
-        link.remove();
-      }
+    props.setState('DATA', fasesAventura, []);
+  }
 
-      //Metodo que toma el texto que se esté escribiendo en el form para indicar el nombre que queremos que tenga la aventura y lo
-      //guarda para que la futura aventura que vayamos a descargar tenga dicho nombre
-      const modifyAdventureName = (e: string): void => {
-        props.setState('adventureName', e, "Nombre por defecto");
-      }
 
-      const getAdventureName = (): string => {
-        return props.getState('adventureName', "Nombre por defecto");
-      }
+  const salvarAventura = async () => {
+    let nombreAventura = props.getState('adventureName', "Nombre por defecto");
+    if (nombreAventura === "Nombre por defecto") {
+      alert("Nombre de la aventura sin asignar");
+      return;
+    }
 
-      const getVuforiaKey = (): string =>{
-        return props.getState('vuforiaKey', "");
-      }
-      const modifyVuforiaKey =(e:string):void =>{
-        props.setState('vuforiaKey', e, "");
-      }
-      //Metodo que toma una posicion dentro del array de fases y una direccion y mueve la fase que se encuentre en dicha posicion hacia
-      //la dirección especificada si es posible
-      const moverFase = (index:number,dir:number):void =>{
-        let fases = props.getState<any>('DATA', []);
-        //Subimos la fase
-        let dest=0;
-        if(dir === -1){
-          dest = index-1;
-          if(dest<0) dest =0;
-        }
-        else if(dir === 1){
-          dest = index+1;
-          if(dest === fases.length)
-            dest = fases.length-1;
-        }
+    let vuforiaKey = props.getState('vuforiaKey', '');
 
-        //Si no la hemos podido mover nos salimos
-        if(dest === index) return;
+    if (vuforiaKey === '' || vuforiaKey.length !== 380) {
+      alert("Key de Vuforia no valida")
+    }
 
-        //Quito el elemento y lo pongo en una nueva posicion
-        var element = fases[index];
-        fases.splice(index, 1);
-        fases.splice(dest, 0, element);
+    let reset = await axios.get("./reset");
+    await operacionesPreDescargaProyecto();
+    await mandarJson();
+    await axios.get("./guardame-aventura");
+    console.log("Peticion mandada");
+  }
 
-        props.setState('DATA', fases, []);
+
+  const generateZip = async () => {
+    let nombreAventura = props.getState('adventureName', "Nombre por defecto");
+    if (nombreAventura === "Nombre por defecto") {
+      alert("Nombre de la aventura sin asignar");
+      return;
+    }
+    let reset = await axios.get("./reset");
+    //Mando los archivos que tenga, como las imagenes
+    await operacionesPreDescargaProyecto();
+    //Mando el json
+    await mandarJson();
+
+    //En este momento solo falta pedirle que me de un zip con todo lo que tenga
+    let zip = await axios.get("./generate-zip", {
+      responseType: 'arraybuffer',
+      headers: {
+        'Content-Type': 'application/json'
       }
+    });
+    const type = zip.headers['content-type']
+    const blob = new Blob([zip.data], { type: type })
+    const link = document.createElement('a')
+    link.href = window.URL.createObjectURL(blob)
+    link.download = props.getState('adventureName', "Nombre por defecto") + '.zip';
+    link.click();
+    link.remove();
+  }
+
+  //Metodo que toma el texto que se esté escribiendo en el form para indicar el nombre que queremos que tenga la aventura y lo
+  //guarda para que la futura aventura que vayamos a descargar tenga dicho nombre
+  const modifyAdventureName = (e: string): void => {
+    props.setState('adventureName', e, "Nombre por defecto");
+  }
+
+  const getAdventureName = (): string => {
+    return props.getState('adventureName', "Nombre por defecto");
+  }
+
+  const getVuforiaKey = (): string => {
+    return props.getState('vuforiaKey', "");
+  }
+  const modifyVuforiaKey = (e: string): void => {
+    props.setState('vuforiaKey', e, "");
+  }
+  //Metodo que toma una posicion dentro del array de fases y una direccion y mueve la fase que se encuentre en dicha posicion hacia
+  //la dirección especificada si es posible
+  const moverFase = (index: number, dir: number): void => {
+    let fases = props.getState<any>('DATA', []);
+    //Subimos la fase
+    let dest = 0;
+    if (dir === -1) {
+      dest = index - 1;
+      if (dest < 0) dest = 0;
+    }
+    else if (dir === 1) {
+      dest = index + 1;
+      if (dest === fases.length)
+        dest = fases.length - 1;
+    }
+
+    //Si no la hemos podido mover nos salimos
+    if (dest === index) return;
+
+    //Quito el elemento y lo pongo en una nueva posicion
+    var element = fases[index];
+    fases.splice(index, 1);
+    fases.splice(dest, 0, element);
+
+    props.setState('DATA', fases, []);
+  }
 
   return (
     <div >
-        {/* Seccion que representa la parte superior del formulario que permite especificar qué nombre queremos que tenga la aventura 
+      {/* Seccion que representa la parte superior del formulario que permite especificar qué nombre queremos que tenga la aventura 
         si no ponemos nada el nombre será el original del archivo que vayamos a descargar*/}
-        <form style={{textAlign:'center', marginTop:'1%', fontSize:'120%'}} onSubmit={e => e.preventDefault()}>
-          <input className='nameForm' type="text" value={getAdventureName()} placeholder="Nombre de aventura" maxLength={30} size={35} onChange={e => modifyAdventureName(e.target.value)}></input>
-        </form>
-        {/* Sección para introducir la key de vuforia necesaria para las fases que requieran de realidad aumentada*/}
-        <form style={{textAlign:'center', marginTop:'1%', fontSize:'120%'}} onSubmit={e => e.preventDefault()}>
-          <input className='nameForm' type="text" value={getVuforiaKey()} placeholder="Key de Vuforia" maxLength={380} size={35} onChange={e => modifyVuforiaKey(e.target.value)}></input>
-        </form>
-        <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'250%'}} className="Titulo" >Fases actuales:</h3>
-        {/* Conjunto de bloques que muestran las fases que tenemos disponibles */}
+      <form style={{ textAlign: 'center', marginTop: '1%', fontSize: '120%' }} onSubmit={e => e.preventDefault()}>
+        <input className='nameForm' type="text" value={getAdventureName()} placeholder="Nombre de aventura" maxLength={30} size={35} onChange={e => modifyAdventureName(e.target.value)}></input>
+      </form>
+      {/* Sección para introducir la key de vuforia necesaria para las fases que requieran de realidad aumentada*/}
+      <form style={{ textAlign: 'center', marginTop: '1%', fontSize: '120%' }} onSubmit={e => e.preventDefault()}>
+        <input className='nameForm' type="text" value={getVuforiaKey()} placeholder="Key de Vuforia" maxLength={380} size={35} onChange={e => modifyVuforiaKey(e.target.value)}></input>
+      </form>
+      <h3 style={{ marginTop: '0.5%', marginBottom: '1%', fontSize: '250%' }} className="Titulo" >Fases actuales:</h3>
+      {/* Conjunto de bloques que muestran las fases que tenemos disponibles */}
 
-        {
-          //@ts-ignore 
-          props.getState<any>('DATA', []).map((faseActual,ind) => (
-            <div>
-            <PhaseCard fase = {faseActual} funcionMofify={configurarFase} funcionDelete = {eliminarFase} funcionMover={moverFase} index={ind} ></PhaseCard>
+      {
+        //@ts-ignore 
+        props.getState<any>('DATA', []).map((faseActual, ind) => (
+          <div>
+            <PhaseCard fase={faseActual} funcionMofify={configurarFase} funcionDelete={eliminarFase} funcionMover={moverFase} index={ind} ></PhaseCard>
             <br></br>
-            </div>
-            // <CartaFase fase = {faseActual} funcionMofify={configurarFase} funcionDelete = {eliminarFase} funcionMover={moverFase} index={ind} />          
-            ))}
+          </div>
+          // <CartaFase fase = {faseActual} funcionMofify={configurarFase} funcionDelete = {eliminarFase} funcionMover={moverFase} index={ind} />          
+        ))}
 
       {/* Este boton tiene como objetivo descargar el proyecto generado */}
-      <div style={{marginTop:'2%'}}>
-          <button className="my-btn btn-outline-orange" style={{fontSize:'170%'}} type="button" onClick={generateZip}>
-            Generar Aventura
-          </button>
-          <button className="my-btn btn-outline-pink" style={{fontSize:'170%',marginLeft:'15%'}} type="button" onClick={salvarAventura}>
-            Guardar Aventura
-          </button>
+      <div style={{ marginTop: '2%' }}>
+        <button className="my-btn btn-outline-orange" style={{ fontSize: '170%' }} type="button" onClick={generateZip}>
+          Generar Aventura
+        </button>
+        <button className="my-btn btn-outline-pink" style={{ fontSize: '170%', marginLeft: '15%' }} type="button" onClick={salvarAventura}>
+          Guardar Aventura
+        </button>
       </div>
     </div>
   );
