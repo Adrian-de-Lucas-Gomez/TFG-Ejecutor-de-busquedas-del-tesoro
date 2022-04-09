@@ -1,13 +1,21 @@
 {
-  "Gencana": "Me muero",
+  "Gencana": "Ejemplo",
   "VuforiaKey": "",
   "fases": [
     {
       "tipo": "GPSStage",
-      "GPSLongitude": -3.724877931702313,
-      "GPSLatitude": 40.443906908648295,
-      "radius": "0.5",
-      "description": "La puerta de la facultad de medicina"
+      "GPSLongitude": -3.7309741973876958,
+      "GPSLatitude": 40.45057005613022,
+      "radius": 10,
+      "description": "Hola"
+    },
+    {
+      "tipo": "InputTextStage",
+      "Texto": "Texto"
+    },
+    {
+      "tipo": "SoundStage",
+      "Sonido": "0.mp3"
     }
   ]
 }

@@ -468,7 +468,7 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     else if (s == "ImageTargetStage") { destiny = 5; }
     else if (s == "SoundStage") { destiny = 6; }
     else if (s == "InputTextStage") { destiny = 7; }
-    else if (s === "GPS") { destiny = 8; }
+    else if (s === "GPSStage") { destiny = 8; }
 
     else if (s === "Default") { return; }
 

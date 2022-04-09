@@ -157,17 +157,9 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
             contadorSonidos++;
           }
         }
-        props.setState('DATA', fasesAventura, []);
-      }
-      else if (faseActual.tipo === "ImageTargetStage" && faseActual.Target instanceof File) {
-        var finalImageName = faseActual.Target.name;
-        finalImageName = (contadorTargets.toString()) + (finalImageName.substring(finalImageName.indexOf('.')));
-        sendFileToServer('unityPackage', faseActual.Target, finalImageName, "./package-upload")
-        contadorTargets++;
-      }
-    }
-    props.setState('DATA', fasesAventura, []);
+      props.setState('DATA', fasesAventura, []);
   }
+  
 
 
   const salvarAventura = async () => {
