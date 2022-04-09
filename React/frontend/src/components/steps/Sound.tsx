@@ -37,6 +37,10 @@ const Sound = (props: StepComponentProps): JSX.Element => {
           setFicheroSonido(estadoACargar.Sonido);
           setSonido(new Audio(window.URL.createObjectURL(estadoACargar.Sonido)));
         }
+
+        //Nos aseguramos que lo que se esta configurando ahora es lo que nos hemos cargado
+        let myData = {Alert: false, MensageAlert: "", datosFase: estadoACargar };
+        props.setState<any>('faseConfigurandose',myData,{});
     }
     
     //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente

@@ -1,14 +1,24 @@
 {
-  "Gencana": "David",
+  "Gencana": "NuevaFase",
   "VuforiaKey": "",
   "fases": [
     {
+      "tipo": "ImageTargetStage",
+      "Target": "0.png",
+      "AddText": true,
+      "Text": "TEXTO"
+    },
+    {
       "tipo": "ImageStage",
-      "Imagen": "0.png"
+      "Imagen": "0.jpg"
     },
     {
       "tipo": "SoundStage",
-      "Sonido": "0.wav"
+      "Sonido": "1.mp3"
+    },
+    {
+      "tipo": "QRStage",
+      "QRText": "Hola"
     }
   ]
 }

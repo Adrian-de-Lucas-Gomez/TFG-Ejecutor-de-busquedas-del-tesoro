@@ -72,6 +72,7 @@ const eliminarFase = (e:number)=>{
         formData.append(identifier, file, fileName);
         //Hacemos una peticion POST a nuestro servidor a la route especificada
         let result = await axios.post(route, formData);
+        return result;
       }
     
       const mandarJson = async () => {
@@ -104,10 +105,10 @@ const eliminarFase = (e:number)=>{
           }
           else if (faseActual.tipo === "SoundStage" && faseActual.Sonido instanceof File) {
             var finalSoundName = faseActual.Sonido.name;
-            finalSoundName = (contadorTargets.toString()) + (finalSoundName.substring(finalSoundName.indexOf('.')));
+            finalSoundName = (contadorSonidos.toString()) + (finalSoundName.substring(finalSoundName.indexOf('.')));
             //Cambiamos la fase para que el json tenga la referencia a esta
             faseActual = { tipo: "SoundStage", Sonido: finalSoundName};
-            contadorTargets++;
+            contadorSonidos++;
           }
           datos.push(faseActual);
         }
@@ -134,19 +135,19 @@ const eliminarFase = (e:number)=>{
             var finalImageName = faseActual.Imagen.name;
             finalImageName = (contadorImagenes.toString()) + (finalImageName.substring(finalImageName.indexOf('.')));
             console.log("El nombre de la imagen es " + finalImageName);
-            sendFileToServer('imageCharger', faseActual.Imagen, finalImageName, "./image-upload")
+            let result = await sendFileToServer('imageCharger', faseActual.Imagen, finalImageName, "./image-upload")
             contadorImagenes++
           }
           else if (faseActual.tipo === "ImageTargetStage" && faseActual.Target instanceof File) {
             var finalTargetName = faseActual.Target.name;
             finalTargetName = (contadorTargets.toString()) + (finalTargetName.substring(finalTargetName.indexOf('.')));
-            sendFileToServer('unityPackage', faseActual.Target, finalTargetName, "./package-upload")
+            let result = await sendFileToServer('unityPackage', faseActual.Target, finalTargetName, "./package-upload")
             contadorTargets++;
           }
           else if (faseActual.tipo === "SoundStage" && faseActual.Sonido instanceof File) {
             var finalSoundName = faseActual.Sonido.name;
             finalSoundName = (contadorTargets.toString()) + (finalSoundName.substring(finalSoundName.indexOf('.')));
-            sendFileToServer('sound', faseActual.Sonido, finalSoundName, "./sound-upload")
+            let result = await sendFileToServer('sound', faseActual.Sonido, finalSoundName, "./sound-upload")
             contadorSonidos++;
           }
         }
@@ -160,9 +161,7 @@ const eliminarFase = (e:number)=>{
         alert("Nombre de la aventura sin asignar");
         return;
       }
-
       let vuforiaKey = props.getState('vuforiaKey', '');
-
       if(vuforiaKey === '' || vuforiaKey.length !== 380){
         alert("Key de Vuforia no valida")
       }
