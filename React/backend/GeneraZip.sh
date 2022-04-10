@@ -14,7 +14,10 @@ cp -r -u -f ./Images/. ../tmp/Assets/Resources/AdventureImages/
 
 #Copiamos los unityPackages que nos ha subido el usuario
 mkdir ../tmp/Assets/StreamingAssets/Vuforia/
-cp -r -u -f ./Packages ../tmp/Assets/StreamingAssets/Vuforia/
+cp -r -u -f ./Packages/. ../tmp/Assets/StreamingAssets/Vuforia/
+
+#MEtemos todo lo que haya en la carpete temporal de sonidos en el proyecto de Unity
+cp -r -u -f ./Sounds/. ../tmp/Assets/Resources/AdventureSounds/ 
 
 #  Muevo el json con los datos de la aventura a donde se encuentra el proyecto
 rm -f ../tmp/Assets/AdventureData.json
