@@ -115,17 +115,25 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
     for(let i = 0; i < fases.length;i++){
       var faseActual = fases[i];
       //En caso de que sea una fase de tipo imagen
-      if(faseActual.tipo === "ImageStage"){   
-        //pido al server que me de una imagen que s ellame asi
-        var fileName=faseActual.Imagen;
+      if(faseActual.tipo === "ImageStage" || faseActual.tipo === "SoundStage" || faseActual.tipo === "ImageTargetStage"){  
+        
+        var fileName ="";
+        //Me quedo con el nombre del archivo correspondiente a la fase que estemos recuperando
+        if(faseActual.tipo === "ImageStage")              fileName=faseActual.Imagen;
+        else if(faseActual.tipo === "SoundStage")         fileName=faseActual.Sonido;
+        else if(faseActual.tipo === "ImageTargetStage")   fileName=faseActual.Target;
+
         let reset = await axios.get("./getFile/"+fileName, {responseType: 'arraybuffer',headers: {'Content-Type': 'application/json'},params: {json:"JSON.stringify(jsonFinal, null, 2)"}});
         const type = reset.headers['content-type']
         const blob = new Blob([reset.data], { type: type })
 
-        //Genero un archivo con dicho archivo que me han dado y me lo guardo
-        let myData = {tipo:"ImageStage" ,Imagen: new File([blob], fileName)};
+        let myData = faseActual;
+        if(faseActual.tipo === "ImageStage")              myData.Imagen= new File([blob], fileName);
+        else if(faseActual.tipo === "SoundStage")         myData.Sonido= new File([blob], fileName);
+        else if(faseActual.tipo === "ImageTargetStage")   myData.Target = new File([blob], fileName);
+        
         fases.splice(i,1,myData);
-        console.log("Acabamos de recuperar una imagen: "+fileName);
+        console.log("Acabamos de recuperar un fichero: "+fileName);
       }
   }
 

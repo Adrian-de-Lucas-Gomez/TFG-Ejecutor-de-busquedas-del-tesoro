@@ -238,7 +238,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneObjectsParent: {fileID: 1717281829}
   myStage: {fileID: 0}
-  myStageType: 6
+  myStageType: 8
 --- !u!1 &893527984
 GameObject:
   m_ObjectHideFlags: 0

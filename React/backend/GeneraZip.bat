@@ -11,9 +11,13 @@ xcopy ..\..\Unity\PruebaConcepto\ProjectSettings\ ..\tmp\ProjectSettings\ /E /S 
 
 @REM Copiamos las imagenes que hayan en el servidor en la carpeta de resources para el futuro acceso del proyecto
 xcopy .\Images ..\tmp\Assets\Resources\AdventureImages /E /S /Q /Y
+
 @REM Copiamos las imagenes que hayan en el servidor en la carpeta de resources para el futuro acceso del proyecto
 mkdir ..\tmp\Assets\StreamingAssets\Vuforia
 xcopy .\Packages ..\tmp\Assets\StreamingAssets\Vuforia /E /S /Q /Y
+
+@REM MEtemos todo lo que haya en la carpete temporal de sonidos en el proyecto de Unity
+xcopy .\Sounds ..\tmp\Assets\Resources\AdventureSounds /E /S /Q /Y
 
 @REM Muevo el json con los datos de la aventura a donde se encuentra el proyecto
 xcopy ..\AdventureData.json ..\tmp\Assets\AdventureData.json  /Y

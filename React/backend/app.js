@@ -52,8 +52,19 @@ const packageStorage = multer.diskStorage({
   }
 })
 
+const soundStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'Sounds')
+  },
+  filename: (req, file, cb) => {
+    console.log(file)
+    cb(null, file.originalname)
+  }
+})
+
 const imageUpload = multer({ storage: storage })
 const packageUpload = multer({ storage: packageStorage })
+const soundUpload = multer({ storage: soundStorage })
 
 var aventuraActual = {}
 
@@ -68,6 +79,13 @@ app.post('/image-upload', imageUpload.array("imageCharger"), (req, res) => {
 app.post('/package-upload', packageUpload.array("unityPackage"), (req, res) => {
   console.log(req.headers)
   console.log("POST REQUEST recieved in: /package-upload")
+  res.json({ key: "value" });
+})
+
+app.post('/sound-upload', soundUpload.array("sound"), (req, res) => {
+  console.log(req.headers)
+  console.log("POST REQUEST recieved in: /sound-upload")
+  res.json({ key: "value" });
 })
 
 
@@ -90,8 +108,8 @@ app.get("/generate-zip", (req, res)=>{
     console.log("Couldnt remove .zip from server");
   }
   // Le paso al comando el nombre del directorio que hace falta crear y usar para almacenar la aventura
-  //var command = "GeneraZip.bat";
-  var command = "bash GeneraZip.sh";
+  var command = "GeneraZip.bat";
+  //var command = "bash GeneraZip.sh";
   const execProcess = exec(command, { 'encoding': 'utf8' }, (error, stdout) => {});
   execProcess.on('exit', () => {
     console.log('exec process exit');
@@ -123,6 +141,16 @@ app.get("/reset", (req, res) => {
       fs.unlinkSync('./Packages/' + packagesToRemove[i]);
     }
   }
+
+  //Limpieza de los sonidos que hubiera en el backend
+  var soundsToRemove = fs.readdirSync('./Sounds/');
+  for(let i  =0 ; i < soundsToRemove.length; i++){
+    if (soundsToRemove[i] !== "README.txt") {
+      console.log("Removed file from backend/Sounds/ directory: " + soundsToRemove[i]);
+      fs.unlinkSync('./Sounds/' + soundsToRemove[i]);
+    }
+  }
+
   res.json({ key: "value" });
 });
 
@@ -158,8 +186,12 @@ app.get("/guardame-aventura", (req, res)=>{
         }
       }
     }
-    else
+    else{
       fs.mkdirSync(dir);
+      fs.mkdirSync(dir+"/Images");
+      fs.mkdirSync(dir+"/Packages");
+      fs.mkdirSync(dir+"/Sounds");
+    }
   }
   catch { console.log("An error ocurred creating the directory: " + dir); }
   console.log("Directory created: " + dir);
@@ -170,11 +202,31 @@ app.get("/guardame-aventura", (req, res)=>{
   for (var i = 0; i < filesToSave.length; i++) {
     let nombreF = filesToSave[i];
     try {
-      fs.copyFileSync('./Images/' + filesToSave[i], '../BaseDeDatos/' + name + '/' + filesToSave[i]);
+      fs.copyFileSync('./Images/' + filesToSave[i], '../BaseDeDatos/' + name + '/Images/' + filesToSave[i]);
     }
     catch { console.log("An error ocurred copying a file:" + filesToSave[i]); }
+  }
 
-    console.log('File Copy Successfully: ' + nombreF);
+    //Me quedo con el nombre de los archivos que hay en el directorio Images
+  //Voy uno por uno para eliminarlos y que no metan ruido a la futura build, en caso de que hayan archivos que no se usen
+  filesToSave = fs.readdirSync('./Packages/');
+  for (var i = 0; i < filesToSave.length; i++) {
+    let nombreF = filesToSave[i];
+    try {
+      fs.copyFileSync('./Packages/' + filesToSave[i], '../BaseDeDatos/' + name + '/Packages/' + filesToSave[i]);
+    }
+    catch { console.log("An error ocurred copying a file:" + filesToSave[i]); }
+  }
+
+  //Me quedo con el nombre de los archivos que hay en el directorio Images
+  //Voy uno por uno para eliminarlos y que no metan ruido a la futura build, en caso de que hayan archivos que no se usen
+  filesToSave = fs.readdirSync('./Sounds/');
+  for (var i = 0; i < filesToSave.length; i++) {
+    let nombreF = filesToSave[i];
+    try {
+      fs.copyFileSync('./Sounds/' + filesToSave[i], '../BaseDeDatos/' + name + '/Sounds/' + filesToSave[i]);
+    }
+    catch { console.log("An error ocurred copying a file:" + filesToSave[i]); }
   }
 
   //Me quedo con el nombre de los archivos que hay en el directorio Images
@@ -206,16 +258,20 @@ app.get("/aventuras-guardadas", (req, res) => {
 }
 );
 
+let directorios = ["Images", "Packages", "Sounds"];
 
 //Peticion para obtener algun que otro fichero que se encuentre almacenado en la carpeta Images
 app.get('/getFile/:name', function (req, res, next) {
-  //Saco la ruta en la que se encuentra lo que nos están pidiendo y le digo a quien lo haya pedido que lo descargue
-  var filePath = './Images/'+req.params.name;
-  res.download(filePath, req.params.name, function (err) {
-    if (err) {
-      console.log("ERROR ON DOWNLOAD image");
+
+  //Segun el nombre que me han pasado, miro en los 3 directorios posibles que hay en el backend, y si en alguno de ellos 
+  //se encuentra en archivo se lo doy al usuario
+  for(let i = 0; i<directorios.length; i++){
+    let path = "./"+directorios[i]+"/"+req.params.name;
+    if (fs.existsSync(path)) { 
+      res.download(path, req.params.name, function (err) {});
+      break;
     } 
-  });
+  }
 })
 
 
@@ -229,24 +285,24 @@ app.post('/dame-aventura', function (request, response) {
 
   //Me quedo con el nombre de los archivos que hay en el directorio Images
   //Voy uno por uno para eliminarlos y que no metan ruido a la futura build, en caso de que hayan archivos que no se usen
-  var filesToRemove = fs.readdirSync('./Images/');
-  for (var i = 0; i < filesToRemove.length; i++) {
-    //Si no es el readme, lo elimino del directorio
-    if (filesToRemove[i] !== "README.txt") {
-      console.log("Removed file from backend/Images/ directory: " + filesToRemove[i]);
-      fs.unlinkSync('./Images/' + filesToRemove[i]);
+  for(let j = 0; j<directorios.length; j++){
+    var filesToRemove = fs.readdirSync("./"+directorios[j]+"/");
+    for (var i = 0; i < filesToRemove.length; i++) {
+      //Si no es el readme, lo elimino del directorio
+      if (filesToRemove[i] !== "README.txt") {
+        console.log("Removed file from backend/Images/ directory: " + filesToRemove[i]);
+        fs.unlinkSync("./"+directorios[j]+"/" + filesToRemove[i]);
+      }
     }
   }
 
   //Me quedo con el nombre de los archivos que hay en el directorio de la base de datos y los paso
-  //al directorio Images para que cuando el jugador le de a crear aventura que todo esté listo para moverlo
+  //al directorio correspondiente para que cuando el jugador le de a crear aventura que todo esté listo para moverlo
   //a la build
-  var files = fs.readdirSync('../BaseDeDatos/' + name + '/');
-  for (var i = 0; i < files.length; i++) {
-    //Si no es la aventura, lo copio, solo me interesan las imágenes
-    if (files[i] !== "AdventureData.json") {
-      console.log('File Copy Successfully: ' + files[i]);
-      fs.copyFile('../BaseDeDatos/' + name + '/' + files[i], './Images/' + files[i], (err) => {
+  for(let j = 0; j<directorios.length; j++){
+    var files = fs.readdirSync('../BaseDeDatos/' + name+"/"+directorios[j] + '/');
+    for (var i = 0; i < files.length; i++) {
+      fs.copyFile('../BaseDeDatos/' + name + '/'+directorios[j]+"/" + files[i], "./"+directorios[j]+"/" + files[i], (err) => {
         if (err) console.log("An error ocurred copying a file");
       });
     }

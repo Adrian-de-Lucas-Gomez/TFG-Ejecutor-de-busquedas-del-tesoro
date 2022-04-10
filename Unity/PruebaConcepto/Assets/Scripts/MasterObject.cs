@@ -8,7 +8,7 @@ using UnityEngine;
 /// Este objeto se va a encargar de tener controlados todos los objetos de cada escena que forman una fase concreta
 /// Lo que va a hacer es preguntar al gamemanager por la fase que toca ahora, y si no es la que la escena de este objeto
 /// representa se desactivan los objetos de la misma hasta que llegue el momento de que SI le toque y entonces 
-/// los activará para poder jugar la fase concreta
+/// los activarï¿½ para poder jugar la fase concreta
 /// </summary>
 public class MasterObject : MonoBehaviour
 {
@@ -19,20 +19,20 @@ public class MasterObject : MonoBehaviour
     Stage myStage;
 
     //Tipos de fases en las que se puede encontrar este objeto
-    enum StageType {Start, QuizStage, QRStage, ImageStage, ImageTargetStage, GPSStage, End };
+    enum StageType {Start, QuizStage, QRStage, ImageStage, ImageTargetStage,SoundStage,InputTextStage,GPSStage, End };
 
     //Fase que representa la escena en la que estamos, en sus representaciones de string como de enum
     [SerializeField]
     StageType myStageType;
     string myStageTypeStringRepresentation;
 
-    //Bool que representa si la escene actual se está ejecutando o no la escena que contiene  a este master object
+    //Bool que representa si la escene actual se estï¿½ ejecutando o no la escena que contiene  a este master object
     bool mySceneIsPlaying;
 
     // Start is called before the first frame update
     void Start()
     {
-        //Nos ponemos como que no estamos ejecutando nuestra escena desde el principio y más tarde cuando haya que preguntar veremos si nos toca ejecutar a nosotros o no
+        //Nos ponemos como que no estamos ejecutando nuestra escena desde el principio y mï¿½s tarde cuando haya que preguntar veremos si nos toca ejecutar a nosotros o no
         mySceneIsPlaying = false;
 
         //Dependiendo del tipo de escena en la que nos estemos ejecutando nos vamos a preparar para escuchar un valor concreto y otro
@@ -52,6 +52,12 @@ public class MasterObject : MonoBehaviour
                 break;
             case StageType.ImageTargetStage:
                 myStageTypeStringRepresentation = "ImageTargetStage";
+                break;
+            case StageType.SoundStage:
+                myStageTypeStringRepresentation = "SoundStage";
+                break;
+            case StageType.InputTextStage:
+                myStageTypeStringRepresentation = "InputTextStage";
                 break;
             case StageType.GPSStage:
                 myStageTypeStringRepresentation = "GPSStage";
@@ -86,14 +92,14 @@ public class MasterObject : MonoBehaviour
         //Debug.Log(myStageTypeStringRepresentation + " " + sceneObjectsParent.activeSelf);
     }
 
-    //este método tiene como objetivo que las fases una vez hayan terminado de ejecutarse que avisen a este padre para que limpie la escena porque la fase se ha acabado
+    //este mï¿½todo tiene como objetivo que las fases una vez hayan terminado de ejecutarse que avisen a este padre para que limpie la escena porque la fase se ha acabado
     public void stageFinished()
     {
         mySceneIsPlaying = false;
         sceneObjectsParent.SetActive(false);
     }
 
-    //Metodo que permite obtener si las escena en la que se encuentra este master object está siendo ejecutada o no
+    //Metodo que permite obtener si las escena en la que se encuentra este master object estï¿½ siendo ejecutada o no
     public bool getSceneIsPlaying()
     {
         return mySceneIsPlaying;

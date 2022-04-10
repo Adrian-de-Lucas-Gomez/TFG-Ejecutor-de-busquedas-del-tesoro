@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     private Stage _currentStage = null;
 
 
-    //Lista en la que se van a almacenar los tipos de fases que están involucradas en la aventura que vamos a jugar
+    //Lista en la que se van a almacenar los tipos de fases que estï¿½n involucradas en la aventura que vamos a jugar
     List<string> scenesInvolved;
 
     //Lista negra de las escenas que consideramos grandes y es necesario cargar y descargar a medida que can ocurriendo porque si no 
@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Método que toma el JSON que contiene la aventura, lo lee, y genera los bloques de datos que van a ser necesarios para que las diferentes fases
+    /// Mï¿½todo que toma el JSON que contiene la aventura, lo lee, y genera los bloques de datos que van a ser necesarios para que las diferentes fases
     /// de esta aventura puedan solicitarlos y obtener funcionalidad
     /// </summary>
     private void loadAdventure()
@@ -126,6 +126,21 @@ public class GameManager : MonoBehaviour
                         adventureStages.Enqueue(newTarget);
                         break;
                     }
+                case "SoundStage":
+                    {
+                        SoundInfo newSound = new SoundInfo();
+                        newSound.readFromJSON((JObject)misFases[i]);
+                        adventureStages.Enqueue(newSound);
+                        break;
+                    }
+                case "InputTextStage":
+                    {
+                        InputTextInfo newInputText = new InputTextInfo();
+                        newInputText.readFromJSON((JObject)misFases[i]);
+                        adventureStages.Enqueue(newInputText);
+                        break;
+                    }
+
                 case "GPSStage":
                     {
                         GPSInfo newGPS = new GPSInfo();
@@ -169,17 +184,17 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Método que tiene como objetivo analizar las fases que vamos a tener en la aventura y devolver una lista con los nombres de todas las fases que esta contiene
-    /// pero sin repeticiones, dicha lista se utilizará para cargar las escenas necesarias con los nombres devueltos
+    /// Mï¿½todo que tiene como objetivo analizar las fases que vamos a tener en la aventura y devolver una lista con los nombres de todas las fases que esta contiene
+    /// pero sin repeticiones, dicha lista se utilizarï¿½ para cargar las escenas necesarias con los nombres devueltos
     /// </summary>
     /// <returns></returns>
     private List<string> getScenesInvolvedInAdventure()
     {
-        //Preparo tanto la lista que voy a devolver como la pila de escenas por las que vamos a pasar en un formato más cómodo para recorrer
+        //Preparo tanto la lista que voy a devolver como la pila de escenas por las que vamos a pasar en un formato mï¿½s cï¿½modo para recorrer
         List<string> scenesInvolved = new List<string>();
         AdventureInfo[] info = adventureStages.ToArray();
 
-        //recorro todos los elementos del array y si no existen todavia en la lista de escenas involucradas las añado
+        //recorro todos los elementos del array y si no existen todavia en la lista de escenas involucradas las aï¿½ado
         for (int i = 0; i < info.Length; i++)
             if (!scenesInvolved.Contains(info[i].stage)) scenesInvolved.Add(info[i].stage);
 
@@ -188,7 +203,7 @@ public class GameManager : MonoBehaviour
 
 
     /// <summary>
-    /// Método que sirve para indicarle al gamemanager el estado actual que se está ejecutando en la aventura, esto
+    /// Mï¿½todo que sirve para indicarle al gamemanager el estado actual que se estï¿½ ejecutando en la aventura, esto
     /// sirve para que le gamemanager le pase a dicho estado el bloque de datos que necesita para poder
     /// ejecutar la siguiente fase
     /// </summary>
@@ -200,7 +215,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Este método tiene como objetivo devolver la fase que se encuentra ahora en primer lugar en la cola de estas
+    /// Este mï¿½todo tiene como objetivo devolver la fase que se encuentra ahora en primer lugar en la cola de estas
     /// </summary>
     /// <returns></returns>
     public string getCurrentStageType()
@@ -219,7 +234,7 @@ public class GameManager : MonoBehaviour
    
 
     /// <summary>
-    /// este método tiene como objetivo ser llamado por las múltiples fases por las que vamos a pasar para que estas
+    /// este mï¿½todo tiene como objetivo ser llamado por las mï¿½ltiples fases por las que vamos a pasar para que estas
     /// Al terminar lo llamen para eliminar esa fase de la cola y poder pasar a la siguiente
     /// </summary>
     public void GoToNextPhase()
@@ -233,7 +248,7 @@ public class GameManager : MonoBehaviour
         if (completedScene != adventureStages.Peek().stage)
         {
             checkToUnloadCompletedScene(completedScene);
-            //Nos ocupamos de la cámara para que no de problemas en caso de que cambiemos de modo normal a AR y viceversa
+            //Nos ocupamos de la cï¿½mara para que no de problemas en caso de que cambiemos de modo normal a AR y viceversa
             checkForARScene();
 
         }
@@ -248,12 +263,12 @@ public class GameManager : MonoBehaviour
         checkLoadSceneOperations();
     }
 
-    //Este método tiene como objetivo hacerse cargo de la cámara principal de las escena de lógica en caso de que nos vayamos a adentrar en una escena de AR
-    //Porque si nos metemos en una escena de AR, los componentes de vuforia relacionados con la cámara de AR se van a atachear automáticamente, y si eso ocurre tendríamos
-    //2 cámaras AR a la vez en ejecución, lo cual hace que la ejecución salte por los aires, para evitar esto es necesario desactivar la cámara para que no obtenga dichos  componentes
+    //Este mï¿½todo tiene como objetivo hacerse cargo de la cï¿½mara principal de las escena de lï¿½gica en caso de que nos vayamos a adentrar en una escena de AR
+    //Porque si nos metemos en una escena de AR, los componentes de vuforia relacionados con la cï¿½mara de AR se van a atachear automï¿½ticamente, y si eso ocurre tendrï¿½amos
+    //2 cï¿½maras AR a la vez en ejecuciï¿½n, lo cual hace que la ejecuciï¿½n salte por los aires, para evitar esto es necesario desactivar la cï¿½mara para que no obtenga dichos  componentes
     private void checkForARScene()
     {
-        //Si la escena que toca es de esas que tienen una cámara AR significa que no tenemos que tener activa la cámara principal de la aventura
+        //Si la escena que toca es de esas que tienen una cï¿½mara AR significa que no tenemos que tener activa la cï¿½mara principal de la aventura
         bool mainCameraMustBeActive;
         if (adventureStages.Peek().stage == "QRStage" || adventureStages.Peek().stage == "ImageTargetStage") mainCameraMustBeActive = false;
         else mainCameraMustBeActive = true;
@@ -263,7 +278,7 @@ public class GameManager : MonoBehaviour
 
 
     /// <summary>
-    /// este método tiene como objetivo mirar si es necesario cargar la parte restante de una escena o de mirar si la escena que viene despues de la actual es grande
+    /// este mï¿½todo tiene como objetivo mirar si es necesario cargar la parte restante de una escena o de mirar si la escena que viene despues de la actual es grande
     /// y por lo tanto hay que empezar a precargarla desde ya mismo
     /// </summary>
     private void checkLoadSceneOperations()
@@ -285,7 +300,7 @@ public class GameManager : MonoBehaviour
 
 
     /// <summary>
-    /// Este método tiene como objetivo recibir el nombre de la escena que se acaba de completar y hacerse cargo de su descarga en caso de que sea necesario 
+    /// Este mï¿½todo tiene como objetivo recibir el nombre de la escena que se acaba de completar y hacerse cargo de su descarga en caso de que sea necesario 
     /// </summary>
     /// <param name="completedScene"></param>
     private void checkToUnloadCompletedScene(string completedScene)
@@ -294,7 +309,7 @@ public class GameManager : MonoBehaviour
         //En caso de que sea una de las escenas grandes tenemos que descargarla
         if (bigScenes.Contains(completedScene)) mustUnload = true;
 
-        //Si no es una escena grande, miramos si dicha escena va a aparecer más veces más adelante en la aventura, y si NO LO HACE la descargamos
+        //Si no es una escena grande, miramos si dicha escena va a aparecer mï¿½s veces mï¿½s adelante en la aventura, y si NO LO HACE la descargamos
         else
         {
             AdventureInfo[] a = adventureStages.ToArray();
@@ -312,7 +327,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void PreloadNextScene()
     {
-        //En caso de que se haya terminado nos vamos a la escena de fin, pero si hay más de una escena por hacer, pongo a precargar la que se viene despues
+        //En caso de que se haya terminado nos vamos a la escena de fin, pero si hay mï¿½s de una escena por hacer, pongo a precargar la que se viene despues
         string name = (adventureStages.Count <= 1) ? "End" : adventureStages.ToArray()[1].stage;
         if (name == "End") return;
 
