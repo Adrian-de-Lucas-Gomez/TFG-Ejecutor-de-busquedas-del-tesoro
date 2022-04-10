@@ -16,6 +16,8 @@ public class SoundInfo : AdventureInfo
         stage = myInfo["tipo"].Value<string>();
 
         //Obtengo los datos 
-        nombreSonido = myInfo["Sonido"].Value<string>();
+        string aux = myInfo["Sonido"].Value<string>();
+        string[] splitArray = aux.Split('.');
+        nombreSonido = splitArray[0];
     }
 }
