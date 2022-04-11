@@ -2,6 +2,8 @@ import { StepComponentProps } from '../Steps';
 import React, {useState, useRef, useEffect, forwardRef, useImperativeHandle} from "react"
 import axios from "axios"
 import AdventureCard from "./AdventureCard"
+import swal from "sweetalert";
+
 
 const AdventureCharger = (props: StepComponentProps): JSX.Element => {
 
@@ -178,9 +180,19 @@ const mandarAplicacion = async() =>{
   //SI no tenemos una apk lista para subir no hacemos nada
   if(!(aplicacionSubida instanceof File)) return;
 
+  //Si el nombre del APK que nos han dado ya se encuentra entre las APKs del server, preguntamos al jugador de si quiere sobreescribir la APK existente
+  if(aplicacionesDisponibles.includes(aplicacionSubida.name)){
+    let respuesta = await swal("Alerta", {
+      text:"Ya existe una apk llamada "+aplicacionSubida.name+", ¿deseas sobreescribirla?",
+      icon: "info",  //success error info
+      buttons: ["Cancelar","Sobreescribir"]
+    });
+    //En caso de que no quiera sobreescribir
+    if(!respuesta) return;
+  }
+  //Le pasamos al server el APK que el usuario ha dado
   const formData = new FormData();
   formData.append("apk", aplicacionSubida as File, aplicacionSubida?.name);
-  //Hacemos una peticion POST a nuestro servidor a la route especificada
   let result = await axios.post('/apk-upload', formData);
 }
 
