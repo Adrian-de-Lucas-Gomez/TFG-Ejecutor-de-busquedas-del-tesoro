@@ -83,7 +83,7 @@ const GPS = (props: StepComponentProps): JSX.Element => {
         <div >
             <h3 style={{ marginTop: '0.5%', marginBottom: '1%', fontSize: '200%' }} className="Titulo" >Configuración de fase geoposicionada</h3>
 
-            <div>
+            <div className="center">
                 <MapContainer center={[GPSLongitude, GPSLatitude]} zoom={13}>
                     <TileLayer
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -92,8 +92,9 @@ const GPS = (props: StepComponentProps): JSX.Element => {
                 </MapContainer>
             </div>
             {/*Texto para el radio de acción*/}
-            <form className="center" style={{ marginBottom: '1%' }} onSubmit={e => e.preventDefault()}>
-                <input placeholder="Añada aqui el rango de deteccion de la localización" className='input-text' type="number" size={60} required value={radius} onChange={e => { prepareForSave(GPSLongitude, GPSLatitude, e.target.value as unknown as number, description); }}></input>
+            <form className="center" style={{marginTop:'0.5%', marginBottom: '1%' }} onSubmit={e => e.preventDefault()}>
+                <text style={{ fontSize: '150%' , marginRight:'0.5%'}} className='Titulo' >Distancia de detección de llegada a destino:</text>
+                <input placeholder="metros" className='input-text' type="number" size={30} required value={radius} onChange={e => { prepareForSave(GPSLongitude, GPSLatitude, e.target.value as unknown as number, description); }}></input>
             </form>
 
             {/*Texto para la descripcion de a donde debes llegar*/}
