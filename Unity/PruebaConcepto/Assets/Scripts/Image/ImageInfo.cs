@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class ImageInfo : AdventureInfo
 {
     public string nombreImagen;
+    public string descripcionFase;
 
     /// <summary>
     /// Metodo que recibe un objeto parseado de JSON y saca toda la informacion que necesite de este
@@ -18,5 +19,8 @@ public class ImageInfo : AdventureInfo
         string aux = myInfo["Imagen"].Value<string>();
         string[] splitArray = aux.Split('.');
         nombreImagen = splitArray[0];
+
+        //Obtengo la explicacion de la imagen
+        descripcionFase = myInfo["description"].Value<string>();
     }
 }
