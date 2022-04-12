@@ -3,12 +3,14 @@ import { StepComponentProps } from '../Steps'
 import axios from "axios"
 import pic from "../../Imagen.png";
 
-const ImageCharger = (props: StepComponentProps): JSX.Element => {
+const Image = (props: StepComponentProps): JSX.Element => {
 
     const [image, setImagen] = useState<File | null >(null);
+    const [description, setdescription] = useState<string>("");
+    type FormElement = React.FormEvent<HTMLFormElement>;
 
     useEffect(() => {
-        // let info = {Alert: true, MensageAlert: "ImageCharger: se debe de cargar alguna imagen", datosFase: {} };
+        // let info = {Alert: true, MensageAlert: "Image: se debe de cargar alguna imagen", datosFase: {} };
         // props.setState<any>('faseConfigurandose',info,{});
         //En caso de que haya que sobreescribir algo, me guardo que estamos sobreescribiendo y cargo 
         //los datos que ya había de esta fase      
@@ -24,6 +26,8 @@ const ImageCharger = (props: StepComponentProps): JSX.Element => {
             //Me guardo la imagen que había almacenada en el estado actual
             if (estadoACargar.Imagen instanceof File)
                 setImagen(estadoACargar.Imagen);
+
+            setdescription(estadoACargar.description);
         }
 
         //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
@@ -38,26 +42,27 @@ const ImageCharger = (props: StepComponentProps): JSX.Element => {
         //Comprobamos si lo que nos han introducido en el formulario ha sido un fichero
         //En principio el tipo del input debería garantizarlo 
         if (e.target.files?.item(0) instanceof File){
-            prepareForSave(e.target.files?.item(0));
-            setImagen( e.target.files?.item(0))
+            prepareForSave(e.target.files?.item(0), description);
+            setImagen(e.target.files?.item(0))
         }
         //Si no por defecto, asignamos el valor null
         else {
-            prepareForSave(null);
+            prepareForSave(null, description);
             setImagen(null);
         }
     }
 
-    const prepareForSave = (imagenCargada: File | null ) => {
-        let jsonData = {tipo:"ImageStage" ,Imagen: imagenCargada};
+    const prepareForSave = (imagenCargada: File | null , UIdescription: string) => {
+        setdescription(UIdescription);
+        let jsonData = {tipo:"ImageStage" ,Imagen: imagenCargada, description: UIdescription};
         let myData = {Alert: false, texto: "Hola", datosFase: jsonData };
         props.setState<any>('faseConfigurandose',myData,{});
     }
 
 
     return (
-        <aside id="modal" className="modal">
-            <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'200%'}} className="Titulo" >Configuración de fase Image Charger</h3>
+        <div id="modal" className="modal">
+            <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'200%'}} className="Titulo" >Configuración de fase Image</h3>
             <div style={{marginTop:'0.5%'}} className="content-modal center">
                 <img src= {image !==null ? window.URL.createObjectURL(image) : pic }/>   
             </div>
@@ -66,9 +71,14 @@ const ImageCharger = (props: StepComponentProps): JSX.Element => {
                     <input style={{fontSize:'150%'}} type="file" onChange={changeImagen} />
                 </form>
             </div>
-        </aside>
+
+            <form className="center" style={{ marginBottom: '1%' }} onSubmit={e => e.preventDefault()}>
+                <text style={{ fontSize: '150%' , marginRight:'0.5%'}} className='Titulo' >Descripción:</text>
+                <input placeholder="Texto para dar información sobre la imagen" className='input-text' type="text" size={60} required value={description} onChange={e => { prepareForSave(image, e.target.value); }}></input>
+            </form>
+        </div>
     )
 
 };
 
-export default ImageCharger;
+export default Image;

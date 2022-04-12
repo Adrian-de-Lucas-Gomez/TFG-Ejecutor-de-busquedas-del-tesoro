@@ -464,7 +464,7 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     if (s === "AdventureCharger") { destiny = 1; }
     else if (s === "QR") { destiny = 2; }
     else if (s === "Quiz") { destiny = 3; }
-    else if (s == "ImageCharger") { destiny = 4; }
+    else if (s == "Image") { destiny = 4; }
     else if (s == "ImageTargetStage") { destiny = 5; }
     else if (s == "SoundStage") { destiny = 6; }
     else if (s == "InputTextStage") { destiny = 7; }
@@ -570,7 +570,7 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
               <option value="Crear fase..." hidden selected>Crear fase...</option>
               <option value="QR">QR</option>
               <option value="Quiz">Quiz</option>
-              <option value="ImageCharger">Image Charger</option>
+              <option value="Image">Image</option>
               <option value="ImageTargetStage">Vuforia Image Target</option>
               <option value="SoundStage">Sound</option>
               <option value="InputTextStage">InputText</option>

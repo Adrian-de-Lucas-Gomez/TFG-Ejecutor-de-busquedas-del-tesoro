@@ -99,7 +99,7 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
             var finalImageName = faseActual.Imagen.name;
             finalImageName = (contadorImagenes.toString()) + (finalImageName.substring(finalImageName.indexOf('.')));
             //Cambiamos la fase para que el json tenga la referencia a esta
-            faseActual = { tipo: "ImageStage", Imagen: finalImageName };
+            faseActual = { tipo: "ImageStage", Imagen: finalImageName, description: faseActual.description};
             contadorImagenes++;
           }
           else if (faseActual.tipo === "ImageTargetStage" && faseActual.Target instanceof File) {
@@ -279,7 +279,7 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
         ))}
 
       {/* Este boton tiene como objetivo descargar el proyecto generado */}
-      <div style={{ marginTop: '2%' }}>
+      <div className="center" style={{ marginTop: '2%' }}>
         <button className="my-btn btn-outline-orange" style={{ fontSize: '170%' }} type="button" onClick={generateZip}>
           Generar Aventura
         </button>
