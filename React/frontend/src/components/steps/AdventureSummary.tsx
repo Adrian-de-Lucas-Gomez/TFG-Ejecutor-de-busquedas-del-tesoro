@@ -100,21 +100,21 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
             var finalImageName = faseActual.Imagen.name;
             finalImageName = (contadorImagenes.toString()) + (finalImageName.substring(finalImageName.indexOf('.')));
             //Cambiamos la fase para que el json tenga la referencia a esta
-            faseActual = { tipo: "ImageStage", Imagen: finalImageName };
+            faseActual.Imagen = finalImageName;
             contadorImagenes++;
           }
           else if (faseActual.tipo === "ImageTargetStage" && faseActual.Target instanceof File) {
             var finalTargetName = faseActual.Target.name;
             finalTargetName = (contadorTargets.toString()) + (finalTargetName.substring(finalTargetName.indexOf('.')));
             //Cambiamos la fase para que el json tenga la referencia a esta
-            faseActual = { tipo: "ImageTargetStage", Target: finalTargetName, AddText: faseActual.AddText, Text: faseActual.Text};
+            faseActual.Target = finalTargetName;
             contadorTargets++;
           }
           else if (faseActual.tipo === "SoundStage" && faseActual.Sonido instanceof File) {
             var finalSoundName = faseActual.Sonido.name;
             finalSoundName = (contadorSonidos.toString()) + (finalSoundName.substring(finalSoundName.indexOf('.')));
             //Cambiamos la fase para que el json tenga la referencia a esta
-            faseActual = { tipo: "SoundStage", Sonido: finalSoundName};
+            faseActual.Sonido = finalSoundName;
             contadorSonidos++;
           }
           datos.push(faseActual);

@@ -7,6 +7,9 @@ const ImageCharger = (props: StepComponentProps): JSX.Element => {
 
     const [image, setImagen] = useState<File | null >(null);
 
+    const [mostrarFormularioPista, setMostrarFormularioPista] =useState<boolean>(false);
+    const [pista, setPista] = useState<string>("");
+
     useEffect(() => {
         // let info = {Alert: true, MensageAlert: "ImageCharger: se debe de cargar alguna imagen", datosFase: {} };
         // props.setState<any>('faseConfigurandose',info,{});
@@ -22,8 +25,11 @@ const ImageCharger = (props: StepComponentProps): JSX.Element => {
             props.setState<any>('faseConfigurandose',myData,{});
 
             //Me guardo la imagen que había almacenada en el estado actual
-            if (estadoACargar.Imagen instanceof File)
+            if (estadoACargar.Imagen instanceof File){
                 setImagen(estadoACargar.Imagen);
+            }
+            setPista(estadoACargar.Pista);
+
         }
 
         //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
@@ -49,9 +55,14 @@ const ImageCharger = (props: StepComponentProps): JSX.Element => {
     }
 
     const prepareForSave = (imagenCargada: File | null ) => {
-        let jsonData = {tipo:"ImageStage" ,Imagen: imagenCargada};
+        let jsonData = {tipo:"ImageStage" ,Imagen: imagenCargada, Pista: pista};
         let myData = {Alert: false, texto: "Hola", datosFase: jsonData };
         props.setState<any>('faseConfigurandose',myData,{});
+    }
+
+    const updatePista = (nuevaPista:string) =>{
+        setPista(nuevaPista);
+        prepareForSave(image);
     }
 
 
@@ -66,6 +77,20 @@ const ImageCharger = (props: StepComponentProps): JSX.Element => {
                     <input style={{fontSize:'150%'}} type="file" onChange={changeImagen} />
                 </form>
             </div>
+            {/* Seccion pista */}
+            {/* Boton para desplegar elementos para añadir una pista */}
+            <form style={{textAlign:'center'}} onSubmit= {(e)=>{e.preventDefault(); setMostrarFormularioPista(!mostrarFormularioPista);}}>
+                <button type="submit" className="my-btn btn-outline-orange" style={{fontSize:'150%'}}>Añadir Pista</button>
+            </form>
+            {/* Seccion que aparece y desaparece para poder asignar una pista */}
+            {mostrarFormularioPista ? 
+            <div className="App" style={{display: 'flex', justifyContent: 'center', verticalAlign:'true'}}>
+                <span>
+                    <b>Pista de la fase</b>            
+                    </span>
+                <textarea style={{resize:"none", textAlign:"center"}} rows={3} cols={50} maxLength={100} onChange={(e) => {updatePista(e.target.value)}} placeholder="Pista que el jugador puede recibir" defaultValue={pista}/>
+            </div>
+            : null }
         </aside>
     )
 

@@ -23,6 +23,10 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
     //Respuesta en proceso
     const [currAnswer, setCurrAnswer] = useState<string>("");
     
+    const [mostrarFormularioPista, setMostrarFormularioPista] =useState<boolean>(false);
+    const [pista, setPista] = useState<string>("");
+
+
     useEffect(() => {
         // let info = {Alert: true, MensageAlert: "Quiz debe tener una pregunta y al menos 2 respuestas posibles", datosFase: {} };
         // props.setState<any>('faseConfigurandose',info,{});
@@ -47,6 +51,7 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
                 futurasRespuestas.push((estadoACargar.Respuestas[i] as Answer));
             }
             setAnswers(futurasRespuestas);
+            setPista(estadoACargar.Pista);
         }
 
         //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
@@ -90,11 +95,15 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
     }
 
     const prepareForSave = (preguntaQuiz:string, respuestas:any) => {
-        let jsonData = {tipo:"QuizStage" ,Pregunta: preguntaQuiz, Respuestas: respuestas};
+        let jsonData = {tipo:"QuizStage" ,Pregunta: preguntaQuiz, Respuestas: respuestas,Pista:pista};
         let myData = {Alert: false, texto: "Hola", datosFase: jsonData };
         props.setState<any>('faseConfigurandose',myData,{});
     }
 
+    const updatePista = (nuevaPista:string) =>{
+        setPista(nuevaPista);
+        prepareForSave(question,answers);
+    }
 
 
     return (
@@ -123,7 +132,22 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
                 </div>
                 </Fragment>
                 ))}
-            </div>        
+            </div>     
+
+            {/* Sªeccion pista */}
+            {/* Boton para desplegar elementos para añadir una pista */}
+            <form style={{textAlign:'center'}} onSubmit= {(e)=>{e.preventDefault(); setMostrarFormularioPista(!mostrarFormularioPista);}}>
+                <button type="submit" className="my-btn btn-outline-orange" style={{fontSize:'150%'}}>Añadir Pista</button>
+            </form>
+            {/* Seccion que aparece y desaparece para poder asignar una pista */}
+            {mostrarFormularioPista ? 
+            <div className="App" style={{display: 'flex', justifyContent: 'center', verticalAlign:'true'}}>
+                <span>
+                    <b>Pista de la fase</b>            
+                    </span>
+                <textarea style={{resize:"none", textAlign:"center"}} rows={3} cols={50} maxLength={100} onChange={(e) => {updatePista(e.target.value)}} placeholder="Pista que el jugador puede recibir" defaultValue={pista}/>
+            </div>
+            : null }  
         </div>
     )
 
