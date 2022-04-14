@@ -18,6 +18,9 @@ const Sound = (props: StepComponentProps): JSX.Element => {
 
     const [ficheroSonido, setFicheroSonido] = useState<File | null >(null);
     const [sonido, setSonido] = useState<any>(new Audio(ejemplo));  
+
+    const [mostrarFormularioPista, setMostrarFormularioPista] =useState<boolean>(false);
+    const [pista, setPista] = useState<string>("");
     
     useEffect(() => {
     // let info = {Alert: true, MensageAlert: "Rellena bien el texto del QR", datosFase: {} };
@@ -36,6 +39,7 @@ const Sound = (props: StepComponentProps): JSX.Element => {
         if (estadoACargar.Sonido instanceof File){
           setFicheroSonido(estadoACargar.Sonido);
           setSonido(new Audio(window.URL.createObjectURL(estadoACargar.Sonido)));
+          setPista(estadoACargar.Pista);
         }
 
         //Nos aseguramos que lo que se esta configurando ahora es lo que nos hemos cargado
@@ -48,12 +52,26 @@ const Sound = (props: StepComponentProps): JSX.Element => {
     //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
   }, [props.getState<boolean>('SobreEscribir', false)]);
 
+  
+  // useEffect(() => {
+  //   console.log("Ha habido un cambio en algo de lo que es el estado: "+pista+" + "+sonido+" + "+ficheroSonido);
+  //   //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
+  //   return () => {}
+  //   //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
+  // }, [pista, sonido,ficheroSonido]);
+
 
   const prepareForSave = (sonidoCargado: File | null) => {
-    let jsonData = {tipo:"SoundStage" ,Sonido: sonidoCargado};
+    let jsonData = {tipo:"SoundStage" ,Sonido: sonidoCargado, Pista: pista};
     let myData = {Alert: false, texto: "Hola", datosFase: jsonData };
     props.setState<any>('faseConfigurandose',myData,{});
   }
+
+  const updatePista = (nuevaPista:string) =>{
+    setPista(nuevaPista);
+    prepareForSave(ficheroSonido);
+}
+
 
     //Metodo que mira si tenemos un sonido y en caso afirmativo inicia su reproduccion
     const playAudio =() => {
@@ -85,6 +103,8 @@ const Sound = (props: StepComponentProps): JSX.Element => {
       }
   }
 
+
+
     return (
     <div style={{textAlign:'center',marginTop:'0.5%', marginBottom:'0.5%'}}>
         <button onClick={playAudio}>
@@ -96,6 +116,22 @@ const Sound = (props: StepComponentProps): JSX.Element => {
         <form style={{textAlign:'center',marginTop:'0.5%', marginBottom:'0.5%'}} onSubmit= { e =>{e.preventDefault()}}>
           <input style={{fontSize:'150%'}} type="file" accept=".mp3,.wav" onChange={changeSound} />
         </form>
+
+
+        {/* Seccion pista */}
+        {/* Boton para desplegar elementos para añadir una pista */}
+        <form style={{textAlign:'center'}} onSubmit= {(e)=>{e.preventDefault(); setMostrarFormularioPista(!mostrarFormularioPista);}}>
+            <button type="submit" className="my-btn btn-outline-orange" style={{fontSize:'150%'}}>Añadir Pista</button>
+        </form>
+        {/* Seccion que aparece y desaparece para poder asignar una pista */}
+        {mostrarFormularioPista ? 
+        <div className="App" style={{display: 'flex', justifyContent: 'center', verticalAlign:'true'}}>
+            <span>
+                <b>Pista de la fase</b>            
+                </span>
+            <textarea style={{resize:"none", textAlign:"center"}} rows={3} cols={50} maxLength={100} onChange={(e) => {updatePista(e.target.value)}} placeholder="Pista que el jugador puede recibir" defaultValue={pista}/>
+        </div>
+        : null }
     </div>
     )
 };

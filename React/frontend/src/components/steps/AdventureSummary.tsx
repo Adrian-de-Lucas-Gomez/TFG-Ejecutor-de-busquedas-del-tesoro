@@ -2,6 +2,7 @@ import { StepComponentProps } from '../Steps';
 import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle } from "react"
 import axios from "axios"
 import PhaseCard from './PhaseCard';
+import swal from "sweetalert";
 
 const AdventureSummary = (props: StepComponentProps): JSX.Element => {
 
@@ -99,21 +100,21 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
             var finalImageName = faseActual.Imagen.name;
             finalImageName = (contadorImagenes.toString()) + (finalImageName.substring(finalImageName.indexOf('.')));
             //Cambiamos la fase para que el json tenga la referencia a esta
-            faseActual = { tipo: "ImageStage", Imagen: finalImageName, description: faseActual.description};
+            faseActual.Imagen = finalImageName;
             contadorImagenes++;
           }
           else if (faseActual.tipo === "ImageTargetStage" && faseActual.Target instanceof File) {
             var finalTargetName = faseActual.Target.name;
             finalTargetName = (contadorTargets.toString()) + (finalTargetName.substring(finalTargetName.indexOf('.')));
             //Cambiamos la fase para que el json tenga la referencia a esta
-            faseActual = { tipo: "ImageTargetStage", Target: finalTargetName, AddText: faseActual.AddText, Text: faseActual.Text};
+            faseActual.Target = finalTargetName;
             contadorTargets++;
           }
           else if (faseActual.tipo === "SoundStage" && faseActual.Sonido instanceof File) {
             var finalSoundName = faseActual.Sonido.name;
             finalSoundName = (contadorSonidos.toString()) + (finalSoundName.substring(finalSoundName.indexOf('.')));
             //Cambiamos la fase para que el json tenga la referencia a esta
-            faseActual = { tipo: "SoundStage", Sonido: finalSoundName};
+            faseActual.Sonido = finalSoundName;
             contadorSonidos++;
           }
           datos.push(faseActual);
@@ -163,32 +164,54 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
 
 
   const salvarAventura = async () => {
+    //En caso de que tengamos problemas con el nombre del proyecto avisamos al usuario de esto
     let nombreAventura = props.getState('adventureName', "Nombre por defecto");
     if (nombreAventura === "Nombre por defecto") {
-      alert("Nombre de la aventura sin asignar");
+      let respuesta = await swal({title: "Nombre de la aventura sin asignar",text:"Ponle un nombre a tu aventura para poder generar el proyecto",icon: "error"});
+      return;    
+    }
+
+    //En caso de que tengamos problemas con la clave de vuforia avisamos al usuario de esto
+    let vuforiaKey = props.getState('vuforiaKey', '');
+    if (vuforiaKey === '' || vuforiaKey.length !== 380) {
+      let respuesta = await swal({title: "Clave de Vuforia incorrecta",text:"Inserte una clave de Vuforia válida para generar el proyecto", icon: "error"});
       return;
     }
 
-    let vuforiaKey = props.getState('vuforiaKey', '');
-
-    if (vuforiaKey === '' || vuforiaKey.length !== 380) {
-      alert("Key de Vuforia no valida")
+    //En caso de que le nombre de la aventura que pretendemos guardar de problemas avisamos al usuario de si quiere sobreescribir la ya existente
+    let guardadasEnElServer = await axios.get("./aventuras-guardadas");
+    if(guardadasEnElServer.data.Opciones.includes(nombreAventura)){
+      let respuesta = await swal({title: nombreAventura+ " ya existe",text:"Ya existe una aventura guardada con el nombre "+nombreAventura+" en el servidor.¿Deseas sobreescribirla?", icon: "info",  buttons: ["Cancelar","Sobreescribir"]});
+      //Si el usuario no desea sobreescribir la aventura dejamos de hacer cosas
+      if(!respuesta) return;
     }
-
+    
+    //Si no nos hemos ido del metodo lo que nos queda por hacer es limpiar el server, mandar todos los ficheros que componen nuestra aventura y solicitar el proyecto
     let reset = await axios.get("./reset");
     await operacionesPreDescargaProyecto();
     await mandarJson();
     await axios.get("./guardame-aventura");
-    console.log("Peticion mandada");
+    
+    swal({title: "Aventura guardada", icon: "success"});
   }
 
 
   const generateZip = async () => {
+    //En caso de que la aventura todavia tenga el nombre por defecto avisamos al usuario de que esto debe de cambiarlo
     let nombreAventura = props.getState('adventureName', "Nombre por defecto");
     if (nombreAventura === "Nombre por defecto") {
-      alert("Nombre de la aventura sin asignar");
+      let respuesta = await swal({title: "Nombre de la aventura sin asignar",text:"Ponle un nombre a tu aventura para poder generar el proyecto",icon: "error"});
       return;
     }
+
+    //En caso de que tengamos problemas con la clave de vuforia avisamos al usuario de esto
+    let vuforiaKey = props.getState('vuforiaKey', '');
+    if (vuforiaKey === '' || vuforiaKey.length !== 380) {
+      let respuesta = await swal({title: "Clave de Vuforia incorrecta",text:"Inserte una clave de Vuforia válida para generar el proyecto", icon: "error"});
+      return;
+    }
+
+
     let reset = await axios.get("./reset");
     //Mando los archivos que tenga, como las imagenes
     await operacionesPreDescargaProyecto();
@@ -253,6 +276,7 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
 
     props.setState('DATA', fases, []);
   }
+
 
   return (
     <div >

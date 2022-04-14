@@ -14,6 +14,10 @@ const GPS = (props: StepComponentProps): JSX.Element => {
     type FormElement = React.FormEvent<HTMLFormElement>;
     const [sobreEscribir, setSobreEscribir] = useState<boolean>(false);
 
+    const [mostrarFormularioPista, setMostrarFormularioPista] =useState<boolean>(false);
+    const [pista, setPista] = useState<string>("");
+
+
     useEffect(() => {
         // let info = {Alert: true, MensageAlert: "Rellena bien el texto del GPS", datosFase: {} };
         // props.setState<any>('faseConfigurandose',info,{});
@@ -31,6 +35,8 @@ const GPS = (props: StepComponentProps): JSX.Element => {
             setradius(estadoACargar.radius);
             setdescription(estadoACargar.description);
             setMarkers([estadoACargar.GPSLatitude,estadoACargar.GPSLongitude])
+
+            setPista(estadoACargar.Pista);
 
 
             //Nos aseguramos que lo que se esta configurando ahora es lo que nos hemos cargado
@@ -50,10 +56,17 @@ const GPS = (props: StepComponentProps): JSX.Element => {
         setradius(UIradius);
         setdescription(UIdescription);
 
-        let jsonData = { tipo: "GPSStage", GPSLongitude: UIlongitude, GPSLatitude: UIlatitude, radius: UIradius, description: UIdescription };
+        let jsonData = { tipo: "GPSStage", GPSLongitude: UIlongitude, GPSLatitude: UIlatitude, radius: UIradius, description: UIdescription, Pista:pista };
         let myData = { Alert: false, MensageAlert: "Rellena bien los parámetros de la fase", datosFase: jsonData };
         props.setState<any>('faseConfigurandose', myData, {});
     }
+
+    const updatePista = (nuevaPista:string) =>{
+        setPista(nuevaPista);
+        prepareForSave(GPSLongitude,GPSLatitude,radius,description);
+    }
+
+
     const LocationMarker = () => {
         const map = useMapEvents({
             click(e: any) {
@@ -104,8 +117,20 @@ const GPS = (props: StepComponentProps): JSX.Element => {
                 <input placeholder="Texto para indicar al usuario que debe buscar" className='input-text' type="text" size={60} required value={description} onChange={e => { prepareForSave(GPSLongitude, GPSLatitude, radius, e.target.value); }}></input>
             </form>
 
-
-
+            {/* Seccion pista */}
+            {/* Boton para desplegar elementos para añadir una pista */}
+            <form style={{textAlign:'center'}} onSubmit= {(e)=>{e.preventDefault(); setMostrarFormularioPista(!mostrarFormularioPista);}}>
+                <button type="submit" className="my-btn btn-outline-orange" style={{fontSize:'150%'}}>Añadir Pista</button>
+            </form>
+            {/* Seccion que aparece y desaparece para poder asignar una pista */}
+            {mostrarFormularioPista ? 
+            <div className="App" style={{display: 'flex', justifyContent: 'center', verticalAlign:'true'}}>
+                <span>
+                    <b>Pista de la fase</b>            
+                    </span>
+                <textarea style={{resize:"none", textAlign:"center"}} rows={3} cols={50} maxLength={100} onChange={(e) => {updatePista(e.target.value)}} placeholder="Pista que el jugador puede recibir" defaultValue={pista}/>
+            </div>
+            : null }
         </div>
     )
 };

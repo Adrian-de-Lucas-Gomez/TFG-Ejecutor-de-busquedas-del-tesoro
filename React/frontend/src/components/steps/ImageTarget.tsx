@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle } from "react"
 import { StepComponentProps } from '../Steps';
 import pic from "../../Imagen.png";
+import { text } from "node:stream/consumers";
 
 const ImageTarget = (props: StepComponentProps): JSX.Element => {
     //Key de vuforia
     //const [key, setKey] = useState<string>("");
     //Imagen a usar como target de vuforia
     const [imageTarget, setImageTarget] = useState<File | null>(null);
+    const [imageTargetName, setImageTargetName] = useState<string>("");
     //Nombre del target a mostrar en esta fase
     //const [targetName, setTargetName] = useState<string>("")
 
@@ -17,6 +19,8 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
 
     type FormElement = React.FormEvent<HTMLFormElement>;
 
+    const [mostrarFormularioPista, setMostrarFormularioPista] =useState<boolean>(false);
+    const [pista, setPista] = useState<string>("");
 
     useEffect(() => {
 
@@ -34,9 +38,11 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
             
             //Cargamos el imageTarget
             if (estadoACargar.Target instanceof File) setImageTarget(estadoACargar.Target);
-            
+            else setImageTargetName(estadoACargar.Target);
+
             setTextToShow(estadoACargar.Text);
             setShowText(estadoACargar.AddText);
+            setPista(estadoACargar.Pista);
         }
 
         //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
@@ -75,10 +81,15 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
 
     const prepareForSave = (imageTarget: File | null, nombreTarget: string, textToShow: string) => {
         console.log("PrepareForSave")
-        let jsonData = { tipo: "ImageTargetStage", Target: imageTarget, TargetName: nombreTarget, AddText:showText, Text: textToShow };
+        let jsonData = { tipo: "ImageTargetStage", Target: imageTarget, TargetName: nombreTarget, AddText:showText, Text: textToShow , Pista:pista};
         console.log(jsonData);
         let myData = { Alert: false, texto: "Hola", datosFase: jsonData };
         props.setState<any>('faseConfigurandose', myData, {});
+    }
+
+    const updatePista = (nuevaPista:string) =>{
+        setPista(nuevaPista);
+        prepareForSave(imageTarget,imageTargetName,textToShow);
     }
 
 
@@ -101,6 +112,21 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
                 </form>
             </div>
 
+
+            {/* Seccion pista */}
+            {/* Boton para desplegar elementos para añadir una pista */}
+            <form style={{textAlign:'center'}} onSubmit= {(e)=>{e.preventDefault(); setMostrarFormularioPista(!mostrarFormularioPista);}}>
+                <button type="submit" className="my-btn btn-outline-orange" style={{fontSize:'150%'}}>Añadir Pista</button>
+            </form>
+            {/* Seccion que aparece y desaparece para poder asignar una pista */}
+            {mostrarFormularioPista ? 
+            <div className="App" style={{display: 'flex', justifyContent: 'center', verticalAlign:'true'}}>
+                <span>
+                    <b>Pista de la fase</b>            
+                    </span>
+                <textarea style={{resize:"none", textAlign:"center"}} rows={3} cols={50} maxLength={100} onChange={(e) => {updatePista(e.target.value)}} placeholder="Pista que el jugador puede recibir" defaultValue={pista}/>
+            </div>
+            : null }
         </div>
     )
 };

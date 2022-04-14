@@ -62,9 +62,20 @@ const soundStorage = multer.diskStorage({
   }
 })
 
+const apkStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, '../AplicacionesListas')
+  },
+  filename: (req, file, cb) => {
+    console.log(file)
+    cb(null, file.originalname)
+  }
+})
+
 const imageUpload = multer({ storage: storage })
 const packageUpload = multer({ storage: packageStorage })
 const soundUpload = multer({ storage: soundStorage })
+const apkUpload = multer({ storage: apkStorage })
 
 var aventuraActual = {}
 
@@ -88,6 +99,14 @@ app.post('/sound-upload', soundUpload.array("sound"), (req, res) => {
   res.json({ key: "value" });
 })
 
+//Request para almacenar en el server una apk junto con las demas hechas por los usuarios
+app.post('/apk-upload', apkUpload.array("apk"), (req, res) => {
+  console.log(req.headers);
+  console.log("POST REQUEST recieved in: /apk-upload");
+  res.json({ key: "value" });
+})
+
+
 
 app.get("/", (req, res) => {
   //Pagina estatica con lo desarrollado en react
@@ -108,8 +127,8 @@ app.get("/generate-zip", (req, res)=>{
     console.log("Couldnt remove .zip from server");
   }
   // Le paso al comando el nombre del directorio que hace falta crear y usar para almacenar la aventura
-  //var command = "GeneraZip.bat";
-  var command = "bash GeneraZip.sh";
+  var command = "GeneraZip.bat";
+  //var command = "bash GeneraZip.sh";
   const execProcess = exec(command, { 'encoding': 'utf8' }, (error, stdout) => {});
   execProcess.on('exit', () => {
     console.log('exec process exit');
@@ -252,28 +271,18 @@ app.get("/guardame-aventura", (req, res)=>{
 
 
 
-//Peticion para obtener los diferentes directorios dentro de la base de datos para poder luego decidir de cual reescribir la aventura
-app.get("/aventuras-guardadas", (req, res) => {
-  res.json({ Opciones: fs.readdirSync('../BaseDeDatos/') });
-}
-);
+
+
+
+
 
 let directorios = ["Images", "Packages", "Sounds"];
 
-//Peticion para obtener algun que otro fichero que se encuentre almacenado en la carpeta Images
-app.get('/getFile/:name', function (req, res, next) {
-
-  //Segun el nombre que me han pasado, miro en los 3 directorios posibles que hay en el backend, y si en alguno de ellos 
-  //se encuentra en archivo se lo doy al usuario
-  for(let i = 0; i<directorios.length; i++){
-    let path = "./"+directorios[i]+"/"+req.params.name;
-    if (fs.existsSync(path)) { 
-      res.download(path, req.params.name, function (err) {});
-      break;
-    } 
+//Peticion para obtener los diferentes directorios dentro de la base de datos para poder luego decidir de cual reescribir la aventura
+app.get("/aventuras-guardadas", (req, res) => {
+  res.json({ Opciones: fs.readdirSync('../BaseDeDatos/') });
   }
-})
-
+);
 
 //Esta petición tiene como objetivo devolver el json que representa una aventura concreta
 app.post('/dame-aventura', function (request, response) {
@@ -309,3 +318,39 @@ app.post('/dame-aventura', function (request, response) {
   }
   response.json({ AventuraGuardada: content });
 });
+
+//Peticion para obtener algun que otro fichero que se encuentre almacenado en la carpeta Images
+app.get('/getFile/:name', function (req, res, next) {
+
+  //Segun el nombre que me han pasado, miro en los 3 directorios posibles que hay en el backend, y si en alguno de ellos 
+  //se encuentra en archivo se lo doy al usuario
+  for(let i = 0; i<directorios.length; i++){
+    let path = "./"+directorios[i]+"/"+req.params.name;
+    if (fs.existsSync(path)) { 
+      res.download(path, req.params.name, function (err) {});
+      break;
+    } 
+  }
+})
+
+
+
+
+
+
+
+
+
+//Peticion para obtener los nombres de las diferentes apks ya hechas que se encuentran almacenadas en el server
+app.get("/aplicacionesListas-guardadas", (req, res) => {
+  res.json({ Opciones: fs.readdirSync('../AplicacionesListas/') });
+  }
+);
+
+//Peticion para obtener una del las aplicaciones ya hechas en el server
+app.get('/getAPK/:name', function (req, res, next) {
+  let path = '../AplicacionesListas/' + req.params.name;
+  if (fs.existsSync(path)) { 
+    res.download(path, req.params.name, function (err) {});
+  } 
+})
