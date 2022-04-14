@@ -1,10 +1,11 @@
 {
-  "Gencana": "AHAHAHHA",
-  "VuforiaKey": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "Gencana": "Nom",
+  "VuforiaKey": "",
   "fases": [
     {
-      "tipo": "QRStage",
-      "QRText": "hahahahah"
+      "tipo": "ImageStage",
+      "Imagen": "0.jpg",
+      "description": "alsldalsldlasdlalsdlalsdlasd"
     }
   ]
 }

@@ -81,9 +81,10 @@ const GPS = (props: StepComponentProps): JSX.Element => {
             <>
                 <Marker position={markers}>
                     <Popup>
-                        <span>
-                            A pretty CSS3 popup. <br /> Easily customizable.
-                        </span>
+                        <pre>
+                            {"Latitude: "+ GPSLatitude.toFixed(6) + "\n" +"Longitude: "+ GPSLongitude.toFixed(6)}
+                        </pre>
+                        
                     </Popup>
                 </Marker>
 
@@ -112,6 +113,7 @@ const GPS = (props: StepComponentProps): JSX.Element => {
 
             {/*Texto para la descripcion de a donde debes llegar*/}
             <form className="center" style={{ marginBottom: '1%' }} onSubmit={e => e.preventDefault()}>
+                <text style={{ fontSize: '150%' , marginRight:'0.5%'}} className='Titulo' >Descripción:</text>
                 <input placeholder="Texto para indicar al usuario que debe buscar" className='input-text' type="text" size={60} required value={description} onChange={e => { prepareForSave(GPSLongitude, GPSLatitude, radius, e.target.value); }}></input>
             </form>
 

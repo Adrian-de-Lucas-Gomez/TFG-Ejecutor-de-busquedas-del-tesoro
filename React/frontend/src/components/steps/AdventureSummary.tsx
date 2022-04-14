@@ -303,7 +303,7 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
         ))}
 
       {/* Este boton tiene como objetivo descargar el proyecto generado */}
-      <div style={{ marginTop: '2%' }}>
+      <div className="center" style={{ marginTop: '2%' }}>
         <button className="my-btn btn-outline-orange" style={{ fontSize: '170%' }} type="button" onClick={generateZip}>
           Generar Aventura
         </button>

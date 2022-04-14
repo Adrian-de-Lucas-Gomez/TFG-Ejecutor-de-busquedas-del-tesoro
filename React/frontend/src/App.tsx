@@ -8,7 +8,7 @@ import AdventureCharger from './components/steps/AdventureCharger'
 import Sound from './components/steps/Sound'
 import InputText from './components/steps/InputText';
 import AdventureSummary from './components/steps/AdventureSummary';
-import ImageCharger from './components/steps/ImageCharger';
+import Image from './components/steps/Image';
 import ImageTarget from './components/steps/ImageTarget';
 import GPS from './components/steps/GPS';
 import './components/Styles/App.css'
@@ -38,7 +38,7 @@ const App = (): JSX.Element => {
         <Step title='AdventureCharger' component={AdventureCharger} />
         <Step title='QR' component={QR} />
         <Step title='Quiz' component={Quiz} />
-        <Step title='ImageCharger' component={ImageCharger}/>
+        <Step title='Image' component={Image}/>
         <Step title='ImageTarget' component={ImageTarget}/>
         <Step title='Sound' component={Sound} />
         <Step title='InputText' component={InputText} />

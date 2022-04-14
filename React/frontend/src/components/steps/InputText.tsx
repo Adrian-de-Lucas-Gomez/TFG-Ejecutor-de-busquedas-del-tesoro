@@ -52,7 +52,8 @@ const InputText = (props: StepComponentProps): JSX.Element => {
     <div >
         <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'200%'}} className="Titulo" >Configuración de fase InputText</h3>
         <form className="center" style={{marginBottom:'1%'}} onSubmit={e => e.preventDefault()}>
-            <input placeholder="Añada aqui el texto..." className='input-text' type="text" size={60} required value={text} onChange ={ e =>{prepareForSave(e.target.value);}}></input>
+            <text style={{ fontSize: '150%' , marginRight:'0.5%'}} className='Titulo' >Contraseña a encontrar:</text>
+            <input placeholder="Añada aqui la contraseña..." className='input-text' type="text" size={60} required value={text} onChange ={ e =>{prepareForSave(e.target.value);}}></input>
         </form>
 
         {/* Seccion pista */}

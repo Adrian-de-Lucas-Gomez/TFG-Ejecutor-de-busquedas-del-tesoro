@@ -3,6 +3,16 @@
   "VuforiaKey": "",
   "fases": [
     {
+      "tipo": "ImageStage",
+      "Imagen": "FDI.jpg",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pharetra metus et nunc accumsan tempor. Sed maximus porta leo, quis finibus urna ultrices sed. Sed ornare sit amet ante at egestas. Sed eu sem orci. Suspendisse vel auctor lectus. Aliquam sit amet ornare felis. Pellentesque aliquam, risus nec dignissim varius, felis justo egestas massa, sed finibus justo felis at turpis. Duis auctor tortor in hendrerit volutpat",
+    },
+    {
+      "tipo": "ImageStage",
+      "Imagen": "FDI.jpg",
+      "description": "Done Lorem ipsum dolor sit amet, Sed ornare sit amet ante at egestas. Sed eu sem orci. Suspendisse vel auctor lectus. Aliquam sit amet ornare felis. Pellentes",
+    },
+    {
       "tipo": "GPSStage",
       "GPSLongitude": -3.7309741973876958,
       "GPSLatitude": 40.45057005613022,
