@@ -3,8 +3,6 @@ import "../Styles/MyCard.css"
 
 import QRPic from "../../imgCards/QRStageImage.png";
 import QuizPic from "../../imgCards/QuizStageImage.png";
-import ImageChargerPic from "../../imgCards/ImageChargerStageImage.png";
-import ImageTargetPic from "../../imgCards/ImageTargetStageImage.png";
 import SoundPic from "../../imgCards/SoundStageImage.png";
 import GPSPic from "../../imgCards/GPSStageImage.png";
 import Errorimage from "../../imgCards/Imagen.png"
@@ -22,8 +20,8 @@ const PhaseCard = (props: {fase:any,funcionMofify:any, funcionDelete: any,funcio
     const imagenMostrar=(miFase:any):any=>{
       if(miFase.tipo === "QRStage")return QRPic;
       if(miFase.tipo === "QuizStage") return QuizPic;
-      if(miFase.tipo === "ImageStage")return ImageChargerPic;
-      if(miFase.tipo === "ImageTargetStage") return ImageTargetPic;
+      if(miFase.tipo === "ImageStage")return window.URL.createObjectURL(miFase.Imagen);
+      if(miFase.tipo === "ImageTargetStage") return window.URL.createObjectURL(miFase.Target);
       if(miFase.tipo === "SoundStage") return SoundPic;
       if(miFase.tipo === "GPSStage")return GPSPic;
 
