@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
 import { StepComponentProps } from '../Steps'
 import axios from "axios"
-import pic from "../../Imagen.png";
+import pic from "../../imgCards/Imagen.png";
 
 const Image = (props: StepComponentProps): JSX.Element => {
 

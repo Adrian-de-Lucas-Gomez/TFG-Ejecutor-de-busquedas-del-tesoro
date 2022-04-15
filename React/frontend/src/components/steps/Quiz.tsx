@@ -1,10 +1,6 @@
-import { queries } from "@testing-library/react";
 import { StepComponentProps } from '../Steps';
 import React, {Fragment, useState, useEffect  } from "react"
-import { createSemicolonClassElement } from "typescript";
 import '../Styles/Quiz.css'
-
-  
 
 const Quiz = (props: StepComponentProps): JSX.Element => {
 

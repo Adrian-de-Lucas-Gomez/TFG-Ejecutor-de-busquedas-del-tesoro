@@ -1,23 +1,17 @@
 import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle } from "react"
 import { StepComponentProps } from '../Steps';
-import pic from "../../Imagen.png";
-import { text } from "node:stream/consumers";
+import pic from "../../imgCards/Imagen.png";
 
 const ImageTarget = (props: StepComponentProps): JSX.Element => {
-    //Key de vuforia
-    //const [key, setKey] = useState<string>("");
+
     //Imagen a usar como target de vuforia
     const [imageTarget, setImageTarget] = useState<File | null>(null);
-    const [imageTargetName, setImageTargetName] = useState<string>("");
     //Nombre del target a mostrar en esta fase
-    //const [targetName, setTargetName] = useState<string>("")
-
+    const [imageTargetName, setImageTargetName] = useState<string>("");
     //Texto a mostrar en la aplicación cuando se encuentre el target
     const [textToShow, setTextToShow] = useState<string>("");
 
     const [showText, setShowText] = useState<boolean>(false);
-
-    type FormElement = React.FormEvent<HTMLFormElement>;
 
     const [mostrarFormularioPista, setMostrarFormularioPista] =useState<boolean>(false);
     const [pista, setPista] = useState<string>("");

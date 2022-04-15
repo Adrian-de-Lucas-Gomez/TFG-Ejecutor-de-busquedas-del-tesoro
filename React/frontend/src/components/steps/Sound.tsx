@@ -1,10 +1,6 @@
-import QRCode from "qrcode.react";
 import React, {useState, useRef, useEffect, forwardRef, useImperativeHandle} from "react"
 import { StepComponentProps } from '../Steps';
-import { queries } from "@testing-library/react";
 import '../Styles/QR.css'
-
-//import {Howl} from "react-howler
 
 //@ts-ignore
 import ejemplo from "../../escopeta.mp3"
@@ -13,7 +9,6 @@ let path = "../../escopeta.mp3"
 
 const Sound = (props: StepComponentProps): JSX.Element => {
 
-    type FormElement = React.FormEvent<HTMLFormElement>;
     const [sobreEscribir, setSobreEscribir] = useState<boolean>(false);
 
     const [ficheroSonido, setFicheroSonido] = useState<File | null >(null);

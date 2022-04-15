@@ -1,7 +1,6 @@
 import QRCode from "qrcode.react";
 import React, {useState, useRef, useEffect, forwardRef, useImperativeHandle} from "react"
 import { StepComponentProps } from '../Steps';
-import { queries } from "@testing-library/react";
 import '../Styles/QR.css'
 
 
