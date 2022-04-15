@@ -122,9 +122,9 @@ const Sound = (props: StepComponentProps): JSX.Element => {
         {mostrarFormularioPista ? 
         <div className="App" style={{display: 'flex', justifyContent: 'center', verticalAlign:'true'}}>
             <span>
-                <b>Pista de la fase</b>            
-                </span>
-            <textarea style={{resize:"none", textAlign:"center"}} rows={3} cols={50} maxLength={100} onChange={(e) => {updatePista(e.target.value)}} placeholder="Pista que el jugador puede recibir" defaultValue={pista}/>
+              <b>Pista de la fase:</b>            
+            </span>
+            <textarea style={{marginLeft:'0.5%' ,resize:"none", textAlign:"center"}} rows={3} cols={50} maxLength={100} onChange={(e) => {updatePista(e.target.value)}} placeholder="Pista que el jugador puede recibir" defaultValue={pista}/>
         </div>
         : null }
     </div>
