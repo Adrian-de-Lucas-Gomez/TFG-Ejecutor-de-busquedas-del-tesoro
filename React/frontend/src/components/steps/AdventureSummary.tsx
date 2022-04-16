@@ -57,12 +57,12 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     let estado = props.getState<any>('DATA', []);
     let indiceBorrar = props.getState<number>('FaseABorrar', 1);
     let indiceReconfigurar = props.getState<number>('FaseConfigurable', 1);
-    let indicePushear = props.getState<number>('WhereToPush', 0) - 1;
+    let indicePushear = props.getState<number>('WhereToPush', 0);
     //Me encargo de que nadie este apuntando a una posicion invalida
     let tamaño = estado.length;
     if (indiceBorrar >= tamaño) indiceBorrar = tamaño - 1;
     if (indiceReconfigurar >= tamaño) indiceReconfigurar = tamaño - 1;
-    if (indicePushear >= tamaño) indicePushear = tamaño - 1;
+    if (indicePushear >= tamaño) indicePushear = tamaño;
     //Guardo los posibles cambios que hayan pasado
     props.setState<number>('FaseABorrar', indiceBorrar, 0);
     props.setState<number>('FaseConfigurable', indiceReconfigurar, 0);
