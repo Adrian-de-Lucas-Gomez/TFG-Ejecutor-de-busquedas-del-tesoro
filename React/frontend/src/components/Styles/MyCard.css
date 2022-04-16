@@ -48,12 +48,17 @@ body {
 
   .card__btn {
     width: 90%;
-    padding: 1rem;
+    padding: 0.5rem;
     margin: 1rem;
     border: 2px solid #d50000;
     background: transparent;
     color: #d50000;
     border-radius: 0.2rem;
+  }
+
+  .card__btn:hover {
+    background: #d50000;
+    color: #ffffff;
   }
 
   .rows .row {

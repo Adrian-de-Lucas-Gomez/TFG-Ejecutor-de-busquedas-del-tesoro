@@ -32,7 +32,7 @@ const PhaseCard = (props: {fase:any,funcionMofify:any, funcionDelete: any,funcio
   return (
     <div className="card">
         {/* Boton para hacer que nuestra carta se mueva hacia arriba en la lista de fases a hacer */}
-      <button className="card__btn"  onClick={()=>{props.funcionMover(indice,-1)}}  > {"<"}  </button>
+      <button className="card__btn" style={{fontSize:'250%'}} onClick={()=>{props.funcionMover(indice,-1)}}  > {"⇧"}  </button>
 
       <div className="card__body">
           {/* Titulo */}
@@ -57,7 +57,7 @@ const PhaseCard = (props: {fase:any,funcionMofify:any, funcionDelete: any,funcio
       </div>
 
         {/* Boton para hacer que nuestra carta se mueva hacia abajo en la lista de fases a hacer */}
-      <button className="card__btn" onClick={()=>{props.funcionMover(indice,1)}}   > {">"} </button>
+      <button className="card__btn" style={{fontSize:'250%'}} onClick={()=>{props.funcionMover(indice,1)}}   > {"⇩"} </button>
     </div>
   );
 };
