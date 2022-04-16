@@ -28,7 +28,7 @@ public class InputTextStage : Stage
 
     public void CheckCode()
     {
-        if (inputField.text == inputTextData.codigo)
+        if (inputField.text.ToLower() == inputTextData.codigo.ToLower())
         {
             inputField.interactable = false;
             info.color = Color.green;
