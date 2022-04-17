@@ -44,11 +44,21 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
         //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
     }, [props.getState<boolean>('SobreEscribir', false)]);
 
+    //Hook que se llama cada vez que se modifica algo significativo de la fase para guardar lo que tengamos y que al darle a guardar los cambios se veab
+    useEffect(() => {
+        let jsonData = { tipo: "ImageTargetStage", Target: imageTarget, TargetName: imageTargetName, AddText:showText, Text: textToShow , Pista:pista};
+        let myData = { Alert: false, texto: "Hola", datosFase: jsonData };
+        props.setState<any>('faseConfigurandose', myData, {});
+        console.log("Ahora el estado es asi: "+JSON.stringify(jsonData));
+    
+        //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
+        return () => {}
+        //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
+      }, [pista,imageTarget,imageTargetName,textToShow,showText]);
+
+
     const modifyQuestion = (e: string): void => {
         setTextToShow(e);
-        if(imageTarget instanceof File)
-            prepareForSave(imageTarget, imageTarget?.name as string, e);
-        else prepareForSave(null, "", e);
     }
 
     //Cambio de imagen para usar como Target
@@ -63,7 +73,6 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
             if (extension === 'png' || extension === "jpg" || extension === "jpeg") {
                 console.log("Updated file")
                 setImageTarget(e.target.files?.item(0))
-                prepareForSave(e.target.files?.item(0), name, textToShow);
             }
             else
                 alert("Por favor introduce una imagen en formato png, jpg o jpeg")
@@ -72,18 +81,8 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
         else setImageTarget(null);
     }
 
-
-    const prepareForSave = (imageTarget: File | null, nombreTarget: string, textToShow: string) => {
-        console.log("PrepareForSave")
-        let jsonData = { tipo: "ImageTargetStage", Target: imageTarget, TargetName: nombreTarget, AddText:showText, Text: textToShow , Pista:pista};
-        console.log(jsonData);
-        let myData = { Alert: false, texto: "Hola", datosFase: jsonData };
-        props.setState<any>('faseConfigurandose', myData, {});
-    }
-
     const updatePista = (nuevaPista:string) =>{
         setPista(nuevaPista);
-        prepareForSave(imageTarget,imageTargetName,textToShow);
     }
 
 

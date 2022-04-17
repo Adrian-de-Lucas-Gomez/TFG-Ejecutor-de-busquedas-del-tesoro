@@ -41,6 +41,17 @@ const QR = (props: StepComponentProps): JSX.Element => {
   }, [props.getState<boolean>('SobreEscribir', false)]);
 
 
+    //Hook que se llama cada vez que se modifica algo significativo de la fase para guardar lo que tengamos y que al darle a guardar los cambios se veab
+  useEffect(() => {
+    let jsonData = {tipo:"QRStage" ,QRText: text, Pista: pista};
+    let myData = {Alert: false, MensageAlert: "Rellena bien el texto del QR", datosFase: jsonData };
+    props.setState<any>('faseConfigurandose',myData,{});
+
+    //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
+    return () => {}
+    //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
+  }, [pista, text]);
+
 
     //Metodo que se encarga de convertir el qr a formato png y descargarlo
     const downloadQRCode = (evt: React.FormEvent) => {
@@ -70,23 +81,15 @@ const QR = (props: StepComponentProps): JSX.Element => {
         document.body.removeChild(anchor);
       };
 
-    const prepareForSave = (texto: string) => {
-        setText(texto);
-        let jsonData = {tipo:"QRStage" ,QRText: texto, Pista: pista};
-        let myData = {Alert: false, MensageAlert: "Rellena bien el texto del QR", datosFase: jsonData };
-        props.setState<any>('faseConfigurandose',myData,{});
-    }
-
     const updatePista = (nuevaPista:string) =>{
         setPista(nuevaPista);
-        prepareForSave(text);
     }
  
     return (
     <div >
         <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'200%'}} className="Titulo" >Configuración de fase QR</h3>
         <form className="center" style={{marginBottom:'1%'}} onSubmit={e => e.preventDefault()}>
-            <input placeholder="Añada aqui el texto o enlace al que reedirige el QR..." className='input-text' type="text" size={60} required value={text} onChange ={ e =>{prepareForSave(e.target.value);}}></input>
+            <input placeholder="Añada aqui el texto o enlace al que reedirige el QR..." className='input-text' type="text" size={60} required value={text} onChange ={ e =>{setText(e.target.value);}}></input>
         </form>
         <div ref={qrRef}>
             <QRCode className='QRImage' value={text} size={400} fgColor="black" bgColor="white" level="H"  />

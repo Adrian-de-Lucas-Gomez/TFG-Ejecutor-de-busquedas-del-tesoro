@@ -1,6 +1,7 @@
 import { StepComponentProps } from '../Steps';
 import React, {Fragment, useState, useEffect  } from "react"
 import '../Styles/Quiz.css'
+import { json } from 'stream/consumers';
 
 const Quiz = (props: StepComponentProps): JSX.Element => {
 
@@ -54,13 +55,26 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
         return () => {}
         //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
       }, [props.getState<boolean>('SobreEscribir', false)]);
+
+  //Hook que se llama cada vez que se modifica algo significativo de la fase para guardar lo que tengamos y que al darle a guardar los cambios se veab
+      useEffect(() => {
+        let jsonData = {tipo:"QuizStage" ,Pregunta: question, Respuestas: answers,Pista:pista};
+        let myData = {Alert: false, texto: "Hola", datosFase: jsonData };
+        props.setState<any>('faseConfigurandose',myData,{});
+    
+        //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
+        return () => {}
+        //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
+      }, [pista, question,answers]);
+    
+    
+
     
     //const [quizAddFunction, setFuncion] = useState<Function>(props.funcion);
     const [index, setIndex] = useState(props.order);
 
     const modifyQuestion = (e:string):void =>{        
         setQuestion(e);
-        prepareForSave(question,answers);
     }
 
     const handleNewQuestion = (e:FormElement):void =>{
@@ -73,32 +87,22 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
         console.log("Respuesta añadida");
         const newAnswers =[...answers, {text, isCorrect:false}];
         setAnswers(newAnswers);
-        prepareForSave(question,newAnswers);
     }
 
     const removeAnswer = (index:number): void =>{
         const newAnswers: Answer[] = [...answers];
         newAnswers.splice(index, 1);
         setAnswers(newAnswers);
-        prepareForSave(question,newAnswers);
     }
 
     const setAnswerAsCorrect = (index:number):void =>{
         const newAnswers: Answer[] = [...answers];
         newAnswers[index].isCorrect = !newAnswers[index].isCorrect;
         setAnswers(newAnswers);
-        prepareForSave(question,newAnswers);
-    }
-
-    const prepareForSave = (preguntaQuiz:string, respuestas:any) => {
-        let jsonData = {tipo:"QuizStage" ,Pregunta: preguntaQuiz, Respuestas: respuestas,Pista:pista};
-        let myData = {Alert: false, texto: "Hola", datosFase: jsonData };
-        props.setState<any>('faseConfigurandose',myData,{});
     }
 
     const updatePista = (nuevaPista:string) =>{
         setPista(nuevaPista);
-        prepareForSave(question,answers);
     }
 
 

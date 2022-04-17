@@ -48,23 +48,19 @@ const Sound = (props: StepComponentProps): JSX.Element => {
   }, [props.getState<boolean>('SobreEscribir', false)]);
 
   
-  // useEffect(() => {
-  //   console.log("Ha habido un cambio en algo de lo que es el estado: "+pista+" + "+sonido+" + "+ficheroSonido);
-  //   //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
-  //   return () => {}
-  //   //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
-  // }, [pista, sonido,ficheroSonido]);
-
-
-  const prepareForSave = (sonidoCargado: File | null) => {
-    let jsonData = {tipo:"SoundStage" ,Sonido: sonidoCargado, Pista: pista};
+  //Hook que se llama cada vez que se modifica algo significativo de la fase para guardar lo que tengamos y que al darle a guardar los cambios se veab
+  useEffect(() => {
+    let jsonData = {tipo:"SoundStage" ,Sonido: ficheroSonido, Pista: pista};
     let myData = {Alert: false, texto: "Hola", datosFase: jsonData };
     props.setState<any>('faseConfigurandose',myData,{});
-  }
+
+    //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
+    return () => {}
+    //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
+  }, [pista, sonido,ficheroSonido]);
 
   const updatePista = (nuevaPista:string) =>{
     setPista(nuevaPista);
-    prepareForSave(ficheroSonido);
 }
 
 
@@ -85,7 +81,6 @@ const Sound = (props: StepComponentProps): JSX.Element => {
       //Comprobamos si lo que nos han introducido en el formulario ha sido un fichero
       //En principio el tipo del input debería garantizarlo 
       if (e.target.files?.item(0) instanceof File){
-          prepareForSave(e.target.files?.item(0));
           setFicheroSonido(e.target.files?.item(0));
 
           //@ts-ignore
@@ -94,7 +89,6 @@ const Sound = (props: StepComponentProps): JSX.Element => {
       //Si no por defecto, asignamos el valor null
       else {
           setFicheroSonido(null);
-          prepareForSave(null);
       }
   }
 

@@ -42,32 +42,33 @@ const Image = (props: StepComponentProps): JSX.Element => {
       }, [props.getState<boolean>('SobreEscribir', false)]);
 
 
+    //Hook que se llama cada vez que se modifica algo significativo de la fase para guardar lo que tengamos y que al darle a guardar los cambios se veab
+    useEffect(() => {
+        let jsonData = {tipo:"ImageStage" ,Imagen: image, description: description,Pista: pista};
+        let myData = {Alert: false, texto: "Hola", datosFase: jsonData };
+        props.setState<any>('faseConfigurandose',myData,{});
+        console.log("Ahora el estado es asi: "+JSON.stringify(jsonData));
+
+        //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
+        return () => {}
+        //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
+    }, [pista, image, description]);
 
     //OBTENIENDO LA IMAGEN
     const changeImagen = (e:React.ChangeEvent<HTMLInputElement>):void => {  
         //Comprobamos si lo que nos han introducido en el formulario ha sido un fichero
         //En principio el tipo del input debería garantizarlo 
         if (e.target.files?.item(0) instanceof File){
-            prepareForSave(e.target.files?.item(0), description);
             setImagen(e.target.files?.item(0))
         }
         //Si no por defecto, asignamos el valor null
         else {
-            prepareForSave(null, description);
             setImagen(null);
         }
     }
 
-    const prepareForSave = (imagenCargada: File | null , UIdescription: string) => {
-        setdescription(UIdescription);
-        let jsonData = {tipo:"ImageStage" ,Imagen: imagenCargada, description: UIdescription,Pista: pista};
-        let myData = {Alert: false, texto: "Hola", datosFase: jsonData };
-        props.setState<any>('faseConfigurandose',myData,{});
-    }
-
     const updatePista = (nuevaPista:string) =>{
         setPista(nuevaPista);
-        prepareForSave(image, description);
     }
 
 
@@ -85,7 +86,7 @@ const Image = (props: StepComponentProps): JSX.Element => {
 
             <form className="center" style={{ marginBottom: '1%' }} onSubmit={e => e.preventDefault()}>
                 <text style={{ fontSize: '150%' , marginRight:'0.5%'}} className='Titulo' >Descripción:</text>
-                <input placeholder="Texto para dar información sobre la imagen" className='input-text' type="text" size={60} required value={description} onChange={e => { prepareForSave(image, e.target.value); }}></input>
+                <input placeholder="Texto para dar información sobre la imagen" className='input-text' type="text" size={60} required value={description} onChange={e => {setdescription(e.target.value)}}></input>
             </form>
 
             {/* Seccion pista */}

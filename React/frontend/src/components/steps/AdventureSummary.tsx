@@ -153,7 +153,7 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
           }
           else if (faseActual.tipo === "SoundStage" && faseActual.Sonido instanceof File) {
             var finalSoundName = faseActual.Sonido.name;
-            finalSoundName = (contadorTargets.toString()) + (finalSoundName.substring(finalSoundName.indexOf('.')));
+            finalSoundName = (contadorSonidos.toString()) + (finalSoundName.substring(finalSoundName.indexOf('.')));
             let result = await sendFileToServer('sound', faseActual.Sonido, finalSoundName, "./sound-upload")
             contadorSonidos++;
           }
