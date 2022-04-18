@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class InputTextInfo : AdventureInfo
 {
-    public string codigo;
+    public string codigo="";
     public List<string> respuestasPosibles = new List<string>();
     public string descripcionFase;
 
@@ -22,7 +22,6 @@ public class InputTextInfo : AdventureInfo
         else hint = value;
 
         ///////////////////////////////////////////Obtengo los datos//////////////////////////////////
-        codigo = myInfo["Texto"].Value<string>();
         //Posibles respuestas de mi fase
         JArray misRespuestas = (JArray)myInfo["Respuestas"];
         for (int i = 0; i < misRespuestas.Count; i++)

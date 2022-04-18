@@ -41,7 +41,7 @@ const GPS = (props: StepComponentProps): JSX.Element => {
 
 
             //Nos aseguramos que lo que se esta configurando ahora es lo que nos hemos cargado
-            let myData = { Alert: false, MensageAlert: "", datosFase: estadoACargar };
+            let myData = { Alert: ((description==="")||(radius<=0)), MensageAlert: "La fase de GPS debe tener una localización válida, un radio mayor a 0 y una descripción no vacía", datosFase: estadoACargar };
             props.setState<any>('faseConfigurandose', myData, {});
         }
 
@@ -53,7 +53,7 @@ const GPS = (props: StepComponentProps): JSX.Element => {
     //Hook que se llama cada vez que se modifica algo significativo de la fase para guardar lo que tengamos y que al darle a guardar los cambios se veab
     useEffect(() => {
         let jsonData = { tipo: "GPSStage", GPSLongitude: GPSLongitude, GPSLatitude: GPSLatitude, radius: radius, description: description, Pista:pista };
-        let myData = { Alert: false, MensageAlert: "Rellena bien los parámetros de la fase", datosFase: jsonData };
+        let myData = { Alert: ((description==="")||(radius<=0)), MensageAlert: "La fase de GPS debe tener una localización válida, un radio mayor a 0 y una descripción no vacía", datosFase: jsonData };
         props.setState<any>('faseConfigurandose', myData, {});
         console.log("Ahora el estado es asi: "+JSON.stringify(jsonData));
     

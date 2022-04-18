@@ -29,7 +29,7 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
             let estadoACargar = new_state[props.getState<number>('FaseConfigurable', 1)];
             
             //Nos aseguramos que lo que se esta configurando ahora es lo que nos hemos cargado
-            let myData = {Alert: false, MensageAlert: "", datosFase: estadoACargar };
+            let myData = {Alert: ((imageTarget === null)||(imageTargetName==="")||( showText && textToShow==="")), MensageAlert: "La fase debe tener una imagen cargada y en caso de mostrar un texto, este no puede estar vacío", datosFase: estadoACargar };
             props.setState<any>('faseConfigurandose',myData,{});
             
             //Cargamos el imageTarget
@@ -49,7 +49,7 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
     //Hook que se llama cada vez que se modifica algo significativo de la fase para guardar lo que tengamos y que al darle a guardar los cambios se veab
     useEffect(() => {
         let jsonData = { tipo: "ImageTargetStage", Target: imageTarget, TargetName: imageTargetName, AddText:showText, Text: textToShow , Pista:pista};
-        let myData = { Alert: false, texto: "Hola", datosFase: jsonData };
+        let myData = { Alert: ((imageTarget === null)||( showText===true && textToShow==="")), MensageAlert: "La fase debe tener una imagen cargada y en caso de mostrar un texto, este no puede estar vacío", datosFase: jsonData };
         props.setState<any>('faseConfigurandose', myData, {});
         console.log("Ahora el estado es asi: "+JSON.stringify(jsonData));
     

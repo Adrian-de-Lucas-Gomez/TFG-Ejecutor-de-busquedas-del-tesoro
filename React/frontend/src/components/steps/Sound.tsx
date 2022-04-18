@@ -40,7 +40,7 @@ const Sound = (props: StepComponentProps): JSX.Element => {
         }
 
         //Nos aseguramos que lo que se esta configurando ahora es lo que nos hemos cargado
-        let myData = {Alert: false, MensageAlert: "", datosFase: estadoACargar };
+        let myData = {Alert: (ficheroSonido===null), MensageAlert: "La fase de sonido debe de tener un archivo de audio asignado", datosFase: estadoACargar };
         props.setState<any>('faseConfigurandose',myData,{});
     }
     
@@ -53,7 +53,7 @@ const Sound = (props: StepComponentProps): JSX.Element => {
   //Hook que se llama cada vez que se modifica algo significativo de la fase para guardar lo que tengamos y que al darle a guardar los cambios se veab
   useEffect(() => {
     let jsonData = {tipo:"SoundStage" ,Sonido: ficheroSonido, Pista: pista};
-    let myData = {Alert: false, texto: "Hola", datosFase: jsonData };
+    let myData = {Alert: (ficheroSonido===null), MensageAlert: "La fase de sonido debe de tener un archivo de audio asignado", datosFase: jsonData };
     props.setState<any>('faseConfigurandose',myData,{});
 
     //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente

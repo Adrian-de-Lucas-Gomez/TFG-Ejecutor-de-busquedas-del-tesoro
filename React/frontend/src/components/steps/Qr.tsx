@@ -46,7 +46,7 @@ const QR = (props: StepComponentProps): JSX.Element => {
     //Hook que se llama cada vez que se modifica algo significativo de la fase para guardar lo que tengamos y que al darle a guardar los cambios se veab
   useEffect(() => {
     let jsonData = {tipo:"QRStage" ,QRText: text, Pista: pista};
-    let myData = {Alert: false, MensageAlert: "Rellena bien el texto del QR", datosFase: jsonData };
+    let myData = {Alert: (text === ""), MensageAlert: "El código QR no puede estar vacío", datosFase: jsonData };
     props.setState<any>('faseConfigurandose',myData,{});
 
     //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente

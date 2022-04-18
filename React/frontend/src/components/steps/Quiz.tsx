@@ -38,7 +38,7 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
             let estadoACargar = new_state[props.getState<number>('FaseConfigurable',1)]; 
 
             //Nos aseguramos que lo que se esta configurando ahora es lo que nos hemos cargado
-            let myData = {Alert: false, MensageAlert: "", datosFase: estadoACargar };
+            let myData = {Alert: ((question ==="")||(answers.length<2)), MensageAlert: "El quiz debe de tener una pregunta y al menos 2 respuestas", datosFase: estadoACargar };
             props.setState<any>('faseConfigurandose',myData,{});
 
             //Me guardo tando la pregunta como las respuestas que había configuradas
@@ -61,7 +61,7 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
   //Hook que se llama cada vez que se modifica algo significativo de la fase para guardar lo que tengamos y que al darle a guardar los cambios se veab
       useEffect(() => {
         let jsonData = {tipo:"QuizStage" ,Pregunta: question, Respuestas: answers,Pista:pista};
-        let myData = {Alert: false, texto: "Hola", datosFase: jsonData };
+        let myData = {Alert: ((question ==="")||(answers.length<2)), MensageAlert: "El quiz debe de tener una pregunta y al menos 2 respuestas", datosFase: jsonData };
         props.setState<any>('faseConfigurandose',myData,{});
     
         //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente

@@ -15,8 +15,6 @@ const Image = (props: StepComponentProps): JSX.Element => {
     const [pista, setPista] = useState<string>("");
 
     useEffect(() => {
-        // let info = {Alert: true, MensageAlert: "Image: se debe de cargar alguna imagen", datosFase: {} };
-        // props.setState<any>('faseConfigurandose',info,{});
         //En caso de que haya que sobreescribir algo, me guardo que estamos sobreescribiendo y cargo 
         //los datos que ya había de esta fase      
         if(props.getState<boolean>('SobreEscribir', false)){
@@ -25,7 +23,7 @@ const Image = (props: StepComponentProps): JSX.Element => {
             let estadoACargar = new_state[props.getState<number>('FaseConfigurable',1)]; 
 
             //Nos aseguramos que lo que se esta configurando ahora es lo que nos hemos cargado
-            let myData = {Alert: false, MensageAlert: "", datosFase: estadoACargar };
+            let myData = {Alert: ((image === null) || (description==="")), MensageAlert: "La fase de imagen debe de tener una imagen cargada y la descripción no puede estar vacía.", datosFase: estadoACargar };
             props.setState<any>('faseConfigurandose',myData,{});
 
             //Me guardo la imagen que había almacenada en el estado actual
@@ -47,7 +45,7 @@ const Image = (props: StepComponentProps): JSX.Element => {
     //Hook que se llama cada vez que se modifica algo significativo de la fase para guardar lo que tengamos y que al darle a guardar los cambios se veab
     useEffect(() => {
         let jsonData = {tipo:"ImageStage" ,Imagen: image, description: description,Pista: pista};
-        let myData = {Alert: false, texto: "Hola", datosFase: jsonData };
+        let myData = {Alert: ((image === null) || (description==="")), MensageAlert: "La fase de imagen debe de tener una imagen cargada y la descripción no puede estar vacía.", datosFase: jsonData };
         props.setState<any>('faseConfigurandose',myData,{});
         console.log("Ahora el estado es asi: "+JSON.stringify(jsonData));
 
