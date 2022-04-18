@@ -22,7 +22,19 @@ public class LogicManager : MonoBehaviour
     void Start()
     {
         nextPhaseButton.gameObject.active = false;
+        hintButton.gameObject.active = false;
         hintPanel.active = false;
+    }
+
+
+    public void EnableHints()
+    {
+        hintButton.gameObject.active = true;
+    }
+
+    public void DisableHints()
+    {
+        hintButton.gameObject.active = false;
     }
 
     //Metodo que pide al gamemanager la información de la fase en la que nos encontramos y muestra la pista que tiene asociada

@@ -3,43 +3,11 @@
   "VuforiaKey": "",
   "fases": [
     {
-      "tipo": "ImageStage",
-      "Imagen": "0.png",
-      "description": "DescripcionImagen",
-      "Pista": "PistaImagen"
-    },
-    {
       "tipo": "InputTextStage",
       "Texto": "ContraseñaInputtext",
+      "Respuestas":["uno","dos"],
+      "description": "esto es una descripción de un input text",
       "Pista": "PistaInputText"
-    },
-    {
-      "tipo": "SoundStage",
-      "Sonido": "0.mp3",
-      "Pista": "PistaSOnido"
-    },
-    {
-      "tipo": "QuizStage",
-      "Pregunta": "PreguntaQR",
-      "Respuestas": [
-        {
-          "text": "PrimeraRespuesta",
-          "isCorrect": true
-        },
-        {
-          "text": "MAL",
-          "isCorrect": false
-        }
-      ],
-      "Pista": "PistaQuiz"
-    },
-    {
-      "tipo": "GPSStage",
-      "GPSLongitude": -3.7278842926025395,
-      "GPSLatitude": 40.455107201095245,
-      "radius": "20",
-      "description": "DescripcionGPS",
-      "Pista": "PistaGPS"
     }
   ]
 }

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 public class InputTextInfo : AdventureInfo
 {
     public string codigo;
+    public List<string> respuestasPosibles = new List<string>();
+    public string descripcionFase;
 
     /// <summary>
     /// Metodo que recibe un objeto parseado de JSON y saca toda la informacion que necesite de este
@@ -18,7 +20,17 @@ public class InputTextInfo : AdventureInfo
         string value = myInfo["Pista"].Value<string>();
         if (value == "") hint = "Pista por defecto InputText";
         else hint = value;
-        //Obtengo los datos
+
+        ///////////////////////////////////////////Obtengo los datos//////////////////////////////////
         codigo = myInfo["Texto"].Value<string>();
+        //Posibles respuestas de mi fase
+        JArray misRespuestas = (JArray)myInfo["Respuestas"];
+        for (int i = 0; i < misRespuestas.Count; i++)
+        {
+            respuestasPosibles.Add(misRespuestas[i].Value<string>());
+        }
+
+        //Obtengo la explicacion de la fase
+        descripcionFase = myInfo["description"].Value<string>();
     }
 }

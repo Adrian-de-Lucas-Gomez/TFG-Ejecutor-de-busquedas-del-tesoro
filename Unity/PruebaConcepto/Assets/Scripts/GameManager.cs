@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
 
     private Stage _currentStage = null;
 
+    private string _adventureName = "Gencana";
+
 
     //Lista en la que se van a almacenar los tipos de fases que est�n involucradas en la aventura que vamos a jugar
     List<string> scenesInvolved;
@@ -84,6 +86,7 @@ public class GameManager : MonoBehaviour
 
         //Asignamos key de vuforia
         VuforiaConfiguration.Instance.Vuforia.LicenseKey = adventureData["VuforiaKey"].Value<string>();
+        _adventureName= adventureData["Gencana"].Value<string>();
 
         Debug.Log(VuforiaConfiguration.Instance.Vuforia.LicenseKey);
 
@@ -206,6 +209,7 @@ public class GameManager : MonoBehaviour
     }
 
 
+
     /// <summary>
     /// M�todo que sirve para indicarle al gamemanager el estado actual que se est� ejecutando en la aventura, esto
     /// sirve para que le gamemanager le pase a dicho estado el bloque de datos que necesita para poder
@@ -236,6 +240,21 @@ public class GameManager : MonoBehaviour
         return adventureStages.Peek();
     }
 
+    public string getAdventureName()
+    {
+        return _adventureName;
+    }
+
+    public void EnableHints()
+    {
+        logicManager.EnableHints();
+    }
+
+    public void DisableHints()
+    {
+        logicManager.DisableHints();
+    }
+
 
     /// <summary>
     /// Inicia _currentStage con la siguiente aventura en la lista, y la quita de esta
@@ -262,6 +281,10 @@ public class GameManager : MonoBehaviour
 
         //Eliminamos la fase que nos acabamos de pasar
         adventureStages.Dequeue();
+
+        //Si nos vamos a una fase normal tenemos disponibles las pistas, en cambio si nos vamos a la del final ya no hay pistas
+        if (adventureStages.Peek().stage == "End")  logicManager.DisableHints();
+        else                                        logicManager.EnableHints();
 
         //Notificamos a los listeners del tipo de la nueva fase para que puedan prepararse acorde
         NotifyListeners(adventureStages.Peek().stage);

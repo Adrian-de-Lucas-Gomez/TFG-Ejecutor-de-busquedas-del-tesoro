@@ -17,23 +17,28 @@ public class InputTextStage : Stage
     [SerializeField]
     GameObject inputFieldObject;
 
+    string answerObtained = "";
 
     public override void Init(AdventureInfo data)
     {
         inputTextData = (InputTextInfo)data;
+        info.text = inputTextData.descripcionFase;
 
         Debug.Log(inputTextData.codigo);
     }
 
     public void CheckCode()
     {
-        if (inputField.text.ToLower() == inputTextData.codigo.ToLower())
+        foreach(string possibleAnswer in inputTextData.respuestasPosibles)
         {
-            inputField.interactable = false;
-            info.color = Color.green;
-            info.text = "Código correcto, pasa a la siguiente fase.";
-            inputFieldObject.SetActive(false);
-            NextScene();
+            if (inputField.text.ToLower() == possibleAnswer.ToLower())
+            {
+                answerObtained = inputField.text;
+                inputField.interactable = false;
+                info.color = Color.green;
+                info.text = "Código correcto, la respuesta era:"+answerObtained;
+                NextScene();
+            }
         }
     }
 
