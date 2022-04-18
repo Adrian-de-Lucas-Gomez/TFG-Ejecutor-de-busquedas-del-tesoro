@@ -46,7 +46,7 @@ const InputText = (props: StepComponentProps): JSX.Element => {
             setPista(estadoACargar.Pista);
 
             //Nos aseguramos que lo que se esta configurando ahora es lo que nos hemos cargado
-            let myData = { Alert: false, MensageAlert: "", datosFase: estadoACargar };
+            let myData = { Alert: ((description==="") || (texts.length<1)), MensageAlert: "La fase de input debe tener una descripción no vacía y al menos una contraseña a escribir", datosFase: estadoACargar };
             props.setState<any>('faseConfigurandose', myData, {});
         }
 
@@ -58,7 +58,7 @@ const InputText = (props: StepComponentProps): JSX.Element => {
     //Hook que se llama cada vez que se modifica algo significativo de la fase para guardar lo que tengamos y que al darle a guardar los cambios se veab
     useEffect(() => {
         let jsonData = { tipo: "InputTextStage", Respuestas: texts, description: description, Pista: pista };
-        let myData = { Alert: false, MensageAlert: "Rellena bien el texto", datosFase: jsonData };
+        let myData = { Alert: ((description==="") || (texts.length<1)), MensageAlert: "La fase de input debe tener una descripción no vacía y al menos una contraseña a escribir", datosFase: jsonData };
         props.setState<any>('faseConfigurandose', myData, {});
         console.log("Ahora el estado es asi: " + JSON.stringify(jsonData));
 
