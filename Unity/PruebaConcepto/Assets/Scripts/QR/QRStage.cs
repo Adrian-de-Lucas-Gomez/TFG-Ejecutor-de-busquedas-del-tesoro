@@ -26,12 +26,13 @@ public class QRStage : Stage
 
     public void MoveToNextPhase()
 	{
-        nextPanel.SetActive(false);
-        GameManager.getInstance().GoToNextPhase();
+        //nextPanel.SetActive(false);
+        GameManager.getInstance().StageCompleted();
     }
 
     public override void Init(AdventureInfo data)
     {
+        nextPanel.SetActive(false);
         qrData = (QRInfo)data;
         qrValue = qrData.QRValue;
         changeSceneRequest = false;
@@ -44,6 +45,7 @@ public class QRStage : Stage
             Debug.Log("Well Done");
             changeSceneRequest = true;
             nextPanel.SetActive(true);
+            MoveToNextPhase();
         }
 	}
 }

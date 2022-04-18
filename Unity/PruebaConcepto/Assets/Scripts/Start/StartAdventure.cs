@@ -21,7 +21,7 @@ public class StartAdventure : MonoBehaviour
 
     public void StartGame()
     {
-        GameManager.getInstance().GoToNextPhase();
+        GameManager.getInstance().StageCompleted();
         master.stageFinished();
     }
 }

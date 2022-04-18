@@ -85,7 +85,7 @@ public class GPSStage : Stage
 
     private void FinaliceStage()
     {
-        GameManager.getInstance().GoToNextPhase();
+        GameManager.getInstance().StageCompleted();
     }
 
     //Aqui comprobaríamos si nuestra posicion es suficientemente cercana al objetivo 

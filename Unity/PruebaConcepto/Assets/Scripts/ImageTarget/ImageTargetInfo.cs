@@ -15,6 +15,11 @@ public class ImageTargetInfo : AdventureInfo
         //Me quedo con la escena a la que me tengo que ir para ejecutarme
         stage = myInfo["tipo"].Value<string>();
 
+        //Ponemos la pista al valor que nos de el JSON y en caso de que sea un valor vacio le ponemos un valor por defecto nosotros
+        string value = myInfo["Pista"].Value<string>();
+        if (value == "") hint = "Pista por defecto ImageTarget";
+        else hint = value;
+
         //Obtengo los datos del target
         nombreTarget = myInfo["Target"].Value<string>();
         hasText = myInfo["AddText"].Value<bool>();

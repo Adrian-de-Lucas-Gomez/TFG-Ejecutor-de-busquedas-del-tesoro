@@ -10,7 +10,7 @@ using UnityEngine;
 /// representa se desactivan los objetos de la misma hasta que llegue el momento de que SI le toque y entonces 
 /// los activar� para poder jugar la fase concreta
 /// </summary>
-public class MasterObject : MonoBehaviour
+public class MasterObject : MonoBehaviour , Listener
 {
 
     [SerializeField]
@@ -68,28 +68,33 @@ public class MasterObject : MonoBehaviour
         }
         //Por defecto desactivamos los objetos de esta escena
         sceneObjectsParent.SetActive(false);
+
+        GameManager.getInstance().AddListener(this);
+        Listen(GameManager.getInstance().getCurrentStageType());
     }
 
     // Update is called once per frame
     void Update()
     {
+    }
+
+    public void Listen(string stageType)
+    {
+        //print("Me acaba de llegar el siguient mensage "+ stageType);
         //Si no estamos jugando esta escena pero nos toca porque nos lo dice el gamemanager nos activamos y si tenemos algo que ejecutar
         //se lo decimos al gamemanager para que este le de la info que necesita la fase que estemos almacenando
-        if(!mySceneIsPlaying && GameManager.getInstance().getCurrentStageType() == myStageTypeStringRepresentation)
+        if (!mySceneIsPlaying && stageType == myStageTypeStringRepresentation)
         {
             sceneObjectsParent.SetActive(true);
             mySceneIsPlaying = true;
-            if(myStage != null)GameManager.getInstance().SetCurrentStage(myStage);
+            if (myStage != null) GameManager.getInstance().SetCurrentStage(myStage);
         }
         //En caso de que estuvieramos jugando nuestra fase pero el gamemanager ya no indica que estamos en la nuestra, significa que nos la hemos
         //pasado y que tenemos que desactivar nuestros objetos
-        else if (mySceneIsPlaying && GameManager.getInstance().getCurrentStageType() != myStageTypeStringRepresentation)
+        else if (mySceneIsPlaying && stageType != myStageTypeStringRepresentation)
         {
-            mySceneIsPlaying = false;
-            sceneObjectsParent.SetActive(false);
+            stageFinished();
         }
-
-        //Debug.Log(myStageTypeStringRepresentation + " " + sceneObjectsParent.activeSelf);
     }
 
     //este m�todo tiene como objetivo que las fases una vez hayan terminado de ejecutarse que avisen a este padre para que limpie la escena porque la fase se ha acabado

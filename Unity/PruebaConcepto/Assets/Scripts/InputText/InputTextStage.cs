@@ -16,8 +16,7 @@ public class InputTextStage : Stage
     TextMeshProUGUI info;
     [SerializeField]
     GameObject inputFieldObject;
-    [SerializeField]
-    GameObject nextBtn;
+
 
     public override void Init(AdventureInfo data)
     {
@@ -34,13 +33,13 @@ public class InputTextStage : Stage
             info.color = Color.green;
             info.text = "Código correcto, pasa a la siguiente fase.";
             inputFieldObject.SetActive(false);
-            nextBtn.SetActive(true);
+            NextScene();
         }
     }
 
     public void NextScene()
     {
-        GameManager.getInstance().GoToNextPhase();
+        GameManager.getInstance().StageCompleted();
     }
 
 }

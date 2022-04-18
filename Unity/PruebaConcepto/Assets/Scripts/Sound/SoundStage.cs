@@ -22,18 +22,30 @@ public class SoundStage : Stage
     //Audio que se va a usar en la fase
     AudioClip audioClip;
 
+    bool audioStarted = false;
+
     public override void Init(AdventureInfo data)
     {
         soundData = (SoundInfo)data;
 
         Debug.Log(soundData.nombreSonido);
-
         audioClip = Resources.Load<AudioClip>("AdventureSounds/" + soundData.nombreSonido);
         audioSource.clip = audioClip;
     }
 
+    public void Update()
+    {
+        //HEmos terminado de reproducir el audio
+        if (audioStarted && !audioSource.isPlaying) {
+            PauseSound();
+            NextScene();
+        }
+    }
+
     public void PlaySound()
 	{
+        audioStarted = true;
+
         audioSource.Play();
         playBtn.SetActive(false);
         pauseBtn.SetActive(true);
@@ -41,6 +53,8 @@ public class SoundStage : Stage
 
     public void PauseSound()
 	{
+        audioStarted = false;
+
         audioSource.Pause();
         playBtn.SetActive(true);
         pauseBtn.SetActive(false);
@@ -48,7 +62,7 @@ public class SoundStage : Stage
 
     public void NextScene()
     {
-        GameManager.getInstance().GoToNextPhase();
+        GameManager.getInstance().StageCompleted();
     }
 
 }

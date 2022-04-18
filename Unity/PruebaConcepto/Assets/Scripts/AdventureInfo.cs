@@ -10,4 +10,5 @@ public class AdventureInfo
 {
     //Nombre de la escena a la que nos debemos de ir para ejecutar esta fase
     public string stage = "";
+    public string hint = "";
 }

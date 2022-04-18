@@ -14,7 +14,6 @@ public class ImageTargetStage : Stage
     private ObjectTracker objectTracker;
     private DataSet dataset;
 
-    [SerializeField] Button nextButton;
     [SerializeField] GameObject pannel;
     [SerializeField] TextMeshProUGUI textInfo;
     //[SerializeField] GameObject gO;
@@ -25,9 +24,6 @@ public class ImageTargetStage : Stage
         
         onFoundEvent = new UnityEvent();
         targetData = (ImageTargetInfo)data;
-
-        //Boton para pasar a la siguiente fase
-        nextButton.gameObject.SetActive(false);
 
         //Texto a mostrar cuando se encuentre el target
         if (targetData.hasText)
@@ -72,7 +68,7 @@ public class ImageTargetStage : Stage
     private void OnTargetFoundAction()
     {
         if (targetData.hasText) pannel.SetActive(true);
-        nextButton.gameObject.SetActive(true);
+        NextScene();
     }
 
     public void NextScene()
@@ -82,7 +78,7 @@ public class ImageTargetStage : Stage
         //objectTracker.DeactivateDataSet(dataset);
         //Destroy(trackableHandler);
         VuforiaARController.Instance.UnregisterVuforiaStartedCallback(CreateImageTargetFromSideloadedTexture);
-        GameManager.getInstance().GoToNextPhase();
+        GameManager.getInstance().StageCompleted();
         //Debug.Log("d");
         //TrackerManager.Instance.DeinitTracker<ObjectTracker>();
 

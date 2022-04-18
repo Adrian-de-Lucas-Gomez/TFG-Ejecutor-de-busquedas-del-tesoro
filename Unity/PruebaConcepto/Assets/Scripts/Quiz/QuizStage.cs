@@ -73,7 +73,7 @@ public class QuizStage : Stage
         if (i == quizAnswers.Count)
         {
             print("Well Done");
-            GameManager.getInstance().GoToNextPhase();
+            GameManager.getInstance().StageCompleted();
         }
     }
 }

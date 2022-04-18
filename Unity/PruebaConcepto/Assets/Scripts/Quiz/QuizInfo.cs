@@ -19,6 +19,11 @@ public class QuizInfo : AdventureInfo
         //Me quedo con la escena a la que me tengo que ir para ejecutarme
         stage = myInfo["tipo"].Value<string>();
 
+        //Ponemos la pista al valor que nos de el JSON y en caso de que sea un valor vacio le ponemos un valor por defecto nosotros
+        string value = myInfo["Pista"].Value<string>();
+        if (value == "") hint = "Pista por defecto Quiz";
+        else hint = value;
+
         //Obtengo los datos del quiz
         pregunta = myInfo["Pregunta"].Value<string>();
         JArray misRespuestas = (JArray)myInfo["Respuestas"];

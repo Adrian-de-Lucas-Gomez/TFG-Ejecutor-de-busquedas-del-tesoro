@@ -29,6 +29,10 @@ public class GameManager : MonoBehaviour
     //los recursos pueden llegar a ser gastados poe estas
     List<string> bigScenes = new List<string>() { "QRStage", "ImageTargetStage" };
 
+    List<Listener> listeners = new List<Listener>();
+
+    [SerializeField]
+    LogicManager logicManager;
 
     static GameManager _instance;
 
@@ -224,6 +228,16 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Este m�todo tiene como objetivo devolver la fase que se encuentra ahora en primer lugar en la cola de estas
+    /// </summary>
+    /// <returns></returns>
+    public AdventureInfo getCurrentStage()
+    {
+        return adventureStages.Peek();
+    }
+
+
+    /// <summary>
     /// Inicia _currentStage con la siguiente aventura en la lista, y la quita de esta
     /// </summary>
     private void InitCurrentStage()
@@ -232,6 +246,11 @@ public class GameManager : MonoBehaviour
     }
 
    
+    public void StageCompleted()
+    {
+        logicManager.PhaseCompleted();
+    }
+
 
     /// <summary>
     /// este m�todo tiene como objetivo ser llamado por las m�ltiples fases por las que vamos a pasar para que estas
@@ -243,6 +262,9 @@ public class GameManager : MonoBehaviour
 
         //Eliminamos la fase que nos acabamos de pasar
         adventureStages.Dequeue();
+
+        //Notificamos a los listeners del tipo de la nueva fase para que puedan prepararse acorde
+        NotifyListeners(adventureStages.Peek().stage);
 
         //Si cambiamos de escena nos preparamos para un posible cambio con respecto a AR o con escenas grandes
         if (completedScene != adventureStages.Peek().stage)
@@ -345,5 +367,23 @@ public class GameManager : MonoBehaviour
         _preloadedScene.Value.allowSceneActivation = true;
     }
 
+
+    public void AddListener(Listener newListener)
+    {
+        if(!listeners.Contains(newListener))
+            listeners.Add(newListener);
+    }
+
+    public void RemoveListener(Listener listenerToRemove)
+    {
+        if (listeners.Contains(listenerToRemove))
+            listeners.Remove(listenerToRemove);
+    }
+
+    public void NotifyListeners(string msg)
+    {
+        foreach (Listener listener in listeners)
+            listener.Listen(msg);
+    }
 
 }
