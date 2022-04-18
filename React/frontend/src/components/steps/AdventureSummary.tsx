@@ -21,22 +21,22 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     switch (new_state[index].tipo) {
       case "QRStage":
         props.jump(2);
-      break;
-        case "QuizStage":
+        break;
+      case "QuizStage":
         props.jump(3);
-      break;
+        break;
       case "ImageStage":
         props.jump(4);
-      break;
+        break;
       case "ImageTargetStage":
         props.jump(5);
-      break;
+        break;
       case "SoundStage":
         props.jump(6);
-      break;
+        break;
       case "InputTextStage":
         props.jump(7);
-      break;
+        break;
       case "GPSStage":
         props.jump(8);
         break;
@@ -69,130 +69,154 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     props.setState<number>('WhereToPush', indicePushear, 0);
   }
 
- /*
-    Metodo auxiliar para mandar distintos tipos de archivo al servidor. Tiene como parametros
-  */
-    const sendFileToServer = async (identifier: string, file: File, fileName: string, route: string) => {
-        //Mandamos el archivo file al backend para que la trate de cara al proyecto
-        //Creamos un FORMDATA que sera el que finalmente enviemos en la peticion POST
-        const formData = new FormData();
-        formData.append(identifier, file, fileName);
-        //Hacemos una peticion POST a nuestro servidor a la route especificada
-        let result = await axios.post(route, formData);
-        return result;
-      }
-    
-      const mandarJson = async () => {
-    
-        console.log("Voy a intentar mandar el json");
-        // //Una vez que tengo los datos de cada evento, preparo un JSON y lo descargo
-        var datos = [];
-        let f = props.getState<any>('DATA', []);
-        let contadorImagenes = 0;
-        let contadorTargets = 0;
-        let contadorSonidos = 0;
-    
-        for (let i = 0; i < f.length; i++) {
-          var faseActual = f[i];
-          //En caso de que sea una fase de tipo imagen
-          if (faseActual.tipo === "ImageStage" && faseActual.Imagen instanceof File) {
-            //El nombre de la imagen va a ser el orden de esta en la aventura mas su misma extension
-            var finalImageName = faseActual.Imagen.name;
-            finalImageName = (contadorImagenes.toString()) + (finalImageName.substring(finalImageName.indexOf('.')));
-            //Cambiamos la fase para que el json tenga la referencia a esta
-            faseActual.Imagen = finalImageName;
-            contadorImagenes++;
-          }
-          else if (faseActual.tipo === "ImageTargetStage" && faseActual.Target instanceof File) {
-            var finalTargetName = faseActual.Target.name;
-            finalTargetName = (contadorTargets.toString()) + (finalTargetName.substring(finalTargetName.indexOf('.')));
-            //Cambiamos la fase para que el json tenga la referencia a esta
-            faseActual.Target = finalTargetName;
-            contadorTargets++;
-          }
-          else if (faseActual.tipo === "SoundStage" && faseActual.Sonido instanceof File) {
-            var finalSoundName = faseActual.Sonido.name;
-            finalSoundName = (contadorSonidos.toString()) + (finalSoundName.substring(finalSoundName.indexOf('.')));
-            //Cambiamos la fase para que el json tenga la referencia a esta
-            faseActual.Sonido = finalSoundName;
-            contadorSonidos++;
-          }
-          datos.push(faseActual);
-        }
-        var jsonFinal = { Gencana: props.getState('adventureName', "Nombre por defecto"),VuforiaKey: props.getState('vuforiaKey', ''), fases: datos }
-    
-        let result = await axios.post("./wtf-json", { json: JSON.stringify(jsonFinal, null, 2) });
-        console.log("JSON MANDADO");
-      }
-    
-      //Este método tiene como objetivo preparar cosas especificas de alguna fase, como por ejemplo mandar las imagenes 
-      //al backend para que las trate en el proyecto y poder preparar el json de la aventura datos que nos ayuden recurrir a dichas
-      //imagenes
-      const operacionesPreDescargaProyecto = async() => {
-        console.log("Atencion operaciones antes de descargar el proyecto");
-        //Tenemos que recorrer las posibles imagenes de la aventura y enviarlas al server para que haga algo con ellas
-        var fasesAventura = props.getState<any>('DATA', []);;
-        var contadorImagenes = 0;
-        var contadorTargets = 0;
-        var contadorSonidos = 0;
-        for (var i = 0; i < fasesAventura.length; i++) {
-    
-          var faseActual = fasesAventura[i];
-          if (faseActual.tipo === "ImageStage" && faseActual.Imagen instanceof File) {
-            var finalImageName = faseActual.Imagen.name;
-            finalImageName = (contadorImagenes.toString()) + (finalImageName.substring(finalImageName.indexOf('.')));
-            console.log("El nombre de la imagen es " + finalImageName);
-            let result = await sendFileToServer('imageCharger', faseActual.Imagen, finalImageName, "./image-upload")
-            contadorImagenes++
-          }
-          else if (faseActual.tipo === "ImageTargetStage" && faseActual.Target instanceof File) {
-            var finalTargetName = faseActual.Target.name;
-            finalTargetName = (contadorTargets.toString()) + (finalTargetName.substring(finalTargetName.indexOf('.')));
-            let result = await sendFileToServer('unityPackage', faseActual.Target, finalTargetName, "./package-upload")
-            contadorTargets++;
-          }
-          else if (faseActual.tipo === "SoundStage" && faseActual.Sonido instanceof File) {
-            var finalSoundName = faseActual.Sonido.name;
-            finalSoundName = (contadorSonidos.toString()) + (finalSoundName.substring(finalSoundName.indexOf('.')));
-            let result = await sendFileToServer('sound', faseActual.Sonido, finalSoundName, "./sound-upload")
-            contadorSonidos++;
-          }
-        }
-      props.setState('DATA', fasesAventura, []);
+  /*
+     Metodo auxiliar para mandar distintos tipos de archivo al servidor. Tiene como parametros
+   */
+  const sendFileToServer = async (identifier: string, file: File, fileName: string, route: string) => {
+    //Mandamos el archivo file al backend para que la trate de cara al proyecto
+    //Creamos un FORMDATA que sera el que finalmente enviemos en la peticion POST
+    const formData = new FormData();
+    formData.append(identifier, file, fileName);
+    //Hacemos una peticion POST a nuestro servidor a la route especificada
+    let result = await axios.post(route, formData);
+    return result;
   }
-  
 
+  const mandarJson = async () => {
+
+    console.log("Voy a intentar mandar el json");
+    // //Una vez que tengo los datos de cada evento, preparo un JSON y lo descargo
+    var datos = [];
+    let f = props.getState<any>('DATA', []);
+    let contadorImagenes = 0;
+    let contadorTargets = 0;
+    let contadorSonidos = 0;
+
+    for (let i = 0; i < f.length; i++) {
+      var faseActual = f[i];
+      //En caso de que sea una fase de tipo imagen
+      if (faseActual.tipo === "ImageStage" && faseActual.Imagen instanceof File) {
+        //El nombre de la imagen va a ser el orden de esta en la aventura mas su misma extension
+        var finalImageName = faseActual.Imagen.name;
+        finalImageName = (contadorImagenes.toString()) + (finalImageName.substring(finalImageName.indexOf('.')));
+        //Cambiamos la fase para que el json tenga la referencia a esta
+        faseActual.Imagen = finalImageName;
+        contadorImagenes++;
+      }
+      else if (faseActual.tipo === "ImageTargetStage" && faseActual.Target instanceof File) {
+        var finalTargetName = faseActual.Target.name;
+        finalTargetName = (contadorTargets.toString()) + (finalTargetName.substring(finalTargetName.indexOf('.')));
+        //Cambiamos la fase para que el json tenga la referencia a esta
+        faseActual.Target = finalTargetName;
+        contadorTargets++;
+      }
+      else if (faseActual.tipo === "SoundStage" && faseActual.Sonido instanceof File) {
+        var finalSoundName = faseActual.Sonido.name;
+        finalSoundName = (contadorSonidos.toString()) + (finalSoundName.substring(finalSoundName.indexOf('.')));
+        //Cambiamos la fase para que el json tenga la referencia a esta
+        faseActual.Sonido = finalSoundName;
+        contadorSonidos++;
+      }
+      datos.push(faseActual);
+    }
+    var jsonFinal = { Gencana: props.getState('adventureName', "Nombre por defecto"), VuforiaKey: props.getState('vuforiaKey', ''), fases: datos }
+
+    let result = await axios.post("./wtf-json", { json: JSON.stringify(jsonFinal, null, 2) });
+    console.log("JSON MANDADO");
+  }
+
+  //Este método tiene como objetivo preparar cosas especificas de alguna fase, como por ejemplo mandar las imagenes 
+  //al backend para que las trate en el proyecto y poder preparar el json de la aventura datos que nos ayuden recurrir a dichas
+  //imagenes
+  const operacionesPreDescargaProyecto = async () => {
+    console.log("Atencion operaciones antes de descargar el proyecto");
+    //Tenemos que recorrer las posibles imagenes de la aventura y enviarlas al server para que haga algo con ellas
+    var fasesAventura = props.getState<any>('DATA', []);
+    var contadorImagenes = 0;
+    var contadorTargets = 0;
+    var contadorSonidos = 0;
+    for (var i = 0; i < fasesAventura.length; i++) {
+
+      var faseActual = fasesAventura[i];
+      if (faseActual.tipo === "ImageStage" && faseActual.Imagen instanceof File) {
+        var finalImageName = faseActual.Imagen.name;
+        finalImageName = (contadorImagenes.toString()) + (finalImageName.substring(finalImageName.indexOf('.')));
+        console.log("El nombre de la imagen es " + finalImageName);
+        let result = await sendFileToServer('imageCharger', faseActual.Imagen, finalImageName, "./image-upload")
+        contadorImagenes++
+      }
+      else if (faseActual.tipo === "ImageTargetStage" && faseActual.Target instanceof File) {
+        var finalTargetName = faseActual.Target.name;
+        finalTargetName = (contadorTargets.toString()) + (finalTargetName.substring(finalTargetName.indexOf('.')));
+        let result = await sendFileToServer('unityPackage', faseActual.Target, finalTargetName, "./package-upload")
+        contadorTargets++;
+      }
+      else if (faseActual.tipo === "SoundStage" && faseActual.Sonido instanceof File) {
+        var finalSoundName = faseActual.Sonido.name;
+        finalSoundName = (contadorSonidos.toString()) + (finalSoundName.substring(finalSoundName.indexOf('.')));
+        let result = await sendFileToServer('sound', faseActual.Sonido, finalSoundName, "./sound-upload")
+        contadorSonidos++;
+      }
+    }
+    props.setState('DATA', fasesAventura, []);
+  }
+
+  //Metodo que comprueba si la key de vuforia es correcta
+  //En caso de que no haya fases de AR o que si que las haya y la key tenga el numero de caracteres
+  //requeridos devuelve true
+  //en caso contrario devuelve false
+  const checkVuforiaKey = (): boolean => {
+    //En caso de que tengamos problemas con la clave de vuforia avisamos al usuario de esto
+    let vuforiaKey = props.getState('vuforiaKey', '');
+    var fasesAventura = props.getState<any>('DATA', []);
+    let vuforiaKeyRequired = false;
+    var i = 0;
+
+    while (i < fasesAventura.length && !vuforiaKeyRequired) {
+      var faseActual = fasesAventura[i];
+      if (faseActual.tipo === "ImageTargetStage") {
+        vuforiaKeyRequired = true;
+        break;
+      }
+      i++;
+    }
+
+    if (vuforiaKeyRequired && vuforiaKey.length !== 380) {
+      return false;
+    }
+
+    return true;
+  }
 
   const salvarAventura = async () => {
     //En caso de que tengamos problemas con el nombre del proyecto avisamos al usuario de esto
     let nombreAventura = props.getState('adventureName', "Nombre por defecto");
     if (nombreAventura === "Nombre por defecto") {
-      let respuesta = await swal({title: "Nombre de la aventura sin asignar",text:"Ponle un nombre a tu aventura para poder generar el proyecto",icon: "error"});
-      return;    
+      let respuesta = await swal({ title: "Nombre de la aventura sin asignar", text: "Ponle un nombre a tu aventura para poder generar el proyecto", icon: "error" });
+      return;
     }
 
     //En caso de que tengamos problemas con la clave de vuforia avisamos al usuario de esto
-    let vuforiaKey = props.getState('vuforiaKey', '');
-    if (vuforiaKey === '' || vuforiaKey.length !== 380) {
-      let respuesta = await swal({title: "Clave de Vuforia incorrecta",text:"Inserte una clave de Vuforia válida para generar el proyecto", icon: "error"});
+    if (!checkVuforiaKey()) {
+      let respuesta = await swal({ title: "Clave de Vuforia incorrecta", text: "Inserte una clave de Vuforia válida para generar el proyecto", icon: "error" });
       return;
     }
 
     //En caso de que le nombre de la aventura que pretendemos guardar de problemas avisamos al usuario de si quiere sobreescribir la ya existente
     let guardadasEnElServer = await axios.get("./aventuras-guardadas");
-    if(guardadasEnElServer.data.Opciones.includes(nombreAventura)){
-      let respuesta = await swal({title: nombreAventura+ " ya existe",text:"Ya existe una aventura guardada con el nombre "+nombreAventura+" en el servidor.¿Deseas sobreescribirla?", icon: "info",  buttons: ["Cancelar","Sobreescribir"]});
+    if (guardadasEnElServer.data.Opciones.includes(nombreAventura)) {
+      let respuesta = await swal({ title: nombreAventura + " ya existe", text: "Ya existe una aventura guardada con el nombre " + nombreAventura + " en el servidor.¿Deseas sobreescribirla?", icon: "info", buttons: ["Cancelar", "Sobreescribir"] });
       //Si el usuario no desea sobreescribir la aventura dejamos de hacer cosas
-      if(!respuesta) return;
+      if (!respuesta) return;
     }
-    
+
     //Si no nos hemos ido del metodo lo que nos queda por hacer es limpiar el server, mandar todos los ficheros que componen nuestra aventura y solicitar el proyecto
     let reset = await axios.get("./reset");
     await operacionesPreDescargaProyecto();
     await mandarJson();
     await axios.get("./guardame-aventura");
-    
-    swal({title: "Aventura guardada", icon: "success"});
+
+    swal({ title: "Aventura guardada", icon: "success" });
   }
 
 
@@ -200,17 +224,15 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     //En caso de que la aventura todavia tenga el nombre por defecto avisamos al usuario de que esto debe de cambiarlo
     let nombreAventura = props.getState('adventureName', "Nombre por defecto");
     if (nombreAventura === "Nombre por defecto") {
-      let respuesta = await swal({title: "Nombre de la aventura sin asignar",text:"Ponle un nombre a tu aventura para poder generar el proyecto",icon: "error"});
+      let respuesta = await swal({ title: "Nombre de la aventura sin asignar", text: "Ponle un nombre a tu aventura para poder generar el proyecto", icon: "error" });
       return;
     }
 
     //En caso de que tengamos problemas con la clave de vuforia avisamos al usuario de esto
-    let vuforiaKey = props.getState('vuforiaKey', '');
-    if (vuforiaKey === '' || vuforiaKey.length !== 380) {
-      let respuesta = await swal({title: "Clave de Vuforia incorrecta",text:"Inserte una clave de Vuforia válida para generar el proyecto", icon: "error"});
+    if (!checkVuforiaKey()) {
+      let respuesta = await swal({ title: "Clave de Vuforia incorrecta", text: "Inserte una clave de Vuforia válida para generar el proyecto", icon: "error" });
       return;
     }
-
 
     let reset = await axios.get("./reset");
     //Mando los archivos que tenga, como las imagenes
