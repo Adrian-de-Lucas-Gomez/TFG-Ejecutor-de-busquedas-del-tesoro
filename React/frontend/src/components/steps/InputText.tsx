@@ -42,7 +42,7 @@ const InputText = (props: StepComponentProps): JSX.Element => {
             let estadoACargar = new_state[props.getState<number>('FaseConfigurable', 1)];
             //Me guardo tando la pregunta como las respuestas que había configuradas
             setTexts(estadoACargar.Respuestas);
-            setDescription(estadoACargar.descripcion);
+            setDescription(estadoACargar.description);
             setPista(estadoACargar.Pista);
 
             //Nos aseguramos que lo que se esta configurando ahora es lo que nos hemos cargado
@@ -57,7 +57,7 @@ const InputText = (props: StepComponentProps): JSX.Element => {
 
     //Hook que se llama cada vez que se modifica algo significativo de la fase para guardar lo que tengamos y que al darle a guardar los cambios se veab
     useEffect(() => {
-        let jsonData = { tipo: "InputTextStage", Respuestas: texts, descripcion: description, Pista: pista };
+        let jsonData = { tipo: "InputTextStage", Respuestas: texts, description: description, Pista: pista };
         let myData = { Alert: false, MensageAlert: "Rellena bien el texto", datosFase: jsonData };
         props.setState<any>('faseConfigurandose', myData, {});
         console.log("Ahora el estado es asi: " + JSON.stringify(jsonData));
