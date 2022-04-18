@@ -95,7 +95,7 @@ const InputText = (props: StepComponentProps): JSX.Element => {
 
             <h2 style={{ marginTop: '0.5%', marginBottom: '1%', fontSize: '180%' }} className="Titulo">Descripción actual: {description}</h2>
 
-            <text style={{ fontSize: '150%', marginRight: '0.5%' }} className='Titulo' >Contraseñas que permitiremos al usuario:</text>
+            <text style={{ fontSize: '150%', marginLeft: '20%' }} className='Titulo' >Contraseñas que permitiremos al usuario:</text>
             <div>
                 {texts.map((txt: string, index: number) => (
                     <Fragment key={"Textos: " + index}>

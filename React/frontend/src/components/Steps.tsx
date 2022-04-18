@@ -589,12 +589,18 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
       con el que podemos configurar una de las fases que ya tengamos */}
         {/* Esta es la seccion que permite configurar la posicion de la siguiente fase que vayamos a incluir */}
         <div >
-          <h3  style={{textAlign:"center"}} >Posicion de la siguiente fase en la aventura</h3>
-          <div style={{display:"flex", flexDirection:"row", justifyContent:"center"  }}>
-            <button className="my-btn btn-outline-red" style={{ fontSize: '170%' }} data-testid='<'  onClick={DisminuirPosSiguienteFase}> {"⇦"} </button>
-            <p >{getState('WhereToPush', 0) + 1}º </p>
-            <button className="my-btn btn-outline-red" style={{ fontSize: '170%' }} data-testid='>' onClick={AumentarPosSiguienteFase}> {"⇨"} </button>
-            <p > {"/"+getState<any>('DATA', []).length}</p>
+          <h3  style={{fontSize:'150%',textAlign:"center"}} >Posicion de la siguiente fase en la aventura</h3>
+          <div className="center">
+            <div>
+              <div>
+                <button className="my-btn btn-outline-red" style={{height:'1%',width:'130%', fontSize: '150%' }} data-testid='<'  onClick={DisminuirPosSiguienteFase}> {"⇧"} </button>
+              </div>
+              <div>
+                <button className="my-btn btn-outline-red" style={{ height:'1%',width:'130%',fontSize: '150%' }} data-testid='>' onClick={AumentarPosSiguienteFase}> {"⇩"} </button>
+              </div>
+            </div>
+            <text className="Titulo"  style={{marginLeft:'1%',marginTop:'0.2%',fontSize:'250%'}}>{getState('WhereToPush', 0) + 1}º </text>
+            <text className="Titulo" style={{marginTop:'0.2%', fontSize:'250%'}}> {"/"+getState<any>('DATA', []).length}</text>
           </div>
         </div>
 
