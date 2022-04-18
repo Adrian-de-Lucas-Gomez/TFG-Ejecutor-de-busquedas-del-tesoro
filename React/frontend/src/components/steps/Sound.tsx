@@ -1,6 +1,8 @@
 import React, {useState, useRef, useEffect, forwardRef, useImperativeHandle} from "react"
 import { StepComponentProps } from '../Steps';
 import '../Styles/QR.css'
+import swal from "sweetalert";
+import Errorimage from "../../imgCards/Imagen.png"
 
 //@ts-ignore
 import ejemplo from "../../escopeta.mp3"
@@ -93,9 +95,31 @@ const Sound = (props: StepComponentProps): JSX.Element => {
   }
 
 
+  const tutorialFase = ()=>{
+    swal({ title: "Sound", text: "En esta fase puedes configurar un audio que el jugador va a tener que escuchar entero para poder completarla, puedes añadirlo para darle contexto en tu aventura o pedirle que busque un objeto que hace determinado sonido.",  icon: Errorimage });
+  }
+
 
     return (
     <div style={{textAlign:'center',marginTop:'0.5%', marginBottom:'0.5%'}}>
+
+        <div className="flex" style = {{display:"flex", flexDirection:"row", justifyContent:"center"  }}>
+                <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'200%'  }} className="Titulo" >Configuración de fase QR</h3>
+                <button style={{width:"40px", height:"40px",textAlign:"center",verticalAlign:"center", background:"white", marginTop: "20px",marginRight:"2px",  color: "white", padding: "10px", borderRadius:"50%"}} type="button" className="btn" onClick={tutorialFase} >{"💡"}</button>
+        </div>
+
+{/* {
+  background-color: #04AA6D;
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+} */}
+
         <button onClick={playAudio}>
           <span>Play Audio</span>
         </button>
@@ -115,9 +139,6 @@ const Sound = (props: StepComponentProps): JSX.Element => {
         {/* Seccion que aparece y desaparece para poder asignar una pista */}
         {mostrarFormularioPista ? 
         <div className="App" style={{display: 'flex', justifyContent: 'center', verticalAlign:'true'}}>
-            <span>
-              <b>Pista de la fase:</b>            
-            </span>
             <textarea style={{marginLeft:'0.5%' ,resize:"none", textAlign:"center"}} rows={3} cols={50} maxLength={100} onChange={(e) => {updatePista(e.target.value)}} placeholder="Pista que el jugador puede recibir" defaultValue={pista}/>
         </div>
         : null }

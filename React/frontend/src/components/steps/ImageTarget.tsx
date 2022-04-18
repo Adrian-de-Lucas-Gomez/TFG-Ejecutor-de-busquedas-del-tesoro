@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle } from "react"
 import { StepComponentProps } from '../Steps';
 import pic from "../../imgCards/Imagen.png";
+import swal from "sweetalert";
+import Errorimage from "../../imgCards/Imagen.png"
 
 const ImageTarget = (props: StepComponentProps): JSX.Element => {
 
@@ -85,10 +87,17 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
         setPista(nuevaPista);
     }
 
+    const tutorialFase = ()=>{
+        swal({ title: "ImageTarget", text: "En esta fase puedes configurar una imágen que el jugador va a tener que buscar y escanear con el móvil, también puedes configurar si quieres que se le muestre algún texto tras el escaneo.",  icon: Errorimage });
+    }
+
 
     return (
         <div >
-            <h3 style={{ marginTop: '0.5%', marginBottom: '1%', fontSize: '200%' }} className="Titulo" >Configuración de fase Vuforia Image Target</h3>
+            <div className="flex" style = {{display:"flex", flexDirection:"row", justifyContent:"center"  }}>
+                <h3 style={{ marginTop: '0.5%', marginBottom: '1%', fontSize: '200%' }} className="Titulo" >Configuración de fase Vuforia Image Target</h3>
+                <button style={{width:"40px", height:"40px",textAlign:"center",verticalAlign:"center", background:"white", marginTop: "20px",marginRight:"2px",  color: "white", padding: "10px", borderRadius:"50%"}} type="button" className="btn" onClick={tutorialFase} >{"💡"}</button>
+            </div>
 
             <div className="center">
                 <form onSubmit={e => e.preventDefault()}>
@@ -114,9 +123,6 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
             {/* Seccion que aparece y desaparece para poder asignar una pista */}
             {mostrarFormularioPista ? 
             <div className="App" style={{display: 'flex', justifyContent: 'center', verticalAlign:'true'}}>
-                <span>
-                    <b>Pista de la fase:</b>            
-                </span>
             <textarea style={{marginLeft:'0.5%' ,resize:"none", textAlign:"center"}} rows={3} cols={50} maxLength={100} onChange={(e) => {updatePista(e.target.value)}} placeholder="Pista que el jugador puede recibir" defaultValue={pista}/>
             </div>
             : null }

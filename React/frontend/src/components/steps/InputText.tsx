@@ -1,5 +1,7 @@
 import React, {useState, useRef, useEffect, forwardRef, useImperativeHandle} from "react"
 import { StepComponentProps } from '../Steps';
+import swal from "sweetalert";
+import Errorimage from "../../imgCards/Imagen.png"
 
 const InputText = (props: StepComponentProps): JSX.Element => {
     //Donde guardamos el texto a codificar en QR
@@ -54,9 +56,18 @@ const InputText = (props: StepComponentProps): JSX.Element => {
         setPista(antigua => antigua =nuevaPista);
     }
  
+    const tutorialFase = ()=>{
+        swal({ title: "InputText", text: "En esta fase puedes configurar una constraseña que el jugador tiene que introducir para pasar a la siguiente, también puedes configurar una descripción para hacerle preguntas al jugador y que escriba la respuesta o para ayudarle a buscar en su entorno para descifrarla.",  icon: Errorimage });
+    }
+
     return (
     <div >
-        <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'200%'}} className="Titulo" >Configuración de fase InputText</h3>
+        <div className="flex" style = {{display:"flex", flexDirection:"row", justifyContent:"center"  }}>
+            <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'200%'}} className="Titulo" >Configuración de fase InputText</h3>
+            <button style={{width:"40px", height:"40px",textAlign:"center",verticalAlign:"center", background:"white", marginTop: "20px",marginRight:"2px",  color: "white", padding: "10px", borderRadius:"50%"}} type="button" className="btn" onClick={tutorialFase} >{"💡"}</button>
+        </div>
+
+
         <form className="center" style={{marginBottom:'1%'}} onSubmit={e => e.preventDefault()}>
             <text style={{ fontSize: '150%' , marginRight:'0.5%'}} className='Titulo' >Contraseña a encontrar:</text>
             <input placeholder="Añada aqui la contraseña..." className='input-text' type="text" size={60} required value={text} onChange ={ e =>{setText(e.target.value);}}></input>
@@ -70,9 +81,6 @@ const InputText = (props: StepComponentProps): JSX.Element => {
         {/* Seccion que aparece y desaparece para poder asignar una pista */}
         {mostrarFormularioPista ? 
         <div className="App" style={{display: 'flex', justifyContent: 'center', verticalAlign:'true'}}>
-            <span>
-                <b>Pista de la fase:</b>            
-            </span>
             <textarea style={{marginLeft:'0.5%' ,resize:"none", textAlign:"center"}} rows={3} cols={50} maxLength={100} onChange={(e) => {updatePista(e.target.value)}} placeholder="Pista que el jugador puede recibir" defaultValue={pista}/>
         </div>
         : null }

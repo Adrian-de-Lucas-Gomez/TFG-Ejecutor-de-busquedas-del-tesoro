@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react"
 import { StepComponentProps } from '../Steps';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import '../Styles/MapContainer.css'
-
+import swal from "sweetalert";
+import Errorimage from "../../imgCards/Imagen.png"
 
 const GPS = (props: StepComponentProps): JSX.Element => {
     //Donde guardamos el texto a codificar en GPS
@@ -93,10 +94,17 @@ const GPS = (props: StepComponentProps): JSX.Element => {
         )
     }
 
+    const tutorialFase = ()=>{
+        swal({ title: "GPS", text: "En esta fase puedes introducir unas coordenadas en un mapa, a las que el jugador deberá llegar para completar esta fase, se puede configurar la distancia a la que se considera que el jugador ha llegado a su destino y una descripción para informar al jugador sobre el lugar al que tiene que llegar.",  icon: Errorimage });
+    }
+
 
     return (
         <div >
-            <h3 style={{ marginTop: '0.5%', marginBottom: '1%', fontSize: '200%' }} className="Titulo" >Configuración de fase geoposicionada</h3>
+            <div className="flex" style = {{display:"flex", flexDirection:"row", justifyContent:"center"  }}>
+                <h3 style={{ marginTop: '0.5%', marginBottom: '1%', fontSize: '200%' }} className="Titulo" >Configuración de fase geoposicionada</h3>
+                <button style={{width:"40px", height:"40px",textAlign:"center",verticalAlign:"center", background:"white", marginTop: "20px",marginRight:"2px",  color: "white", padding: "10px", borderRadius:"50%"}} type="button" className="btn" onClick={tutorialFase} >{"💡"}</button>
+            </div>
 
             <div className="center">
                 <MapContainer center={[GPSLongitude, GPSLatitude]} zoom={13}>
@@ -126,9 +134,6 @@ const GPS = (props: StepComponentProps): JSX.Element => {
             {/* Seccion que aparece y desaparece para poder asignar una pista */}
             {mostrarFormularioPista ? 
             <div className="App" style={{display: 'flex', justifyContent: 'center', verticalAlign:'true'}}>
-                <span>
-                    <b>Pista de la fase:</b>            
-                </span>
             <textarea style={{marginLeft:'0.5%' ,resize:"none", textAlign:"center"}} rows={3} cols={50} maxLength={100} onChange={(e) => {updatePista(e.target.value)}} placeholder="Pista que el jugador puede recibir" defaultValue={pista}/>
             </div>
             : null }

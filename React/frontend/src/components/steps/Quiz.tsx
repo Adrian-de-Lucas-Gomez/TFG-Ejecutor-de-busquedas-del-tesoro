@@ -2,6 +2,8 @@ import { StepComponentProps } from '../Steps';
 import React, {Fragment, useState, useEffect  } from "react"
 import '../Styles/Quiz.css'
 import { json } from 'stream/consumers';
+import swal from "sweetalert";
+import Errorimage from "../../imgCards/Imagen.png"
 
 const Quiz = (props: StepComponentProps): JSX.Element => {
 
@@ -106,9 +108,17 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
     }
 
 
+    const tutorialFase = ()=>{
+        swal({ title: "Quiz", text: "En esta fase puedes configurar un quiz que el jugador debe responder correctamente para completarla, debes de introducir al menos 2 respuestas posibles y pueden haber múltiples respuestas correctas, en cuyo caso el jugador debe de responder a todas correctamente",  icon: Errorimage });
+    }
+
     return (
         <div>
-            <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'200%'}} className="Titulo" >Configuración de fase Quiz</h3>
+            <div className="flex" style = {{display:"flex", flexDirection:"row", justifyContent:"center"  }}>
+                <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'200%'}} className="Titulo" >Configuración de fase Quiz</h3>
+                <button style={{width:"40px", height:"40px",textAlign:"center",verticalAlign:"center", background:"white", marginTop: "20px",marginRight:"2px",  color: "white", padding: "10px", borderRadius:"50%"}} type="button" className="btn" onClick={tutorialFase} >{"💡"}</button>
+            </div>
+            
             <div className="center">
                 <form onSubmit={e => e.preventDefault()}>
                     <input placeholder="Pregunta del cuestionario..." className='input-text' type="text" size={60} required value={question} onChange ={ e =>modifyQuestion(e.target.value)}></input>
@@ -142,9 +152,6 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
             {/* Seccion que aparece y desaparece para poder asignar una pista */}
             {mostrarFormularioPista ? 
             <div className="App" style={{display: 'flex', justifyContent: 'center', verticalAlign:'true'}}>
-                <span>
-                    <b>Pista de la fase:</b>            
-                </span>
             <textarea style={{marginLeft:'0.5%' ,resize:"none", textAlign:"center"}} rows={3} cols={50} maxLength={100} onChange={(e) => {updatePista(e.target.value)}} placeholder="Pista que el jugador puede recibir" defaultValue={pista}/>
             </div>
             : null }  

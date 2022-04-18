@@ -590,9 +590,9 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
         <div >
           <h3  style={{textAlign:"center"}} >Posicion de la siguiente fase en la aventura</h3>
           <div style={{display:"flex", flexDirection:"row", justifyContent:"center"  }}>
-            <button  data-testid='<'  onClick={DisminuirPosSiguienteFase}> {"<"} </button>
+            <button className="my-btn btn-outline-red" style={{ fontSize: '170%' }} data-testid='<'  onClick={DisminuirPosSiguienteFase}> {"⇦"} </button>
             <p >{getState('WhereToPush', 0) + 1}º </p>
-            <button  data-testid='>' onClick={AumentarPosSiguienteFase}> {">"} </button>
+            <button className="my-btn btn-outline-red" style={{ fontSize: '170%' }} data-testid='>' onClick={AumentarPosSiguienteFase}> {"⇨"} </button>
             <p > {"/"+getState<any>('DATA', []).length}</p>
           </div>
         </div>
