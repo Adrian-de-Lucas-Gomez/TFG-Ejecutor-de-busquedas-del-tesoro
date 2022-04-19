@@ -112,11 +112,11 @@ const QR = (props: StepComponentProps): JSX.Element => {
                     <button type="submit" className="my-btn btn-outline-orange" style={{fontSize:'150%'}}>Descargar QR</button>
                 </form>
             </div>
-            <div style={{marginLeft:'4%'}}>
+            {/* <div style={{marginLeft:'4%'}}>
                 <form style={{textAlign:'center'}} onSubmit= {()=>{}}>
                     <button type="submit" className="my-btn btn-outline-pink" style={{fontSize:'150%'}}>Guardar fase</button>
                 </form>
-            </div>
+            </div> */}
         </div>
 
         {/* Seccion pista */}
