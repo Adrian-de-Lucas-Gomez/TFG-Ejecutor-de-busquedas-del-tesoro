@@ -20,8 +20,12 @@ public class QRStage : Stage
 
 	private void Update()
 	{
-        //if (changeSceneRequest /*|| Input.GetMouseButtonDown(0) || Input.touchCount > 0*/)
-        //    GameManager.getInstance().GoToNextPhase();
+        if (changeSceneRequest /*|| Input.GetMouseButtonDown(0) || Input.touchCount > 0*/)
+        {
+            GameManager.getInstance().StageCompleted();
+            nextPanel.SetActive(true);
+            changeSceneRequest = false;
+        }
     }
 
     public void MoveToNextPhase()
@@ -44,8 +48,6 @@ public class QRStage : Stage
 		{
             Debug.Log("Well Done");
             changeSceneRequest = true;
-            nextPanel.SetActive(true);
-            MoveToNextPhase();
         }
 	}
 }
