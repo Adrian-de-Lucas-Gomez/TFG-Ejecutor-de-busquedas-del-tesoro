@@ -384,7 +384,7 @@ MonoBehaviour:
   audioSource: {fileID: 1678613009}
   playBtn: {fileID: 3118268}
   pauseBtn: {fileID: 1752412665}
-  nextBtn: {fileID: 0}
+  descriptionText: {fileID: 277485316}
 --- !u!1 &277485314
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,8 +16,9 @@ public class SoundStage : Stage
     GameObject playBtn;
     [SerializeField]
     GameObject pauseBtn;
-    [SerializeField]
-    GameObject nextBtn;
+
+    [Tooltip("Texto que da una explicacion en la fase")]
+    [SerializeField] TextMeshProUGUI descriptionText;
 
     //Audio que se va a usar en la fase
     AudioClip audioClip;
@@ -31,6 +32,8 @@ public class SoundStage : Stage
         Debug.Log(soundData.nombreSonido);
         audioClip = Resources.Load<AudioClip>("AdventureSounds/" + soundData.nombreSonido);
         audioSource.clip = audioClip;
+        descriptionText.text = soundData.descripcionFase;
+
     }
 
     public void Update()
