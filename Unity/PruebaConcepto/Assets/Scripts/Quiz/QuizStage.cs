@@ -21,6 +21,7 @@ public class QuizStage : Stage
     Vector2 UIPosition = new Vector2();                     //Posicion que vamos a utilizar para situar cada una de nuestras respuestas
 
 
+
     public override void Init(AdventureInfo data)
     {
         quizData = (QuizInfo)data;
@@ -53,7 +54,7 @@ public class QuizStage : Stage
             quizAnswers.Add(Instantiate(quizAnswerPrefab, transform));
             quizAnswers[i].GetComponent<RectTransform>().anchoredPosition = UIPosition;
             quizAnswers[i].GetComponent<QuizAnswer>().setAnswertext(quizData.respuestas[i].text);
-            UIPosition -= new Vector2(0, 50);
+            UIPosition -= new Vector2(0, 150);
         }
     }
 

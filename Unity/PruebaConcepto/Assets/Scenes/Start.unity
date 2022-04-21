@@ -500,7 +500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   master: {fileID: 420937104}
-  tiempoEspera: 5
+  tiempoEspera: 1
   adventureNameText: {fileID: 143714368}
 --- !u!222 &1736162262
 CanvasRenderer:

@@ -3,10 +3,23 @@
   "VuforiaKey": "",
   "fases": [
     {
-      "tipo": "SoundStage",
-      "Sonido": "0.mp3",
-      "description": "dgs",
+      "tipo": "QuizStage",
+      "Pregunta": "La respuesta es la segunda",
+      "Respuestas": [
+          {
+              "text": "primera",
+              "isCorrect": false
+          },
+          {
+              "text": "segunda",
+              "isCorrect": true
+          },
+          {
+              "text": "tercera",
+              "isCorrect": false
+          }
+      ],
       "Pista": ""
-    }
+  }
   ]
 }
