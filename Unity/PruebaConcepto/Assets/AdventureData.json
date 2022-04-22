@@ -20,6 +20,11 @@
           }
       ],
       "Pista": ""
-  }
+  },
+  {
+    "tipo": "QRStage",
+    "QRText": "QR",
+    "Pista": "El codigo es literalmente QR"
+}
   ]
 }
