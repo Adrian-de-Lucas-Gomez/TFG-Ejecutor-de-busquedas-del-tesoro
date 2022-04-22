@@ -72,10 +72,21 @@ const apkStorage = multer.diskStorage({
   }
 })
 
+const overlappingImages = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'OverlappingImages')
+  },
+  filename: (req, file, cb) => {
+    console.log(file)
+    cb(null, file.originalname)
+  }
+})
+
 const imageUpload = multer({ storage: storage })
 const packageUpload = multer({ storage: packageStorage })
 const soundUpload = multer({ storage: soundStorage })
 const apkUpload = multer({ storage: apkStorage })
+const overlapingUpload = multer({storage:overlappingImages})
 
 var aventuraActual = {}
 
@@ -90,6 +101,12 @@ app.post('/image-upload', imageUpload.array("imageCharger"), (req, res) => {
 app.post('/package-upload', packageUpload.array("unityPackage"), (req, res) => {
   console.log(req.headers)
   console.log("POST REQUEST recieved in: /package-upload")
+  res.json({ key: "value" });
+})
+
+app.post('/overlapping_upload', overlapingUpload.array("overlap"), (req, res) => {
+  console.log(req.headers)
+  console.log("POST REQUEST recieved in: /overlapping_upload")
   res.json({ key: "value" });
 })
 
@@ -167,6 +184,15 @@ app.get("/reset", (req, res) => {
     if (soundsToRemove[i] !== "README.txt") {
       console.log("Removed file from backend/Sounds/ directory: " + soundsToRemove[i]);
       fs.unlinkSync('./Sounds/' + soundsToRemove[i]);
+    }
+  }
+
+  var filesToRemove = fs.readdirSync('./OverlappingImages/');
+  for (var i = 0; i < filesToRemove.length; i++) {
+    //Si no es el readme, lo elimino del directorio
+    if (filesToRemove[i] !== "README.txt") {
+      console.log("Removed file from backend/OverlappingImages/ directory: " + filesToRemove[i]);
+      fs.unlinkSync('./OverlappingImages/' + filesToRemove[i]);
     }
   }
 

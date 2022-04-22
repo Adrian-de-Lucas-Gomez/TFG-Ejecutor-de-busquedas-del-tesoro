@@ -16,7 +16,9 @@ cp -r -u -f ./Images/. ../tmp/Assets/Resources/AdventureImages/
 mkdir ../tmp/Assets/StreamingAssets/Vuforia/
 cp -r -u -f ./Packages/. ../tmp/Assets/StreamingAssets/Vuforia/
 
-#MEtemos todo lo que haya en la carpete temporal de sonidos en el proyecto de Unity
+#Metemos todo lo que haya en la carpeta temporal de imagenes que superponer a los targets en el proyecto de Unitycp -r -u -f ./OverlappingImages/. ../tmp/Assets/Resources/OverlappingImages/
+
+#Metemos todo lo que haya en la carpete temporal de sonidos en el proyecto de Unity
 cp -r -u -f ./Sounds/. ../tmp/Assets/Resources/AdventureSounds/ 
 
 #  Muevo el json con los datos de la aventura a donde se encuentra el proyecto
