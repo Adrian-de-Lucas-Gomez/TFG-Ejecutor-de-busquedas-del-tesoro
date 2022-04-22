@@ -15,6 +15,8 @@ const Sound = (props: StepComponentProps): JSX.Element => {
 
     const [ficheroSonido, setFicheroSonido] = useState<File | null >(null);
     const [sonido, setSonido] = useState<any>(new Audio(ejemplo));  
+    const [description, setdescription] = useState<string>("");
+
 
     const [mostrarFormularioPista, setMostrarFormularioPista] =useState<boolean>(false);
     const [pista, setPista] = useState<string>("");
@@ -36,11 +38,13 @@ const Sound = (props: StepComponentProps): JSX.Element => {
         if (estadoACargar.Sonido instanceof File){
           setFicheroSonido(estadoACargar.Sonido);
           setSonido(new Audio(window.URL.createObjectURL(estadoACargar.Sonido)));
-          setPista(estadoACargar.Pista);
         }
+        setPista(estadoACargar.Pista);
+        setdescription(estadoACargar.description);
+
 
         //Nos aseguramos que lo que se esta configurando ahora es lo que nos hemos cargado
-        let myData = {Alert: (ficheroSonido===null), MensageAlert: "La fase de sonido debe de tener un archivo de audio asignado", datosFase: estadoACargar };
+        let myData = {Alert: (ficheroSonido===null || description===""), MensageAlert: "La fase de sonido debe de tener un archivo de audio asignado", datosFase: estadoACargar };
         props.setState<any>('faseConfigurandose',myData,{});
     }
     
@@ -52,14 +56,14 @@ const Sound = (props: StepComponentProps): JSX.Element => {
   
   //Hook que se llama cada vez que se modifica algo significativo de la fase para guardar lo que tengamos y que al darle a guardar los cambios se veab
   useEffect(() => {
-    let jsonData = {tipo:"SoundStage" ,Sonido: ficheroSonido, Pista: pista};
-    let myData = {Alert: (ficheroSonido===null), MensageAlert: "La fase de sonido debe de tener un archivo de audio asignado", datosFase: jsonData };
+    let jsonData = {tipo:"SoundStage" ,Sonido: ficheroSonido, description: description, Pista: pista};
+    let myData = {Alert: (ficheroSonido===null || (description==="")), MensageAlert: "La fase de sonido debe de tener un archivo de audio asignado", datosFase: jsonData };
     props.setState<any>('faseConfigurandose',myData,{});
 
     //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
     return () => {}
     //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
-  }, [pista, sonido,ficheroSonido]);
+  }, [pista, sonido,ficheroSonido,description]);
 
   const updatePista = (nuevaPista:string) =>{
     setPista(nuevaPista);
@@ -130,6 +134,10 @@ const Sound = (props: StepComponentProps): JSX.Element => {
           <input style={{fontSize:'150%'}} type="file" accept=".mp3,.wav" onChange={changeSound} />
         </form>
 
+        <form className="center" style={{ marginBottom: '1%' }} onSubmit={e => e.preventDefault()}>
+                <text style={{ fontSize: '150%' , marginRight:'0.5%'}} className='Titulo' >Descripción:</text>
+                <input placeholder="Texto para dar información sobre la imagen" className='input-text' type="text" size={60} required value={description} onChange={e => {setdescription(e.target.value)}}></input>
+        </form>
 
         {/* Seccion pista */}
         {/* Boton para desplegar elementos para añadir una pista */}

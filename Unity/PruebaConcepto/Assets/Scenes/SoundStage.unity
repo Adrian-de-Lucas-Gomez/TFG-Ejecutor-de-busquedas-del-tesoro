@@ -306,7 +306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9811321, g: 0.9811321, b: 0.9811321, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -384,7 +384,7 @@ MonoBehaviour:
   audioSource: {fileID: 1678613009}
   playBtn: {fileID: 3118268}
   pauseBtn: {fileID: 1752412665}
-  nextBtn: {fileID: 0}
+  descriptionText: {fileID: 277485316}
 --- !u!1 &277485314
 GameObject:
   m_ObjectHideFlags: 0

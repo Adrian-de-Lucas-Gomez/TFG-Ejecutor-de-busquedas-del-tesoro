@@ -4,7 +4,8 @@ using System.Collections.Generic;
 public class SoundInfo : AdventureInfo
 {
     public string nombreSonido;
-    public string codigo;
+    public string descripcionFase;
+
 
     /// <summary>
     /// Metodo que recibe un objeto parseado de JSON y saca toda la informacion que necesite de este
@@ -24,5 +25,8 @@ public class SoundInfo : AdventureInfo
         string aux = myInfo["Sonido"].Value<string>();
         string[] splitArray = aux.Split('.');
         nombreSonido = splitArray[0];
+
+        //Obtengo la explicacion de la imagen
+        descripcionFase = myInfo["description"].Value<string>();
     }
 }

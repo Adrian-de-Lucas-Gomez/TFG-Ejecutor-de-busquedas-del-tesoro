@@ -1,11 +1,12 @@
 {
-  "Gencana": "Nom",
+  "Gencana": "dfsg",
   "VuforiaKey": "",
   "fases": [
     {
-      "tipo": "ImageStage",
-      "Imagen": "0.jpg",
-      "description": "alsldalsldlasdlalsdlalsdlasd"
+      "tipo": "SoundStage",
+      "Sonido": "0.mp3",
+      "description": "dgs",
+      "Pista": ""
     }
   ]
 }

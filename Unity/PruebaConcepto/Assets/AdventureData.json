@@ -1,71 +1,25 @@
 {
   "Gencana": "ProbandoCosasLimpieza",
   "VuforiaKey": "",
-    "fases": [
-        {
-            "tipo": "QRStage",
-            "QRText": "QR",
-            "Pista": "El codigo es literalmente QR"
-        },
-        {
-            "tipo": "QRStage",
-            "QRText": "QR",
-            "Pista": "El codigo es literalmente QR"
-        },
-        {
-            "tipo": "QuizStage",
-            "Pregunta": "La respuesta es la segunda",
-            "Respuestas": [
-                {
-                    "text": "primera",
-                    "isCorrect": false
-                },
-                {
-                    "text": "segunda",
-                    "isCorrect": true
-                },
-                {
-                    "text": "tercera",
-                    "isCorrect": false
-                }
-            ],
-            "Pista": ""
-        },
-        {
-            "tipo": "ImageStage",
-            "Imagen": "0.jpg",
-            "description": "esto que ves es una imagen placeholder",
-            "Pista": ""
-        },
-        {
-            "tipo": "ImageTargetStage",
-            "Target": "0.png",
-            "TargetName": "",
-            "AddText": true,
-            "Text": "Texto a mostrar tras encontrar imagen",
-            "Pista": ""
-        },
-        {
-            "tipo": "InputTextStage",
-            "Respuestas": [
-                "UCM",
-                "Universidad Complutense de Madrid"
-            ],
-            "description": "La contraseña es UCM",
-            "Pista": ""
-        },
-        {
-            "tipo": "SoundStage",
-            "Sonido": "0.wav",
-            "Pista": ""
-        },
-        {
-            "tipo": "GPSStage",
-            "GPSLongitude": 40.453003,
-            "GPSLatitude": -3.733825,
-            "radius": 10,
-            "description": "Dale a espacio y enter para saltarte esta fase",
-            "Pista": ""
-        }
-    ]
+  "fases": [
+    {
+      "tipo": "QuizStage",
+      "Pregunta": "La respuesta es la segunda",
+      "Respuestas": [
+          {
+              "text": "primera",
+              "isCorrect": false
+          },
+          {
+              "text": "segunda",
+              "isCorrect": true
+          },
+          {
+              "text": "tercera",
+              "isCorrect": false
+          }
+      ],
+      "Pista": ""
+  }
+  ]
 }
