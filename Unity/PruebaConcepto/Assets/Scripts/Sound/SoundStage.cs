@@ -12,10 +12,6 @@ public class SoundStage : Stage
 
     [SerializeField]
     AudioSource audioSource;
-    [SerializeField]
-    GameObject playBtn;
-    [SerializeField]
-    GameObject pauseBtn;
 
     [Tooltip("Texto que da una explicacion en la fase")]
     [SerializeField] TextMeshProUGUI descriptionText;
@@ -40,27 +36,19 @@ public class SoundStage : Stage
     {
         //HEmos terminado de reproducir el audio
         if (audioStarted && !audioSource.isPlaying) {
-            PauseSound();
+            audioSource.Pause();
             NextScene();
         }
     }
 
-    public void PlaySound()
+    public void ToggleSound()
 	{
-        audioStarted = true;
+        audioStarted = !audioStarted;
 
-        audioSource.Play();
-        playBtn.SetActive(false);
-        pauseBtn.SetActive(true);
-    }
-
-    public void PauseSound()
-	{
-        audioStarted = false;
-
-        audioSource.Pause();
-        playBtn.SetActive(true);
-        pauseBtn.SetActive(false);
+        if(audioStarted)
+            audioSource.Play();
+        else
+            audioSource.Pause();
     }
 
     public void NextScene()
