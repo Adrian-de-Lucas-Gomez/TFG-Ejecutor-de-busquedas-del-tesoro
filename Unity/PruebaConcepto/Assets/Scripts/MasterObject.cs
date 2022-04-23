@@ -70,7 +70,7 @@ public class MasterObject : MonoBehaviour , Listener
         sceneObjectsParent.SetActive(false);
 
         GameManager.getInstance().AddListener(this);
-        Listen(GameManager.getInstance().getCurrentStageType());
+        Listen(GameManager.getInstance().GetCurrentStageType());
     }
 
     // Update is called once per frame

@@ -11,7 +11,12 @@ public class GameManager : MonoBehaviour
 {
 
     public Adventure adventure;
-    public GameObject sceneMainCamera;
+
+    [SerializeField]
+    private GameObject sceneMainCamera;
+
+    [SerializeField]
+    private GameObject vuforiaMainCamera;
 
     [Tooltip("Lista de informacion de las fases por las que vamos a pasar")]
     public static Queue<AdventureInfo> adventureStages = new Queue<AdventureInfo>();
@@ -31,10 +36,16 @@ public class GameManager : MonoBehaviour
     //los recursos pueden llegar a ser gastados poe estas
     List<string> bigScenes = new List<string>() { "QRStage", "ImageTargetStage" };
 
+    List<string> needVuforiaCamera = new List<string>() { "QRStage", "ImageTargetStage" };
+
     List<Listener> listeners = new List<Listener>();
 
     [SerializeField]
     LogicManager logicManager;
+
+    [SerializeField]
+    GameObject backgroundObject;
+  
 
     static GameManager _instance;
 
@@ -65,6 +76,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        vuforiaMainCamera.SetActive(false);
         _preloadedScene = new KeyValuePair<string, AsyncOperation>("", null);
 
         loadAllSmallScenes();
@@ -86,7 +98,7 @@ public class GameManager : MonoBehaviour
 
         //Asignamos key de vuforia
         VuforiaConfiguration.Instance.Vuforia.LicenseKey = adventureData["VuforiaKey"].Value<string>();
-        _adventureName= adventureData["Gencana"].Value<string>();
+        _adventureName = adventureData["Gencana"].Value<string>();
 
         Debug.Log(VuforiaConfiguration.Instance.Vuforia.LicenseKey);
 
@@ -154,12 +166,13 @@ public class GameManager : MonoBehaviour
                         newGPS.readFromJSON((JObject)misFases[i]);
                         adventureStages.Enqueue(newGPS);
 
-                    #if UNITY_ANDROID
+#if UNITY_ANDROID
                         //Solo se necesita de preguntar si hay ese tipo de fase
-                        if (!UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.CoarseLocation)) { 
+                        if (!UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.CoarseLocation))
+                        {
                             StartCoroutine(AskGPSPermission());
                         }
-                    #endif
+#endif
                         break;
                     }
             }
@@ -176,7 +189,7 @@ public class GameManager : MonoBehaviour
     private void loadAllSmallScenes()
     {
         //Preparo una lista con todos los nombres de todas las escenas involucradas en esta aventura
-        scenesInvolved = getScenesInvolvedInAdventure();
+        scenesInvolved = GetScenesInvolvedInAdventure();
 
         for (int i = 0; i < scenesInvolved.Count; i++)
         {
@@ -195,7 +208,7 @@ public class GameManager : MonoBehaviour
     /// pero sin repeticiones, dicha lista se utilizar� para cargar las escenas necesarias con los nombres devueltos
     /// </summary>
     /// <returns></returns>
-    private List<string> getScenesInvolvedInAdventure()
+    private List<string> GetScenesInvolvedInAdventure()
     {
         //Preparo tanto la lista que voy a devolver como la pila de escenas por las que vamos a pasar en un formato m�s c�modo para recorrer
         List<string> scenesInvolved = new List<string>();
@@ -226,7 +239,7 @@ public class GameManager : MonoBehaviour
     /// Este m�todo tiene como objetivo devolver la fase que se encuentra ahora en primer lugar en la cola de estas
     /// </summary>
     /// <returns></returns>
-    public string getCurrentStageType()
+    public string GetCurrentStageType()
     {
         return adventureStages.Peek().stage;
     }
@@ -235,12 +248,12 @@ public class GameManager : MonoBehaviour
     /// Este m�todo tiene como objetivo devolver la fase que se encuentra ahora en primer lugar en la cola de estas
     /// </summary>
     /// <returns></returns>
-    public AdventureInfo getCurrentStage()
+    public AdventureInfo GetCurrentStage()
     {
         return adventureStages.Peek();
     }
 
-    public string getAdventureName()
+    public string GetAdventureName()
     {
         return _adventureName;
     }
@@ -264,7 +277,7 @@ public class GameManager : MonoBehaviour
         _currentStage.Init(adventureStages.Peek());
     }
 
-   
+
     public void StageCompleted()
     {
         logicManager.PhaseCompleted();
@@ -283,11 +296,9 @@ public class GameManager : MonoBehaviour
         adventureStages.Dequeue();
 
         //Si nos vamos a una fase normal tenemos disponibles las pistas, en cambio si nos vamos a la del final ya no hay pistas
-        if (adventureStages.Peek().stage == "End")  logicManager.DisableHints();
-        else                                        logicManager.EnableHints();
+        if (adventureStages.Peek().stage == "End") logicManager.DisableHints();
+        else logicManager.EnableHints();
 
-        //Notificamos a los listeners del tipo de la nueva fase para que puedan prepararse acorde
-        NotifyListeners(adventureStages.Peek().stage);
 
         //Si cambiamos de escena nos preparamos para un posible cambio con respecto a AR o con escenas grandes
         if (completedScene != adventureStages.Peek().stage)
@@ -303,6 +314,8 @@ public class GameManager : MonoBehaviour
             InitCurrentStage();
         }
 
+        //Notificamos a los listeners del tipo de la nueva fase para que puedan prepararse acorde
+        NotifyListeners(adventureStages.Peek().stage);
 
         //Hay que hacerse cargo de empezar a cargar la siguiente escena en caso de que esta sea grande 
         checkLoadSceneOperations();
@@ -314,11 +327,9 @@ public class GameManager : MonoBehaviour
     private void checkForARScene()
     {
         //Si la escena que toca es de esas que tienen una c�mara AR significa que no tenemos que tener activa la c�mara principal de la aventura
-        bool mainCameraMustBeActive;
-        if (adventureStages.Peek().stage == "QRStage" || adventureStages.Peek().stage == "ImageTargetStage") mainCameraMustBeActive = false;
-        else mainCameraMustBeActive = true;
+        if (needVuforiaCamera.Contains(adventureStages.Peek().stage)) SetSceneWithVuforiaCamera(true);
+        else SetSceneWithVuforiaCamera(false);
 
-        sceneMainCamera.SetActive(mainCameraMustBeActive);
     }
 
 
@@ -331,12 +342,11 @@ public class GameManager : MonoBehaviour
         //Nos hacemos cargo en caso de que haga falta el posible 10% de carga de la siguiente escena en caso de que esta hubiera estado en espera
         if (_preloadedScene.Value != null)
         {
-            
             ActivatePreloadedScene();
             _preloadedScene = new KeyValuePair<string, AsyncOperation>("", null);
         }
         //Miramos si la siguiente escena a esta necesita de precarga pero si es tambien pesada pero del mismo tipo no la precargamos
-        if (adventureStages.ToArray().Length > 1 && bigScenes.Contains(adventureStages.ToArray()[1].stage)  &&
+        if (adventureStages.ToArray().Length > 1 && bigScenes.Contains(adventureStages.ToArray()[1].stage) &&
             adventureStages.ToArray()[1].stage != adventureStages.ToArray()[0].stage)
         {
             PreloadNextScene();
@@ -364,7 +374,14 @@ public class GameManager : MonoBehaviour
         }
 
         //Si es necesario descargarla me aseguro de que este cargada y entonces la descargo
-        if (mustUnload && SceneManager.GetSceneByName(completedScene).isLoaded) SceneManager.UnloadSceneAsync(completedScene);
+        if (mustUnload && SceneManager.GetSceneByName(completedScene).isLoaded)
+        {
+            if(bigScenes.Contains(completedScene))
+                RemoveLastListener();
+           
+            SceneManager.UnloadSceneAsync(completedScene);
+            
+        }
     }
 
     /// <summary>
@@ -393,7 +410,7 @@ public class GameManager : MonoBehaviour
 
     public void AddListener(Listener newListener)
     {
-        if(!listeners.Contains(newListener))
+        if (!listeners.Contains(newListener))
             listeners.Add(newListener);
     }
 
@@ -403,10 +420,25 @@ public class GameManager : MonoBehaviour
             listeners.Remove(listenerToRemove);
     }
 
+    public void RemoveLastListener()
+    {
+        listeners.RemoveAt(listeners.Count - 1);
+    }
+
     public void NotifyListeners(string msg)
     {
         foreach (Listener listener in listeners)
             listener.Listen(msg);
     }
 
+    public void SetBackgroundActive(bool active)
+    {
+        backgroundObject.SetActive(active);
+    }
+
+    public void SetSceneWithVuforiaCamera(bool vuforiaCameraActive)
+    {
+        vuforiaMainCamera.SetActive(vuforiaCameraActive);
+        sceneMainCamera.SetActive(!vuforiaCameraActive);
+    }
 }

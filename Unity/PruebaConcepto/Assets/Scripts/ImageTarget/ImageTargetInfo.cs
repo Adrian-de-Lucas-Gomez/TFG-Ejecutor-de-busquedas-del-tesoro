@@ -1,10 +1,16 @@
 using Newtonsoft.Json.Linq;
 public class ImageTargetInfo : AdventureInfo
 {
+    public enum TargetType
+    {
+        OVERLAP_IMAGE, OVERLAP_TEXT, DEAFULT
+    }
+
     public string nombreTarget;
-    public bool hasText;
-    public string text;
-    //public bool showImage;
+    public TargetType targetType = TargetType.DEAFULT;
+
+    public string text = "";
+    public string overlappingImage = "";
 
     /// <summary>
     /// Metodo que recibe un objeto parseado de JSON y saca toda la informacion que necesite de este
@@ -22,9 +28,21 @@ public class ImageTargetInfo : AdventureInfo
 
         //Obtengo los datos del target
         nombreTarget = myInfo["Target"].Value<string>();
-        hasText = myInfo["AddText"].Value<bool>();
-        text = myInfo["Text"].Value<string>();
-        //showImage = myInfo["ShowImage"].Value<bool>();
+        string type = myInfo["TargetType"].Value<string>();
+
+        if (type == "Image")
+        {
+            targetType = TargetType.OVERLAP_IMAGE;
+
+            string aux = myInfo["OverlappingImage"].Value<string>();
+            string[] splitArray = aux.Split('.');
+            overlappingImage = splitArray[0];
+        }
+        else if (type == "Text")
+        {
+            targetType = TargetType.OVERLAP_TEXT;
+            text = myInfo["Text"].Value<string>();
+        }
        
     }
 }

@@ -41,7 +41,7 @@ public class LogicManager : MonoBehaviour
     public void ShowHint()
     {
         hintPanel.active = true;
-        hintText.text = GameManager.getInstance().getCurrentStage().hint;
+        hintText.text = GameManager.getInstance().GetCurrentStage().hint;
     }
 
     //Metodo que esconde el panel encargado de mostrar las pistas de cada fase

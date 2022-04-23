@@ -26,6 +26,13 @@ public class QRStage : Stage
             nextPanel.SetActive(true);
             changeSceneRequest = false;
         }
+
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            changeSceneRequest = true;
+        }
+#endif
     }
 
     public void MoveToNextPhase()
