@@ -8,19 +8,15 @@ using TMPro;
 
 public class QuizStage : Stage
 {
-    [Tooltip ("Prefab de las posibles respuestas de un quiz")]
+    [Tooltip ("Panel de Answers")]
     [SerializeField]
-    GameObject quizAnswerPrefab;
+    Transform panelAnswers;
 
     [Tooltip("Texto del quiz en el se va a mostrar la pregunta")]
     [SerializeField]
     TextMeshProUGUI quizQuestionText;
 
     QuizInfo quizData;                                      //Datos del quiz
-    List<GameObject> quizAnswers = new List<GameObject>();  //Lista de gameobjects que representaran las posibles respuestas de la fase
-    Vector2 UIPosition = new Vector2();                     //Posicion que vamos a utilizar para situar cada una de nuestras respuestas
-
-
 
     public override void Init(AdventureInfo data)
     {
@@ -29,7 +25,6 @@ public class QuizStage : Stage
         quizQuestionText.text = quizData.pregunta;
 
         //Despliego las posibles respuestas por pantalla
-        UIPosition = new Vector2(0, 120);
 
         clearAnswers();
         displayPossibleAnswers();
@@ -37,12 +32,18 @@ public class QuizStage : Stage
 
     private void clearAnswers()
 	{
-        foreach(GameObject o in quizAnswers)
+        foreach(Transform o in panelAnswers)
 		{
-            Destroy(o);
+            o.gameObject.SetActive(false);
 		}
+    }
 
-        quizAnswers.Clear();
+    private void untoggleAll()
+	{
+        foreach (Transform o in panelAnswers)
+        {
+            o.GetComponent<Toggle>().isOn = false;
+        }
     }
 
     private void displayPossibleAnswers()
@@ -51,10 +52,9 @@ public class QuizStage : Stage
         //Lo hago una debajo de otra
         for (int i = 0; i < quizData.respuestas.Count; i++)
         {
-            quizAnswers.Add(Instantiate(quizAnswerPrefab, transform));
-            quizAnswers[i].GetComponent<RectTransform>().anchoredPosition = UIPosition;
-            quizAnswers[i].GetComponent<QuizAnswer>().setAnswertext(quizData.respuestas[i].text);
-            UIPosition -= new Vector2(0, 150);
+            Transform answer = panelAnswers.GetChild(i);
+            answer.gameObject.SetActive(true);
+            answer.GetComponent<QuizAnswer>().setAnswertext(quizData.respuestas[i].text);
         }
     }
 
@@ -63,16 +63,28 @@ public class QuizStage : Stage
         //Recorro mis respuestas, en caso de haber respondido correctamente el estado actual de cada una sera el mismo
         //que el de los datos leidos de json
         int i = 0;
-        while (i < quizAnswers.Count)
+        while (i < quizData.respuestas.Count)
         {
-            if (quizAnswers[i].GetComponent<QuizAnswer>().isAnswerSelected() != quizData.respuestas[i].isCorrect) 
+            if (panelAnswers.GetChild(i).GetComponent<QuizAnswer>().isAnswerSelected() != quizData.respuestas[i].isCorrect)
+			{
+                untoggleAll();
                 break;
+            }
             i++;
         }
 
         //En caso de que haya resuelto bien el quiz
-        if (i == quizAnswers.Count)
+        if (i == quizData.respuestas.Count)
         {
+            for (int x = 0; x < quizData.respuestas.Count; x++)
+            {
+                //Se pintan en verde las correctas
+				if (quizData.respuestas[x].isCorrect)
+				{
+                    panelAnswers.GetChild(x).GetComponent<QuizAnswer>().setCorrectColor();
+                }
+            }
+
             print("Well Done");
             GameManager.getInstance().StageCompleted();
         }

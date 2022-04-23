@@ -13,6 +13,8 @@ public class QuizAnswer : MonoBehaviour
     public TextMeshProUGUI myAnswerText;
     [Tooltip("Togle que sirve para ver si hemos seleccionado la resouesta como seleccionada o no")]
     public Toggle myToggle;
+    [Tooltip("Imagen de fondo del toggle")]
+    public Image myBackgroundSelected;
 
     /// <summary>
     /// Pone un texto concreto en el elemento de tipo Text de la UI que representa a la respuesta
@@ -31,4 +33,12 @@ public class QuizAnswer : MonoBehaviour
     public bool isAnswerSelected() {
         return myToggle.isOn;
     }
+
+    /// <summary>
+    /// Asigna el color verde si la respuesta es correcta
+    /// </summary>
+    public void setCorrectColor()
+	{
+        myBackgroundSelected.color = Color.green;
+	}
 }

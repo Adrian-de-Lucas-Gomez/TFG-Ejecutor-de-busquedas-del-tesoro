@@ -373,11 +373,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1989706742}
     m_Modifications:
-    - target: {fileID: 4699521251427309627, guid: 99c326b2112a7414ea6dc377c42278cc,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 50
-      objectReference: {fileID: 0}
     - target: {fileID: 6636796708580706452, guid: 99c326b2112a7414ea6dc377c42278cc,
         type: 3}
       propertyPath: m_Pivot.x
@@ -488,12 +483,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Quiz
       objectReference: {fileID: 0}
-    - target: {fileID: 6636796708580706457, guid: 99c326b2112a7414ea6dc377c42278cc,
-        type: 3}
-      propertyPath: answersParent
-      value: 
-      objectReference: {fileID: 1798268830}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6636796708580706459, guid: 99c326b2112a7414ea6dc377c42278cc, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 99c326b2112a7414ea6dc377c42278cc, type: 3}
 --- !u!224 &1798268828 stripped
 RectTransform:
@@ -513,12 +504,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 632feae4014dcb5488ff4558f9b639b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1798268830 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4644573949207146757, guid: 99c326b2112a7414ea6dc377c42278cc,
-    type: 3}
-  m_PrefabInstance: {fileID: 1798268827}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1989706741
 GameObject:
   m_ObjectHideFlags: 0
