@@ -18,10 +18,11 @@ public class SuccessIconController : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    public void showCorrect()
+    public void showCorrect(bool correct)
     {
         animator.SetBool("Appear", true);
-        correctImage.SetActive(true);
+        correctImage.SetActive(correct);
+        incorrectImage.SetActive(!correct);
     }
 
     void stopShowing()

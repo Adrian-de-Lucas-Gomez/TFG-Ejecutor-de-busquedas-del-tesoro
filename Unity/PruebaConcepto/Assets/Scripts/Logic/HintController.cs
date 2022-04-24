@@ -12,6 +12,9 @@ public class HintController : MonoBehaviour
 
     Animator hintAnimator;
 
+    [SerializeField]
+    LogicManager logicManager;
+
 
     void Start()
     {
@@ -35,4 +38,9 @@ public class HintController : MonoBehaviour
         //hintPanel.active = false;
     }
 
+    public void Cheat()
+    {
+        logicManager.StartSceneTransition();
+        HideHint();
+    }
 }

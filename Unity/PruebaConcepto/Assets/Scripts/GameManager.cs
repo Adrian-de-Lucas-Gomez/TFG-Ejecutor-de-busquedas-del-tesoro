@@ -391,9 +391,9 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void ShowCorrect()
+    public void ShowCorrect(bool correct)
     {
-        logicManager.ShowCorrect();
+        logicManager.ShowCorrect(correct);
     }
 
     public bool IsCurrentPhaseSceneReady()

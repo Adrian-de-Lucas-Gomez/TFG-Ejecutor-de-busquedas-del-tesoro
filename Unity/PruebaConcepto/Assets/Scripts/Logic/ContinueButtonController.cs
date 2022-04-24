@@ -15,6 +15,7 @@ public class ContinueButtonController : MonoBehaviour
     void Start()
     {
         nextPhaseButton = gameObject.GetComponent<Button>();
+        nextPhaseButton.interactable = false;
         nextPhaseButtonAnimator = gameObject.GetComponent<Animator>();
     }
 
@@ -28,11 +29,17 @@ public class ContinueButtonController : MonoBehaviour
     {
         nextPhaseButtonAnimator.SetBool("Aparecer", true);
         nextPhaseButtonAnimator.SetBool("Desaparecer", false);
+        nextPhaseButton.IsInteractable();
     }
 
+    public void SetButtonInteractable()
+    {
+        nextPhaseButton.interactable = true;
+    }
 
     public void Disappear()
     {
+        nextPhaseButton.interactable = false;
         nextPhaseButtonAnimator.SetBool("Aparecer", false);
         nextPhaseButtonAnimator.SetBool("Desaparecer", true);
         logicManager.StartSceneTransition();

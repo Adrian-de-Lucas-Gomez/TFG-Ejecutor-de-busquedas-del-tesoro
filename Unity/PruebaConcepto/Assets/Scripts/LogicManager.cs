@@ -53,9 +53,9 @@ public class LogicManager : MonoBehaviour
         //hintPanel.active = false;
     }
 
-    public void ShowCorrect()
+    public void ShowCorrect(bool correct)
     {
-        successIconController.showCorrect();
+        successIconController.showCorrect(correct);
     }
 
     //Metodo que tiene como objetivo mostrar el boton que te permite pasar a la siguiente fase
