@@ -391,6 +391,11 @@ public class GameManager : MonoBehaviour
     }
 
 
+    public void ShowCorrect()
+    {
+        logicManager.ShowCorrect();
+    }
+
     public bool IsCurrentPhaseSceneReady()
     {
         //Miramos en las escenas que estan cargadas actualmente para buscar el nombre de la fase actual
