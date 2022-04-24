@@ -64,7 +64,7 @@ const soundStorage = multer.diskStorage({
 
 const apkStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, '../AplicacionesListas')
+    cb(null, 'AplicacionLista')
   },
   filename: (req, file, cb) => {
     console.log(file)
@@ -182,6 +182,39 @@ app.post('/wtf-json', function (request, res) {
   }
   catch { console.log("An error ocurred getting the adventure json") }
   console.log("The adventure json was succesfully recieved");
+  res.json({ key: "value" });
+});
+
+
+//Peticion que tiene como objetivo revibir los datos relacionados con una aventura y generar un json que los contenga en el servidor
+app.post('/wtf-descripcion', function (request, res) {
+  try {
+    //Creo el directorio en el que van a almacenarse la descripción y la apk
+    fs.mkdirSync("../AplicacionesListas/"+request.body.nombre);
+    //Creamos un fichero json en un directorio que no este bajo el control del server para evitar problemas
+    fs.writeFileSync('../AplicacionesListas/'+request.body.nombre+"/descripcion.txt", request.body.json);
+
+    var file = fs.readdirSync("./AplicacionLista/");
+    for (var i = 0; i < file.length; i++) {
+      try {
+        if (file[i] !== "README.txt") 
+          fs.copyFileSync('./AplicacionLista/' + file[i], "../AplicacionesListas/"+request.body.nombre+"/"+file[i]);
+      }
+      catch { console.log("An error ocurred copying a file:" + file[i]); }
+    }
+
+    var filesToRemove = fs.readdirSync("./AplicacionLista/");
+      for (var i = 0; i < filesToRemove.length; i++) {
+        //Si no es el readme, lo elimino del directorio
+        if (filesToRemove[i] !== "README.txt") {
+          fs.unlinkSync("./AplicacionLista/"+ filesToRemove[i]);
+          console.log("Removed file from /AplicacionLista/ directory: " + filesToRemove[i]);
+        }
+      }
+
+  }
+  catch { console.log("An error ocurred getting the adventure json") }
+  console.log("The adventure description was succesfully recieved");
   res.json({ key: "value" });
 });
 
@@ -319,6 +352,7 @@ app.post('/dame-aventura', function (request, response) {
   response.json({ AventuraGuardada: content });
 });
 
+
 //Peticion para obtener algun que otro fichero que se encuentre almacenado en la carpeta Images
 app.get('/getFile/:name', function (req, res, next) {
 
@@ -343,13 +377,22 @@ app.get('/getFile/:name', function (req, res, next) {
 
 //Peticion para obtener los nombres de las diferentes apks ya hechas que se encuentran almacenadas en el server
 app.get("/aplicacionesListas-guardadas", (req, res) => {
-  res.json({ Opciones: fs.readdirSync('../AplicacionesListas/') });
+
+  let listaAventuras= fs.readdirSync('../AplicacionesListas/');
+  let listaDescripciones = [];
+
+  for(let i = 0; i<listaAventuras.length;i++){
+    var content = fs.readFileSync('../AplicacionesListas/' + listaAventuras[i] + '/descripcion.txt', { encoding: 'utf8', flag: 'r' });
+    listaDescripciones.push(content);
+  }
+
+  res.json({ Opciones: listaAventuras, Descripciones: listaDescripciones});
   }
 );
 
 //Peticion para obtener una del las aplicaciones ya hechas en el server
 app.get('/getAPK/:name', function (req, res, next) {
-  let path = '../AplicacionesListas/' + req.params.name;
+  let path = '../AplicacionesListas/' + req.params.name+"/"+req.params.name+".apk";
   if (fs.existsSync(path)) { 
     res.download(path, req.params.name, function (err) {});
   } 
