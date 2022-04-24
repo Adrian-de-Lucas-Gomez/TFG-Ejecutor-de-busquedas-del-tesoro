@@ -431,14 +431,10 @@ public class GameManager : MonoBehaviour
             listener.Listen(msg);
     }
 
-    public void SetBackgroundActive(bool active)
-    {
-        backgroundObject.SetActive(active);
-    }
-
     public void SetSceneWithVuforiaCamera(bool vuforiaCameraActive)
     {
         vuforiaMainCamera.SetActive(vuforiaCameraActive);
+        backgroundObject.SetActive(!vuforiaCameraActive);
         sceneMainCamera.SetActive(!vuforiaCameraActive);
     }
 }

@@ -38,6 +38,10 @@ public class ImageTargetStage : Stage
 
         //Las imagenes deben de estar almacenadas en la carpeta StreamingAssets/Vuforia
         pathToTarget = "Vuforia/" + targetData.nombreTarget;
+       
+
+        GameObject g  = GameObject.Find("ImageTarget");
+        if (g != null) Destroy(g);
 
         VuforiaARController.Instance.RegisterVuforiaStartedCallback(CreateImageTargetFromSideloadedTexture);
     }
@@ -84,7 +88,11 @@ public class ImageTargetStage : Stage
     {
         if (targetData.text != "") pannel.SetActive(true);
         else if (overlappingImage != null) sp.gameObject.SetActive(true);
-        NextScene();
+        GameManager.getInstance().StageCompleted();
+
+        //Temporal
+        //TO DO: esto habría que hacerlo al dar al boton de continuar
+        StopTrackingTarget();
     }
 
     private void OnTargetLostAction()
@@ -92,24 +100,29 @@ public class ImageTargetStage : Stage
         if (overlappingImage != null) sp.gameObject.SetActive(false);
     }
 
-    public void NextScene()
+    private void StopTrackingTarget()
     {
-        //Debug.Log("A");
-        //objectTracker.Stop();
-        //objectTracker.DeactivateDataSet(dataset);
-        //Destroy(trackableHandler);
-        //VuforiaARController.Instance.UnregisterVuforiaStartedCallback(CreateImageTargetFromSideloadedTexture);
-       
-        GameManager.getInstance().StageCompleted();
+        if (TrackerManager.Instance != null)
+        {
+            //Positional DeviceTracker
+            PositionalDeviceTracker posTracker = TrackerManager.Instance.GetTracker<PositionalDeviceTracker>();
+            if (posTracker != null) posTracker.Stop();
 
-        //Debug.Log("d");
-        //TrackerManager.Instance.DeinitTracker<ObjectTracker>();
+            //Object Tracker
+            objectTracker = TrackerManager.Instance.GetTracker<ObjectTracker>();
+            if (objectTracker != null)
+            {
+                objectTracker.Stop();
 
-        //TO DO: esto habría que hacerlo cuando se pulsa el boton de siguiente
-        //if (TrackerManager.Instance.GetTracker<ObjectTracker>() != null)
-        //    TrackerManager.Instance.GetTracker<ObjectTracker>().Stop();
-        //Destroy(trackableHandler.gameObject);
+                if (dataset != null)
+                {
+                    objectTracker.DeactivateDataSet(dataset);
+                    dataset.DestroyAllTrackables(true);
+                    dataset = null;
+                }
 
+            }
+        }
     }
 
 }
