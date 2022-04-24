@@ -19,6 +19,9 @@ public class LogicManager : MonoBehaviour
     [SerializeField]
     LoadScreenController loadScreenController;
 
+    [SerializeField]
+    SuccessIconController successIconController;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -48,6 +51,11 @@ public class LogicManager : MonoBehaviour
     public void HideHint()
     {
         //hintPanel.active = false;
+    }
+
+    public void ShowCorrect()
+    {
+        successIconController.showCorrect();
     }
 
     //Metodo que tiene como objetivo mostrar el boton que te permite pasar a la siguiente fase

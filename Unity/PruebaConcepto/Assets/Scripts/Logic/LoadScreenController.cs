@@ -7,6 +7,9 @@ public class LoadScreenController : MonoBehaviour
     [SerializeField]
     Animator blackScreenAnimator;
 
+
+    [SerializeField]
+    GameObject loadingIconGameObject;
     
 
 
@@ -20,6 +23,7 @@ public class LoadScreenController : MonoBehaviour
     {
         GameManager.getInstance().GoToNextPhase();
         InvokeRepeating("WaitForSceneLoad", 0,1);
+        loadingIconGameObject.SetActive(true);
     }
 
     private void WaitForSceneLoad()
@@ -36,6 +40,7 @@ public class LoadScreenController : MonoBehaviour
 
     public void EndSceneTransition()
     {
+        loadingIconGameObject.SetActive(false);
         blackScreenAnimator.SetBool("StartTransition", false);
         blackScreenAnimator.SetBool("EndTransition", true);
     }
