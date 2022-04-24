@@ -284,7 +284,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.059000004, y: 0.11654559}
   m_AnchorMax: {x: 0.947, y: 0.8765456}
-  m_AnchoredPosition: {x: -0.7198944, y: 0.15969849}
+  m_AnchoredPosition: {x: -0.71990967, y: 0.15969849}
   m_SizeDelta: {x: -0.6543999, y: -2.0262985}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &277485316
@@ -334,12 +334,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 18
-  m_fontSizeMax: 36
+  m_fontSizeMin: 12
+  m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -562,7 +562,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.4633389}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.18299866}
+  m_AnchoredPosition: {x: 0, y: 0.1829834}
   m_SizeDelta: {x: 0, y: -0.36599994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1678613007
@@ -763,7 +763,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -849,10 +849,10 @@ RectTransform:
   m_Father: {fileID: 1678613006}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00050759, y: 0.019623}
-  m_SizeDelta: {x: 149.8, y: 150.54}
+  m_AnchorMin: {x: 0.22000001, y: 0.2043784}
+  m_AnchorMax: {x: 0.78000003, y: 0.79531085}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -0.51000977, y: -0.30020142}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1861356427
 MonoBehaviour:
@@ -932,7 +932,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1861356427}
   toggleTransition: 1
   graphic: {fileID: 224757341}
   m_Group: {fileID: 0}
