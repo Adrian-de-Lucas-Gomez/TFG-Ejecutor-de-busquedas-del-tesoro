@@ -4,6 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaf
 import '../Styles/MapContainer.css'
 import swal from "sweetalert";
 import Errorimage from "../../imgCards/Imagen.png"
+import Swal from "sweetalert2";
 
 const GPS = (props: StepComponentProps): JSX.Element => {
     //Donde guardamos el texto a codificar en GPS
@@ -95,7 +96,7 @@ const GPS = (props: StepComponentProps): JSX.Element => {
     }
 
     const tutorialFase = ()=>{
-        swal({ title: "GPS", text: "En esta fase puedes introducir unas coordenadas en un mapa, a las que el jugador deberá llegar para completar esta fase, se puede configurar la distancia a la que se considera que el jugador ha llegado a su destino y una descripción para informar al jugador sobre el lugar al que tiene que llegar.",  icon: Errorimage });
+        Swal.fire({title: 'GPS',text: "En esta fase puedes introducir unas coordenadas en un mapa, a las que el jugador deberá llegar para completar esta fase, se puede configurar la distancia a la que se considera que el jugador ha llegado a su destino y una descripción para informar al jugador sobre el lugar al que tiene que llegar.", icon: 'info'});
     }
 
 

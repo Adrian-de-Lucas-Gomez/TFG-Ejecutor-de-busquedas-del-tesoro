@@ -1,0 +1,17 @@
+{
+  "Gencana": "Ejemplo",
+  "VuforiaKey": "",
+  "fases": [
+    {
+      "tipo": "QRStage",
+      "QRText": "dfghdfgh",
+      "Pista": ""
+    },
+    {
+      "tipo": "ImageStage",
+      "Imagen": "0.png",
+      "description": "cbvx",
+      "Pista": ""
+    }
+  ]
+}

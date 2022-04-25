@@ -3,6 +3,7 @@ import { StepComponentProps } from '../Steps';
 import pic from "../../imgCards/Imagen.png";
 import swal from "sweetalert";
 import Errorimage from "../../imgCards/Imagen.png"
+import Swal from "sweetalert2";
 
 const ImageTarget = (props: StepComponentProps): JSX.Element => {
 
@@ -88,7 +89,7 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
     }
 
     const tutorialFase = ()=>{
-        swal({ title: "ImageTarget", text: "En esta fase puedes configurar una imágen que el jugador va a tener que buscar y escanear con el móvil, también puedes configurar si quieres que se le muestre algún texto tras el escaneo.",  icon: Errorimage });
+        Swal.fire({title: 'ImageTarget',text: "En esta fase puedes configurar una imágen que el jugador va a tener que buscar y escanear con el móvil, también puedes configurar si quieres que se le muestre algún texto tras el escaneo.", icon: 'info'});
     }
 
 

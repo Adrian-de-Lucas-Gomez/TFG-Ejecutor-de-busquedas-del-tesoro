@@ -170,6 +170,15 @@ app.get("/reset", (req, res) => {
     }
   }
 
+    //Limpieza de los sonidos que hubiera en el backend
+    var apkToRemove = fs.readdirSync('./AplicacionLista/');
+    for(let i  =0 ; i < apkToRemove.length; i++){
+      if (apkToRemove[i] !== "README.txt") {
+        console.log("Removed file from backend/AplicacionLista/ directory: " + apkToRemove[i]);
+        fs.unlinkSync('./AplicacionLista/' + apkToRemove[i]);
+      }
+    }
+
   res.json({ key: "value" });
 });
 
@@ -190,7 +199,9 @@ app.post('/wtf-json', function (request, res) {
 app.post('/wtf-descripcion', function (request, res) {
   try {
     //Creo el directorio en el que van a almacenarse la descripción y la apk
-    fs.mkdirSync("../AplicacionesListas/"+request.body.nombre);
+    if(fs.existsSync("../AplicacionesListas/"+request.body.nombre) === false)
+      fs.mkdirSync("../AplicacionesListas/"+request.body.nombre);
+
     //Creamos un fichero json en un directorio que no este bajo el control del server para evitar problemas
     fs.writeFileSync('../AplicacionesListas/'+request.body.nombre+"/descripcion.txt", request.body.json);
 

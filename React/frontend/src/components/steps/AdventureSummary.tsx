@@ -3,6 +3,8 @@ import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle } f
 import axios from "axios"
 import PhaseCard from './PhaseCard';
 import swal from "sweetalert";
+import Swal from "sweetalert2"
+
 
 const AdventureSummary = (props: StepComponentProps): JSX.Element => {
 
@@ -165,7 +167,7 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
   //En caso de que no haya fases de AR o que si que las haya y la key tenga el numero de caracteres
   //requeridos devuelve true
   //en caso contrario devuelve false
-  const checkVuforiaKey = (): boolean => {
+  const checkVuforiaKey = async ()  => {
     //En caso de que tengamos problemas con la clave de vuforia avisamos al usuario de esto
     let vuforiaKey = props.getState('vuforiaKey', '');
     var fasesAventura = props.getState<any>('DATA', []);
@@ -192,22 +194,31 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     //En caso de que tengamos problemas con el nombre del proyecto avisamos al usuario de esto
     let nombreAventura = props.getState('adventureName', "Nombre por defecto");
     if (nombreAventura === "Nombre por defecto") {
-      let respuesta = await swal({ title: "Nombre de la aventura sin asignar", text: "Ponle un nombre a tu aventura para poder generar el proyecto", icon: "error" });
+      let respuesta = await Swal.fire({title: "Nombre de la aventura sin asignar",text: "Ponle un nombre a tu aventura para poder generar el proyecto", icon: 'error'});
       return;
     }
 
     //En caso de que tengamos problemas con la clave de vuforia avisamos al usuario de esto
-    if (!checkVuforiaKey()) {
-      let respuesta = await swal({ title: "Clave de Vuforia incorrecta", text: "Inserte una clave de Vuforia válida para generar el proyecto", icon: "error" });
+    console.log("Hemos llegado hasta aqui");
+    let keyVuforiaValida = await checkVuforiaKey();
+    console.log("lo de la key me da "+ keyVuforiaValida);
+    if (keyVuforiaValida !== true) {
+      let respuesta = await Swal.fire({title: "Clave de Vuforia incorrecta",text: "Inserte una clave de Vuforia válida para generar el proyecto", icon: 'error'});
       return;
     }
 
     //En caso de que le nombre de la aventura que pretendemos guardar de problemas avisamos al usuario de si quiere sobreescribir la ya existente
     let guardadasEnElServer = await axios.get("./aventuras-guardadas");
     if (guardadasEnElServer.data.Opciones.includes(nombreAventura)) {
-      let respuesta = await swal({ title: nombreAventura + " ya existe", text: "Ya existe una aventura guardada con el nombre " + nombreAventura + " en el servidor.¿Deseas sobreescribirla?", icon: "info", buttons: ["Cancelar", "Sobreescribir"] });
+      let respuesta = await Swal.fire({ title: nombreAventura + " ya existe", text: "Ya existe una aventura guardada con el nombre " + nombreAventura + " en el servidor.¿Deseas sobreescribirla?", icon: 'info',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sobreescribir'
+    });
       //Si el usuario no desea sobreescribir la aventura dejamos de hacer cosas
-      if (!respuesta) return;
+      if (!respuesta.isConfirmed) return;
     }
 
     //Si no nos hemos ido del metodo lo que nos queda por hacer es limpiar el server, mandar todos los ficheros que componen nuestra aventura y solicitar el proyecto
@@ -216,7 +227,8 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     await mandarJson();
     await axios.get("./guardame-aventura");
 
-    swal({ title: "Aventura guardada", icon: "success" });
+
+    Swal.fire({icon: 'success', title: 'Aventura guardada',})
   }
 
 
@@ -224,13 +236,14 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     //En caso de que la aventura todavia tenga el nombre por defecto avisamos al usuario de que esto debe de cambiarlo
     let nombreAventura = props.getState('adventureName', "Nombre por defecto");
     if (nombreAventura === "Nombre por defecto") {
-      let respuesta = await swal({ title: "Nombre de la aventura sin asignar", text: "Ponle un nombre a tu aventura para poder generar el proyecto", icon: "error" });
+      let respuesta = await Swal.fire({title: "Nombre de la aventura sin asignar",text: "Ponle un nombre a tu aventura para poder generar el proyecto", icon: 'error'});
       return;
     }
 
     //En caso de que tengamos problemas con la clave de vuforia avisamos al usuario de esto
-    if (!checkVuforiaKey()) {
-      let respuesta = await swal({ title: "Clave de Vuforia incorrecta", text: "Inserte una clave de Vuforia válida para generar el proyecto", icon: "error" });
+    let keyVuforiaValida = await checkVuforiaKey();
+    if (keyVuforiaValida !== true) {
+      let respuesta = await Swal.fire({title: "Clave de Vuforia incorrecta",text: "Inserte una clave de Vuforia válida para generar el proyecto", icon: 'error'});
       return;
     }
 

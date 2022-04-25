@@ -19,6 +19,7 @@ import { json, text } from "stream/consumers";
 import './Styles/Steps.css';
 import axios from "axios";
 import swal from "sweetalert";
+import Swal from "sweetalert2"
 
 
 //--------------------------------------------------------------
@@ -521,7 +522,7 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     //Preparo los datos que voy a añadir
     let newData = getState<any>('faseConfigurandose', {});
     if(newData.Alert){
-      swal({ title: "Fase incompleta", text: newData.MensageAlert,  icon: "error" });
+      Swal.fire({ icon: 'error', title: 'Fase incompleta', text:  newData.MensageAlert })
       return;
     }
 

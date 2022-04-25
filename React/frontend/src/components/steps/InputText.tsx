@@ -2,6 +2,7 @@ import React, { Fragment, useState, useRef, useEffect, forwardRef, useImperative
 import { StepComponentProps } from '../Steps';
 import swal from "sweetalert";
 import Errorimage from "../../imgCards/Imagen.png"
+import Swal from "sweetalert2";
 
 const InputText = (props: StepComponentProps): JSX.Element => {
     //Donde guardamos el texto a codificar en QR
@@ -74,7 +75,7 @@ const InputText = (props: StepComponentProps): JSX.Element => {
     }
 
     const tutorialFase = () => {
-        swal({ title: "InputText", text: "En esta fase puedes configurar una constraseña que el jugador tiene que introducir para pasar a la siguiente, también puedes configurar una descripción para hacerle preguntas al jugador y que escriba la respuesta o para ayudarle a buscar en su entorno para descifrarla.", icon: Errorimage });
+        Swal.fire({title: 'InputText',text: "En esta fase puedes configurar una constraseña que el jugador tiene que introducir para pasar a la siguiente, también puedes configurar una descripción para hacerle preguntas al jugador y que escriba la respuesta o para ayudarle a buscar en su entorno para descifrarla.", icon: 'info'});
     }
 
     return (
