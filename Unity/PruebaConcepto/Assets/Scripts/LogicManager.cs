@@ -9,21 +9,24 @@ public class LogicManager : MonoBehaviour
 
     [SerializeField]
     Button hintButton;
-    [SerializeField]
-    Button nextPhaseButton;
 
     [SerializeField]
-    GameObject hintPanel;
+    ContinueButtonController continueButtonController;
 
     [SerializeField]
-    TextMeshProUGUI hintText;
+    HintController hintController;
+
+    [SerializeField]
+    LoadScreenController loadScreenController;
+
+    [SerializeField]
+    SuccessIconController successIconController;
 
     // Start is called before the first frame update
     void Start()
     {
-        nextPhaseButton.gameObject.SetActive(false);
-        hintButton.gameObject.SetActive(false);
-        hintPanel.SetActive(false);
+        //nextPhaseButton.gameObject.active = false;
+        hintButton.gameObject.active = false;
     }
 
 
@@ -37,30 +40,39 @@ public class LogicManager : MonoBehaviour
         hintButton.gameObject.SetActive(false);
     }
 
-    //Metodo que pide al gamemanager la información de la fase en la que nos encontramos y muestra la pista que tiene asociada
+    //Metodo que pide al gamemanager la informaciï¿½n de la fase en la que nos encontramos y muestra la pista que tiene asociada
     public void ShowHint()
     {
-        hintPanel.SetActive(true);
-        hintText.text = GameManager.GetInstance().GetCurrentStage().hint;
+        //hintText.text = GameManager.getInstance().getCurrentStage().hint;
+        hintController.ShowHint();
     }
 
     //Metodo que esconde el panel encargado de mostrar las pistas de cada fase
     public void HideHint()
     {
-        hintPanel.SetActive(false);
+        //hintPanel.active = false;
+    }
+
+    public void ShowCorrect(bool correct)
+    {
+        successIconController.showCorrect(correct);
     }
 
     //Metodo que tiene como objetivo mostrar el boton que te permite pasar a la siguiente fase
     public void PhaseCompleted()
     {
-        nextPhaseButton.gameObject.SetActive(true);
+        continueButtonController.Appear();
+    }
+
+    public void StartSceneTransition()
+    {
+        loadScreenController.StartSceneTransition();
     }
 
     //Metodo que esconde le boton que permite ir a la siguiente fase y avisa al gamemanager para que nos vayamos a la siguiente parte de la aventura
     public void ContinueToNextPhase()
     {
         GameManager.GetInstance().EndCurrentStage();
-        nextPhaseButton.gameObject.SetActive(false);
         GameManager.GetInstance().GoToNextPhase();
     }
 }

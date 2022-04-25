@@ -6,6 +6,7 @@ import Errorimage from "../../imgCards/Imagen.png"
 
 //@ts-ignore
 import ejemplo from "../../escopeta.mp3"
+import Swal from "sweetalert2";
 
 let path = "../../escopeta.mp3"
 
@@ -100,7 +101,7 @@ const Sound = (props: StepComponentProps): JSX.Element => {
 
 
   const tutorialFase = ()=>{
-    swal({ title: "Sound", text: "En esta fase puedes configurar un audio que el jugador va a tener que escuchar entero para poder completarla, puedes añadirlo para darle contexto en tu aventura o pedirle que busque un objeto que hace determinado sonido.",  icon: Errorimage });
+    Swal.fire({title: 'Sound',text: "En esta fase puedes configurar un audio que el jugador va a tener que escuchar entero para poder completarla, puedes añadirlo para darle contexto en tu aventura o pedirle que busque un objeto que hace determinado sonido.", icon: 'info'});
   }
 
 

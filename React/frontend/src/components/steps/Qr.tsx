@@ -4,6 +4,7 @@ import { StepComponentProps } from '../Steps';
 import '../Styles/QR.css'
 import swal from "sweetalert";
 import Errorimage from "../../imgCards/Imagen.png"
+import Swal from "sweetalert2";
 
 
 const QR = (props: StepComponentProps): JSX.Element => {
@@ -88,7 +89,7 @@ const QR = (props: StepComponentProps): JSX.Element => {
     }
  
     const tutorialFase = ()=>{
-        swal({ title: "QR", text: "En esta fase puedes introducir un texto para generar un QR, el cual el jugador tendrá que buscar y escanear con su cámara para completar esta fase.",  icon: Errorimage });
+        Swal.fire({title: 'QR',text: "En esta fase puedes introducir un texto para generar un QR, el cual el jugador tendrá que buscar y escanear con su cámara para completar esta fase.", icon: 'info'});
     }
 
     return (

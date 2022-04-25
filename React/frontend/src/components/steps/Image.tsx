@@ -4,6 +4,7 @@ import axios from "axios"
 import pic from "../../imgCards/Imagen.png";
 import swal from "sweetalert";
 import Errorimage from "../../imgCards/Imagen.png"
+import Swal from "sweetalert2";
 
 const Image = (props: StepComponentProps): JSX.Element => {
 
@@ -72,7 +73,7 @@ const Image = (props: StepComponentProps): JSX.Element => {
     }
 
     const tutorialFase = ()=>{
-        swal({ title: "Imagen", text: "En esta fase puedes mostrarle al jugador una imagen junto con una descripción para informarle sobre algo en su entorno o para dar contexto en tu aventura.",  icon: Errorimage });
+        Swal.fire({title: 'Imagen',text: "En esta fase puedes mostrarle al jugador una imagen junto con una descripción para informarle sobre algo en su entorno o para dar contexto en tu aventura.", icon: 'info'});
     }
 
 

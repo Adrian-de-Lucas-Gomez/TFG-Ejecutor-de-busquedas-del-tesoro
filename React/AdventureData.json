@@ -1,11 +1,15 @@
 {
-  "Gencana": "dfsg",
+  "Gencana": "Novale",
   "VuforiaKey": "",
   "fases": [
     {
-      "tipo": "SoundStage",
-      "Sonido": "0.mp3",
-      "description": "dgs",
+      "tipo": "QRStage",
+      "QRText": "dfbds",
+      "Pista": ""
+    },
+    {
+      "tipo": "QRStage",
+      "QRText": "sdaf",
       "Pista": ""
     }
   ]
