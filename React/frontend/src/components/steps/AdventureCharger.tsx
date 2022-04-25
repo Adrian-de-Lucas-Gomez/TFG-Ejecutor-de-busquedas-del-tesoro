@@ -3,6 +3,7 @@ import React, {useState, useRef, useEffect, forwardRef, useImperativeHandle} fro
 import axios from "axios"
 import AdventureCard from "./AdventureCard"
 import swal from "sweetalert";
+import Swal from 'sweetalert2'
 
 
 const AdventureCharger = (props: StepComponentProps): JSX.Element => {
@@ -12,9 +13,12 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
     //Lista de las aventuras que el server nos ha informado que existen y que podemos seleccionar y cargar
     const [aventurasDisponibles, setAventurasDisponibles] = useState<any>([]);
     const [aplicacionesDisponibles, setAplicacionesDisponibles] = useState<any>([]);
+    const [descripcionesAplicacionesDisponibles, setDescripcionesAplicacionesDisponibles] = useState<any>([]);
 
 
     const [aplicacionSubida, setAplicacionSubida]= useState<File | null >(null);
+
+    const [descripcionAventura, setDescripcionAventura] = useState<string >("");
 
     //Nada más empezar lo que hago es pedirle al server las aventuras que tenemos disponibles para cargar 
     useEffect(() => {
@@ -31,7 +35,11 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
         axios.get("./aplicacionesListas-guardadas").then (response => {
           //Seteamos las aventuras que tenemos disponibles a lo que nos ha dicho el server
           console.log("Las APKs son "+response.data.Opciones);
+          console.log("Las descripciones son "+response.data.Descripciones);
+
           setAplicacionesDisponibles(response.data.Opciones);
+          setDescripcionesAplicacionesDisponibles(response.data.Descripciones);
+
           //Ponemos el texto a una cosa u otra para informar al jugador de lo que se está seleccionando
           if(response.data.Opciones.length < 1){}
           else {
@@ -85,23 +93,6 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
     //Me guardo las fases que acabamos de conseguir tras cargar la aventura
     props.setState('DATA',fases, []);
   }
-
-//Métodos para alterar el índice de selección de aventura
-  const aumentarIndice = ():void =>{    
-    var result = indiceAventura;
-    result++;
-    if(result >= aventurasDisponibles.length) result = aventurasDisponibles.length-1;
-    if(result <0) result = 0;    
-    setIndiceAventura(result);
-    console.log("La aventura a la que apuntamos ahora es "+aventurasDisponibles[result]);
-  } 
-  const disminuirIndice = ():void =>{    
-    var result = indiceAventura;
-    result--;
-    if(result < 0) result = 0;    
-    setIndiceAventura(result);
-    console.log("La aventura a la que apuntamos ahora es "+aventurasDisponibles[result]);
-  } 
 
   const ponerACargar = async (index:number)=>{
     if(aventurasDisponibles.length <1 ){
@@ -180,55 +171,117 @@ const mandarAplicacion = async() =>{
   //SI no tenemos una apk lista para subir no hacemos nada
   if(!(aplicacionSubida instanceof File)) return;
 
+  let descripcionFinal ="";
+  //En caso de que todo haya ido bien PERO el usuario no haya descrito su aventura le avisamos de esto porque es obligatorio para el servidor
+  if(descripcionAventura===""){
+    let noHayDescripcion = await Swal.fire({ icon: 'info', title: 'Alerta', 
+    input: 'text',
+    inputAttributes: {
+      autocapitalize: 'off'
+    },
+    text:  "Antes de guardar tu aventura debes de añadir una pequeña descripción sobre esta para que futuros jugadores sepan a qué van a jugar antes de descargarsela"
+   });
+   console.log(noHayDescripcion.value);
+   if(noHayDescripcion.value === ""){
+     let result = await Swal.fire({title: 'Guardado cancelado',text: "No se puede guardar una apk sin descripción", icon: 'error'});
+     return;
+   }
+   descripcionFinal = noHayDescripcion.value;
+  }
+
+
   //Si el nombre del APK que nos han dado ya se encuentra entre las APKs del server, preguntamos al jugador de si quiere sobreescribir la APK existente
-  if(aplicacionesDisponibles.includes(aplicacionSubida.name)){
-    let respuesta = await swal("Alerta", {
-      text:"Ya existe una apk llamada "+aplicacionSubida.name+", ¿deseas sobreescribirla?",
-      icon: "info",  //success error info
-      buttons: ["Cancelar","Sobreescribir"]
+  if(aplicacionesDisponibles.includes(aplicacionSubida.name) || true){
+    let respuesta = await Swal.fire({ title: 'Alerta', text: "Ya existe una apk llamada "+aplicacionSubida.name+", ¿deseas sobreescribirla?", icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sobreescribir'
     });
     //En caso de que no quiera sobreescribir
-    if(!respuesta) return;
+    if(!respuesta.isConfirmed) return;
   }
+  
   //Le pasamos al server el APK que el usuario ha dado
   const formData = new FormData();
   formData.append("apk", aplicacionSubida as File, aplicacionSubida?.name);
   let result = await axios.post('/apk-upload', formData);
+  
+  var jsonFinal = descripcionFinal;
+  console.log("El nombre original es "+aplicacionSubida.name);
+  console.log("El nombre cortado es  "+(aplicacionSubida.name).substring(0, (aplicacionSubida.name).indexOf('.')));
+  console.log("Lo que voy a mandar es "+JSON.stringify({ json: jsonFinal , nombre: (aplicacionSubida.name).substring(0, (aplicacionSubida.name).indexOf('.'))}));
+  let result2 = await axios.post("./wtf-descripcion", { json: jsonFinal , nombre: (aplicacionSubida.name).substring(0, (aplicacionSubida.name).indexOf('.'))});
+}
+
+const testSWAL = async () => {  
+  // let noHayDescripcion = await swal("Alerta", {
+  //   text:"Antes de guardar tu aventura debes de añadir una pequeña descripción sobre esta para que futuros jugadores sepan a qué van a jugar antes de descargarsela",
+  //   icon: "info",  //success error info
+  //   input: "text"
+  // });
+  let a = await Swal.fire({
+    title: 'Sweet!',
+    text: 'Modal with a custom image.',
+    imageUrl: 'https://unsplash.it/400/200',
+    imageWidth: 400,
+    imageHeight: 200,
+    imageAlt: 'Custom image',
+  })
+
+  Swal.fire({
+    icon: 'error',
+    title: 'Oops...',
+    text: 'Something went wrong!'
+  })
 }
 
   return (
     <div className = "App" >
+
+    <button className="my-btn btn-outline-orange" style={{ fontSize: '170%' }} type="button" onClick={testSWAL}>  TEST  </button>
       <h1>Aplicaciones Hechas</h1>
       <h4>Guardar aventura en el servidor</h4>
+
+      {/* Seccion descripción de la aventura */}
+      {(aplicacionSubida!==null) && false ? 
+            <div className="App" style={{display: 'flex', justifyContent: 'center', verticalAlign:'true'}}>
+            <textarea style={{marginLeft:'0.5%' ,resize:"none", textAlign:"center"}} rows={3} cols={50} maxLength={100} onChange={(e) => {setDescripcionAventura(e.target.value)}} 
+            placeholder="Describe aquí la aventura que vas a subir para que futuros usuarios puedan a qué van a jugar" 
+                defaultValue={descripcionAventura}/>
+            </div>
+            : null }
+      {/* Seccion descripción de la aventura */}
+
       <input style={{fontSize:'150%'}} type="file" onChange={guardarAPKHecha} />
       <button className="my-btn btn-outline-orange" style={{ fontSize: '170%' }} type="button" onClick={mandarAplicacion}>  Guardar  </button>
 
       <br></br>
       <br></br>
 
+          <div >
+              {
+                //@ts-ignore 
+                aplicacionesDisponibles.map((faseActual,ind) => (
+                  <div>
+              <AdventureCard aventura = {faseActual} descripcion={descripcionesAplicacionesDisponibles[ind]} funcionCargar={descargarAventura} index={ind}></AdventureCard>
+              <br></br>
+              </div>
+            ))}
+          </div>
 
-        <div >
-            {
-          //@ts-ignore 
-          aplicacionesDisponibles.map((faseActual,ind) => (
-            <div>
-            <AdventureCard aventura = {faseActual} funcionCargar={descargarAventura} index={ind}></AdventureCard>
-            <br></br>
-            </div>
-          ))}
-        </div>
-
-        <h1>Aventuras disponibles para cargar</h1>
-        <div >
-            {
-          //@ts-ignore 
-          aventurasDisponibles.map((faseActual,ind) => (
-            <div>
-            <AdventureCard aventura = {faseActual} funcionCargar={ponerACargar} index={ind}></AdventureCard>
-            <br></br>
-            </div>
-          ))}
-        </div>
+          <h1>Aventuras disponibles para cargar</h1>
+          <div >
+              {
+                //@ts-ignore 
+                aventurasDisponibles.map((faseActual,ind) => (
+                  <div>
+              <AdventureCard aventura = {faseActual} descripcion="" funcionCargar={ponerACargar} index={ind}></AdventureCard>
+              <br></br>
+              </div>
+            ))}
+          </div>
       </div>
   );
 };

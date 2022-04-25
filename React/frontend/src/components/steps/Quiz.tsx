@@ -4,6 +4,7 @@ import '../Styles/Quiz.css'
 import { json } from 'stream/consumers';
 import swal from "sweetalert";
 import Errorimage from "../../imgCards/Imagen.png"
+import Swal from 'sweetalert2';
 
 const Quiz = (props: StepComponentProps): JSX.Element => {
 
@@ -109,7 +110,7 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
 
 
     const tutorialFase = ()=>{
-        swal({ title: "Quiz", text: "En esta fase puedes configurar un quiz que el jugador debe responder correctamente para completarla, debes de introducir al menos 2 respuestas posibles y pueden haber múltiples respuestas correctas, en cuyo caso el jugador debe de responder a todas correctamente",  icon: Errorimage });
+        Swal.fire({title: 'Quiz',text: "En esta fase puedes configurar un quiz que el jugador debe responder correctamente para completarla, debes de introducir al menos 2 respuestas posibles y pueden haber múltiples respuestas correctas, en cuyo caso el jugador debe de responder a todas correctamente", icon: 'info'});
     }
 
     return (
