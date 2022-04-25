@@ -74,7 +74,12 @@ public class QuizStage : Stage
         if (i == quizAnswers.Count)
         {
             print("Well Done");
-            GameManager.getInstance().StageCompleted();
+            GameManager.GetInstance().StageCompleted();
         }
+    }
+
+    public override void OnStageEnd()
+    {
+
     }
 }

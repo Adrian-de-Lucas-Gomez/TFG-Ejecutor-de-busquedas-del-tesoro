@@ -21,45 +21,46 @@ public class LogicManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        nextPhaseButton.gameObject.active = false;
-        hintButton.gameObject.active = false;
-        hintPanel.active = false;
+        nextPhaseButton.gameObject.SetActive(false);
+        hintButton.gameObject.SetActive(false);
+        hintPanel.SetActive(false);
     }
 
 
     public void EnableHints()
     {
-        hintButton.gameObject.active = true;
+        hintButton.gameObject.SetActive(true);
     }
 
     public void DisableHints()
     {
-        hintButton.gameObject.active = false;
+        hintButton.gameObject.SetActive(false);
     }
 
     //Metodo que pide al gamemanager la información de la fase en la que nos encontramos y muestra la pista que tiene asociada
     public void ShowHint()
     {
-        hintPanel.active = true;
-        hintText.text = GameManager.getInstance().GetCurrentStage().hint;
+        hintPanel.SetActive(true);
+        hintText.text = GameManager.GetInstance().GetCurrentStage().hint;
     }
 
     //Metodo que esconde el panel encargado de mostrar las pistas de cada fase
     public void HideHint()
     {
-        hintPanel.active = false;
+        hintPanel.SetActive(false);
     }
 
     //Metodo que tiene como objetivo mostrar el boton que te permite pasar a la siguiente fase
     public void PhaseCompleted()
     {
-        nextPhaseButton.gameObject.active = true;
+        nextPhaseButton.gameObject.SetActive(true);
     }
 
     //Metodo que esconde le boton que permite ir a la siguiente fase y avisa al gamemanager para que nos vayamos a la siguiente parte de la aventura
     public void ContinueToNextPhase()
     {
-        nextPhaseButton.gameObject.active = false;
-        GameManager.getInstance().GoToNextPhase();
+        GameManager.GetInstance().EndCurrentStage();
+        nextPhaseButton.gameObject.SetActive(false);
+        GameManager.GetInstance().GoToNextPhase();
     }
 }

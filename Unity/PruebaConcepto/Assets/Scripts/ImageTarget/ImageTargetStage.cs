@@ -88,11 +88,11 @@ public class ImageTargetStage : Stage
     {
         if (targetData.text != "") pannel.SetActive(true);
         else if (overlappingImage != null) sp.gameObject.SetActive(true);
-        GameManager.getInstance().StageCompleted();
+        GameManager.GetInstance().StageCompleted();
 
         //Temporal
         //TO DO: esto habría que hacerlo al dar al boton de continuar
-        StopTrackingTarget();
+        //StopTrackingTarget();
     }
 
     private void OnTargetLostAction()
@@ -123,6 +123,11 @@ public class ImageTargetStage : Stage
 
             }
         }
+    }
+
+    public override void OnStageEnd()
+    {
+        StopTrackingTarget();
     }
 
 }

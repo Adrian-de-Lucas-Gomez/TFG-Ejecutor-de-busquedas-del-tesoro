@@ -85,7 +85,7 @@ public class GPSStage : Stage
 
     private void FinaliceStage()
     {
-        GameManager.getInstance().StageCompleted();
+        GameManager.GetInstance().StageCompleted();
     }
 
     //Aqui comprobaríamos si nuestra posicion es suficientemente cercana al objetivo 
@@ -139,5 +139,10 @@ public class GPSStage : Stage
         float realDistance = 2 * Mathf.Asin(Mathf.Sqrt(haversine)) * 6371 * 1000;  //Lo queremos en metros no en kilometros
 
         return realDistance;  
+    }
+
+    public override void OnStageEnd()
+    {
+
     }
 }

@@ -1,8 +1,6 @@
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Vuforia;
@@ -50,7 +48,7 @@ public class GameManager : MonoBehaviour
     static GameManager _instance;
 
 
-    public static GameManager getInstance()
+    public static GameManager GetInstance()
     {
         return _instance;
     }
@@ -281,6 +279,11 @@ public class GameManager : MonoBehaviour
     public void StageCompleted()
     {
         logicManager.PhaseCompleted();
+    }
+
+    public void EndCurrentStage()
+    {
+        if(_currentStage != null)_currentStage.OnStageEnd();
     }
 
 
