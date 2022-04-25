@@ -25,7 +25,7 @@ public class HintController : MonoBehaviour
     //Metodo que pide al gamemanager la información de la fase en la que nos encontramos y muestra la pista que tiene asociada
     public void ShowHint()
     {
-        hintText.text = GameManager.getInstance().getCurrentStage().hint;
+        hintText.text = GameManager.GetInstance().GetCurrentStage().hint;
         hintAnimator.SetBool("Aparecer", true);
         hintAnimator.SetBool("Desaparecer", false);
     }

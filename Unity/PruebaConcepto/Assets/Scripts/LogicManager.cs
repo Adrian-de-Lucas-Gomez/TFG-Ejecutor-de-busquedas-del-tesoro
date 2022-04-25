@@ -68,11 +68,4 @@ public class LogicManager : MonoBehaviour
     {
         loadScreenController.StartSceneTransition();
     }
-
-    //Metodo que esconde le boton que permite ir a la siguiente fase y avisa al gamemanager para que nos vayamos a la siguiente parte de la aventura
-    public void ContinueToNextPhase()
-    {
-        GameManager.GetInstance().EndCurrentStage();
-        GameManager.GetInstance().GoToNextPhase();
-    }
 }
