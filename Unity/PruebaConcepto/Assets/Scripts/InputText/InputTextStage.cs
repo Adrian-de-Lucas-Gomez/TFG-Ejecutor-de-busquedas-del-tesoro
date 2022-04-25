@@ -37,14 +37,14 @@ public class InputTextStage : Stage
                 inputField.interactable = false;
                 info.color = Color.green;
                 info.text = "Código correcto, la respuesta era:"+answerObtained;
-                NextScene();
+                GameManager.GetInstance().StageCompleted();
             }
         }
     }
 
-    public void NextScene()
+    public override void OnStageEnd()
     {
-        GameManager.getInstance().StageCompleted();
+
     }
 
 }

@@ -1,0 +1,1 @@
+Directorio de las images que se van a superponer a los targets de Vuforia

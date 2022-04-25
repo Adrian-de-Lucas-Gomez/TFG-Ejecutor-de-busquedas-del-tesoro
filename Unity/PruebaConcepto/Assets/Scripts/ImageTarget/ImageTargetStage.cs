@@ -1,7 +1,6 @@
 using TMPro;
 using Vuforia;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Events;
 
 public class ImageTargetStage : Stage
@@ -13,33 +12,43 @@ public class ImageTargetStage : Stage
 
     private ObjectTracker objectTracker;
     private DataSet dataset;
+    private Sprite overlappingImage = null;
+    private SpriteRenderer sp;
 
     [SerializeField] GameObject pannel;
     [SerializeField] TextMeshProUGUI textInfo;
-    //[SerializeField] GameObject gO;
+    [SerializeField] SpriteRenderer overlappingImagePrefab;
 
-    private UnityEvent onFoundEvent;
+    private UnityEvent onFoundEvent = new UnityEvent();
+    private UnityEvent onLostEvent = new UnityEvent();
     public override void Init(AdventureInfo data)
     {
-        
-        onFoundEvent = new UnityEvent();
         targetData = (ImageTargetInfo)data;
 
         //Texto a mostrar cuando se encuentre el target
-        if (targetData.hasText)
+        if (targetData.text != "")
         {
             textInfo.text = targetData.text;
         }
         pannel.SetActive(false);
 
+        if (targetData.overlappingImage != "")
+            overlappingImage = Resources.Load<Sprite>("OverlappingImages/" + targetData.overlappingImage);
+        else overlappingImage = null;
+
         //Las imagenes deben de estar almacenadas en la carpeta StreamingAssets/Vuforia
         pathToTarget = "Vuforia/" + targetData.nombreTarget;
+       
+
+        GameObject g  = GameObject.Find("ImageTarget");
+        if (g != null) Destroy(g);
 
         VuforiaARController.Instance.RegisterVuforiaStartedCallback(CreateImageTargetFromSideloadedTexture);
     }
 
     private void CreateImageTargetFromSideloadedTexture()
     {
+        Debug.Log("Llamada a callback");
         objectTracker = TrackerManager.Instance.GetTracker<ObjectTracker>();
 
         // Coger en tiempo de ejecución la imagen y cargarla
@@ -48,17 +57,27 @@ public class ImageTargetStage : Stage
 
         // Creamos un nuevo dataset y usamos la imagen para crear un objeto trackable
         dataset = objectTracker.CreateDataSet();
-        DataSetTrackableBehaviour trackableBehaviour = dataset.CreateTrackable(runtimeImageSource, "ImageTarget"/*gO.gameObject*/);
+        DataSetTrackableBehaviour trackableBehaviour = dataset.CreateTrackable(runtimeImageSource, "ImageTarget");
 
         // Añadimos al objeto que acabamos de crear un DefaultTrackableEventHandler
         trackableHandler = trackableBehaviour.gameObject.AddComponent<DefaultTrackableEventHandler>();
         trackableHandler.StatusFilter = DefaultTrackableEventHandler.TrackingStatusFilter.Tracked;
 
         onFoundEvent.AddListener(OnTargetFoundAction);
+        onLostEvent.AddListener(OnTargetLostAction);
+        
         trackableHandler.OnTargetFound = onFoundEvent;
+        trackableHandler.OnTargetLost = onLostEvent;
 
         Debug.Log(trackableHandler);
         Debug.Log("Nombre del trackable handler: " + trackableHandler.gameObject.name);
+
+        if (overlappingImage != null)
+        {
+            sp = Instantiate(overlappingImagePrefab, trackableHandler.gameObject.transform);
+            sp.sprite = overlappingImage;
+            sp.gameObject.SetActive(false);
+        }
 
         // Activamos el dataset que acabamos de crear (y sobre el que hemos creado el nuevo target)
         objectTracker.ActivateDataSet(dataset);
@@ -67,21 +86,48 @@ public class ImageTargetStage : Stage
 
     private void OnTargetFoundAction()
     {
-        if (targetData.hasText) pannel.SetActive(true);
-        NextScene();
+        if (targetData.text != "") pannel.SetActive(true);
+        else if (overlappingImage != null) sp.gameObject.SetActive(true);
+        GameManager.GetInstance().StageCompleted();
+
+        //Temporal
+        //TO DO: esto habría que hacerlo al dar al boton de continuar
+        //StopTrackingTarget();
     }
 
-    public void NextScene()
+    private void OnTargetLostAction()
     {
-        //Debug.Log("A");
-        //objectTracker.Stop();
-        //objectTracker.DeactivateDataSet(dataset);
-        //Destroy(trackableHandler);
-        VuforiaARController.Instance.UnregisterVuforiaStartedCallback(CreateImageTargetFromSideloadedTexture);
-        GameManager.getInstance().StageCompleted();
-        //Debug.Log("d");
-        //TrackerManager.Instance.DeinitTracker<ObjectTracker>();
+        if (overlappingImage != null) sp.gameObject.SetActive(false);
+    }
 
+    private void StopTrackingTarget()
+    {
+        if (TrackerManager.Instance != null)
+        {
+            //Positional DeviceTracker
+            PositionalDeviceTracker posTracker = TrackerManager.Instance.GetTracker<PositionalDeviceTracker>();
+            if (posTracker != null) posTracker.Stop();
+
+            //Object Tracker
+            objectTracker = TrackerManager.Instance.GetTracker<ObjectTracker>();
+            if (objectTracker != null)
+            {
+                objectTracker.Stop();
+
+                if (dataset != null)
+                {
+                    objectTracker.DeactivateDataSet(dataset);
+                    dataset.DestroyAllTrackables(true);
+                    dataset = null;
+                }
+
+            }
+        }
+    }
+
+    public override void OnStageEnd()
+    {
+        StopTrackingTarget();
     }
 
 }

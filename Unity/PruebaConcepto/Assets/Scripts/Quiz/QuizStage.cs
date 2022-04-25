@@ -86,7 +86,12 @@ public class QuizStage : Stage
             }
 
             print("Well Done");
-            GameManager.getInstance().StageCompleted();
+            GameManager.GetInstance().StageCompleted();
         }
+    }
+
+    public override void OnStageEnd()
+    {
+
     }
 }

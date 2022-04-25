@@ -22,16 +22,23 @@ public class QRStage : Stage
 	{
         if (changeSceneRequest /*|| Input.GetMouseButtonDown(0) || Input.touchCount > 0*/)
         {
-            GameManager.getInstance().StageCompleted();
+            GameManager.GetInstance().StageCompleted();
             nextPanel.SetActive(true);
             changeSceneRequest = false;
         }
+
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            changeSceneRequest = true;
+        }
+#endif
     }
 
     public void MoveToNextPhase()
 	{
         //nextPanel.SetActive(false);
-        GameManager.getInstance().StageCompleted();
+        GameManager.GetInstance().StageCompleted();
     }
 
     public override void Init(AdventureInfo data)
@@ -50,4 +57,9 @@ public class QRStage : Stage
             changeSceneRequest = true;
         }
 	}
+
+    public override void OnStageEnd()
+    {
+
+    }
 }

@@ -110,6 +110,10 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
         finalTargetName = (contadorTargets.toString()) + (finalTargetName.substring(finalTargetName.indexOf('.')));
         //Cambiamos la fase para que el json tenga la referencia a esta
         faseActual.Target = finalTargetName;
+
+        if (faseActual.TargetType === "Image" && faseActual.OverlappingImage instanceof File) {
+          faseActual.OverlappingImage = contadorTargets.toString() + "_overlapping.png";
+        }
         contadorTargets++;
       }
       else if (faseActual.tipo === "SoundStage" && faseActual.Sonido instanceof File) {
@@ -144,6 +148,7 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
         var finalImageName = faseActual.Imagen.name;
         finalImageName = (contadorImagenes.toString()) + (finalImageName.substring(finalImageName.indexOf('.')));
         console.log("El nombre de la imagen es " + finalImageName);
+
         let result = await sendFileToServer('imageCharger', faseActual.Imagen, finalImageName, "./image-upload")
         contadorImagenes++
       }
@@ -151,11 +156,17 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
         var finalTargetName = faseActual.Target.name;
         finalTargetName = (contadorTargets.toString()) + (finalTargetName.substring(finalTargetName.indexOf('.')));
         let result = await sendFileToServer('unityPackage', faseActual.Target, finalTargetName, "./package-upload")
+
+        if (faseActual.TargetType === "Image" && faseActual.OverlappingImage instanceof File) {
+          console.log("Enviando una Overlapping Image");
+          result = await sendFileToServer("overlap", faseActual.OverlappingImage, contadorTargets.toString() + "_overlapping.png", "./overlapping_upload")
+        }
         contadorTargets++;
       }
       else if (faseActual.tipo === "SoundStage" && faseActual.Sonido instanceof File) {
         var finalSoundName = faseActual.Sonido.name;
         finalSoundName = (contadorSonidos.toString()) + (finalSoundName.substring(finalSoundName.indexOf('.')));
+
         let result = await sendFileToServer('sound', faseActual.Sonido, finalSoundName, "./sound-upload")
         contadorSonidos++;
       }

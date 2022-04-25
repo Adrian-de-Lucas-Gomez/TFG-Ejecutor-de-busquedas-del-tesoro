@@ -37,7 +37,11 @@ public class ImageStage : Stage
     public void NextScene()
     {
         print("You're done looking at the picture...");
-        GameManager.getInstance().StageCompleted();
+        GameManager.GetInstance().StageCompleted();
+    }
+    public override void OnStageEnd()
+    {
+
     }
 }
 

@@ -39,6 +39,7 @@ public class ContinueButtonController : MonoBehaviour
 
     public void Disappear()
     {
+        GameManager.GetInstance().EndCurrentStage();
         nextPhaseButton.interactable = false;
         nextPhaseButtonAnimator.SetBool("Aparecer", false);
         nextPhaseButtonAnimator.SetBool("Desaparecer", true);

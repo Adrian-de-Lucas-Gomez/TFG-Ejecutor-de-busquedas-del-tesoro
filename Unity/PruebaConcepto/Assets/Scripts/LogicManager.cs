@@ -32,15 +32,15 @@ public class LogicManager : MonoBehaviour
 
     public void EnableHints()
     {
-        hintButton.gameObject.active = true;
+        hintButton.gameObject.SetActive(true);
     }
 
     public void DisableHints()
     {
-        hintButton.gameObject.active = false;
+        hintButton.gameObject.SetActive(false);
     }
 
-    //Metodo que pide al gamemanager la información de la fase en la que nos encontramos y muestra la pista que tiene asociada
+    //Metodo que pide al gamemanager la informaciï¿½n de la fase en la que nos encontramos y muestra la pista que tiene asociada
     public void ShowHint()
     {
         //hintText.text = GameManager.getInstance().getCurrentStage().hint;
@@ -67,11 +67,5 @@ public class LogicManager : MonoBehaviour
     public void StartSceneTransition()
     {
         loadScreenController.StartSceneTransition();
-    }
-
-    //Metodo que esconde le boton que permite ir a la siguiente fase y avisa al gamemanager para que nos vayamos a la siguiente parte de la aventura
-    public void ContinueToNextPhase()
-    {
-        GameManager.getInstance().GoToNextPhase();
     }
 }

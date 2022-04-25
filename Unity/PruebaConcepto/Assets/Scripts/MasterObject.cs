@@ -69,8 +69,8 @@ public class MasterObject : MonoBehaviour , Listener
         //Por defecto desactivamos los objetos de esta escena
         sceneObjectsParent.SetActive(false);
 
-        GameManager.getInstance().AddListener(this);
-        Listen(GameManager.getInstance().getCurrentStageType());
+        GameManager.GetInstance().AddListener(this);
+        Listen(GameManager.GetInstance().GetCurrentStageType());
     }
 
     // Update is called once per frame
@@ -87,7 +87,7 @@ public class MasterObject : MonoBehaviour , Listener
         {
             sceneObjectsParent.SetActive(true);
             mySceneIsPlaying = true;
-            if (myStage != null) GameManager.getInstance().SetCurrentStage(myStage);
+            if (myStage != null) GameManager.GetInstance().SetCurrentStage(myStage);
         }
         //En caso de que estuvieramos jugando nuestra fase pero el gamemanager ya no indica que estamos en la nuestra, significa que nos la hemos
         //pasado y que tenemos que desactivar nuestros objetos

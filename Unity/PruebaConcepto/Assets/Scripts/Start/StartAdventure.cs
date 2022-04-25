@@ -18,12 +18,12 @@ public class StartAdventure : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        adventureNameText.text= GameManager.getInstance().getAdventureName();
+        adventureNameText.text= GameManager.GetInstance().GetAdventureName();
         Invoke("StartGame", tiempoEspera);
     }
 
     public void StartGame()
     {
-        GameManager.getInstance().StageCompleted();
+        GameManager.GetInstance().StageCompleted();
     }
 }

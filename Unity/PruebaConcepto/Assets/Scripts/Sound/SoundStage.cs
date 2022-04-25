@@ -53,7 +53,11 @@ public class SoundStage : Stage
 
     public void NextScene()
     {
-        GameManager.getInstance().StageCompleted();
+        GameManager.GetInstance().StageCompleted();
+    }
+    public override void OnStageEnd()
+    {
+
     }
 
 }
