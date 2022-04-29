@@ -117,7 +117,7 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
         <div>
             <div className="flex" style = {{display:"flex", flexDirection:"row", justifyContent:"center"  }}>
                 <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'200%'}} className="Titulo" >Configuración de fase Quiz</h3>
-                <button style={{width:"40px", height:"40px",textAlign:"center",verticalAlign:"center", background:"white", marginTop: "20px",marginRight:"2px",  color: "white", padding: "10px", borderRadius:"50%"}} type="button" className="btn" onClick={tutorialFase} >{"💡"}</button>
+                <button style={{width:"40px", height:"40px",textAlign:"center",verticalAlign:"center", background:"white", marginTop: "0.8%",marginLeft:"0.5%",  color: "white", padding: "10px", borderRadius:"50%"}} type="button" className="btn" onClick={tutorialFase} >{"💡"}</button>
             </div>
             
             <div className="center">
@@ -129,7 +129,7 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
 
             <form  style={{marginBottom:'1%'}} className="center" onSubmit={handleNewQuestion}>
                 <input placeholder="Respuesta posible..." className='input-text' type="text" size={60} required value={currAnswer} onChange={e =>setCurrAnswer(e.target.value)}></input>
-                <button style={{marginLeft:'0.3%'}} className="my-btn btn-outline-orange" type="submit">Añadir respuesta</button>
+                <button style={{marginLeft:'0.3%'}} className="my-btn btn-outline-dark3" type="submit">Añadir respuesta</button>
             </form>
 
             <div>
@@ -148,7 +148,7 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
             {/* Sªeccion pista */}
             {/* Boton para desplegar elementos para añadir una pista */}
             <form style={{textAlign:'center'}} onSubmit= {(e)=>{e.preventDefault(); setMostrarFormularioPista(!mostrarFormularioPista);}}>
-                <button type="submit" className="my-btn btn-outline-orange" style={{fontSize:'150%'}}>Añadir Pista</button>
+                <button type="submit" className="my-btn btn-outline-dark" style={{fontSize:'150%'}}>Añadir Pista</button>
             </form>
             {/* Seccion que aparece y desaparece para poder asignar una pista */}
             {mostrarFormularioPista ? 

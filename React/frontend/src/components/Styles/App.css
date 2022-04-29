@@ -28,12 +28,16 @@
   position: relative;
   text-align: center;
   font-size: 300%;
-  color: #7700ff;
+  color: #f4f4ff;
   font-weight: bold;
 }
 
 .App-link {
   color: #61dafb;
+}
+
+.Web-background {
+background-color: #2e4a57;
 }
 
 @keyframes App-logo-spin {

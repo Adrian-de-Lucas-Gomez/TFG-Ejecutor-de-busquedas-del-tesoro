@@ -82,7 +82,7 @@ const InputText = (props: StepComponentProps): JSX.Element => {
         <div>
             <div className="flex" style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
                 <h3 style={{ marginTop: '0.5%', marginBottom: '1%', fontSize: '200%' }} className="Titulo" >Configuración de fase InputText</h3>
-                <button style={{ width: "40px", height: "40px", textAlign: "center", verticalAlign: "center", background: "white", marginTop: "20px", marginRight: "2px", color: "white", padding: "10px", borderRadius: "50%" }} type="button" className="btn" onClick={tutorialFase} >{"💡"}</button>
+                <button style={{width:"40px", height:"40px",textAlign:"center",verticalAlign:"center", background:"white", marginTop: "0.8%",marginLeft:"0.5%",  color: "white", padding: "10px", borderRadius:"50%"}} type="button" className="btn" onClick={tutorialFase} >{"💡"}</button>
             </div>            <form className="center" style={{ marginBottom: '1%' }} onSubmit={e => e.preventDefault()}>
                 <text style={{ fontSize: '150%', marginRight: '0.5%' }} className='Titulo' >Descripción de la contraseña a encontrar:</text>
                 <input placeholder="Añada aqui la descripción..." className='input-text' type="text" size={60} required value={description} onChange={e => { setDescription(e.target.value); }}></input>
@@ -91,7 +91,7 @@ const InputText = (props: StepComponentProps): JSX.Element => {
             <form className="center" style={{ marginBottom: '1%' }} onSubmit={e => handleNewText(e)}>
                 <text style={{ fontSize: '150%', marginRight: '0.5%' }} className='Titulo' >Contraseña a encontrar:</text>
                 <input placeholder="Añada aqui la contraseña..." className='input-text' type="text" size={60} required value={currText} onChange={e => setCurrText(e.target.value)}></input>
-                <button style={{ marginLeft: '0.3%' }} className="my-btn btn-outline-orange" type="submit">Añadir contraseña</button>
+                <button style={{ marginLeft: '0.3%' }} className="my-btn btn-outline-dark3" type="submit">Añadir contraseña</button>
             </form>
 
             <h2 style={{ marginTop: '0.5%', marginBottom: '1%', fontSize: '180%' }} className="Titulo">Descripción actual: {description}</h2>
@@ -111,7 +111,7 @@ const InputText = (props: StepComponentProps): JSX.Element => {
             {/* Seccion pista */}
             {/* Boton para desplegar elementos para añadir una pista */}
             <form style={{ textAlign: 'center' }} onSubmit={(e) => { e.preventDefault(); setMostrarFormularioPista(!mostrarFormularioPista); }}>
-                <button type="submit" className="my-btn btn-outline-orange" style={{ fontSize: '150%' }}>Añadir Pista</button>
+                <button type="submit" className="my-btn btn-outline-dark" style={{fontSize: '150%' }}>Añadir Pista</button>
             </form>
             {/* Seccion que aparece y desaparece para poder asignar una pista */}
             {mostrarFormularioPista ?

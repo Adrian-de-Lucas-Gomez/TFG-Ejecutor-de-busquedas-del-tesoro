@@ -568,7 +568,7 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
       </head>
       <body className="bodyBackGround">
         {/* Grid configurado para que tenga un hoizontal layout que contiene tanto el selector de fase a configurar como el elemento para cargar una aventura desde fichero */}
-        <div className='orangeBackGround grid'>
+        <div className='bodyTopBackGround grid'>
           {/* Este es el selector con el que nos podemos mover entre escenas */}
           <div className="center">
             <p className="Titulo" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%'}}>Fases disponibles:</p>
@@ -582,11 +582,11 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
               <option value="InputTextStage">InputText</option>
               <option value="GPSStage">GPS</option>
             </select>
-            <button type="button" onClick={guardarFase} className="my-btn btn-outline-pink" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%', marginLeft:'2%'}}>Guardar fase</button>
+            <button type="button" onClick={guardarFase} className="my-btn btn-outline-dark" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%', marginLeft:'2%'}}>Guardar fase</button>
           </div>
           <div className="center">
-            <button value="AdventureCharger" onClick={BtnToStep} type="button" className="my-btn btn-outline-brown" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%'}}>Cargar aventura</button>
-            <button value="AdventureSummary" onClick={BtnToStep} type="button" className="my-btn btn-outline-green" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%', marginLeft:'10%'}}>Estado de aventura</button>
+            <button value="AdventureCharger" onClick={BtnToStep} type="button" className="my-btn btn-outline-dark" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%'}}>Cargar aventura</button>
+            <button value="AdventureSummary" onClick={BtnToStep} type="button" className="my-btn btn-outline-dark2" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%', marginLeft:'10%'}}>Estado de aventura</button>
           </div>
         </div>
 
@@ -594,18 +594,18 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
       con el que podemos configurar una de las fases que ya tengamos */}
         {/* Esta es la seccion que permite configurar la posicion de la siguiente fase que vayamos a incluir */}
         <div >
-          <h3  style={{fontSize:'150%',textAlign:"center"}} >Posicion de la siguiente fase en la aventura</h3>
+          <h3  className="Titulo" style={{fontSize:'200%'}} >Posicion de la siguiente fase en la aventura</h3>
           <div className="center">
             <div>
               <div>
-                <button className="my-btn btn-outline-red" style={{height:'1%',width:'130%', fontSize: '150%' }} data-testid='<'  onClick={DisminuirPosSiguienteFase}> {"⇧"} </button>
+                <button className="my-btn btn-outline-red" style={{height:'1%',width:'120%', fontSize: '140%' }} data-testid='<'  onClick={DisminuirPosSiguienteFase}> {"⇧"} </button>
               </div>
               <div>
-                <button className="my-btn btn-outline-red" style={{ height:'1%',width:'130%',fontSize: '150%' }} data-testid='>' onClick={AumentarPosSiguienteFase}> {"⇩"} </button>
+                <button className="my-btn btn-outline-red" style={{ height:'1%',width:'120%',fontSize: '140%' }} data-testid='>' onClick={AumentarPosSiguienteFase}> {"⇩"} </button>
               </div>
             </div>
-            <text className="Titulo"  style={{marginLeft:'1%',marginTop:'0.2%',fontSize:'250%'}}>{getState('WhereToPush', 0) + 1}º </text>
-            <text className="Titulo" style={{marginTop:'0.2%', fontSize:'250%'}}> {"/"+getState<any>('DATA', []).length}</text>
+            <text className="Titulo"  style={{marginLeft:'1%',marginTop:'0.5%',fontSize:'200%'}}>{getState('WhereToPush', 0) + 1}º </text>
+            <text className="Titulo" style={{marginTop:'0.5%', fontSize:'200%'}}> {"/"+getState<any>('DATA', []).length}</text>
           </div>
         </div>
 

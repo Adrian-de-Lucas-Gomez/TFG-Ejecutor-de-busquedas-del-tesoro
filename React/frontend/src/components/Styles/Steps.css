@@ -28,7 +28,18 @@
   }
 
   .bodyBackGround {
-    background-color: #c5efff;
+    background-color: #1e333a;
+    width: 90%;
+    margin: 0 auto;
+    border: 10px solid #518c96;
+    border-radius: 0.5%;
+    padding-bottom: 1%;
+  }
+
+  .bodyTopBackGround {
+    background-color: #112227;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
   }
 
   .nameForm {
@@ -36,18 +47,18 @@
     text-align: center;
     border-radius: 1%;
     font-size: 220%;
-    color: #7700ff;
+    color: #112227;
     font-weight: bold;
     background-color: #fcfce5;
  } 
 
  .mySelect {
   font-size: 120%;
-  color: rgb(119, 0, 255);
+  color: #112227;
   font-weight: bold;
   border: 2px solid transparent;
   border-radius: 5%;
-  border-color: blueviolet;
+  border-color: #518c96;
   background-color: #fcfce5;
 } 
 
@@ -58,8 +69,8 @@ input.btn-check{
 
 input.btn-check:focus{ outline-width: 0;}
 
-select:focus{ outline-style: groove; outline-color: aqua;}
-input:focus{ outline-style: groove; outline-color:blueviolet; outline-width: 3px;}
+select:focus{ outline-style: groove; outline-color: #518c96;}
+input:focus{ outline-style: groove; outline-color:#518c96; outline-width: 3px;}
 
 .my-btn {
   font-size: 120%;
@@ -92,7 +103,41 @@ input:focus{ outline-style: groove; outline-color:blueviolet; outline-width: 3px
   color: #fcfce5;
 }
 
+.btn-outline-dark {
+  border-color: #77c9d6;
+  color: #77c9d6;
+  font-weight: bold;
+  background-color: #25383f;
+}
 
+.btn-outline-dark:hover {
+  background-color: #77c9d6;
+  color: #000000;
+}
+
+.btn-outline-dark2 {
+  border-color: rgb(196, 209, 219);
+  color: rgb(196, 209, 219);
+  font-weight: bold;
+  background-color: #1c2c31;
+}
+
+.btn-outline-dark2:hover {
+  background-color: rgb(196, 209, 219);
+  color: #000000;
+}
+
+.btn-outline-dark3 {
+  border-color: #4d96a3;
+  color: #4d96a3;
+  font-weight: bold;
+  background-color: #1c2c31;
+}
+
+.btn-outline-dark3:hover {
+  background-color: #4d96a3;
+  color: #000000;
+}
 
 .btn-outline-green {
   border-color: #00B693;
@@ -131,7 +176,7 @@ input:focus{ outline-style: groove; outline-color:blueviolet; outline-width: 3px
   position: relative;
   border-radius: 1%;
   font-size: 125%;
-  color: #7700ff;
+  color: #1c2c31;
   background-color: #fcfce5;
 } 
 
