@@ -89,41 +89,50 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     console.log("Voy a intentar mandar el json");
     // //Una vez que tengo los datos de cada evento, preparo un JSON y lo descargo
     var datos = [];
-    let f = props.getState<any>('DATA', []);
+    let fasesDeLaAventura = props.getState<any>('DATA', []);      
+    //"Deep copy" de las fases de la aventura que pierde los archivos por el stringlify
+    //esta copia es necesaria porque fasesDeLaAventura es una referencia y si a la hora de preparar el json a mandar 
+    //quitamos los archivos estos tambien se perderan del "STATE"                
+    let copiaFasesAventuraSinArchivos = JSON.parse(JSON.stringify(fasesDeLaAventura));
+
+    //Contadores que voy atilizar para poner los nombres de cada uno de los archivos en el json a mandar
     let contadorImagenes = 0;
     let contadorTargets = 0;
     let contadorSonidos = 0;
 
-    for (let i = 0; i < f.length; i++) {
-      var faseActual = f[i];
+    for (let i = 0; i < copiaFasesAventuraSinArchivos.length; i++) {
+      var faseActual = copiaFasesAventuraSinArchivos[i];
       //En caso de que sea una fase de tipo imagen
-      if (faseActual.tipo === "ImageStage" && faseActual.Imagen instanceof File) {
+      if (fasesDeLaAventura[i].tipo === "ImageStage" && fasesDeLaAventura[i].Imagen instanceof File) {
         //El nombre de la imagen va a ser el orden de esta en la aventura mas su misma extension
-        var finalImageName = faseActual.Imagen.name;
+        var finalImageName = fasesDeLaAventura[i].Imagen.name;
         finalImageName = (contadorImagenes.toString()) + (finalImageName.substring(finalImageName.indexOf('.')));
         //Cambiamos la fase para que el json tenga la referencia a esta
         faseActual.Imagen = finalImageName;
         contadorImagenes++;
       }
-      else if (faseActual.tipo === "ImageTargetStage" && faseActual.Target instanceof File) {
-        var finalTargetName = faseActual.Target.name;
+      else if (fasesDeLaAventura[i].tipo === "ImageTargetStage" && fasesDeLaAventura[i].Target instanceof File) {
+        var finalTargetName = fasesDeLaAventura[i].Target.name;
         finalTargetName = (contadorTargets.toString()) + (finalTargetName.substring(finalTargetName.indexOf('.')));
         //Cambiamos la fase para que el json tenga la referencia a esta
         faseActual.Target = finalTargetName;
 
-        if (faseActual.TargetType === "Image" && faseActual.OverlappingImage instanceof File) {
+        if (fasesDeLaAventura[i].TargetType === "Image" && fasesDeLaAventura[i].OverlappingImage instanceof File) {
           faseActual.OverlappingImage = contadorTargets.toString() + "_overlapping.png";
         }
         contadorTargets++;
       }
-      else if (faseActual.tipo === "SoundStage" && faseActual.Sonido instanceof File) {
-        var finalSoundName = faseActual.Sonido.name;
+      else if (fasesDeLaAventura[i].tipo === "SoundStage" && fasesDeLaAventura[i].Sonido instanceof File) {
+        var finalSoundName = fasesDeLaAventura[i].Sonido.name;
         finalSoundName = (contadorSonidos.toString()) + (finalSoundName.substring(finalSoundName.indexOf('.')));
         //Cambiamos la fase para que el json tenga la referencia a esta
         faseActual.Sonido = finalSoundName;
         contadorSonidos++;
       }
       datos.push(faseActual);
+      console.log("El json completo es "+JSON.stringify(fasesDeLaAventura));
+      console.log("Pero lo que estamos formando es  "+ JSON.stringify(datos));
+
     }
     var jsonFinal = { Gencana: props.getState('adventureName', "Nombre por defecto"), VuforiaKey: props.getState('vuforiaKey', ''), fases: datos }
 
@@ -171,7 +180,7 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
         contadorSonidos++;
       }
     }
-    props.setState('DATA', fasesAventura, []);
+    //props.setState('DATA', fasesAventura, []);
   }
 
   //Metodo que comprueba si la key de vuforia es correcta
@@ -210,9 +219,7 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     }
 
     //En caso de que tengamos problemas con la clave de vuforia avisamos al usuario de esto
-    console.log("Hemos llegado hasta aqui");
     let keyVuforiaValida = await checkVuforiaKey();
-    console.log("lo de la key me da "+ keyVuforiaValida);
     if (keyVuforiaValida !== true) {
       let respuesta = await Swal.fire({title: "Clave de Vuforia incorrecta",text: "Inserte una clave de Vuforia válida para generar el proyecto", icon: 'error'});
       return;
@@ -232,12 +239,35 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
       if (!respuesta.isConfirmed) return;
     }
 
-    //Si no nos hemos ido del metodo lo que nos queda por hacer es limpiar el server, mandar todos los ficheros que componen nuestra aventura y solicitar el proyecto
+
+    //En caso de que todo haya ido bien PERO el usuario no haya descrito su aventura le avisamos de esto porque es obligatorio para el servidor
+  let descripcionFinal ="";
+  let noHayDescripcion = await Swal.fire({ icon: 'info', title: 'Alerta', 
+  input: 'text',
+  inputAttributes: {
+    autocapitalize: 'off'
+  },
+  text:  "Antes de guardar tu aventura debes de añadir una pequeña descripción sobre esta para que futuros jugadores sepan a qué van a jugar antes de descargarsela"
+  });
+  console.log(noHayDescripcion.value);
+  //Si aun avisandole no me ha dado ninguna descripcion cancelamos toda la operacion
+  if(noHayDescripcion.value === ""){
+    let result = await Swal.fire({title: 'Guardado cancelado',text: "No se puede guardar una apk sin descripción", icon: 'error'});
+    return;
+  }
+  descripcionFinal = noHayDescripcion.value;
+ 
+ 
+ 
+ //Si no nos hemos ido del metodo lo que nos queda por hacer es limpiar el server, mandar todos los ficheros que componen nuestra aventura y solicitar el proyecto
     let reset = await axios.get("./reset");
     await operacionesPreDescargaProyecto();
     await mandarJson();
     await axios.get("./guardame-aventura");
-
+    
+    //Una vez que se ha mandado todo se habran creado los directorio y todo asi que podemos mandar la descripcion para guardarla
+    var jsonFinal = { Descripcion: descripcionFinal, Nombre: nombreAventura };
+    let result = await axios.post("./wtf-descripcion", jsonFinal);
 
     Swal.fire({icon: 'success', title: 'Aventura guardada',})
   }

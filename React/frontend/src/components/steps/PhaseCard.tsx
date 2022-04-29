@@ -48,7 +48,7 @@ const PhaseCard = (props: {fase:any,funcionMofify:any, funcionDelete: any,funcio
 
         {/* Pista para el jugador */}
         <b>Pista de la fase</b>
-        <p>{miFase.Pista ==="" ? "Fase sin pista" : miFase.Pista }</p>
+        <p>{props.fase.Pista ==="" ? "Fase sin pista" : props.fase.Pista }</p>
 
         {/* Botones para modificar y borrar la fase que representa esta carta */}
         <button className = "my-btn btn-outline-brown" style={{textAlign:'center', marginTop:'1%', fontSize:'120%'}} onClick={()=>{props.funcionMofify(indice)}} data-testid='>' > Hacer Cambios </button>

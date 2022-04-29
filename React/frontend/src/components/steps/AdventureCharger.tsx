@@ -12,6 +12,8 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
     const [indiceAventura, setIndiceAventura] = useState<number>(0);
     //Lista de las aventuras que el server nos ha informado que existen y que podemos seleccionar y cargar
     const [aventurasDisponibles, setAventurasDisponibles] = useState<any>([]);
+    const [descripcionesAventurasDisponibles, setDescripcionesAventurasDisponibles] = useState<any>([]);
+
     const [aplicacionesDisponibles, setAplicacionesDisponibles] = useState<any>([]);
     const [descripcionesAplicacionesDisponibles, setDescripcionesAplicacionesDisponibles] = useState<any>([]);
 
@@ -26,6 +28,8 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
         //Seteamos las aventuras que tenemos disponibles a lo que nos ha dicho el server
         console.log("Las opciones son "+response.data.Opciones);
         setAventurasDisponibles(response.data.Opciones);
+        setDescripcionesAventurasDisponibles(response.data.Descripciones);
+        
         //Ponemos el texto a una cosa u otra para informar al jugador de lo que se está seleccionando
         if(response.data.Opciones.length < 1){}
         else {
@@ -277,7 +281,7 @@ const testSWAL = async () => {
                 //@ts-ignore 
                 aventurasDisponibles.map((faseActual,ind) => (
                   <div>
-              <AdventureCard aventura = {faseActual} descripcion="" funcionCargar={ponerACargar} index={ind}></AdventureCard>
+              <AdventureCard aventura = {faseActual} descripcion={descripcionesAventurasDisponibles[ind]} funcionCargar={ponerACargar} index={ind}></AdventureCard>
               <br></br>
               </div>
             ))}

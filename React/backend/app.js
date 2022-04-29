@@ -220,6 +220,17 @@ app.post('/wtf-json', function (request, res) {
   res.json({ key: "value" });
 });
 
+//Peticion que tiene como objetivo revibir los datos relacionados con una aventura y generar un json que los contenga en el servidor
+app.post('/wtf-descripcion', function (request, res) {
+  try {
+    //Creamos un fichero json en un directorio que no este bajo el control del server para evitar problemas
+    fs.writeFileSync('../BaseDeDatos/'+request.body.Nombre+'/descripcion.txt', request.body.Descripcion);
+  }
+  catch { console.log("An error ocurred getting the adventure description") }
+  console.log("The adventure description was succesfully recieved");
+  res.json({ key: "value" });
+});
+
 
 //Peticion que tiene como objetivo revibir los datos relacionados con una aventura y generar un json que los contenga en el servidor
 app.post('/wtf-descripcion', function (request, res) {
@@ -350,7 +361,17 @@ let directorios = ["Images", "Packages", "Sounds"];
 
 //Peticion para obtener los diferentes directorios dentro de la base de datos para poder luego decidir de cual reescribir la aventura
 app.get("/aventuras-guardadas", (req, res) => {
-  res.json({ Opciones: fs.readdirSync('../BaseDeDatos/') });
+  let nombresAventuras=fs.readdirSync('../BaseDeDatos/');
+  let descripcionesAventuras=[];
+  for(let i = 0 ; i< nombresAventuras.length;i++){
+    let dir = '../BaseDeDatos/'+nombresAventuras[i]+'/descripcion.txt';
+    var content = "Aventura sin descripcion";
+    if (fs.existsSync(dir)) { 
+      content = fs.readFileSync(dir, { encoding: 'utf8', flag: 'r' });
+    }
+    descripcionesAventuras.push(content);
+  }
+  res.json({ Opciones: nombresAventuras, Descripciones: descripcionesAventuras });
   }
 );
 

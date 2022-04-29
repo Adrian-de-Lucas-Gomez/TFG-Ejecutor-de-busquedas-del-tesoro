@@ -520,7 +520,7 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     let new_state = getState<any>('DATA', []);
     let sobreEscribir = getState<boolean>('SobreEscribir', false);
     //Preparo los datos que voy a añadir
-    let newData = getState<any>('faseConfigurandose', {});
+    let newData = getState<any>('faseConfigurandose', {Alert: true, MensageAlert: "No hay nada que guardar", datosFase: {}});
     if(newData.Alert){
       Swal.fire({ icon: 'error', title: 'Fase incompleta', text:  newData.MensageAlert })
       return;
@@ -543,6 +543,10 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     //Establezco que los datos de la aventura son aquellos que ya había y el nuevo que acabo de añadir
     setState('DATA',new_state,[]);
     setState<boolean>('SobreEscribir',false,false);
+
+    //Nos aseguramos que lo que se esta configurando ahora es lo que nos hemos cargado
+    let myData = {Alert: true, MensageAlert: "No hay nada que guardar", datosFase: {}};
+    setState<any>('faseConfigurandose',myData,{});
 
     //Importante aumentar el indice de donde estamos metiendo nuevos elementos a la aventura para que no 
     //se metan todos en la posicion X y que luego estén TODOS EN ORDEN INVERSO
