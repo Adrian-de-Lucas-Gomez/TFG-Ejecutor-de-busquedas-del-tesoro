@@ -244,9 +244,9 @@ const testSWAL = async () => {
   return (
     <div className = "App" >
 
-    <button className="my-btn btn-outline-orange" style={{ fontSize: '170%' }} type="button" onClick={testSWAL}>  TEST  </button>
-      <h1>Aplicaciones Hechas</h1>
-      <h4>Guardar aventura en el servidor</h4>
+    <button className="my-btn btn-outline-dark3" style={{ marginTop:"1%",fontSize: '170%' }} type="button" onClick={testSWAL}>  TEST  </button>
+      <h1 style={{color:"white"}}>Aplicaciones Hechas</h1>
+      <h4 style={{color:"white", fontSize:"120%"}}>Guardar aventura en el servidor</h4>
 
       {/* Seccion descripción de la aventura */}
       {(aplicacionSubida!==null) && false ? 
@@ -258,8 +258,8 @@ const testSWAL = async () => {
             : null }
       {/* Seccion descripción de la aventura */}
 
-      <input style={{fontSize:'150%'}} type="file" onChange={guardarAPKHecha} />
-      <button className="my-btn btn-outline-orange" style={{ fontSize: '170%' }} type="button" onClick={mandarAplicacion}>  Guardar  </button>
+      <input style={{fontSize:'150%', color:"white"}} type="file" onChange={guardarAPKHecha} />
+      <button className="my-btn btn-outline-dark" style={{ fontSize: '170%' }} type="button" onClick={mandarAplicacion}>  Guardar  </button>
 
       <br></br>
       <br></br>
@@ -275,7 +275,7 @@ const testSWAL = async () => {
             ))}
           </div>
 
-          <h1>Aventuras disponibles para cargar</h1>
+          <h1 style={{color:"white"}}>Aventuras disponibles para cargar</h1>
           <div >
               {
                 //@ts-ignore 

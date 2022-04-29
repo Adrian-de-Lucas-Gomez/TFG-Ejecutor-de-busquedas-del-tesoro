@@ -97,11 +97,11 @@ const InputText = (props: StepComponentProps): JSX.Element => {
             <h2 style={{ marginTop: '0.5%', marginBottom: '1%', fontSize: '180%' }} className="Titulo">Descripción actual: {description}</h2>
 
             <text style={{ fontSize: '150%', marginLeft: '20%' }} className='Titulo' >Contraseñas que permitiremos al usuario:</text>
-            <div>
+            <div style={{marginTop:'1%'}}>
                 {texts.map((txt: string, index: number) => (
                     <Fragment key={"Textos: " + index}>
                         <div>
-                            <button className="my-btn btn-outline-red" style={{ marginLeft: '5%' }} onClick={(): void => removeText(index)}>Borrar contraseña</button>
+                            <button className="my-btn btn-outline-red" style={{ marginLeft: '20%'}} onClick={(): void => removeText(index)}>Borrar contraseña</button>
                             <text className="Titulo" style={{ fontSize: '130%', marginLeft: '1%', textAlign: "left" }}>{txt + "\n"}</text>
                         </div>
                     </Fragment>

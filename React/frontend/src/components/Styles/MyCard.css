@@ -20,7 +20,7 @@ body {
 .card {
   overflow: hidden;
   width: 25%;
-  background-color: aliceblue;
+  background-color: #8dbbc4;
   box-shadow: 0 2px 20px #383838;
   border-radius: 0.2rem;
   display: flex;
@@ -47,17 +47,17 @@ body {
   }
 
   .card__btn {
-    width: 90%;
-    padding: 0.5rem;
+    width: 80%;
+    padding: 0.5%;
     margin: 1rem;
-    border: 2px solid #d50000;
+    border: 2px solid #1e333a;
     background: transparent;
-    color: #d50000;
+    color: #1e333a;
     border-radius: 0.2rem;
   }
 
   .card__btn:hover {
-    background: #d50000;
+    background: #2e4a57;
     color: #ffffff;
   }
 
