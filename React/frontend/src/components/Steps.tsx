@@ -570,8 +570,8 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
         {/* Grid configurado para que tenga un hoizontal layout que contiene tanto el selector de fase a configurar como el elemento para cargar una aventura desde fichero */}
         <div className='bodyTopBackGround grid'>
           {/* Este es el selector con el que nos podemos mover entre escenas */}
-          <div className="center">
-            <p className="Titulo" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%'}}>Fases disponibles:</p>
+          <div className="center"  style={{justifyContent:"left"}}>
+            <p className="Titulo" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%', marginLeft:"2%"}}>Fases disponibles:</p>
             <select className="mySelect" id="Selector" style={{marginTop:'1%', marginBottom:'1%', marginLeft:'1%'}} onChange={UpdateSelector} onSelect={UpdateSelector}>
               <option value="Crear fase..." hidden selected>Crear fase...</option>
               <option value="QR">QR</option>
@@ -584,9 +584,9 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
             </select>
             <button type="button" onClick={guardarFase} className="my-btn btn-outline-dark" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%', marginLeft:'2%'}}>Guardar fase</button>
           </div>
-          <div className="center">
+          <div className="center" style={{justifyContent:"right"}}>
             <button value="AdventureCharger" onClick={BtnToStep} type="button" className="my-btn btn-outline-dark" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%'}}>Cargar aventura</button>
-            <button value="AdventureSummary" onClick={BtnToStep} type="button" className="my-btn btn-outline-dark2" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%', marginLeft:'10%'}}>Estado de aventura</button>
+            <button value="AdventureSummary" onClick={BtnToStep} type="button" className="my-btn btn-outline-dark2" style={{fontSize:'150%',marginTop:'1%', marginBottom:'1%', marginLeft:'2%', marginRight:"2%"}}>Estado de aventura</button>
           </div>
         </div>
 
@@ -598,10 +598,10 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
           <div className="center">
             <div>
               <div>
-                <button className="my-btn btn-outline-red" style={{height:'1%',width:'120%', fontSize: '140%' }} data-testid='<'  onClick={DisminuirPosSiguienteFase}> {"⇧"} </button>
+                <button className="my-btn btn-outline-dark" style={{height:'1%',width:'120%', fontSize: '140%' }} data-testid='<'  onClick={DisminuirPosSiguienteFase}> {"⇧"} </button>
               </div>
               <div>
-                <button className="my-btn btn-outline-red" style={{ height:'1%',width:'120%',fontSize: '140%' }} data-testid='>' onClick={AumentarPosSiguienteFase}> {"⇩"} </button>
+                <button className="my-btn btn-outline-dark" style={{ height:'1%',width:'120%',fontSize: '140%' }} data-testid='>' onClick={AumentarPosSiguienteFase}> {"⇩"} </button>
               </div>
             </div>
             <text className="Titulo"  style={{marginLeft:'1%',marginTop:'0.5%',fontSize:'200%'}}>{getState('WhereToPush', 0) + 1}º </text>

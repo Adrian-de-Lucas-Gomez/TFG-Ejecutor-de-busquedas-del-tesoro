@@ -82,13 +82,13 @@ input:focus{ outline-style: groove; outline-color:#518c96; outline-width: 3px;}
 }
 
 .btn-outline-red {
-  border-color: #E30000;
-  color: #E30000;
+  border-color: #c00202;
+  color: #c00202;
   font-weight: bold;
 }
 
 .btn-outline-red:hover {
-  background-color: #E30000;
+  background-color: #c00202;
   color: #fcfce5;
 }
 

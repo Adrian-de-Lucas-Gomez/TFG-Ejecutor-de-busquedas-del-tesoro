@@ -106,7 +106,7 @@ const Image = (props: StepComponentProps): JSX.Element => {
             </form>
             {/* Seccion que aparece y desaparece para poder asignar una pista */}
             {mostrarFormularioPista ? 
-            <div className="App" style={{display: 'flex', justifyContent: 'center', verticalAlign:'true'}}>
+            <div className="App" style={{display: 'flex', marginTop:"1%", justifyContent: 'center', verticalAlign:'true'}}>
             <textarea style={{marginLeft:'0.5%' ,resize:"none", textAlign:"center"}} rows={3} cols={50} maxLength={100} onChange={(e) => {updatePista(e.target.value)}} placeholder="Pista que el jugador puede recibir" defaultValue={pista}/>
             </div>
             : null }
