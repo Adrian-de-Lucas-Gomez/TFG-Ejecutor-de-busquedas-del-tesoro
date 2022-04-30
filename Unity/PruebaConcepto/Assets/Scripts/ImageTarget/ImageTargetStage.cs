@@ -15,7 +15,6 @@ public class ImageTargetStage : Stage
     private Sprite overlappingImage = null;
     private SpriteRenderer sp;
     private TextMeshPro textMeshPro;
-    
 
     [SerializeField] SpriteRenderer overlappingImagePrefab;
     [SerializeField] TextMeshPro textPrefab;
