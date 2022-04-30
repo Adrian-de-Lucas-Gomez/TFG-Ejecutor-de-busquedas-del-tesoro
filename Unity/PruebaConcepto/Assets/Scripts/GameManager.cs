@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
 
     private Stage _currentStage = null;
 
-    private string _adventureName = "Gencana";
+    private string _adventureName = "Adventure";
 
 
     //Lista en la que se van a almacenar los tipos de fases que est�n involucradas en la aventura que vamos a jugar
@@ -96,7 +96,7 @@ public class GameManager : MonoBehaviour
 
         //Asignamos key de vuforia
         VuforiaConfiguration.Instance.Vuforia.LicenseKey = adventureData["VuforiaKey"].Value<string>();
-        _adventureName = adventureData["Gencana"].Value<string>();
+        _adventureName = adventureData["Adventure"].Value<string>();
 
         Debug.Log(VuforiaConfiguration.Instance.Vuforia.LicenseKey);
 

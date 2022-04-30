@@ -134,7 +134,7 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
       console.log("Pero lo que estamos formando es  "+ JSON.stringify(datos));
 
     }
-    var jsonFinal = { Gencana: props.getState('adventureName', "Nombre por defecto"), VuforiaKey: props.getState('vuforiaKey', ''), fases: datos }
+    var jsonFinal = { Adventure: props.getState('adventureName', "Nombre por defecto"), VuforiaKey: props.getState('vuforiaKey', ''), fases: datos }
 
     let result = await axios.post("./wtf-json", { json: JSON.stringify(jsonFinal, null, 2) });
     console.log("JSON MANDADO");

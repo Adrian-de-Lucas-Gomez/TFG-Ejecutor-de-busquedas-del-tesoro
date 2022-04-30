@@ -68,7 +68,7 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
 
     //Solicito el json de la aventura en cuestion
     const response = await axios.post("./dame-aventura", {json:JSON.stringify(jsonFinal, null, 2)});
-    props.setState('adventureName',JSON.parse(response.data.AventuraGuardada).Gencana, "Nombre por defecto");
+    props.setState('adventureName',JSON.parse(response.data.AventuraGuardada).Adventure, "Nombre por defecto");
     
     //Miro por el json para buscar las  imagenes que contiene la aventura
     var fases = JSON.parse(response.data.AventuraGuardada).fases;
@@ -108,7 +108,7 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
 
     //Solicito el json de la aventura en cuestion
     const response = await axios.post("./dame-aventura", {json:JSON.stringify(jsonFinal, null, 2)});
-    props.setState('adventureName',JSON.parse(response.data.AventuraGuardada).Gencana, "Nombre por defecto");
+    props.setState('adventureName',JSON.parse(response.data.AventuraGuardada).Adventure, "Nombre por defecto");
     
     //Miro por el json para buscar las  imagenes que contiene la aventura
     var fases = JSON.parse(response.data.AventuraGuardada).fases;
