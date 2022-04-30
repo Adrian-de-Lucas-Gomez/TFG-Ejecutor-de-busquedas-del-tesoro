@@ -14,23 +14,17 @@ public class ImageTargetStage : Stage
     private DataSet dataset;
     private Sprite overlappingImage = null;
     private SpriteRenderer sp;
+    private TextMeshPro textMeshPro;
+    
 
-    [SerializeField] GameObject pannel;
-    [SerializeField] TextMeshProUGUI textInfo;
     [SerializeField] SpriteRenderer overlappingImagePrefab;
+    [SerializeField] TextMeshPro textPrefab;
 
     private UnityEvent onFoundEvent = new UnityEvent();
     private UnityEvent onLostEvent = new UnityEvent();
     public override void Init(AdventureInfo data)
     {
         targetData = (ImageTargetInfo)data;
-
-        //Texto a mostrar cuando se encuentre el target
-        if (targetData.text != "")
-        {
-            textInfo.text = targetData.text;
-        }
-        pannel.SetActive(false);
 
         if (targetData.overlappingImage != "")
             overlappingImage = Resources.Load<Sprite>("OverlappingImages/" + targetData.overlappingImage);
@@ -39,7 +33,10 @@ public class ImageTargetStage : Stage
         //Las imagenes deben de estar almacenadas en la carpeta StreamingAssets/Vuforia
         pathToTarget = "Vuforia/" + targetData.nombreTarget;
        
-
+        //En caso de que se haya creado otra fase de image target antes que esta, se habrá quedado sin borrar el
+        //target anterior (y no se puede eliminar de otra forma porque hasta que no se desactiva por completo vuforia no
+        //puedes eliminar el objeto trackeado), por eso antes de volver a activar vuforia otra vez, buscamos dicho
+        //objeto y si existe lo eliminamos
         GameObject g  = GameObject.Find("ImageTarget");
         if (g != null) Destroy(g);
 
@@ -78,6 +75,12 @@ public class ImageTargetStage : Stage
             sp.sprite = overlappingImage;
             sp.gameObject.SetActive(false);
         }
+        else
+        {
+            textMeshPro = Instantiate(textPrefab, trackableHandler.gameObject.transform);
+            textMeshPro.text = targetData.text;
+            textMeshPro.gameObject.SetActive(false);
+        }
 
         // Activamos el dataset que acabamos de crear (y sobre el que hemos creado el nuevo target)
         objectTracker.ActivateDataSet(dataset);
@@ -86,18 +89,16 @@ public class ImageTargetStage : Stage
 
     private void OnTargetFoundAction()
     {
-        if (targetData.text != "") pannel.SetActive(true);
+        if (targetData.text != "") textMeshPro.gameObject.SetActive(true);
         else if (overlappingImage != null) sp.gameObject.SetActive(true);
-        GameManager.GetInstance().StageCompleted();
 
-        //Temporal
-        //TO DO: esto habría que hacerlo al dar al boton de continuar
-        //StopTrackingTarget();
+        GameManager.GetInstance().StageCompleted();
     }
 
     private void OnTargetLostAction()
     {
         if (overlappingImage != null) sp.gameObject.SetActive(false);
+        else if(targetData.text != "") textMeshPro.gameObject.SetActive(false);
     }
 
     private void StopTrackingTarget()

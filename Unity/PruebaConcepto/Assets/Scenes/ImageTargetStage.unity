@@ -288,10 +288,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c74825e0a8170b442bdb39abd1d2aeec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  overlappingImage: {fileID: 0}
   pannel: {fileID: 1090604839}
   textInfo: {fileID: 2053475441}
   overlappingImagePrefab: {fileID: 4175860550839462775, guid: ed4b049c84266004fa3d915fa4cacc7d,
+    type: 3}
+  textPrefab: {fileID: 8077970217185546996, guid: b640a2a844d8b6043b017b11d97da722,
     type: 3}
 --- !u!1 &1090604839
 GameObject:
