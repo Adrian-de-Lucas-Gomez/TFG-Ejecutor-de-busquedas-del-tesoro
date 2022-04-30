@@ -10,23 +10,23 @@ using UnityEngine.SceneManagement;
 
 public class QRScanner : MonoBehaviour
 {
-    [SerializeField] QRStage myQRStage;
-
     private PIXEL_FORMAT m_PixelFormat = PIXEL_FORMAT.GRAYSCALE;
     private bool m_RegisteredFormat = false;
 
     private bool reading;
-    private string QRMessage;
 
-
-    Thread qrThread;
     private Color32[] c;
     private int W, H;
     Image QCARoutput;
-    bool updC;
 
+    [SerializeField] float timeToScan = 1.0f;
+    private float timeElapsed = 0.0f;
 
-    void OnEnable()
+    private string QRvalueRead = "";
+    private bool isValueRead = false;
+    private BarcodeReader barcodeReader;
+
+    void Start()
     {
         VuforiaARController.Instance.RegisterTrackablesUpdatedCallback(OnTrackablesUpdated);
 
@@ -36,16 +36,10 @@ public class QRScanner : MonoBehaviour
             CameraDevice.Instance.SetFocusMode(CameraDevice.FocusMode.FOCUS_MODE_NORMAL);
         }
 
-        qrThread = new Thread(DecodeQR);
-        qrThread.Start();
+        barcodeReader = new BarcodeReader();
 
     }
 
-    void OnDisable()
-    {
-        qrThread.Abort();
-        qrThread = null;
-    }
     public void OnTrackablesUpdated()
     {
         Vuforia.CameraDevice cam = Vuforia.CameraDevice.Instance;
@@ -60,8 +54,6 @@ public class QRScanner : MonoBehaviour
         if (QCARoutput != null)
         {
             reading = true;
-
-            updC = true;
         }
         else
         {
@@ -72,28 +64,43 @@ public class QRScanner : MonoBehaviour
 
     void Update()
     {
-        if (reading)
+        //Actualizamos el contador
+        timeElapsed += Time.deltaTime;
+
+        //Si está activado el escaner, recibe señal de la cámara y es hora de escanear de nuevo accedemos
+        if (reading && QCARoutput != null && timeElapsed >= timeToScan)
         {
-            if (QCARoutput != null)
+            timeElapsed = 0.0f;
+                    
+            if (QCARoutput == null)
             {
-                if (updC)   //Si toca volver a tomar una muestra
+                return;
+            }
+            c = null;   
+            c = ImageToColor32(QCARoutput);
+
+            if (W == 0 | H == 0){ W = QCARoutput.BufferWidth; H = QCARoutput.BufferHeight; }
+                    
+            try
+            {
+                ZXing.Result result = barcodeReader.Decode(c, W, H);
+                c = null;
+                if (result != null)
                 {
-                    updC = false;
-                    Invoke("ForceUpdateC", 1f);     //Cada x tiempo volvemos a activar el tomar una muestra (tema de rendimiento)
-                    if (QCARoutput == null)
-                    {
-                        return;
-                    }
-                    c = null;
-                    c = ImageToColor32(QCARoutput);
-                    if (W == 0 | H == 0)
-                    {
-                        W = QCARoutput.BufferWidth;
-                        H = QCARoutput.BufferHeight;
-                    }
-                    QCARoutput = null;
+                    isValueRead = true;
+                    QRvalueRead = result.Text;
+                }
+                else
+                {
+                    isValueRead = false;
                 }
             }
+            catch (Exception e)
+            {
+                Debug.Log(e.Message);   //Siempre da aviso de el tamaño mayor que uno
+            }
+
+            QCARoutput = null;
         }
     }
 
@@ -108,39 +115,20 @@ public class QRScanner : MonoBehaviour
 
         return r;
     }
-    void DecodeQR()
+
+    public void EnableScanning(bool active)
     {
-        var barcodeReader = new BarcodeReader();
-        while (true)
-        {
-
-            if (reading && c != null)
-            {
-                try
-                {
-                    ZXing.Result result = barcodeReader.Decode(c, W, H);
-                    c = null;
-                    if (result != null)
-                    {
-                        QRMessage = result.Text;
-
-                        Debug.Log(QRMessage);
-
-                        myQRStage.checkQR(QRMessage);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Debug.Log(e.Message);   //Siempre da aviso de el tamaño mayor que uno
-                }
-            }
-
-        }
-    }
-    void ForceUpdateC()
-    {
-        updC = true;
+        reading = active;
     }
 
+    public string GetValueRead()
+    {
+        return QRvalueRead;
+    }
+
+    public bool GetIsValueRead()
+    {
+        return isValueRead;
+    }
 }
    

@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class QRStage : Stage
@@ -9,9 +11,15 @@ public class QRStage : Stage
 
     [SerializeField] GameObject nextPanel;
 
+    [SerializeField] TextMeshProUGUI QRValueText;
+
     QRInfo qrData;
     string qrValue;
     bool changeSceneRequest = false;
+
+    private Color correct = new Color(0.0f, 1.0f, 0.0f, 1.0f);
+    private Color error = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+    private Color neutral = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 
     private void Start()
     {
@@ -20,8 +28,9 @@ public class QRStage : Stage
 
 	private void Update()
 	{
-        if (changeSceneRequest /*|| Input.GetMouseButtonDown(0) || Input.touchCount > 0*/)
+        if (changeSceneRequest)
         {
+            scanner.EnableScanning(false);
             GameManager.GetInstance().StageCompleted();
             nextPanel.SetActive(true);
             changeSceneRequest = false;
@@ -33,6 +42,10 @@ public class QRStage : Stage
             changeSceneRequest = true;
         }
 #endif
+        //Si se ha detectado un codigo QR pasamos a comprobar si es el nuestro
+        if (scanner.GetIsValueRead()) checkQR(scanner.GetValueRead());
+
+        else SetQRTextValue("...", neutral);
     }
 
     public void MoveToNextPhase()
@@ -47,19 +60,40 @@ public class QRStage : Stage
         qrData = (QRInfo)data;
         qrValue = qrData.QRValue;
         changeSceneRequest = false;
+
+        SetQRTextValue("...", neutral);
+
+        scanner.EnableScanning(true);
     }
 
     public void checkQR(string qrMsg)
 	{
-		if (qrValue == qrMsg)
+        Debug.Log(qrMsg);
+
+        if (qrValue == qrMsg)
 		{
             Debug.Log("Well Done");
+            SetQRTextValue(qrMsg , correct);
             changeSceneRequest = true;
+        }
+        else
+        {
+            SetQRTextValue(qrMsg, error);
         }
 	}
 
+    private void SetQRTextValue(string value, Color color)
+    {
+        QRValueText.gameObject.SetActive(false);
+
+        QRValueText.text = value;
+        QRValueText.color = color;
+
+        QRValueText.gameObject.SetActive(true);
+    }
+
     public override void OnStageEnd()
     {
-
+        //Método por si necesitamos hacer algo al final de la fase
     }
 }
