@@ -40,6 +40,7 @@ public class HintController : MonoBehaviour
 
     public void Cheat()
     {
+        GameManager.GetInstance().SkippedPhase();
         logicManager.StartSceneTransition();
         HideHint();
     }

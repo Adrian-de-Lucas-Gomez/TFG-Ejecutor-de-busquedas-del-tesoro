@@ -26,6 +26,10 @@ public class GameManager : MonoBehaviour
 
     private string _adventureName = "Adventure";
 
+    private int _totalPhases = 0;
+
+    private int _skippedPhases = 0;
+
 
     //Lista en la que se van a almacenar los tipos de fases que est�n involucradas en la aventura que vamos a jugar
     List<string> scenesInvolved;
@@ -102,13 +106,14 @@ public class GameManager : MonoBehaviour
 
         //Voy a recorrer todas las fases que existan en este json
         JArray misFases = (JArray)adventureData["fases"];
+        _totalPhases = misFases.Count;
 
         //Preparamos las fases iniciales y finales
         AdventureInfo start = new AdventureInfo(); start.stage = "Start";
         AdventureInfo end = new AdventureInfo(); end.stage = "End";
 
         adventureStages.Enqueue(start);
-        for (int i = 0; i < misFases.Count; i++)
+        for (int i = 0; i < _totalPhases; i++)
         {
             //Por cada fase voy a preguntar por su tipo y voy a crearme un objeto que contenga su informacion
             switch (misFases[i]["tipo"].Value<string>())
@@ -468,4 +473,19 @@ public class GameManager : MonoBehaviour
         backgroundObject.SetActive(!vuforiaCameraActive);
         sceneMainCamera.SetActive(!vuforiaCameraActive);
     }
+
+    public void SkippedPhase()
+	{
+        _skippedPhases++;
+	}
+
+    public int GetSkippedPhases()
+	{
+        return _skippedPhases;
+	}
+
+    public int GetTotalPhases()
+	{
+        return _totalPhases;
+	}
 }
