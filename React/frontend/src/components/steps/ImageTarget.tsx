@@ -12,6 +12,9 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
         height: number
     }
 
+    //Max bytes de las imagenes
+    const maxBytesImg = 2097152; 
+
     //Imagen a usar como target de vuforia
     const [imageTarget, setImageTarget] = useState<File | null>(null);
     const [imageTargetSize, setImageTargetSize] = useState<ImageSize>({ width: 0, height: 0 });
@@ -45,7 +48,7 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
             props.setState<any>('faseConfigurandose', myData, {});
 
             //Cargamos el imageTarget
-            if (estadoACargar.Target instanceof File){
+            if (estadoACargar.Target instanceof File ){
                 console.log("UseEffect carga imagen")
                 setImageTarget(estadoACargar.Target);  
             } 
@@ -106,16 +109,17 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
         e.preventDefault();
         if (e.target.files?.item(0) instanceof File) {
             //Comprobamos si lo que nos han introducido en el formulario ha sido un fichero 
-            let name: string = e.target.files?.item(0)?.name as string;
+            let file: File | null = e.target.files?.item(0);
+            let name: string = file?.name as string;
             let filename: string[] = name.split('.') as string[]
             let extension: string = filename[filename?.length - 1]
-
-            if (extension === 'png' || extension === "jpg" || extension === "jpeg") {
+            e.target.name = "nu";
+            if ((extension === 'png' || extension === "jpg" || extension === "jpeg") && (file?.size ?? 0) <= maxBytesImg) {
                 console.log("Updated file")
-                setImageTarget(e.target.files?.item(0))
+                setImageTarget(file)
             }
             else
-                alert("Por favor introduce una imagen en formato png, jpg o jpeg")
+                Swal.fire({icon:"warning", title:"No se ha podido cargar la imagen",text:"Por favor introduce una imagen en formato png, jpg o jpeg con un tamaño máximo de 2MB."})
         }
         //Si no por defecto, asignamos el valor null
         else setImageTarget(null);
@@ -125,15 +129,16 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
         e.preventDefault();
         if (e.target.files?.item(0) instanceof File) {
             //Comprobamos si lo que nos han introducido en el formulario ha sido una imagen png 
-            let name: string = e.target.files?.item(0)?.name as string;
+            let file: File | null = e.target.files?.item(0);
+            let name: string = file?.name as string;
             let filename: string[] = name.split('.') as string[]
             let extension: string = filename[filename?.length - 1]
-            console.log(e.target.files?.item(0));
-            if (extension === 'png') {
-                setImageToAdd(e.target.files?.item(0));
+
+            if (extension === 'png' && (file?.size ?? 0) <= maxBytesImg) {
+                setImageToAdd(file);
             }
             else
-                alert("Por favor introduce una imagen en formato png");
+                Swal.fire({icon:"warning", title:"No se ha podido cargar la imagen",text:"Por favor introduce una imagen en formato png con un tamaño máximo de 2MB."})
         }
         else setImageToAdd(null);
 
@@ -156,17 +161,17 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
             </div>
 
             <div style={{ marginTop: '0.5%' }} className="content-modal center">
-                <img /*onLoad={e => setImageTargetSize({ width: , height:})} */src={imageTarget !== null ? window.URL.createObjectURL(imageTarget) : pic} />
+                <img style={{maxWidth:"50%"}} /*onLoad={e => setImageTargetSize({ width: , height:})} */src={imageTarget !== null ? window.URL.createObjectURL(imageTarget) : pic} />
             </div>
 
             <div>
-                <form style={{ textAlign: 'center', marginTop: '1%', marginBottom: '0.5%' }} onSubmit={e => { e.preventDefault() }}>
+                <form style={{ textAlign: 'center', marginTop: '1%', marginBottom: '1%' }} onSubmit={e => { e.preventDefault() }}>
                     <input style={{ fontSize: '150%' , color:"white"}} type="file" onChange={changeImageTarget} />
                 </form>
             </div>
 
-            <div className="center">
-                <select defaultValue={selectedItem} onChange={onSelectorChange}>
+            <div className="center" style={{marginBottom:"1%"}}>
+                <select className="mySelect" defaultValue={selectedItem} onChange={onSelectorChange}>
                     <option value="Image">Superponer imagen</option>
                     <option value="Text">Mostrar texto</option>
                 </select>
@@ -174,12 +179,12 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
 
             {selectedItem === 'Image' ?
                 <div>
-                    <div style={{ marginTop: '0.5%' }} className="content-modal center">
-                        <img src={imageToAdd !== null ? window.URL.createObjectURL(imageToAdd) : pic} />
+                    <div className="content-modal center">
+                        <img style={{maxWidth:"50%"}} src={imageToAdd !== null ? window.URL.createObjectURL(imageToAdd) : pic} />
                     </div>
 
                     <div>
-                        <form style={{ textAlign: 'center', marginTop: '1%', marginBottom: '0.5%' }} onSubmit={e => { e.preventDefault() }}>
+                        <form style={{ textAlign: 'center', marginTop: '1%'}} onSubmit={e => { e.preventDefault() }}>
                             <input style={{ fontSize: '150%', color:"white" }} type="file" onChange={changeImageToAdd} />
                         </form>
                     </div>
@@ -198,7 +203,7 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
             {/* Seccion pista */}
             {/* Boton para desplegar elementos para añadir una pista */}
             <form style={{ textAlign: 'center' }} onSubmit={(e) => { e.preventDefault(); setMostrarFormularioPista(!mostrarFormularioPista); }}>
-                <button type="submit" className="my-btn btn-outline-dark" style={{fontSize: '150%' }}>Añadir Pista</button>
+                <button type="submit" className="my-btn btn-outline-dark" style={{fontSize: '150%', marginTop:"0.5%" }}>Añadir Pista</button>
             </form>
             {/* Seccion que aparece y desaparece para poder asignar una pista */}
             {mostrarFormularioPista ?

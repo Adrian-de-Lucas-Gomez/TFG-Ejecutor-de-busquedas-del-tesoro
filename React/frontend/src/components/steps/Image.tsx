@@ -8,6 +8,9 @@ import Swal from "sweetalert2";
 
 const Image = (props: StepComponentProps): JSX.Element => {
 
+    //Max bytes de las imagenes
+    const maxBytesImg = 2097152;
+
     const [image, setImagen] = useState<File | null >(null);
     const [description, setdescription] = useState<string>("");
     type FormElement = React.FormEvent<HTMLFormElement>;
@@ -60,7 +63,18 @@ const Image = (props: StepComponentProps): JSX.Element => {
         //Comprobamos si lo que nos han introducido en el formulario ha sido un fichero
         //En principio el tipo del input debería garantizarlo 
         if (e.target.files?.item(0) instanceof File){
-            setImagen(e.target.files?.item(0))
+            let file: File | null = e.target.files?.item(0);
+            let name: string = file?.name as string;
+            let filename: string[] = name.split('.') as string[]
+            let extension: string = filename[filename?.length - 1]
+
+            if ((extension === 'png' || extension === "jpg" || extension === "jpeg") && (file?.size ?? 0) <= maxBytesImg) {
+                console.log("Updated file")
+                console.log(file?.size)
+                setImagen(file)
+            }
+            else
+                Swal.fire({icon:"warning", title:"No se ha podido cargar la imagen",text:"Por favor introduce una imagen en formato png, jpg o jpeg con un tamaño máximo de 2MB."})
         }
         //Si no por defecto, asignamos el valor null
         else {
@@ -86,7 +100,7 @@ const Image = (props: StepComponentProps): JSX.Element => {
 
 
             <div style={{marginTop:'0.5%'}} className="content-modal center">
-                <img  src= {image !==null ? window.URL.createObjectURL(image) : pic }/>   
+                <img style={{maxWidth:"50%"}} src= {image !==null ? window.URL.createObjectURL(image) : pic }/>   
             </div>
             <div>
                 <form style={{textAlign:'center',marginTop:'0.5%', marginBottom:'0.5%'}} onSubmit= { e =>{e.preventDefault()}}>
