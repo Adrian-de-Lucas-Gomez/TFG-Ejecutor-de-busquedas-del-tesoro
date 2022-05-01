@@ -73,11 +73,13 @@ public class QRStage : Stage
         if (qrValue == qrMsg)
 		{
             Debug.Log("Well Done");
+            GameManager.GetInstance().PlaySound("Correct");
             SetQRTextValue(qrMsg , correct);
             changeSceneRequest = true;
         }
         else
         {
+            GameManager.GetInstance().PlaySound("Incorrect");
             SetQRTextValue(qrMsg, error);
         }
 	}

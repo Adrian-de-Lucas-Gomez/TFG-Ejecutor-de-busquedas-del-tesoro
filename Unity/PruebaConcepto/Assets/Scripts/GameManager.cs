@@ -46,6 +46,9 @@ public class GameManager : MonoBehaviour
     LogicManager logicManager;
 
     [SerializeField]
+    SoundManager soundManager;
+
+    [SerializeField]
     GameObject backgroundObject;
   
 
@@ -270,6 +273,11 @@ public class GameManager : MonoBehaviour
     {
         logicManager.DisableHints();
     }
+
+    public void PlaySound(string soundName)
+	{
+        soundManager.SMPlaySound(soundName);
+	}
 
 
     /// <summary>

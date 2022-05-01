@@ -68,6 +68,7 @@ public class QuizStage : Stage
             if (panelAnswers.GetChild(i).GetComponent<QuizAnswer>().isAnswerSelected() != quizData.respuestas[i].isCorrect)
 			{
                 untoggleAll();
+                GameManager.GetInstance().PlaySound("Incorrect");
                 break;
             }
             i++;
@@ -86,6 +87,7 @@ public class QuizStage : Stage
             }
 
             print("Well Done");
+            GameManager.GetInstance().PlaySound("Correct");
             GameManager.GetInstance().StageCompleted();
         }
     }
