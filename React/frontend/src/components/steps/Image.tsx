@@ -73,8 +73,11 @@ const Image = (props: StepComponentProps): JSX.Element => {
                 console.log(file?.size)
                 setImagen(file)
             }
-            else
+            else{
+                e.target.value = "";
+                setImagen(null)
                 Swal.fire({icon:"warning", title:"No se ha podido cargar la imagen",text:"Por favor introduce una imagen en formato png, jpg o jpeg con un tamaño máximo de 2MB."})
+            }
         }
         //Si no por defecto, asignamos el valor null
         else {

@@ -118,8 +118,11 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
                 console.log("Updated file")
                 setImageTarget(file)
             }
-            else
+            else{
+                e.target.value = "";
+                setImageTarget(null)
                 Swal.fire({icon:"warning", title:"No se ha podido cargar la imagen",text:"Por favor introduce una imagen en formato png, jpg o jpeg con un tamaño máximo de 2MB."})
+            }  
         }
         //Si no por defecto, asignamos el valor null
         else setImageTarget(null);
@@ -137,8 +140,11 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
             if (extension === 'png' && (file?.size ?? 0) <= maxBytesImg) {
                 setImageToAdd(file);
             }
-            else
+            else{
+                e.target.value = "";
+                setImageToAdd(null)
                 Swal.fire({icon:"warning", title:"No se ha podido cargar la imagen",text:"Por favor introduce una imagen en formato png con un tamaño máximo de 2MB."})
+            }
         }
         else setImageToAdd(null);
 
@@ -161,7 +167,7 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
             </div>
 
             <div style={{ marginTop: '0.5%' }} className="content-modal center">
-                <img style={{maxWidth:"50%"}} /*onLoad={e => setImageTargetSize({ width: , height:})} */src={imageTarget !== null ? window.URL.createObjectURL(imageTarget) : pic} />
+                <img style={{maxWidth:"50%"}} src={imageTarget !== null ? window.URL.createObjectURL(imageTarget) : pic} />
             </div>
 
             <div>
