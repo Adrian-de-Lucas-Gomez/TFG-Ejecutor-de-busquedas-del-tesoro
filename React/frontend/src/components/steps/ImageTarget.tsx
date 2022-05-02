@@ -34,10 +34,11 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
     const [mostrarFormularioPista, setMostrarFormularioPista] = useState<boolean>(false);
     const [pista, setPista] = useState<string>("");
 
-    let fileResult: File | null;
+    let targetFileResult: File | null = null;
+    let imageFileResult: File | null = null;
 
     useEffect(() => {
-
+        console.log("EADFSA")
         //En caso de que haya que sobreescribir algo, me guardo que estamos sobreescribiendo y cargo 
         //los datos que ya había de esta fase      
         if (props.getState<boolean>('SobreEscribir', false)) {
@@ -53,7 +54,7 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
             //Cargamos el imageTarget
             if (estadoACargar.Target instanceof File ){
                 console.log("UseEffect carga imagen")
-                setImageTarget(estadoACargar.Target);  
+                changeImageTarget(estadoACargar.Target)
             } 
             else { 
                 console.log("Useffect no carga imagen ")
@@ -63,7 +64,8 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
             setSelectedItem(estadoACargar.TargetType);
 
             if(estadoACargar.TargetType === "Image"){
-                setImageToAdd(estadoACargar.OverlappingImage);
+                console.log("UseEffect carga imagen2")
+                changeImageToAdd(estadoACargar.OverlappingImage)
             }
             else{
                 setTextToShow(estadoACargar.Text);
@@ -110,10 +112,10 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
 
     //Cambio de imagen para usar como Target
     const changeImageTargetImage = (e: React.ChangeEvent<HTMLImageElement>): void => {
+        if(targetFileResult===null) return;
         e.preventDefault();
-
         setImageTargetSize(e.target)
-        setImageTarget(fileResult)
+        setImageTarget(targetFileResult)
     }
 
     const changeImageTargetInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -128,26 +130,31 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
             let img = document.getElementById("imageTarget") as HTMLImageElement
 
             if ((extension === 'png' || extension === "jpg" || extension === "jpeg") && (file?.size ?? 0) <= maxBytesImg) {
-                console.log("Updated file")
-                img.src = window.URL.createObjectURL(file as Blob)
-                fileResult = file
+                changeImageTarget(file)
             }
             else{
                 e.target.value = "";
                 img.src = pic
-                fileResult = null
+                targetFileResult = null
                 Swal.fire({icon:"warning", title:"No se ha podido cargar la imagen",text:"Por favor introduce una imagen en formato png, jpg o jpeg con un tamaño máximo de 2MB"})
             }  
         }
         //Si no por defecto, asignamos el valor null
-        else fileResult = null;
+        else targetFileResult = null;
+    }
+
+    const changeImageTarget = (file: File | null): void => {
+        console.log("Updated file")
+        let img = document.getElementById("imageTarget") as HTMLImageElement
+        img.src = window.URL.createObjectURL(file as Blob)
+        targetFileResult = file
     }
 
     const changeImageToAddImage = (e: React.ChangeEvent<HTMLImageElement>): void => {
+        if(imageFileResult===null) return;
         e.preventDefault();
-
         setImageToAddSize(e.target)
-        setImageToAdd(fileResult)
+        setImageToAdd(imageFileResult)
     }
 
     const changeImageToAddInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -162,19 +169,24 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
             let img = document.getElementById("imageToAdd") as HTMLImageElement
 
             if ((extension === 'png' || extension === "jpg" || extension === "jpeg") && (file?.size ?? 0) <= maxBytesImg) {
-                console.log("Updated file")
-                img.src = window.URL.createObjectURL(file as Blob)
-                fileResult = file
+                changeImageToAdd(file)
             }
             else{
                 e.target.value = "";
                 img.src = pic
-                fileResult = null
+                imageFileResult = null
                 Swal.fire({icon:"warning", title:"No se ha podido cargar la imagen",text:"Por favor introduce una imagen en formato png, jpg o jpeg con un tamaño máximo de 2MB"})
             }  
         }
         //Si no por defecto, asignamos el valor null
-        else fileResult = null;
+        else imageFileResult = null;
+    }
+
+    const changeImageToAdd = (file: File | null): void => {
+        console.log("Updated file")
+        let img = document.getElementById("imageToAdd") as HTMLImageElement
+        img.src = window.URL.createObjectURL(file as Blob)
+        imageFileResult = file
     }
 
     const updatePista = (nuevaPista: string) => {
