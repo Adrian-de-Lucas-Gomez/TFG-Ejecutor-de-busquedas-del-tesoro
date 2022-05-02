@@ -26,8 +26,15 @@ public class ImageTargetStage : Stage
         targetData = (ImageTargetInfo)data;
 
         if (targetData.overlappingImage != "")
+        {
             overlappingImage = Resources.Load<Sprite>("OverlappingImages/" + targetData.overlappingImage);
-        else overlappingImage = null;
+            VuforiaConfiguration.Instance.Vuforia.VirtualSceneScaleFactor = (20.0f / 3.0f) * ((float)overlappingImage.texture.width / (float) overlappingImage.pixelsPerUnit);
+        }
+        else
+        {
+            overlappingImage = null;
+            VuforiaConfiguration.Instance.Vuforia.VirtualSceneScaleFactor = 1.0f;
+        }
 
         //Las imagenes deben de estar almacenadas en la carpeta StreamingAssets/Vuforia
         pathToTarget = "Vuforia/" + targetData.nombreTarget;
@@ -128,6 +135,7 @@ public class ImageTargetStage : Stage
     public override void OnStageEnd()
     {
         StopTrackingTarget();
+        VuforiaConfiguration.Instance.Vuforia.VirtualSceneScaleFactor = 1.0f;
     }
 
 }
