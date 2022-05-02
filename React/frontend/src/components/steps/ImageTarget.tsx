@@ -4,6 +4,7 @@ import pic from "../../imgCards/Imagen.png";
 import swal from "sweetalert";
 import Errorimage from "../../imgCards/Imagen.png"
 import Swal from "sweetalert2";
+import { fileURLToPath } from "url";
 
 const ImageTarget = (props: StepComponentProps): JSX.Element => {
 
@@ -32,6 +33,8 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
 
     const [mostrarFormularioPista, setMostrarFormularioPista] = useState<boolean>(false);
     const [pista, setPista] = useState<string>("");
+
+    let fileResult: File | null;
 
     useEffect(() => {
 
@@ -73,17 +76,18 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
         //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
     }, [props.getState<boolean>('SobreEscribir', false)]);
 
-    //Hook que se llama cada vez que se modifica algo significativo de la fase para guardar lo que tengamos y que al darle a guardar los cambios se veab
+    //Hook que se llama cada vez que se modifica algo significativo de la fase para guardar lo que tengamos y que al darle a guardar los cambios se vean
     useEffect(() => {
         let jsonData;
         let myData;
+
         if (selectedItem === "Image") {
             jsonData = { tipo: "ImageTargetStage", Target: imageTarget, TargetType: selectedItem, OverlappingImage: imageToAdd, Pista: pista };
-            myData = { Alert: ((imageTarget === null) || (imageToAdd === null)), MensageAlert: "La fase debe tener una imagen cargada y en caso de querer superponer una imagen sobre el target, esta no puede ser nula", datosFase: jsonData };
+            myData = { Alert: ((imageTarget === null || imageToAdd === null) || (imageTargetSize.width!=imageToAddSize.width || imageTargetSize.height!=imageToAddSize.height)), MensageAlert: "La fase debe tener una imagen target cargada y en caso de querer superponer una imagen sobre el target, esta debe tener el mismo tamaño en pixeles y no puede ser nula", datosFase: jsonData };
         }
         else {
             jsonData = { tipo: "ImageTargetStage", Target: imageTarget, TargetType: selectedItem, Text: textToShow, Pista: pista };
-            myData = { Alert: ((imageTarget === null) || (textToShow === "")), MensageAlert: "La fase debe tener una imagen cargada y en caso de mostrar un texto, este no puede estar vacío", datosFase: jsonData };
+            myData = { Alert: ((imageTarget === null) || (textToShow === "")), MensageAlert: "La fase debe tener una imagen target cargada y en caso de mostrar un texto, este no puede estar vacío", datosFase: jsonData };
         }
 
         props.setState<any>('faseConfigurandose', myData, {});
@@ -105,49 +109,72 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
     }
 
     //Cambio de imagen para usar como Target
-    const changeImageTarget = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const changeImageTargetImage = (e: React.ChangeEvent<HTMLImageElement>): void => {
         e.preventDefault();
+
+        setImageTargetSize(e.target)
+        setImageTarget(fileResult)
+    }
+
+    const changeImageTargetInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        e.preventDefault();
+
         if (e.target.files?.item(0) instanceof File) {
             //Comprobamos si lo que nos han introducido en el formulario ha sido un fichero 
             let file: File | null = e.target.files?.item(0);
             let name: string = file?.name as string;
             let filename: string[] = name.split('.') as string[]
             let extension: string = filename[filename?.length - 1]
-            e.target.name = "nu";
+            let img = document.getElementById("imageTarget") as HTMLImageElement
+
             if ((extension === 'png' || extension === "jpg" || extension === "jpeg") && (file?.size ?? 0) <= maxBytesImg) {
                 console.log("Updated file")
-                setImageTarget(file)
+                img.src = window.URL.createObjectURL(file as Blob)
+                fileResult = file
             }
             else{
                 e.target.value = "";
-                setImageTarget(null)
-                Swal.fire({icon:"warning", title:"No se ha podido cargar la imagen",text:"Por favor introduce una imagen en formato png, jpg o jpeg con un tamaño máximo de 2MB."})
+                img.src = pic
+                fileResult = null
+                Swal.fire({icon:"warning", title:"No se ha podido cargar la imagen",text:"Por favor introduce una imagen en formato png, jpg o jpeg con un tamaño máximo de 2MB"})
             }  
         }
         //Si no por defecto, asignamos el valor null
-        else setImageTarget(null);
+        else fileResult = null;
     }
 
-    const changeImageToAdd = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const changeImageToAddImage = (e: React.ChangeEvent<HTMLImageElement>): void => {
         e.preventDefault();
+
+        setImageToAddSize(e.target)
+        setImageToAdd(fileResult)
+    }
+
+    const changeImageToAddInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        e.preventDefault();
+
         if (e.target.files?.item(0) instanceof File) {
-            //Comprobamos si lo que nos han introducido en el formulario ha sido una imagen png 
+            //Comprobamos si lo que nos han introducido en el formulario ha sido un fichero 
             let file: File | null = e.target.files?.item(0);
             let name: string = file?.name as string;
             let filename: string[] = name.split('.') as string[]
             let extension: string = filename[filename?.length - 1]
+            let img = document.getElementById("imageToAdd") as HTMLImageElement
 
-            if (extension === 'png' && (file?.size ?? 0) <= maxBytesImg) {
-                setImageToAdd(file);
+            if ((extension === 'png' || extension === "jpg" || extension === "jpeg") && (file?.size ?? 0) <= maxBytesImg) {
+                console.log("Updated file")
+                img.src = window.URL.createObjectURL(file as Blob)
+                fileResult = file
             }
             else{
                 e.target.value = "";
-                setImageToAdd(null)
-                Swal.fire({icon:"warning", title:"No se ha podido cargar la imagen",text:"Por favor introduce una imagen en formato png con un tamaño máximo de 2MB."})
-            }
+                img.src = pic
+                fileResult = null
+                Swal.fire({icon:"warning", title:"No se ha podido cargar la imagen",text:"Por favor introduce una imagen en formato png, jpg o jpeg con un tamaño máximo de 2MB"})
+            }  
         }
-        else setImageToAdd(null);
-
+        //Si no por defecto, asignamos el valor null
+        else fileResult = null;
     }
 
     const updatePista = (nuevaPista: string) => {
@@ -167,12 +194,12 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
             </div>
 
             <div style={{ marginTop: '0.5%' }} className="content-modal center">
-                <img style={{maxWidth:"50%"}} src={imageTarget !== null ? window.URL.createObjectURL(imageTarget) : pic} />
+                <img id="imageTarget" style={{maxWidth:"50%"}} src={pic} onLoad={changeImageTargetImage} />
             </div>
 
             <div>
                 <form style={{ textAlign: 'center', marginTop: '1%', marginBottom: '1%' }} onSubmit={e => { e.preventDefault() }}>
-                    <input style={{ fontSize: '150%' , color:"white"}} type="file" onChange={changeImageTarget} />
+                    <input style={{ fontSize: '150%' , color:"white"}} type="file" onChange={changeImageTargetInput} />
                 </form>
             </div>
 
@@ -186,12 +213,12 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
             {selectedItem === 'Image' ?
                 <div>
                     <div className="content-modal center">
-                        <img style={{maxWidth:"50%"}} src={imageToAdd !== null ? window.URL.createObjectURL(imageToAdd) : pic} />
+                        <img id="imageToAdd" style={{maxWidth:"50%"}} src={pic} onLoad={changeImageToAddImage} />
                     </div>
 
                     <div>
                         <form style={{ textAlign: 'center', marginTop: '1%'}} onSubmit={e => { e.preventDefault() }}>
-                            <input style={{ fontSize: '150%', color:"white" }} type="file" onChange={changeImageToAdd} />
+                            <input style={{ fontSize: '150%', color:"white" }} type="file" onChange={changeImageToAddInput} />
                         </form>
                     </div>
                 </div>

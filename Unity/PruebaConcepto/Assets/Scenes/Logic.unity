@@ -1629,6 +1629,7 @@ MonoBehaviour:
   sceneMainCamera: {fileID: 1289170864}
   vuforiaMainCamera: {fileID: 2061246792}
   logicManager: {fileID: 1323200919}
+  soundManager: {fileID: 2000717409}
   backgroundObject: {fileID: 772267070}
 --- !u!4 &1429632644
 Transform:
@@ -2260,7 +2261,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1941278928
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2274,7 +2275,7 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 205906639}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -27.479053}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -70.32333}
   m_AnchorMin: {x: 0.27614817, y: 0.35983333}
   m_AnchorMax: {x: 0.7075556, y: 0.592}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -2334,6 +2335,74 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1941278927}
   m_CullTransparentMesh: 1
+--- !u!1 &2000717408
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2000717410}
+  - component: {fileID: 2000717409}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2000717409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2000717408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 120fab17cb9020e42973f6de34a5ce61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: ButtonPress3
+    clip: {fileID: 8300000, guid: 45dd760e7266b434688409fe32085836, type: 3}
+    volume: 1
+    pitch: 3
+    loop: 0
+    source: {fileID: 0}
+  - name: Correct
+    clip: {fileID: 8300000, guid: a00a27dacfcc94b4abbe9ec734a8abea, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Incorrect
+    clip: {fileID: 8300000, guid: d6445601b65a5ac4391ea482c012820f, type: 3}
+    volume: 1
+    pitch: 0.5
+    loop: 0
+    source: {fileID: 0}
+  - name: ButtonPress2
+    clip: {fileID: 8300000, guid: 45dd760e7266b434688409fe32085836, type: 3}
+    volume: 1
+    pitch: 2
+    loop: 0
+    source: {fileID: 0}
+--- !u!4 &2000717410
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2000717408}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2037329334
 GameObject:
   m_ObjectHideFlags: 0

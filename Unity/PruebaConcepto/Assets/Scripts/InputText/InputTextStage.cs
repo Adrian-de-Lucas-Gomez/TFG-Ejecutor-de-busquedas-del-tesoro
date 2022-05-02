@@ -29,7 +29,8 @@ public class InputTextStage : Stage
 
     public void CheckCode()
     {
-        foreach(string possibleAnswer in inputTextData.respuestasPosibles)
+        GameManager.GetInstance().PlaySound("ButtonPress2");
+        foreach (string possibleAnswer in inputTextData.respuestasPosibles)
         {
             if (inputField.text.ToLower() == possibleAnswer.ToLower())
             {
@@ -37,9 +38,11 @@ public class InputTextStage : Stage
                 inputField.interactable = false;
                 info.color = Color.green;
                 info.text = "Código correcto, la respuesta era:"+answerObtained;
+                GameManager.GetInstance().PlaySound("Correct");
                 GameManager.GetInstance().StageCompleted();
             }
         }
+        GameManager.GetInstance().PlaySound("Incorrect");
     }
 
     public override void OnStageEnd()

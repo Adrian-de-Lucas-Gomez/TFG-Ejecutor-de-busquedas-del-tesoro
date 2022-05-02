@@ -70,7 +70,6 @@ const Image = (props: StepComponentProps): JSX.Element => {
 
             if ((extension === 'png' || extension === "jpg" || extension === "jpeg") && (file?.size ?? 0) <= maxBytesImg) {
                 console.log("Updated file")
-                console.log(file?.size)
                 setImagen(file)
             }
             else{
@@ -100,7 +99,6 @@ const Image = (props: StepComponentProps): JSX.Element => {
                 <h3 style={{marginTop:'0.5%',marginBottom:'1%',fontSize:'200%'}} className="Titulo" >Configuración de fase Image</h3>
                 <button style={{width:"40px", height:"40px",textAlign:"center",verticalAlign:"center", background:"white", marginTop: "0.8%",marginLeft:"0.5%",  color: "white", padding: "10px", borderRadius:"50%"}} type="button" className="btn" onClick={tutorialFase} >{"💡"}</button>
             </div>
-
 
             <div style={{marginTop:'0.5%'}} className="content-modal center">
                 <img style={{maxWidth:"50%"}} src= {image !==null ? window.URL.createObjectURL(image) : pic }/>   
