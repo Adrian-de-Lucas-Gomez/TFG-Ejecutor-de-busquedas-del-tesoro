@@ -38,7 +38,6 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
     let imageFileResult: File | null = null;
 
     useEffect(() => {
-        console.log("EADFSA")
         //En caso de que haya que sobreescribir algo, me guardo que estamos sobreescribiendo y cargo 
         //los datos que ya había de esta fase      
         if (props.getState<boolean>('SobreEscribir', false)) {
@@ -148,6 +147,7 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
         let img = document.getElementById("imageTarget") as HTMLImageElement
         img.src = window.URL.createObjectURL(file as Blob)
         targetFileResult = file
+        setImageTarget(targetFileResult)
     }
 
     const changeImageToAddImage = (e: React.ChangeEvent<HTMLImageElement>): void => {
@@ -187,6 +187,7 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
         let img = document.getElementById("imageToAdd") as HTMLImageElement
         img.src = window.URL.createObjectURL(file as Blob)
         imageFileResult = file
+        setImageToAdd(imageFileResult)
     }
 
     const updatePista = (nuevaPista: string) => {
