@@ -21,6 +21,8 @@ public class ImageTargetStage : Stage
 
     private UnityEvent onFoundEvent = new UnityEvent();
     private UnityEvent onLostEvent = new UnityEvent();
+    const float OVERLAPPING_SCALE_FACTOR = (20.0f / 3.0f);
+
     public override void Init(AdventureInfo data)
     {
         targetData = (ImageTargetInfo)data;
@@ -28,12 +30,12 @@ public class ImageTargetStage : Stage
         if (targetData.overlappingImage != "")
         {
             overlappingImage = Resources.Load<Sprite>("OverlappingImages/" + targetData.overlappingImage);
-            VuforiaConfiguration.Instance.Vuforia.VirtualSceneScaleFactor = (20.0f / 3.0f) * ((float)overlappingImage.texture.width / (float) overlappingImage.pixelsPerUnit);
+            VuforiaConfiguration.Instance.Vuforia.VirtualSceneScaleFactor = OVERLAPPING_SCALE_FACTOR * ((float)overlappingImage.texture.width / (float) overlappingImage.pixelsPerUnit);
         }
         else
         {
             overlappingImage = null;
-            VuforiaConfiguration.Instance.Vuforia.VirtualSceneScaleFactor = 1.0f;
+            VuforiaConfiguration.Instance.Vuforia.VirtualSceneScaleFactor = OVERLAPPING_SCALE_FACTOR * textPrefab.rectTransform.rect.width;
         }
 
         //Las imagenes deben de estar almacenadas en la carpeta StreamingAssets/Vuforia
