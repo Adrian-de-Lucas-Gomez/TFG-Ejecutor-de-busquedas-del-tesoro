@@ -21,11 +21,6 @@ public class QRStage : Stage
     private Color error = new Color(1.0f, 0.0f, 0.0f, 1.0f);
     private Color neutral = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 
-    private void Start()
-    {
-        //GameManager.getInstance().SetCurrentStage(this);
-    }
-
 	private void Update()
 	{
         if (changeSceneRequest)
@@ -36,12 +31,6 @@ public class QRStage : Stage
             changeSceneRequest = false;
         }
 
-#if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            changeSceneRequest = true;
-        }
-#endif
         //Si se ha detectado un codigo QR pasamos a comprobar si es el nuestro
         if (scanner.GetIsValueRead()) checkQR(scanner.GetValueRead());
 

@@ -61,11 +61,13 @@ public class LogicManager : MonoBehaviour
     //Metodo que tiene como objetivo mostrar el boton que te permite pasar a la siguiente fase
     public void PhaseCompleted()
     {
+        continueButtonController.gameObject.SetActive(true);
         continueButtonController.Appear();
     }
 
     public void StartSceneTransition()
     {
+        continueButtonController.gameObject.SetActive(false);
         loadScreenController.StartSceneTransition();
     }
 }
