@@ -113,7 +113,7 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
       }
       else if (fasesDeLaAventura[i].tipo === "ImageTargetStage" && fasesDeLaAventura[i].Target instanceof File) {
         var finalTargetName = fasesDeLaAventura[i].Target.name;
-        finalTargetName = (contadorTargets.toString()) + (finalTargetName.substring(finalTargetName.indexOf('.')));
+        finalTargetName = (contadorTargets.toString())+"RA" + (finalTargetName.substring(finalTargetName.indexOf('.')));
         //Cambiamos la fase para que el json tenga la referencia a esta
         faseActual.Target = finalTargetName;
 
@@ -163,7 +163,7 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
       }
       else if (faseActual.tipo === "ImageTargetStage" && faseActual.Target instanceof File) {
         var finalTargetName = faseActual.Target.name;
-        finalTargetName = (contadorTargets.toString()) + (finalTargetName.substring(finalTargetName.indexOf('.')));
+        finalTargetName = (contadorTargets.toString())+ "RA" + (finalTargetName.substring(finalTargetName.indexOf('.')));
         let result = await sendFileToServer('unityPackage', faseActual.Target, finalTargetName, "./package-upload")
 
         if (faseActual.TargetType === "Image" && faseActual.OverlappingImage instanceof File) {

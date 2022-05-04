@@ -26,16 +26,25 @@ public class QuizStage : Stage
 
         //Despliego las posibles respuestas por pantalla
 
+        untoggleAll();
         clearAnswers();
         displayPossibleAnswers();
     }
 
     private void clearAnswers()
 	{
+        //Ponemos el color de fondo por defecto 
+        for (int x = 0; x < quizData.respuestas.Count; x++)
+        {
+            panelAnswers.GetChild(x).GetComponent<QuizAnswer>().setDefaultColor();
+        }
+
+        //Las desactivamos
         foreach(Transform o in panelAnswers)
 		{
             o.gameObject.SetActive(false);
 		}
+
     }
 
     private void untoggleAll()

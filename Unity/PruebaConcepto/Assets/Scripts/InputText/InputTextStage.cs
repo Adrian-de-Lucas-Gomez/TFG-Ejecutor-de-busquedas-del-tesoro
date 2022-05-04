@@ -21,6 +21,10 @@ public class InputTextStage : Stage
 
     public override void Init(AdventureInfo data)
     {
+        inputField.interactable = true;
+        info.color = Color.white;
+        inputField.text = "";
+
         inputTextData = (InputTextInfo)data;
         info.text = inputTextData.descripcionFase;
 
@@ -30,6 +34,7 @@ public class InputTextStage : Stage
     public void CheckCode()
     {
         GameManager.GetInstance().PlaySound("ButtonPress2");
+        bool correct = false;
         foreach (string possibleAnswer in inputTextData.respuestasPosibles)
         {
             if (inputField.text.ToLower() == possibleAnswer.ToLower())
@@ -37,12 +42,14 @@ public class InputTextStage : Stage
                 answerObtained = inputField.text;
                 inputField.interactable = false;
                 info.color = Color.green;
-                info.text = "Código correcto, la respuesta era:"+answerObtained;
+                info.text = "Código correcto, la respuesta era: "+answerObtained;
                 GameManager.GetInstance().PlaySound("Correct");
                 GameManager.GetInstance().StageCompleted();
+                correct = true;
             }
         }
-        GameManager.GetInstance().PlaySound("Incorrect");
+
+        if(!correct) GameManager.GetInstance().PlaySound("Incorrect");
     }
 
     public override void OnStageEnd()

@@ -36,7 +36,7 @@ const PhaseCard = (props: {fase:any,funcionMofify:any, funcionDelete: any,funcio
 
       <div className="card__body">
           {/* Titulo */}
-        <h1 className="card__title">{props.fase.tipo}</h1>
+        <h1 className="card__title">{(props.index+1).toString()+"º : "+props.fase.tipo}</h1>
 
         {/* Parte que representa el text area para setear la pista de la fase a través de la carta */}
         {/* <b>Pista de la fase</b>

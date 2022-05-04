@@ -144,8 +144,8 @@ app.get("/generate-zip", (req, res)=>{
     console.log("Couldnt remove .zip from server");
   }
   // Le paso al comando el nombre del directorio que hace falta crear y usar para almacenar la aventura
-  //var command = "GeneraZip.bat";
-  var command = "bash GeneraZip.sh";
+  var command = "GeneraZip.bat";
+  //var command = "bash GeneraZip.sh";
   const execProcess = exec(command, { 'encoding': 'utf8' }, (error, stdout) => {});
   execProcess.on('exit', () => {
     console.log('exec process exit');
@@ -270,7 +270,7 @@ app.post('/wtf-descripcion', function (request, res) {
 //Peticion que recibe una aventura y crea un nuevo directorio en la base de datos para meter en este el json de esta y todos los ficheros involucrados
 app.get("/guardame-aventura", (req, res)=>{
   //Sacamos el nombre de la aventura y determinamos el directorio en el que vamos a guardar las cosas
-  var name = JSON.parse(aventuraActual).Gencana;
+  var name = JSON.parse(aventuraActual).Adventure;
   var dir = "../BaseDeDatos/" + name;
   try {
     //Si ya existe el directorio hace falta eliminar todo lo que tenga dentro, porque aunque los archivos con el mismo nombre se sobreescriban y no den problemas
@@ -291,6 +291,7 @@ app.get("/guardame-aventura", (req, res)=>{
       fs.mkdirSync(dir+"/Images");
       fs.mkdirSync(dir+"/Packages");
       fs.mkdirSync(dir+"/Sounds");
+      fs.mkdirSync(dir+"/OverlappingImages");
     }
   }
   catch { console.log("An error ocurred creating the directory: " + dir); }
@@ -331,6 +332,18 @@ app.get("/guardame-aventura", (req, res)=>{
 
   //Me quedo con el nombre de los archivos que hay en el directorio Images
   //Voy uno por uno para eliminarlos y que no metan ruido a la futura build, en caso de que hayan archivos que no se usen
+  filesToSave = fs.readdirSync('./OverlappingImages/');
+  for (var i = 0; i < filesToSave.length; i++) {
+    let nombreF = filesToSave[i];
+    try {
+      fs.copyFileSync('./OverlappingImages/' + filesToSave[i], '../BaseDeDatos/' + name + '/OverlappingImages/' + filesToSave[i]);
+    }
+    catch { console.log("An error ocurred copying a file:" + filesToSave[i]); }
+  }
+
+
+  //Me quedo con el nombre de los archivos que hay en el directorio Images
+  //Voy uno por uno para eliminarlos y que no metan ruido a la futura build, en caso de que hayan archivos que no se usen
   var filesToRemove = fs.readdirSync('./Images/');
   for (var i = 0; i < filesToRemove.length; i++) {
     //Si no es el readme, lo elimino del directorio
@@ -351,13 +364,7 @@ app.get("/guardame-aventura", (req, res)=>{
 });
 
 
-
-
-
-
-
-
-let directorios = ["Images", "Packages", "Sounds"];
+let directorios = ["Images", "Packages", "Sounds", "OverlappingImages"];
 
 //Peticion para obtener los diferentes directorios dentro de la base de datos para poder luego decidir de cual reescribir la aventura
 app.get("/aventuras-guardadas", (req, res) => {

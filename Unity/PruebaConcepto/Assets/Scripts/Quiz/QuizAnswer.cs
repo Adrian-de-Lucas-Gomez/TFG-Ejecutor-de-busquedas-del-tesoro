@@ -41,4 +41,10 @@ public class QuizAnswer : MonoBehaviour
 	{
         myBackgroundSelected.color = Color.green;
 	}
+
+    public void setDefaultColor()
+    {
+        myBackgroundSelected.color = Color.white;
+    }
+
 }

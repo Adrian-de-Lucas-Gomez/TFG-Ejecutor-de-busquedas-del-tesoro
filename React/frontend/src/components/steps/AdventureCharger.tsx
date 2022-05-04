@@ -130,7 +130,18 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
         let myData = faseActual;
         if(faseActual.tipo === "ImageStage")              myData.Imagen= new File([blob], fileName);
         else if(faseActual.tipo === "SoundStage")         myData.Sonido= new File([blob], fileName);
-        else if(faseActual.tipo === "ImageTargetStage")   myData.Target = new File([blob], fileName);
+        else if(faseActual.tipo === "ImageTargetStage"){   
+          myData.Target = new File([blob], fileName);
+
+          //SI es un image target con imagen secundaria hay que encima pedir dicha imagen secundaria
+          if(myData.TargetType === "Image"){
+            fileName=faseActual.OverlappingImage;
+            let reset = await axios.get("./getFile/"+fileName, {responseType: 'arraybuffer',headers: {'Content-Type': 'application/json'},params: {json:"JSON.stringify(jsonFinal, null, 2)"}});
+            const type = reset.headers['content-type']
+            const blob = new Blob([reset.data], { type: type })
+            myData.OverlappingImage = new File([blob], fileName);
+          }
+        }
         
         fases.splice(i,1,myData);
         console.log("Acabamos de recuperar un fichero: "+fileName);
