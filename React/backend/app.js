@@ -220,17 +220,6 @@ app.post('/wtf-json', function (request, res) {
   res.json({ key: "value" });
 });
 
-//Peticion que tiene como objetivo revibir los datos relacionados con una aventura y generar un json que los contenga en el servidor
-app.post('/wtf-descripcion', function (request, res) {
-  try {
-    //Creamos un fichero json en un directorio que no este bajo el control del server para evitar problemas
-    fs.writeFileSync('../BaseDeDatos/'+request.body.Nombre+'/descripcion.txt', request.body.Descripcion);
-  }
-  catch { console.log("An error ocurred getting the adventure description") }
-  console.log("The adventure description was succesfully recieved");
-  res.json({ key: "value" });
-});
-
 
 //Peticion que tiene como objetivo revibir los datos relacionados con una aventura y generar un json que los contenga en el servidor
 app.post('/wtf-descripcion', function (request, res) {

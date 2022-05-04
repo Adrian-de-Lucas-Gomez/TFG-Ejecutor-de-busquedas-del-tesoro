@@ -206,7 +206,7 @@ const mandarAplicacion = async() =>{
 
 
   //Si el nombre del APK que nos han dado ya se encuentra entre las APKs del server, preguntamos al jugador de si quiere sobreescribir la APK existente
-  if(aplicacionesDisponibles.includes(aplicacionSubida.name) || true){
+  if(aplicacionesDisponibles.includes(aplicacionSubida.name)){
     let respuesta = await Swal.fire({ title: 'Alerta', text: "Ya existe una apk llamada "+aplicacionSubida.name+", ¿deseas sobreescribirla?", icon: 'warning',
       showCancelButton: true,
       cancelButtonText: 'Cancelar',
