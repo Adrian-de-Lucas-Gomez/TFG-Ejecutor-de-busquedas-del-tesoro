@@ -433,16 +433,18 @@ app.get('/getFile/:name', function (req, res, next) {
 app.get("/aplicacionesListas-guardadas", (req, res) => {
 
   let listaAventuras= fs.readdirSync('../AplicacionesListas/');
+  let listaDirectoriosAventuras = [];
   let listaDescripciones = [];
 
   for(let i = 0; i<listaAventuras.length;i++){
     if(listaAventuras[i] !== "README.txt"){
       var content = fs.readFileSync('../AplicacionesListas/' + listaAventuras[i] + '/descripcion.txt', { encoding: 'utf8', flag: 'r' });
       listaDescripciones.push(content);
+      listaDirectoriosAventuras.push(listaAventuras[i]);
     }
   }
 
-  res.json({ Opciones: listaAventuras, Descripciones: listaDescripciones});
+  res.json({ Opciones: listaDirectoriosAventuras, Descripciones: listaDescripciones});
   }
 );
 
