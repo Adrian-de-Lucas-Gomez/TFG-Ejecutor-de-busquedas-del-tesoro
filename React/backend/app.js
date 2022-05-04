@@ -4,7 +4,7 @@ import multer from "multer"
 import path from "path"
 import { fileURLToPath } from 'url';
 import { exec, execFile, fork, spawn } from "child_process";
-import fs from "fs";
+import fs, { ReadStream } from "fs";
 
 
 
@@ -436,8 +436,10 @@ app.get("/aplicacionesListas-guardadas", (req, res) => {
   let listaDescripciones = [];
 
   for(let i = 0; i<listaAventuras.length;i++){
-    var content = fs.readFileSync('../AplicacionesListas/' + listaAventuras[i] + '/descripcion.txt', { encoding: 'utf8', flag: 'r' });
-    listaDescripciones.push(content);
+    if(listaAventuras[i] !== "README.txt"){
+      var content = fs.readFileSync('../AplicacionesListas/' + listaAventuras[i] + '/descripcion.txt', { encoding: 'utf8', flag: 'r' });
+      listaDescripciones.push(content);
+    }
   }
 
   res.json({ Opciones: listaAventuras, Descripciones: listaDescripciones});
