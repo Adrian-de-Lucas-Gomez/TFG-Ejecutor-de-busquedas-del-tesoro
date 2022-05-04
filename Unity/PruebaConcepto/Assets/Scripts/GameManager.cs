@@ -264,15 +264,15 @@ public class GameManager : MonoBehaviour
         return _adventureName;
     }
 
-    public void EnableHints()
-    {
-        logicManager.EnableHints();
-    }
+    //public void EnableHints()
+    //{
+    //    logicManager.EnableHints();
+    //}
 
-    public void DisableHints()
-    {
-        logicManager.DisableHints();
-    }
+    //public void DisableHints()
+    //{
+    //    logicManager.DisableHints();
+    //}
 
     public void PlaySound(string soundName)
 	{
@@ -312,8 +312,7 @@ public class GameManager : MonoBehaviour
         adventureStages.Dequeue();
 
         //Si nos vamos a una fase normal tenemos disponibles las pistas, en cambio si nos vamos a la del final ya no hay pistas
-        if (adventureStages.Peek().stage == "End") logicManager.DisableHints();
-        else logicManager.EnableHints();
+        logicManager.EnableHints(adventureStages.Peek());
 
 
         //Si cambiamos de escena nos preparamos para un posible cambio con respecto a AR o con escenas grandes

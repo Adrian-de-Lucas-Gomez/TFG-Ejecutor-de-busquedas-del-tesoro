@@ -22,7 +22,7 @@ public class GPSInfo : AdventureInfo
 
         //Ponemos la pista al valor que nos de el JSON y en caso de que sea un valor vacio le ponemos un valor por defecto nosotros
         string value = myInfo["Pista"].Value<string>();
-        if (value == "") hint = "Pista por defecto GPS";
+        if (value == "") hint = "Sin pista";
         else hint = value;
 
         //Obtengo los datos de coordenadas

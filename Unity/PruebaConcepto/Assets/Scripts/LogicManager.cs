@@ -16,6 +16,7 @@ public class LogicManager : MonoBehaviour
     [SerializeField]
     HintController hintController;
 
+
     [SerializeField]
     LoadScreenController loadScreenController;
 
@@ -30,14 +31,12 @@ public class LogicManager : MonoBehaviour
     }
 
 
-    public void EnableHints()
+    public void EnableHints(AdventureInfo currentPhase)
     {
-        hintButton.gameObject.SetActive(true);
-    }
-
-    public void DisableHints()
-    {
-        hintButton.gameObject.SetActive(false);
+        if (currentPhase.hint == "")
+            hintButton.gameObject.SetActive(false);
+        else
+            hintButton.gameObject.SetActive(true);
     }
 
     //Metodo que pide al gamemanager la informaci�n de la fase en la que nos encontramos y muestra la pista que tiene asociada
