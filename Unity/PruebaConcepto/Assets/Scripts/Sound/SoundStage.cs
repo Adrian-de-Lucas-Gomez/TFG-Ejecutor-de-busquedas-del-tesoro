@@ -36,7 +36,8 @@ public class SoundStage : Stage
     {
         //HEmos terminado de reproducir el audio
         if (audioStarted && !audioSource.isPlaying) {
-            audioSource.Pause();
+            audioStarted = false;
+            audioSource.Stop();
             NextScene();
         }
     }

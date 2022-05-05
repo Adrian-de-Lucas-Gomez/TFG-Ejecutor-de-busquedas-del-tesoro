@@ -11,6 +11,19 @@
       "Pista": " El QR decía “Soy todo un hacker”"
     },
     {
+      "tipo": "SoundStage",
+      "Sonido": "0.mp3",
+      "description": "Text",
+      "Pista": ""
+    },
+    {
+      "tipo": "ImageTargetStage",
+      "Target": "1.png",
+      "TargetType": "Text",
+      "Text": "Hola caracola que tal va esto cuando le meto 20 mil palabras",
+      "Pista": ""
+    },
+    {
       "tipo": "ImageStage",
       "Imagen": "0.png",
       "description": " ¿Sabes? Me han dicho que hace poco se han hecho una nueva tanda de títulos universitarios sin nombre. Y también me han contado que a alguien se le han olvidado por algún lado de la facultad. Si nos llevamos uno no creo nadie se de cuenta, ¡¡¡RÁPIDO!!! vamos antes de que alguien los encuentre y te quedes sin tu título universitario.",
@@ -25,13 +38,7 @@
       "Pista": " El QR decía “Soy todo un hacker”"
     },
 
-    {
-      "tipo": "ImageTargetStage",
-      "Target": "1.png",
-      "TargetType": "Text",
-      "Text": "Hola caracola que tal va esto cuando le meto 20 mil palabras",
-      "Pista": ""
-    },
+    
     {
       "tipo": "QRStage",
       "QRText": "Buenas tardes",
