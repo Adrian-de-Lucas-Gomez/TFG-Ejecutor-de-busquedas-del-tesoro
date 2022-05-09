@@ -15,6 +15,8 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
 
     //Max bytes de las imagenes
     const maxBytesImg = 2097152; 
+    //Min pixeles de ancho en el target
+    const minTargetWidth = 372;
 
     //Imagen a usar como target de vuforia
     const [imageTarget, setImageTarget] = useState<File | null>(null);
@@ -84,7 +86,7 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
 
         if (selectedItem === "Image") {
             jsonData = { tipo: "ImageTargetStage", Target: imageTarget, TargetType: selectedItem, OverlappingImage: imageToAdd, Pista: pista };
-            myData = { Alert: ((imageTarget === null || imageToAdd === null) || (imageTargetSize.width!=imageToAddSize.width || imageTargetSize.height!=imageToAddSize.height)), MensageAlert: "La fase debe tener una imagen target cargada y en caso de querer superponer una imagen sobre el target, esta debe tener el mismo tamaño en pixeles y no puede ser nula", datosFase: jsonData };
+            myData = { Alert: ((imageTarget === null || imageToAdd === null) || (imageTargetSize.width < minTargetWidth || imageTargetSize.width!=imageToAddSize.width || imageTargetSize.height!=imageToAddSize.height)), MensageAlert: "La fase debe tener una imagen target cargada de minimo "+minTargetWidth+" pixeles de ancho, y en caso de querer superponer una imagen sobre el target, esta debe tener el mismo tamaño en pixeles y no puede ser nula", datosFase: jsonData };
         }
         else {
             jsonData = { tipo: "ImageTargetStage", Target: imageTarget, TargetType: selectedItem, Text: textToShow, Pista: pista };
