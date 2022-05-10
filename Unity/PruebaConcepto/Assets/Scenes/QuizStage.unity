@@ -373,6 +373,50 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1989706742}
     m_Modifications:
+    - target: {fileID: 2467052871545520676, guid: 99c326b2112a7414ea6dc377c42278cc,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2467052871545520676, guid: 99c326b2112a7414ea6dc377c42278cc,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 153b32d696fb2054dab8f83437dc7622,
+        type: 2}
+    - target: {fileID: 2467052871545520676, guid: 99c326b2112a7414ea6dc377c42278cc,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -2464569221815454693, guid: 153b32d696fb2054dab8f83437dc7622,
+        type: 2}
+    - target: {fileID: 3669333587968387483, guid: 99c326b2112a7414ea6dc377c42278cc,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 56.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 3669333587968387483, guid: 99c326b2112a7414ea6dc377c42278cc,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 153b32d696fb2054dab8f83437dc7622,
+        type: 2}
+    - target: {fileID: 3669333587968387483, guid: 99c326b2112a7414ea6dc377c42278cc,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -2464569221815454693, guid: 153b32d696fb2054dab8f83437dc7622,
+        type: 2}
+    - target: {fileID: 4570497712655198271, guid: 99c326b2112a7414ea6dc377c42278cc,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.73986816
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070673152528627943, guid: 99c326b2112a7414ea6dc377c42278cc,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.036376953
+      objectReference: {fileID: 0}
     - target: {fileID: 6636796708580706452, guid: 99c326b2112a7414ea6dc377c42278cc,
         type: 3}
       propertyPath: m_Pivot.x
