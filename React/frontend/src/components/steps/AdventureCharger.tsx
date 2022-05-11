@@ -194,7 +194,6 @@ const guardarAPKHecha = async (e:React.ChangeEvent<HTMLInputElement>) => {
 const mandarAplicacion = async() =>{
   //SI no tenemos una apk lista para subir no hacemos nada
   if(!(aplicacionSubida instanceof File)) return;
-
   let filename: string[] = aplicacionSubida.name.split('.') as string[]
   //Si el nombre del APK que nos han dado ya se encuentra entre las APKs del server, preguntamos al jugador de si quiere sobreescribir la APK existente
   if(aplicacionesDisponibles.includes(filename[0])){
@@ -230,6 +229,7 @@ const mandarAplicacion = async() =>{
   //Le pasamos al server el APK que el usuario ha dado
   const formData = new FormData();
   formData.append("apk", aplicacionSubida as File, aplicacionSubida?.name);
+  Swal.fire({title: 'APK enviada',text: "El archivo ha sido enviado al servidor", icon: 'success'});
   let result = await axios.post('/apk-upload', formData);
   
   var jsonFinal = descripcionFinal;
@@ -262,9 +262,9 @@ const testSWAL = async () => {
 }
 
   return (
-    <div className = "App" >
+    <div className = "App" id='id0'>
 
-    <button className="my-btn btn-outline-dark3" style={{ marginTop:"1%",fontSize: '170%' }} type="button" onClick={testSWAL}>  TEST  </button>
+      <button className="my-btn btn-outline-dark3" style={{ marginTop:"1%",fontSize: '170%' }} type="button" onClick={testSWAL}>  TEST  </button>
       <h1 style={{color:"white"}}>Aplicaciones Hechas</h1>
       <h4 style={{color:"white", fontSize:"120%"}}>Guardar aventura en el servidor</h4>
 
@@ -284,29 +284,29 @@ const testSWAL = async () => {
       <br></br>
       <br></br>
 
-          <div >
-              {
-                //@ts-ignore 
-                aplicacionesDisponibles.map((faseActual,ind) => (
-                  <div>
-              <AdventureCard aventura = {faseActual} descripcion={descripcionesAplicacionesDisponibles[ind]} textoBoton={"Descargar APK"} funcionCargar={descargarAventura} index={ind}></AdventureCard>
-              <br></br>
-              </div>
-            ))}
+      <div>
+          {
+            //@ts-ignore 
+            aplicacionesDisponibles.map((faseActual,ind) => (
+              <div>
+          <AdventureCard aventura = {faseActual} descripcion={descripcionesAplicacionesDisponibles[ind]} textoBoton={"Descargar APK"} funcionCargar={descargarAventura} index={ind}></AdventureCard>
+          <br></br>
           </div>
-
-          <h1 style={{color:"white"}}>Aventuras disponibles para cargar</h1>
-          <div >
-              {
-                //@ts-ignore 
-                aventurasDisponibles.map((faseActual,ind) => (
-                  <div>
-              <AdventureCard aventura = {faseActual} descripcion={descripcionesAventurasDisponibles[ind]} textoBoton={"Cargar Aventura"} funcionCargar={ponerACargar} index={ind}></AdventureCard>
-              <br></br>
-              </div>
-            ))}
-          </div>
+        ))}
       </div>
+
+      <h1 style={{color:"white"}}>Aventuras disponibles para cargar</h1>
+      <div >
+          {
+            //@ts-ignore 
+            aventurasDisponibles.map((faseActual,ind) => (
+              <div>
+          <AdventureCard aventura = {faseActual} descripcion={descripcionesAventurasDisponibles[ind]} textoBoton={"Cargar Aventura"} funcionCargar={ponerACargar} index={ind}></AdventureCard>
+          <br></br>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 
