@@ -2,7 +2,6 @@ import { StepComponentProps } from '../Steps';
 import React, {useState, useRef, useEffect, forwardRef, useImperativeHandle} from "react"
 import axios from "axios"
 import AdventureCard from "./AdventureCard"
-import swal from "sweetalert";
 import Swal from 'sweetalert2'
 
 
@@ -36,20 +35,19 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
           setIndiceAventura(0);
         }})
 
-        axios.get("./aplicacionesListas-guardadas").then (response => {
-          //Seteamos las aventuras que tenemos disponibles a lo que nos ha dicho el server
-          console.log("Las APKs son "+response.data.Opciones);
-          console.log("Las descripciones son "+response.data.Descripciones);
+      axios.get("./aplicacionesListas-guardadas").then (response => {
+        //Seteamos las aventuras que tenemos disponibles a lo que nos ha dicho el server
+        console.log("Las APKs son "+response.data.Opciones);
+        console.log("Las descripciones son "+response.data.Descripciones);
 
-          setAplicacionesDisponibles(response.data.Opciones);
-          setDescripcionesAplicacionesDisponibles(response.data.Descripciones);
+        setAplicacionesDisponibles(response.data.Opciones);
+        setDescripcionesAplicacionesDisponibles(response.data.Descripciones);
 
-          //Ponemos el texto a una cosa u otra para informar al jugador de lo que se está seleccionando
-          if(response.data.Opciones.length < 1){}
-          else {
-            setIndiceAventura(0);
-          }})
-
+        //Ponemos el texto a una cosa u otra para informar al jugador de lo que se está seleccionando
+        if(response.data.Opciones.length < 1){}
+        else {
+          setIndiceAventura(0);
+        }})
 
         return () => {}
         //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
@@ -177,7 +175,18 @@ const descargarAventura = async (indice: number)=>{
 
 const guardarAPKHecha = async (e:React.ChangeEvent<HTMLInputElement>) => {  
   if (e.target.files?.item(0) instanceof File){
-    setAplicacionSubida( e.target.files?.item(0) as File)
+    let file: File | null = e.target.files?.item(0);
+    let name: string = file?.name as string;
+    let filename: string[] = name.split('.') as string[]
+    let extension: string = filename[filename?.length - 1]
+    if(extension == 'apk'){
+      setAplicacionSubida(file)
+    } 
+    else{
+      e.target.value = "";
+      Swal.fire({title: 'No se ha podido cargar el archivo',text: "El archivo debe tener extensión .apk", icon: 'warning'});
+      setAplicacionSubida(null);
+    }
   }
   else setAplicacionSubida(null);
 }
@@ -185,6 +194,20 @@ const guardarAPKHecha = async (e:React.ChangeEvent<HTMLInputElement>) => {
 const mandarAplicacion = async() =>{
   //SI no tenemos una apk lista para subir no hacemos nada
   if(!(aplicacionSubida instanceof File)) return;
+
+  let filename: string[] = aplicacionSubida.name.split('.') as string[]
+  //Si el nombre del APK que nos han dado ya se encuentra entre las APKs del server, preguntamos al jugador de si quiere sobreescribir la APK existente
+  if(aplicacionesDisponibles.includes(filename[0])){
+    let respuesta = await Swal.fire({ title: 'Alerta', text: "Ya existe una apk llamada "+filename[0]+", ¿deseas sobreescribirla?", icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sobreescribir'
+    });
+    //En caso de que no quiera sobreescribir
+    if(!respuesta.isConfirmed) return;
+  }
 
   let descripcionFinal ="";
   //En caso de que todo haya ido bien PERO el usuario no haya descrito su aventura le avisamos de esto porque es obligatorio para el servidor
@@ -202,20 +225,6 @@ const mandarAplicacion = async() =>{
      return;
    }
    descripcionFinal = noHayDescripcion.value;
-  }
-
-
-  //Si el nombre del APK que nos han dado ya se encuentra entre las APKs del server, preguntamos al jugador de si quiere sobreescribir la APK existente
-  if(aplicacionesDisponibles.includes(aplicacionSubida.name)){
-    let respuesta = await Swal.fire({ title: 'Alerta', text: "Ya existe una apk llamada "+aplicacionSubida.name+", ¿deseas sobreescribirla?", icon: 'warning',
-      showCancelButton: true,
-      cancelButtonText: 'Cancelar',
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sobreescribir'
-    });
-    //En caso de que no quiera sobreescribir
-    if(!respuesta.isConfirmed) return;
   }
   
   //Le pasamos al server el APK que el usuario ha dado
@@ -270,7 +279,7 @@ const testSWAL = async () => {
       {/* Seccion descripción de la aventura */}
 
       <input style={{fontSize:'150%', color:"white"}} type="file" onChange={guardarAPKHecha} />
-      <button className="my-btn btn-outline-dark" style={{ fontSize: '170%' }} type="button" onClick={mandarAplicacion}>  Guardar  </button>
+      <button className="my-btn btn-outline-dark" style={{ fontSize: '170%', marginLeft:'1%' }} type="button" onClick={mandarAplicacion}>  Guardar  </button>
 
       <br></br>
       <br></br>
@@ -280,7 +289,7 @@ const testSWAL = async () => {
                 //@ts-ignore 
                 aplicacionesDisponibles.map((faseActual,ind) => (
                   <div>
-              <AdventureCard aventura = {faseActual} descripcion={descripcionesAplicacionesDisponibles[ind]} funcionCargar={descargarAventura} index={ind}></AdventureCard>
+              <AdventureCard aventura = {faseActual} descripcion={descripcionesAplicacionesDisponibles[ind]} textoBoton={"Descargar APK"} funcionCargar={descargarAventura} index={ind}></AdventureCard>
               <br></br>
               </div>
             ))}
@@ -292,7 +301,7 @@ const testSWAL = async () => {
                 //@ts-ignore 
                 aventurasDisponibles.map((faseActual,ind) => (
                   <div>
-              <AdventureCard aventura = {faseActual} descripcion={descripcionesAventurasDisponibles[ind]} funcionCargar={ponerACargar} index={ind}></AdventureCard>
+              <AdventureCard aventura = {faseActual} descripcion={descripcionesAventurasDisponibles[ind]} textoBoton={"Cargar Aventura"} funcionCargar={ponerACargar} index={ind}></AdventureCard>
               <br></br>
               </div>
             ))}
