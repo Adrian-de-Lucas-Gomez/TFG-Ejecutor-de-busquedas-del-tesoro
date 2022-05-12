@@ -17,7 +17,7 @@ public class BuildScript : MonoBehaviour
 			scenes[i] = UnityEngine.SceneManagement.SceneUtility.GetScenePathByBuildIndex(i);
 		}
 		buildPlayerOptions.scenes = scenes;
-        buildPlayerOptions.locationPathName = "Builds/AndroidBuild.apk";
+        buildPlayerOptions.locationPathName = "Builds/" + Application.productName + ".apk";
         buildPlayerOptions.target = BuildTarget.Android;
         buildPlayerOptions.options = BuildOptions.None;
 
