@@ -21,8 +21,11 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
 
     const [descripcionAventura, setDescripcionAventura] = useState<string >("");
 
+    const [refresh , setRefresh] = useState<boolean >(false);
+
     //Nada más empezar lo que hago es pedirle al server las aventuras que tenemos disponibles para cargar 
     useEffect(() => {
+      console.log("Pantalla de opciones en ele server REFRESH")
       axios.get("./aventuras-guardadas").then (response => {
         //Seteamos las aventuras que tenemos disponibles a lo que nos ha dicho el server
         console.log("Las opciones son "+response.data.Opciones);
@@ -51,7 +54,7 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
 
         return () => {}
         //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
-      }, []);
+      }, [refresh]);
 
 
   //Método que mira la aventura que estamos seleccionando en cada momento y le pide al server que nos la de
@@ -237,34 +240,12 @@ const mandarAplicacion = async() =>{
   console.log("El nombre cortado es  "+(aplicacionSubida.name).substring(0, (aplicacionSubida.name).indexOf('.')));
   console.log("Lo que voy a mandar es "+JSON.stringify({ json: jsonFinal , nombre: (aplicacionSubida.name).substring(0, (aplicacionSubida.name).indexOf('.'))}));
   let result2 = await axios.post("./wtf-descripcion", { json: jsonFinal , nombre: (aplicacionSubida.name).substring(0, (aplicacionSubida.name).indexOf('.'))});
-}
-
-const testSWAL = async () => {  
-  // let noHayDescripcion = await swal("Alerta", {
-  //   text:"Antes de guardar tu aventura debes de añadir una pequeña descripción sobre esta para que futuros jugadores sepan a qué van a jugar antes de descargarsela",
-  //   icon: "info",  //success error info
-  //   input: "text"
-  // });
-  let a = await Swal.fire({
-    title: 'Sweet!',
-    text: 'Modal with a custom image.',
-    imageUrl: 'https://unsplash.it/400/200',
-    imageWidth: 400,
-    imageHeight: 200,
-    imageAlt: 'Custom image',
-  })
-
-  Swal.fire({
-    icon: 'error',
-    title: 'Oops...',
-    text: 'Something went wrong!'
-  })
+  setRefresh(!refresh);
 }
 
   return (
     <div className = "App" id='id0'>
 
-      <button className="my-btn btn-outline-dark3" style={{ marginTop:"1%",fontSize: '170%' }} type="button" onClick={testSWAL}>  TEST  </button>
       <h1 style={{color:"white"}}>Aplicaciones Hechas</h1>
       <h4 style={{color:"white", fontSize:"120%"}}>Guardar aventura en el servidor</h4>
 

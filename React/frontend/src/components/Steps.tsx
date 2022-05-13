@@ -108,6 +108,8 @@ export interface StepComponentProps {
   prev: () => void;
   /** Function to jump to the given step */
   jump: (step: number) => void;
+  /** Function to jump to the given step */
+  jumpWithString: (step: string) => void;
   /** Function to check if the step is the first */
   isFirst: () => boolean;
   /** Function to check if the step is the last */
@@ -261,6 +263,8 @@ interface StepsContext {
   prev: () => void;
   /** Callback describing how to jump to the given step in the sequence */
   jump: (step: number) => void;
+  /** Callback describing how to jump to the given step in the sequence */
+  jumpWithString: (step: string) => void;
 }
 
 /**
@@ -283,6 +287,7 @@ const StepsContext = createContext<StepsContext>({
   next: () => { },
   prev: () => { },
   jump: (_) => { },
+  jumpWithString: (_) => { },
 });
 
 /**
@@ -448,19 +453,8 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     }
   };
 
-  const context = {
-    stepCount,
-    currentStep,
-    stepList,
-    state: genState,
-    setState,
-    getState,
-    next,
-    prev,
-    jump,
-  };
-
   const jumpWithString = (s: string): void => {
+    console.log(s);
     let destiny = 0;
     if(s === "AdventureSummary") {destiny = 0;}
     if (s === "AdventureCharger") { destiny = 1; }
@@ -478,6 +472,21 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     setState<boolean>('SobreEscribir',false,false);
     jump(destiny);
   };
+
+  const context = {
+    stepCount,
+    currentStep,
+    stepList,
+    state: genState,
+    setState,
+    getState,
+    next,
+    prev,
+    jump,
+    jumpWithString,
+  };
+
+
 
   //Este método tiene como objetivo gestionar la escena a la que se quiere ir por medio del selector
   //Lo que hace es mirar que se acaba de seleccionar y dependiendo de lo escogido nos vamos a una escena 

@@ -90,6 +90,10 @@ const overlapingUpload = multer({storage:overlappingImages})
 
 var aventuraActual = {}
 
+
+//////////////////////////////////////////Peticiones para recibir ficheros////////////////////////////////////////////////////
+
+
 //IMPORTANTE: el imageCharger que aparece como parametro de imageUpload.array()
 //tiene que aparecer en el FormData que creamos y posteriormente enviamos puesto
 app.post('/image-upload', imageUpload.array("imageCharger"), (req, res) => {
@@ -123,6 +127,7 @@ app.post('/apk-upload', apkUpload.array("apk"), (req, res) => {
   res.json({ key: "value" });
 })
 
+//////////////////////////////////////////Peticiones para recibir ficheros////////////////////////////////////////////////////
 
 
 app.get("/", (req, res) => {
@@ -135,27 +140,7 @@ app.listen(port, () => {
 })
 
 
-app.get("/generate-zip", (req, res)=>{
-  try{
-    fs.unlinkSync('../Aventura.zip');
-    console.log("Deleted zip");
-  }
-  catch {
-    console.log("Couldnt remove .zip from server");
-  }
-  // Le paso al comando el nombre del directorio que hace falta crear y usar para almacenar la aventura
-  //var command = "GeneraZip.bat";
-  var command = "bash GeneraZip.sh";
-  const execProcess = exec(command, { 'encoding': 'utf8' }, (error, stdout) => {});
-  execProcess.on('exit', () => {
-    console.log('exec process exit');
-    res.download(path.join(__dirname, '../', 'Aventura.zip'), 'Aventura.zip', function (err) {
-    if (err) {
-      console.log("ERROR ON DOWNLOAD ZIP");
-    }
-    });
-  });
-});
+//////////////////////////////////////////Peticiones para solicitar la creacion del proyecto que permite crear la aventura////////////////////////////////////////////////////
 
 //Peticion para obtener los diferentes directorios dentro de la base de datos para poder luego decidir de cual reescribir la aventura
 app.get("/reset", (req, res) => {
@@ -208,6 +193,28 @@ app.get("/reset", (req, res) => {
   res.json({ key: "value" });
 });
 
+app.get("/generate-zip", (req, res)=>{
+  try{
+    fs.unlinkSync('../Aventura.zip');
+    console.log("Deleted zip");
+  }
+  catch {
+    console.log("Couldnt remove .zip from server");
+  }
+  // Le paso al comando el nombre del directorio que hace falta crear y usar para almacenar la aventura
+  //var command = "GeneraZip.bat";
+  var command = "bash GeneraZip.sh";
+  const execProcess = exec(command, { 'encoding': 'utf8' }, (error, stdout) => {});
+  execProcess.on('exit', () => {
+    console.log('exec process exit');
+    res.download(path.join(__dirname, '../', 'Aventura.zip'), 'Aventura.zip', function (err) {
+    if (err) {
+      console.log("ERROR ON DOWNLOAD ZIP");
+    }
+    });
+  });
+});
+
 //Peticion que tiene como objetivo revibir los datos relacionados con una aventura y generar un json que los contenga en el servidor
 app.post('/wtf-json', function (request, res) {
   aventuraActual = request.body.json;
@@ -219,8 +226,10 @@ app.post('/wtf-json', function (request, res) {
   console.log("The adventure json was succesfully recieved");
   res.json({ key: "value" });
 });
+//////////////////////////////////////////Peticiones para solicitar la creacion del proyecto que permite crear la aventura////////////////////////////////////////////////////
 
 
+//////////////////////////////////////////Peticiones para guardar una APK nueva en el servidor dada una descripción////////////////////////////////////////////////////
 //Peticion que tiene como objetivo revibir los datos relacionados con una aventura y generar un json que los contenga en el servidor
 app.post('/wtf-descripcion', function (request, res) {
   try {
@@ -254,8 +263,9 @@ app.post('/wtf-descripcion', function (request, res) {
   console.log("The adventure description was succesfully recieved");
   res.json({ key: "value" });
 });
+//////////////////////////////////////////Peticiones para guardar una APK nueva en el servidor dada una descripción////////////////////////////////////////////////////
 
-
+//////////////////////////////////////////Peticiones para guardar la configuración de una aventura nueva en el servidor ////////////////////////////////////////////////////
 //Peticion que recibe una aventura y crea un nuevo directorio en la base de datos para meter en este el json de esta y todos los ficheros involucrados
 app.get("/guardame-aventura", (req, res)=>{
   //Sacamos el nombre de la aventura y determinamos el directorio en el que vamos a guardar las cosas
@@ -351,26 +361,11 @@ app.get("/guardame-aventura", (req, res)=>{
 
   res.json({ key: "value" });
 });
+//////////////////////////////////////////Peticiones para guardar la configuración de una aventura nueva en el servidor ////////////////////////////////////////////////////
 
 
+//////////////////////////////////////////Peticiones para recuperar la configuración de una aventura guardada y continuar a partir de ella////////////////////////////////////////////////////
 let directorios = ["Images", "Packages", "Sounds", "OverlappingImages"];
-
-//Peticion para obtener los diferentes directorios dentro de la base de datos para poder luego decidir de cual reescribir la aventura
-app.get("/aventuras-guardadas", (req, res) => {
-  let nombresAventuras=fs.readdirSync('../BaseDeDatos/');
-  let descripcionesAventuras=[];
-  for(let i = 0 ; i< nombresAventuras.length;i++){
-    let dir = '../BaseDeDatos/'+nombresAventuras[i]+'/descripcion.txt';
-    var content = "Aventura sin descripcion";
-    if (fs.existsSync(dir)) { 
-      content = fs.readFileSync(dir, { encoding: 'utf8', flag: 'r' });
-    }
-    descripcionesAventuras.push(content);
-  }
-  res.json({ Opciones: nombresAventuras, Descripciones: descripcionesAventuras });
-  }
-);
-
 //Esta petición tiene como objetivo devolver el json que representa una aventura concreta
 app.post('/dame-aventura', function (request, response) {
 
@@ -405,8 +400,10 @@ app.post('/dame-aventura', function (request, response) {
   }
   response.json({ AventuraGuardada: content });
 });
+//////////////////////////////////////////Peticiones para recuperar la configuración de una aventura guardada y continuar a partir de ella////////////////////////////////////////////////////
 
 
+//////////////////////////////////////////Peticiones para solicitar la descarga de un archivo que este en el servidor////////////////////////////////////////////////////
 //Peticion para obtener algun que otro fichero que se encuentre almacenado en la carpeta Images
 app.get('/getFile/:name', function (req, res, next) {
 
@@ -421,12 +418,33 @@ app.get('/getFile/:name', function (req, res, next) {
   }
 })
 
+//Peticion para obtener una del las aplicaciones ya hechas en el server
+app.get('/getAPK/:name', function (req, res, next) {
+  let path = '../AplicacionesListas/' + req.params.name+"/"+req.params.name+".apk";
+  if (fs.existsSync(path)) { 
+    res.download(path, req.params.name, function (err) {});
+  } 
+})
+//////////////////////////////////////////Peticiones para solicitar la descarga de un archivo que este en el servidor////////////////////////////////////////////////////
 
 
 
-
-
-
+//////////////////////////////////////////Peticiones para solicitar las aventuras guardas en el servidor////////////////////////////////////////////////////
+//Peticion para obtener los diferentes directorios dentro de la base de datos para poder luego decidir de cual reescribir la aventura
+app.get("/aventuras-guardadas", (req, res) => {
+  let nombresAventuras=fs.readdirSync('../BaseDeDatos/');
+  let descripcionesAventuras=[];
+  for(let i = 0 ; i< nombresAventuras.length;i++){
+    let dir = '../BaseDeDatos/'+nombresAventuras[i]+'/descripcion.txt';
+    var content = "Aventura sin descripcion";
+    if (fs.existsSync(dir)) { 
+      content = fs.readFileSync(dir, { encoding: 'utf8', flag: 'r' });
+    }
+    descripcionesAventuras.push(content);
+  }
+  res.json({ Opciones: nombresAventuras, Descripciones: descripcionesAventuras });
+  }
+);
 
 
 //Peticion para obtener los nombres de las diferentes apks ya hechas que se encuentran almacenadas en el server
@@ -447,11 +465,4 @@ app.get("/aplicacionesListas-guardadas", (req, res) => {
   res.json({ Opciones: listaDirectoriosAventuras, Descripciones: listaDescripciones});
   }
 );
-
-//Peticion para obtener una del las aplicaciones ya hechas en el server
-app.get('/getAPK/:name', function (req, res, next) {
-  let path = '../AplicacionesListas/' + req.params.name+"/"+req.params.name+".apk";
-  if (fs.existsSync(path)) { 
-    res.download(path, req.params.name, function (err) {});
-  } 
-})
+//////////////////////////////////////////Peticiones para solicitar las aventuras guardas en el servidor////////////////////////////////////////////////////
