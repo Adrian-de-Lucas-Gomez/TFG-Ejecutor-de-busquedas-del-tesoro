@@ -125,21 +125,21 @@ public class GameManager : MonoBehaviour
                 case "QuizStage":
                     {
                         QuizInfo newQuiz = new QuizInfo();
-                        newQuiz.readFromJSON((JObject)misFases[i]);
+                        newQuiz.ReadFromJSON((JObject)misFases[i]);
                         adventureStages.Enqueue(newQuiz);
                         break;
                     }
                 case "QRStage":
                     {
                         QRInfo newQR = new QRInfo();
-                        newQR.readFromJSON((JObject)misFases[i]);
+                        newQR.ReadFromJSON((JObject)misFases[i]);
                         adventureStages.Enqueue(newQR);
                         break;
                     }
                 case "ImageStage":
                     {
                         ImageInfo newImage = new ImageInfo();
-                        newImage.readFromJSON((JObject)misFases[i]);
+                        newImage.ReadFromJSON((JObject)misFases[i]);
                         adventureStages.Enqueue(newImage);
 
                         break;
@@ -147,21 +147,21 @@ public class GameManager : MonoBehaviour
                 case "ImageTargetStage":
                     {
                         ImageTargetInfo newTarget = new ImageTargetInfo();
-                        newTarget.readFromJSON((JObject)misFases[i]);
+                        newTarget.ReadFromJSON((JObject)misFases[i]);
                         adventureStages.Enqueue(newTarget);
                         break;
                     }
                 case "SoundStage":
                     {
                         SoundInfo newSound = new SoundInfo();
-                        newSound.readFromJSON((JObject)misFases[i]);
+                        newSound.ReadFromJSON((JObject)misFases[i]);
                         adventureStages.Enqueue(newSound);
                         break;
                     }
                 case "InputTextStage":
                     {
                         InputTextInfo newInputText = new InputTextInfo();
-                        newInputText.readFromJSON((JObject)misFases[i]);
+                        newInputText.ReadFromJSON((JObject)misFases[i]);
                         adventureStages.Enqueue(newInputText);
                         break;
                     }
@@ -169,7 +169,7 @@ public class GameManager : MonoBehaviour
                 case "GPSStage":
                     {
                         GPSInfo newGPS = new GPSInfo();
-                        newGPS.readFromJSON((JObject)misFases[i]);
+                        newGPS.ReadFromJSON((JObject)misFases[i]);
                         adventureStages.Enqueue(newGPS);
 
 #if UNITY_ANDROID
