@@ -136,7 +136,7 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     }
     var jsonFinal = { Adventure: props.getState('adventureName', "Nombre por defecto"), VuforiaKey: props.getState('vuforiaKey', ''), fases: datos }
 
-    let result = await axios.post("./wtf-json", { json: JSON.stringify(jsonFinal, null, 2) });
+    let result = await axios.post("./guardame-json", { json: JSON.stringify(jsonFinal, null, 2) });
     console.log("JSON MANDADO");
   }
 
@@ -263,8 +263,9 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     let reset = await axios.get("./reset");
     await operacionesPreDescargaProyecto();
     await mandarJson();
-    await axios.get("./guardame-aventura");
-    
+
+
+    await axios.post("./guardame-aventura", { descripcion: descripcionFinal, nombre: nombreAventura });    
     //Una vez que se ha mandado todo se habran creado los directorio y todo asi que podemos mandar la descripcion para guardarla
     var jsonFinal = { Descripcion: descripcionFinal, Nombre: nombreAventura };
     let result = await axios.post("./wtf-descripcion", jsonFinal);

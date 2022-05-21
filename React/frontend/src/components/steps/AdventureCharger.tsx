@@ -239,7 +239,7 @@ const mandarAplicacion = async() =>{
   console.log("El nombre original es "+aplicacionSubida.name);
   console.log("El nombre cortado es  "+(aplicacionSubida.name).substring(0, (aplicacionSubida.name).indexOf('.')));
   console.log("Lo que voy a mandar es "+JSON.stringify({ json: jsonFinal , nombre: (aplicacionSubida.name).substring(0, (aplicacionSubida.name).indexOf('.'))}));
-  let result2 = await axios.post("./wtf-descripcion", { json: jsonFinal , nombre: (aplicacionSubida.name).substring(0, (aplicacionSubida.name).indexOf('.'))});
+  let result2 = await axios.post("./guardame-APK", { description: jsonFinal , nombre: (aplicacionSubida.name).substring(0, (aplicacionSubida.name).indexOf('.'))});
   setRefresh(!refresh);
 }
 

@@ -88,7 +88,7 @@ const soundUpload = multer({ storage: soundStorage })
 const apkUpload = multer({ storage: apkStorage })
 const overlapingUpload = multer({storage:overlappingImages})
 
-var aventuraActual = {}
+let directoriosDeTrabajo = ["Images", "Packages", "Sounds", "OverlappingImages"];
 
 
 //////////////////////////////////////////Peticiones para recibir ficheros////////////////////////////////////////////////////
@@ -144,51 +144,27 @@ app.listen(port, () => {
 
 //Peticion para obtener los diferentes directorios dentro de la base de datos para poder luego decidir de cual reescribir la aventura
 app.get("/reset", (req, res) => {
-  //Me quedo con el nombre de los archivos que hay en el directorio Images
-  //Voy uno por uno para eliminarlos y que no metan ruido a la futura build, en caso de que hayan archivos que no se usen
-  var filesToRemove = fs.readdirSync('./Images/');
-  for (var i = 0; i < filesToRemove.length; i++) {
-    //Si no es el readme, lo elimino del directorio
-    if (filesToRemove[i] !== "README.txt") {
-      console.log("Removed file from backend/Images/ directory: " + filesToRemove[i]);
-      fs.unlinkSync('./Images/' + filesToRemove[i]);
-    }
-  }
 
-  var packagesToRemove = fs.readdirSync('./Packages/');
-  for(let i  =0 ; i < packagesToRemove.length; i++){
-    if (packagesToRemove[i] !== "README.txt") {
-      console.log("Removed file from backend/Packages/ directory: " + packagesToRemove[i]);
-      fs.unlinkSync('./Packages/' + packagesToRemove[i]);
+  //Recorro los diferentes directorios de trabajo y elimino todos los archivos que encuentre en ellos excepto los Readme 
+  for(let j = 0; j<directoriosDeTrabajo.length; j++){
+    var filesToRemove = fs.readdirSync("./"+directoriosDeTrabajo[j]+"/");
+    for (var i = 0; i < filesToRemove.length; i++) {
+      //Si no es el readme, lo elimino del directorio
+      if (filesToRemove[i] !== "README.txt") {
+        console.log("Removed file from backend/"+directoriosDeTrabajo[j]+"/ directory: " + filesToRemove[i]);
+        fs.unlinkSync("./"+directoriosDeTrabajo[j]+"/" + filesToRemove[i]);
+      }
     }
   }
 
   //Limpieza de los sonidos que hubiera en el backend
-  var soundsToRemove = fs.readdirSync('./Sounds/');
-  for(let i  =0 ; i < soundsToRemove.length; i++){
-    if (soundsToRemove[i] !== "README.txt") {
-      console.log("Removed file from backend/Sounds/ directory: " + soundsToRemove[i]);
-      fs.unlinkSync('./Sounds/' + soundsToRemove[i]);
+  var apkToRemove = fs.readdirSync('./AplicacionLista/');
+  for(let i  =0 ; i < apkToRemove.length; i++){
+    if (apkToRemove[i] !== "README.txt") {
+      console.log("Removed file from backend/AplicacionLista/ directory: " + apkToRemove[i]);
+      fs.unlinkSync('./AplicacionLista/' + apkToRemove[i]);
     }
   }
-
-  var filesToRemove = fs.readdirSync('./OverlappingImages/');
-  for (var i = 0; i < filesToRemove.length; i++) {
-    //Si no es el readme, lo elimino del directorio
-    if (filesToRemove[i] !== "README.txt") {
-      console.log("Removed file from backend/OverlappingImages/ directory: " + filesToRemove[i]);
-      fs.unlinkSync('./OverlappingImages/' + filesToRemove[i]);
-    }
-  }
-
-    //Limpieza de los sonidos que hubiera en el backend
-    var apkToRemove = fs.readdirSync('./AplicacionLista/');
-    for(let i  =0 ; i < apkToRemove.length; i++){
-      if (apkToRemove[i] !== "README.txt") {
-        console.log("Removed file from backend/AplicacionLista/ directory: " + apkToRemove[i]);
-        fs.unlinkSync('./AplicacionLista/' + apkToRemove[i]);
-      }
-    }
 
   res.json({ key: "value" });
 });
@@ -202,8 +178,8 @@ app.get("/generate-zip", (req, res)=>{
     console.log("Couldnt remove .zip from server");
   }
   // Le paso al comando el nombre del directorio que hace falta crear y usar para almacenar la aventura
-  //var command = "GeneraZip.bat";
-  var command = "bash GeneraZip.sh";
+  var command = "GeneraZip.bat";
+  //var command = "bash GeneraZip.sh";
   const execProcess = exec(command, { 'encoding': 'utf8' }, (error, stdout) => {});
   execProcess.on('exit', () => {
     console.log('exec process exit');
@@ -216,8 +192,7 @@ app.get("/generate-zip", (req, res)=>{
 });
 
 //Peticion que tiene como objetivo revibir los datos relacionados con una aventura y generar un json que los contenga en el servidor
-app.post('/wtf-json', function (request, res) {
-  aventuraActual = request.body.json;
+app.post('/guardame-json', function (request, res) {
   try {
     //Creamos un fichero json en un directorio que no este bajo el control del server para evitar problemas
     fs.writeFileSync('../AdventureData.json', request.body.json);
@@ -231,14 +206,14 @@ app.post('/wtf-json', function (request, res) {
 
 //////////////////////////////////////////Peticiones para guardar una APK nueva en el servidor dada una descripción////////////////////////////////////////////////////
 //Peticion que tiene como objetivo revibir los datos relacionados con una aventura y generar un json que los contenga en el servidor
-app.post('/wtf-descripcion', function (request, res) {
+app.post('/guardame-APK', function (request, res) {
   try {
     //Creo el directorio en el que van a almacenarse la descripción y la apk
     if(fs.existsSync("../AplicacionesListas/"+request.body.nombre) === false)
       fs.mkdirSync("../AplicacionesListas/"+request.body.nombre);
 
     //Creamos un fichero json en un directorio que no este bajo el control del server para evitar problemas
-    fs.writeFileSync('../AplicacionesListas/'+request.body.nombre+"/descripcion.txt", request.body.json);
+    fs.writeFileSync('../AplicacionesListas/'+request.body.nombre+"/descripcion.txt", request.body.description);
 
     var file = fs.readdirSync("./AplicacionLista/");
     for (var i = 0; i < file.length; i++) {
@@ -267,9 +242,10 @@ app.post('/wtf-descripcion', function (request, res) {
 
 //////////////////////////////////////////Peticiones para guardar la configuración de una aventura nueva en el servidor ////////////////////////////////////////////////////
 //Peticion que recibe una aventura y crea un nuevo directorio en la base de datos para meter en este el json de esta y todos los ficheros involucrados
-app.get("/guardame-aventura", (req, res)=>{
+app.post('/guardame-aventura', function (req, res) {
+// app.get("/guardame-aventura", (req, res)=>{
   //Sacamos el nombre de la aventura y determinamos el directorio en el que vamos a guardar las cosas
-  var name = JSON.parse(aventuraActual).Adventure;
+  var name = req.body.nombre;
   var dir = "../BaseDeDatos/" + name;
   try {
     //Si ya existe el directorio hace falta eliminar todo lo que tenga dentro, porque aunque los archivos con el mismo nombre se sobreescriban y no den problemas
@@ -296,61 +272,27 @@ app.get("/guardame-aventura", (req, res)=>{
   catch { console.log("An error ocurred creating the directory: " + dir); }
   console.log("Directory created: " + dir);
 
-  //Me quedo con el nombre de los archivos que hay en el directorio Images
-  //Voy uno por uno para eliminarlos y que no metan ruido a la futura build, en caso de que hayan archivos que no se usen
-  var filesToSave = fs.readdirSync('./Images/');
-  for (var i = 0; i < filesToSave.length; i++) {
-    let nombreF = filesToSave[i];
-    try {
-      fs.copyFileSync('./Images/' + filesToSave[i], '../BaseDeDatos/' + name + '/Images/' + filesToSave[i]);
-    }
-    catch { console.log("An error ocurred copying a file:" + filesToSave[i]); }
-  }
-
-    //Me quedo con el nombre de los archivos que hay en el directorio Images
-  //Voy uno por uno para eliminarlos y que no metan ruido a la futura build, en caso de que hayan archivos que no se usen
-  filesToSave = fs.readdirSync('./Packages/');
-  for (var i = 0; i < filesToSave.length; i++) {
-    let nombreF = filesToSave[i];
-    try {
-      fs.copyFileSync('./Packages/' + filesToSave[i], '../BaseDeDatos/' + name + '/Packages/' + filesToSave[i]);
-    }
-    catch { console.log("An error ocurred copying a file:" + filesToSave[i]); }
-  }
-
-  //Me quedo con el nombre de los archivos que hay en el directorio Images
-  //Voy uno por uno para eliminarlos y que no metan ruido a la futura build, en caso de que hayan archivos que no se usen
-  filesToSave = fs.readdirSync('./Sounds/');
-  for (var i = 0; i < filesToSave.length; i++) {
-    let nombreF = filesToSave[i];
-    try {
-      fs.copyFileSync('./Sounds/' + filesToSave[i], '../BaseDeDatos/' + name + '/Sounds/' + filesToSave[i]);
-    }
-    catch { console.log("An error ocurred copying a file:" + filesToSave[i]); }
-  }
-
-  //Me quedo con el nombre de los archivos que hay en el directorio Images
-  //Voy uno por uno para eliminarlos y que no metan ruido a la futura build, en caso de que hayan archivos que no se usen
-  filesToSave = fs.readdirSync('./OverlappingImages/');
-  for (var i = 0; i < filesToSave.length; i++) {
-    let nombreF = filesToSave[i];
-    try {
-      fs.copyFileSync('./OverlappingImages/' + filesToSave[i], '../BaseDeDatos/' + name + '/OverlappingImages/' + filesToSave[i]);
-    }
-    catch { console.log("An error ocurred copying a file:" + filesToSave[i]); }
-  }
-
-
-  //Me quedo con el nombre de los archivos que hay en el directorio Images
-  //Voy uno por uno para eliminarlos y que no metan ruido a la futura build, en caso de que hayan archivos que no se usen
-  var filesToRemove = fs.readdirSync('./Images/');
-  for (var i = 0; i < filesToRemove.length; i++) {
+  //Paso por todos los directorios de trabajo y copio todos los archivos existentes que interesen para la aventura en el directorio de BaseDeDatos para almacenar la configuracion
+  for(let j = 0; j<directoriosDeTrabajo.length; j++){
+    var filesToSave = fs.readdirSync("./"+directoriosDeTrabajo[j]+"/");
+    for (var i = 0; i < filesToSave.length; i++) {
     //Si no es el readme, lo elimino del directorio
-    if (filesToRemove[i] !== "README.txt") {
-      fs.unlinkSync('./Images/' + filesToRemove[i]);
-      console.log("Removed file from /Images/ directory: " + filesToRemove[i]);
+      fs.copyFileSync("./"+ directoriosDeTrabajo[j]+"/" + filesToSave[i], '../BaseDeDatos/' + name + "/"+directoriosDeTrabajo[j]+"/" + filesToSave[i]);
     }
   }
+
+  //Recorro los diferentes directorios de trabajo y elimino todos los archivos que encuentre en ellos excepto los Readme 
+  for(let j = 0; j<directoriosDeTrabajo.length; j++){
+    var filesToRemove = fs.readdirSync("./"+directoriosDeTrabajo[j]+"/");
+    for (var i = 0; i < filesToRemove.length; i++) {
+      //Si no es el readme, lo elimino del directorio
+      if (filesToRemove[i] !== "README.txt") {
+        console.log("Removed file from backend/"+directoriosDeTrabajo[j]+"/ directory: " + filesToRemove[i]);
+        fs.unlinkSync("./"+directoriosDeTrabajo[j]+"/" + filesToRemove[i]);
+      }
+    }
+  }
+  fs.writeFileSync('../BaseDeDatos/' + name + "/descripcion.txt", req.body.descripcion);
   //Queda copiar el json que contiene la aventura
   try {
     fs.copyFileSync('../AdventureData.json', '../BaseDeDatos/' + name + '/AdventureData.json');
@@ -365,7 +307,6 @@ app.get("/guardame-aventura", (req, res)=>{
 
 
 //////////////////////////////////////////Peticiones para recuperar la configuración de una aventura guardada y continuar a partir de ella////////////////////////////////////////////////////
-let directorios = ["Images", "Packages", "Sounds", "OverlappingImages"];
 //Esta petición tiene como objetivo devolver el json que representa una aventura concreta
 app.post('/dame-aventura', function (request, response) {
 
@@ -376,13 +317,13 @@ app.post('/dame-aventura', function (request, response) {
 
   //Me quedo con el nombre de los archivos que hay en el directorio Images
   //Voy uno por uno para eliminarlos y que no metan ruido a la futura build, en caso de que hayan archivos que no se usen
-  for(let j = 0; j<directorios.length; j++){
-    var filesToRemove = fs.readdirSync("./"+directorios[j]+"/");
+  for(let j = 0; j<directoriosDeTrabajo.length; j++){
+    var filesToRemove = fs.readdirSync("./"+directoriosDeTrabajo[j]+"/");
     for (var i = 0; i < filesToRemove.length; i++) {
       //Si no es el readme, lo elimino del directorio
       if (filesToRemove[i] !== "README.txt") {
         console.log("Removed file from backend/Images/ directory: " + filesToRemove[i]);
-        fs.unlinkSync("./"+directorios[j]+"/" + filesToRemove[i]);
+        fs.unlinkSync("./"+directoriosDeTrabajo[j]+"/" + filesToRemove[i]);
       }
     }
   }
@@ -390,10 +331,10 @@ app.post('/dame-aventura', function (request, response) {
   //Me quedo con el nombre de los archivos que hay en el directorio de la base de datos y los paso
   //al directorio correspondiente para que cuando el jugador le de a crear aventura que todo esté listo para moverlo
   //a la build
-  for(let j = 0; j<directorios.length; j++){
-    var files = fs.readdirSync('../BaseDeDatos/' + name+"/"+directorios[j] + '/');
+  for(let j = 0; j<directoriosDeTrabajo.length; j++){
+    var files = fs.readdirSync('../BaseDeDatos/' + name+"/"+directoriosDeTrabajo[j] + '/');
     for (var i = 0; i < files.length; i++) {
-      fs.copyFile('../BaseDeDatos/' + name + '/'+directorios[j]+"/" + files[i], "./"+directorios[j]+"/" + files[i], (err) => {
+      fs.copyFile('../BaseDeDatos/' + name + '/'+directoriosDeTrabajo[j]+"/" + files[i], "./"+directoriosDeTrabajo[j]+"/" + files[i], (err) => {
         if (err) console.log("An error ocurred copying a file");
       });
     }
@@ -409,8 +350,8 @@ app.get('/getFile/:name', function (req, res, next) {
 
   //Segun el nombre que me han pasado, miro en los 3 directorios posibles que hay en el backend, y si en alguno de ellos 
   //se encuentra en archivo se lo doy al usuario
-  for(let i = 0; i<directorios.length; i++){
-    let path = "./"+directorios[i]+"/"+req.params.name;
+  for(let i = 0; i<directoriosDeTrabajo.length; i++){
+    let path = "./"+directoriosDeTrabajo[i]+"/"+req.params.name;
     if (fs.existsSync(path)) { 
       res.download(path, req.params.name, function (err) {});
       break;
