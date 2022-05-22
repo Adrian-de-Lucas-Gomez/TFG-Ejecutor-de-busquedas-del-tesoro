@@ -314,31 +314,6 @@ app.post('/dame-aventura', function (request, response) {
   var name = JSON.parse(request.body.json).Nombre;
   console.log("Aventura Solicitada para lectura: " + name);
   var content = fs.readFileSync('../BaseDeDatos/' + name + '/AdventureData.json', { encoding: 'utf8', flag: 'r' });
-
-  //Me quedo con el nombre de los archivos que hay en el directorio Images
-  //Voy uno por uno para eliminarlos y que no metan ruido a la futura build, en caso de que hayan archivos que no se usen
-  for(let j = 0; j<directoriosDeTrabajo.length; j++){
-    var filesToRemove = fs.readdirSync("./"+directoriosDeTrabajo[j]+"/");
-    for (var i = 0; i < filesToRemove.length; i++) {
-      //Si no es el readme, lo elimino del directorio
-      if (filesToRemove[i] !== "README.txt") {
-        console.log("Removed file from backend/Images/ directory: " + filesToRemove[i]);
-        fs.unlinkSync("./"+directoriosDeTrabajo[j]+"/" + filesToRemove[i]);
-      }
-    }
-  }
-
-  //Me quedo con el nombre de los archivos que hay en el directorio de la base de datos y los paso
-  //al directorio correspondiente para que cuando el jugador le de a crear aventura que todo esté listo para moverlo
-  //a la build
-  for(let j = 0; j<directoriosDeTrabajo.length; j++){
-    var files = fs.readdirSync('../BaseDeDatos/' + name+"/"+directoriosDeTrabajo[j] + '/');
-    for (var i = 0; i < files.length; i++) {
-      fs.copyFile('../BaseDeDatos/' + name + '/'+directoriosDeTrabajo[j]+"/" + files[i], "./"+directoriosDeTrabajo[j]+"/" + files[i], (err) => {
-        if (err) console.log("An error ocurred copying a file");
-      });
-    }
-  }
   response.json({ AventuraGuardada: content });
 });
 //////////////////////////////////////////Peticiones para recuperar la configuración de una aventura guardada y continuar a partir de ella////////////////////////////////////////////////////
@@ -346,14 +321,16 @@ app.post('/dame-aventura', function (request, response) {
 
 //////////////////////////////////////////Peticiones para solicitar la descarga de un archivo que este en el servidor////////////////////////////////////////////////////
 //Peticion para obtener algun que otro fichero que se encuentre almacenado en la carpeta Images
-app.get('/getFile/:name', function (req, res, next) {
+app.get('/getFile/:fileName/:adventure', function (req, res, next) {
 
   //Segun el nombre que me han pasado, miro en los 3 directorios posibles que hay en el backend, y si en alguno de ellos 
   //se encuentra en archivo se lo doy al usuario
   for(let i = 0; i<directoriosDeTrabajo.length; i++){
-    let path = "./"+directoriosDeTrabajo[i]+"/"+req.params.name;
+    let path = "../BaseDeDatos/"+req.params.adventure+"/"+directoriosDeTrabajo[i]+"/"+req.params.fileName;
+    console.log("El path del que se saca el archivo es "+path);
+    // req.params.adventure;
     if (fs.existsSync(path)) { 
-      res.download(path, req.params.name, function (err) {});
+      res.download(path, req.params.fileName, function (err) {});
       break;
     } 
   }

@@ -109,7 +109,8 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
 
     //Solicito el json de la aventura en cuestion
     const response = await axios.post("./dame-aventura", {json:JSON.stringify(jsonFinal, null, 2)});
-    props.setState('adventureName',JSON.parse(response.data.AventuraGuardada).Adventure, "Nombre por defecto");
+    var nombreDeLaAventura = JSON.parse(response.data.AventuraGuardada).Adventure
+    props.setState('adventureName',nombreDeLaAventura, "Nombre por defecto");
     
     //Miro por el json para buscar las  imagenes que contiene la aventura
     var fases = JSON.parse(response.data.AventuraGuardada).fases;
@@ -124,7 +125,7 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
         else if(faseActual.tipo === "SoundStage")         fileName=faseActual.Sonido;
         else if(faseActual.tipo === "ImageTargetStage")   fileName=faseActual.Target;
 
-        let reset = await axios.get("./getFile/"+fileName, {responseType: 'arraybuffer',headers: {'Content-Type': 'application/json'},params: {json:"JSON.stringify(jsonFinal, null, 2)"}});
+        let reset = await axios.get("./getFile/"+fileName+"/"+nombreDeLaAventura, {responseType: 'arraybuffer',headers: {'Content-Type': 'application/json'},params: {json:"JSON.stringify(jsonFinal, null, 2)"}});
         const type = reset.headers['content-type']
         const blob = new Blob([reset.data], { type: type })
 
@@ -137,7 +138,7 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
           //SI es un image target con imagen secundaria hay que encima pedir dicha imagen secundaria
           if(myData.TargetType === "Image"){
             fileName=faseActual.OverlappingImage;
-            let reset = await axios.get("./getFile/"+fileName, {responseType: 'arraybuffer',headers: {'Content-Type': 'application/json'},params: {json:"JSON.stringify(jsonFinal, null, 2)"}});
+            let reset = await axios.get("./getFile/"+fileName+"/"+nombreDeLaAventura, {responseType: 'arraybuffer',headers: {'Content-Type': 'application/json'},params: {json:"JSON.stringify(jsonFinal, null, 2)"}});
             const type = reset.headers['content-type']
             const blob = new Blob([reset.data], { type: type })
             myData.OverlappingImage = new File([blob], fileName);

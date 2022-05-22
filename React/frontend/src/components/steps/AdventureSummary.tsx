@@ -264,12 +264,7 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     await operacionesPreDescargaProyecto();
     await mandarJson();
 
-
     await axios.post("./guardame-aventura", { descripcion: descripcionFinal, nombre: nombreAventura });    
-    //Una vez que se ha mandado todo se habran creado los directorio y todo asi que podemos mandar la descripcion para guardarla
-    var jsonFinal = { Descripcion: descripcionFinal, Nombre: nombreAventura };
-    let result = await axios.post("./wtf-descripcion", jsonFinal);
-
     Swal.fire({icon: 'success', title: 'Aventura guardada',})
   }
 
