@@ -15,7 +15,6 @@ public class StartAdventure : MonoBehaviour
     [Tooltip("Texto que muestra el nombre de la aventura")]
     [SerializeField] TextMeshProUGUI adventureNameText;
 
-    // Start is called before the first frame update
     void Start()
     {
         adventureNameText.text= GameManager.GetInstance().GetAdventureName();

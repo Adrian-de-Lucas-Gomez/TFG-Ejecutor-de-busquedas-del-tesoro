@@ -11,18 +11,11 @@ public class ContinueButtonController : MonoBehaviour
     [SerializeField]
     LogicManager logicManager;
 
-    // Start is called before the first frame update
     void Start()
     {
         nextPhaseButton = gameObject.GetComponent<Button>();
         nextPhaseButton.interactable = false;
         nextPhaseButtonAnimator = gameObject.GetComponent<Animator>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void Appear()
@@ -46,7 +39,5 @@ public class ContinueButtonController : MonoBehaviour
         nextPhaseButtonAnimator.SetBool("Desaparecer", true);
         logicManager.StartSceneTransition();
     }
-
-
 
 }

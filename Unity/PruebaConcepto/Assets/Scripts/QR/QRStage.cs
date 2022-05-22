@@ -57,7 +57,6 @@ public class QRStage : Stage
 
     public void checkQR(string qrMsg)
 	{
-        Debug.Log(qrMsg);
 
         if (qrValue == qrMsg)
 		{

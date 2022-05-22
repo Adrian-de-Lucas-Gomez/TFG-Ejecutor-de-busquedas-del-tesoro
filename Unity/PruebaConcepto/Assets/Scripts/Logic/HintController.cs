@@ -19,10 +19,11 @@ public class HintController : MonoBehaviour
     void Start()
     {
         hintAnimator = gameObject.GetComponent<Animator>();
-
     }
 
-    //Metodo que pide al gamemanager la información de la fase en la que nos encontramos y muestra la pista que tiene asociada
+    /// <summary>
+    /// Metodo que pide al gamemanager la información de la fase en la que nos encontramos y muestra la pista que tiene asociada
+    /// </summary>
     public void ShowHint()
     {
         GameManager.GetInstance().PlaySound("ButtonPress3");
@@ -31,15 +32,19 @@ public class HintController : MonoBehaviour
         hintAnimator.SetBool("Desaparecer", false);
     }
 
-    //Metodo que esconde el panel encargado de mostrar las pistas de cada fase
+    /// <summary>
+    /// Metodo que esconde el panel encargado de mostrar las pistas de cada fase
+    /// </summary>
     public void HideHint()
     {
         GameManager.GetInstance().PlaySound("ButtonPress2");
         hintAnimator.SetBool("Aparecer", false);
         hintAnimator.SetBool("Desaparecer", true);
-        //hintPanel.active = false;
     }
 
+    /// <summary>
+    /// Metodo para saltar fase
+    /// </summary>
     public void Cheat()
     {
         GameManager.GetInstance().EndCurrentStage();

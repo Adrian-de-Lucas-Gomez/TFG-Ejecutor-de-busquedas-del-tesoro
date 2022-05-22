@@ -7,7 +7,7 @@ public class GPSScanner : MonoBehaviour
     private float ActualLatitude;
     private void UpdateCoordinates()
     {
-        //Actializamos los valores de latitud y longitud que ha registrado el GPS
+        //Actualizamos los valores de latitud y longitud que ha registrado el GPS
         ActualLongitude = Input.location.lastData.longitude;
         ActualLatitude = Input.location.lastData.latitude;
     }

@@ -10,6 +10,7 @@ public class EndStage : MonoBehaviour
 
 	private void Start()
 	{
+		//Informacion de fases completadas y saltadas
 		float skippedPhases = GameManager.GetInstance().GetSkippedPhases();
 		float totalPhases = GameManager.GetInstance().GetTotalPhases();
 		float completedPhases = totalPhases - skippedPhases;
@@ -18,7 +19,9 @@ public class EndStage : MonoBehaviour
 			+ "Fases saltadas: " + skippedPhases + "\n"
 			+ "Porcentaje de fases completadas: " + System.Math.Round(completedPercetage,2) + "%";
 	}
-	//Metodo que tiene como objetivo terminar con la ejecucion de la aventura
+	/// <summary>
+	/// Metodo que tiene como objetivo terminar con la ejecucion de la aventura
+	/// </summary>
 	public void StopPlaying()
     {
 		GameManager.GetInstance().PlaySound("ButtonPress2");

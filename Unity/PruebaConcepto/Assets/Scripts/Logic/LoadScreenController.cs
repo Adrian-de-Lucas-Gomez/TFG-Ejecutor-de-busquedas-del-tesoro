@@ -7,12 +7,12 @@ public class LoadScreenController : MonoBehaviour
     [SerializeField]
     Animator blackScreenAnimator;
 
-
     [SerializeField]
     GameObject loadingIconGameObject;
     
-
-
+    /// <summary>
+    /// Inicia la animacion de transicion entre escenas
+    /// </summary>
     public void StartSceneTransition()
     {
         blackScreenAnimator.SetBool("StartTransition", true);

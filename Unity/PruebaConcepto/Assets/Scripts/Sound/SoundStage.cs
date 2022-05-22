@@ -25,7 +25,6 @@ public class SoundStage : Stage
     {
         soundData = (SoundInfo)data;
 
-        Debug.Log(soundData.nombreSonido);
         audioClip = Resources.Load<AudioClip>("AdventureSounds/" + soundData.nombreSonido);
         audioSource.clip = audioClip;
         descriptionText.text = soundData.descripcionFase;
@@ -34,7 +33,7 @@ public class SoundStage : Stage
 
     public void Update()
     {
-        //HEmos terminado de reproducir el audio
+        //Hemos terminado de reproducir el audio
         if (audioStarted && !audioSource.isPlaying) {
             audioStarted = false;
             audioSource.Stop();

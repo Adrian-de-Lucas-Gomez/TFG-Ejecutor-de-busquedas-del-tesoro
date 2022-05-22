@@ -264,16 +264,6 @@ public class GameManager : MonoBehaviour
         return _adventureName;
     }
 
-    //public void EnableHints()
-    //{
-    //    logicManager.EnableHints();
-    //}
-
-    //public void DisableHints()
-    //{
-    //    logicManager.DisableHints();
-    //}
-
     public void PlaySound(string soundName)
 	{
         soundManager.SMPlaySound(soundName);
@@ -430,26 +420,11 @@ public class GameManager : MonoBehaviour
 
     public bool IsCurrentPhaseSceneReady()
     {
-        //Miramos en las escenas que estan cargadas actualmente para buscar el nombre de la fase actual
-        //Si esta presente y cargada la escena es que podemos proseguir, si no, hay que esperar
-        //bool esta = false;
-        //for (int i = 0; i < SceneManager.sceneCount; i++)
-        //{
-        //    Scene scene = SceneManager.GetSceneAt(i);
-        //    if ((scene.name == adventureStages.Peek().stage && scene.isLoaded))
-        //    {
-        //        esta = true;
-        //    }
-        //}
-        //return esta;
-
         Scene target = SceneManager.GetSceneByName(adventureStages.Peek().stage);
         if (target != null) return target.isLoaded;
 
         return false;
     }
-
-
 
     public void AddListener(Listener newListener)
     {

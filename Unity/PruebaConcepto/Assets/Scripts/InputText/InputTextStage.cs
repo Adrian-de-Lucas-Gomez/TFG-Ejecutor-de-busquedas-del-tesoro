@@ -8,14 +8,12 @@ using TMPro;
 
 public class InputTextStage : Stage
 {
-    InputTextInfo inputTextData;      //Datos referentes a la imagen
+    InputTextInfo inputTextData;
 
     [SerializeField]
     TMP_InputField inputField;
     [SerializeField]
     TextMeshProUGUI info;
-    [SerializeField]
-    GameObject inputFieldObject;
 
     string answerObtained = "";
 
@@ -27,10 +25,11 @@ public class InputTextStage : Stage
 
         inputTextData = (InputTextInfo)data;
         info.text = inputTextData.descripcionFase;
-
-        Debug.Log(inputTextData.codigo);
     }
 
+    /// <summary>
+    /// Metodo para comprobar si el codigo es correcto
+    /// </summary>
     public void CheckCode()
     {
         GameManager.GetInstance().PlaySound("ButtonPress2");

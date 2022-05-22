@@ -28,7 +28,7 @@ public class GPSStage : Stage
 
     private bool changeSceneRequest = false;
 
-    private float timeToChangeScene = 5.0f;     //TO DO: Se podría hacer general al acabar todas las fases de dejar 5seg y mostrar un mensaje o algo
+    private float timeToChangeScene = 5.0f;
 
     private void Update()
     {
@@ -65,7 +65,9 @@ public class GPSStage : Stage
         changeSceneRequest = false;
     }
 
-    //Aqui actualizamos la interfaz para mostrar al usuario que ha llegado al objetivo
+    /// <summary>
+    /// Aqui actualizamos la interfaz para mostrar al usuario que ha llegado al objetivo
+    /// </summary>
     private void DestinationReached()
     {
         //Dejamos de actualizar las coordenadas GPS
@@ -88,7 +90,11 @@ public class GPSStage : Stage
         GameManager.GetInstance().StageCompleted();
     }
 
-    //Aqui comprobaríamos si nuestra posicion es suficientemente cercana al objetivo 
+    /// <summary>
+    /// Aqui comprobaríamos si nuestra posicion es suficientemente cercana al objetivo 
+    /// </summary>
+    /// <param name="latitude"></param>
+    /// <param name="longitude"></param>
     private void CheckGPSLocalization(float latitude, float longitude)
     {
         float dist = 1000.0f;   //Una distancia ficticia

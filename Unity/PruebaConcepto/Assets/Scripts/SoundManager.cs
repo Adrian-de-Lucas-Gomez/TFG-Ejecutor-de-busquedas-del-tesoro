@@ -19,6 +19,10 @@ public class SoundManager : MonoBehaviour
 		[HideInInspector]
 		public AudioSource source;
 	}
+
+	/// <summary>
+	/// Se inicializan las configuraciones de sonidos
+	/// </summary>
 	private void Awake()
 	{
 		foreach (Sound s in sounds)
@@ -31,6 +35,10 @@ public class SoundManager : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Metodo para reproducir un sonido por el nombre
+	/// </summary>
+	/// <param name="name">nombre de sonido</param>
 	public void SMPlaySound(string name)
 	{
 		Sound s = Array.Find(sounds, sound => sound.name == name);

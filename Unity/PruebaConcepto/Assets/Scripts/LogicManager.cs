@@ -23,14 +23,15 @@ public class LogicManager : MonoBehaviour
     [SerializeField]
     SuccessIconController successIconController;
 
-    // Start is called before the first frame update
     void Start()
     {
-        //nextPhaseButton.gameObject.active = false;
-        hintButton.gameObject.active = false;
+        hintButton.gameObject.SetActive(false);
     }
 
-
+    /// <summary>
+    /// Muestra el boton de pista si existe pista
+    /// </summary>
+    /// <param name="currentPhase"></param>
     public void EnableHints(AdventureInfo currentPhase)
     {
         if (currentPhase.hint == "")
@@ -39,17 +40,12 @@ public class LogicManager : MonoBehaviour
             hintButton.gameObject.SetActive(true);
     }
 
-    //Metodo que pide al gamemanager la informaci�n de la fase en la que nos encontramos y muestra la pista que tiene asociada
+    /// <summary>
+    /// Metodo que pide al gamemanager la informaci�n de la fase en la que nos encontramos y muestra la pista que tiene asociada
+    /// </summary>
     public void ShowHint()
     {
-        //hintText.text = GameManager.getInstance().getCurrentStage().hint;
         hintController.ShowHint();
-    }
-
-    //Metodo que esconde el panel encargado de mostrar las pistas de cada fase
-    public void HideHint()
-    {
-        //hintPanel.active = false;
     }
 
     public void ShowCorrect(bool correct)
@@ -57,7 +53,9 @@ public class LogicManager : MonoBehaviour
         successIconController.showCorrect(correct);
     }
 
-    //Metodo que tiene como objetivo mostrar el boton que te permite pasar a la siguiente fase
+    /// <summary>
+    /// Metodo que tiene como objetivo mostrar el boton que te permite pasar a la siguiente fase
+    /// </summary>
     public void PhaseCompleted()
     {
         continueButtonController.gameObject.SetActive(true);

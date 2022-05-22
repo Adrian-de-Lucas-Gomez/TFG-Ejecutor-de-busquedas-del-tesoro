@@ -29,7 +29,6 @@ public class MasterObject : MonoBehaviour , Listener
     //Bool que representa si la escene actual se est� ejecutando o no la escena que contiene  a este master object
     bool mySceneIsPlaying;
 
-    // Start is called before the first frame update
     void Start()
     {
         //Nos ponemos como que no estamos ejecutando nuestra escena desde el principio y m�s tarde cuando haya que preguntar veremos si nos toca ejecutar a nosotros o no
@@ -73,14 +72,8 @@ public class MasterObject : MonoBehaviour , Listener
         Listen(GameManager.GetInstance().GetCurrentStageType());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
     public void Listen(string stageType)
     {
-        //print("Me acaba de llegar el siguient mensage "+ stageType);
         //Si no estamos jugando esta escena pero nos toca porque nos lo dice el gamemanager nos activamos y si tenemos algo que ejecutar
         //se lo decimos al gamemanager para que este le de la info que necesita la fase que estemos almacenando
         if (!mySceneIsPlaying && stageType == myStageTypeStringRepresentation)
@@ -97,18 +90,21 @@ public class MasterObject : MonoBehaviour , Listener
         }
     }
 
-    //este m�todo tiene como objetivo que las fases una vez hayan terminado de ejecutarse que avisen a este padre para que limpie la escena porque la fase se ha acabado
+    /// <summary>
+    /// Este m�todo tiene como objetivo que las fases una vez hayan terminado de ejecutarse que avisen a este padre para que limpie la escena porque la fase se ha acabado
+    /// </summary>
     public void stageFinished()
     {
         mySceneIsPlaying = false;
         sceneObjectsParent.SetActive(false);
     }
 
-    //Metodo que permite obtener si las escena en la que se encuentra este master object est� siendo ejecutada o no
+    /// <summary>
+    /// Metodo que permite obtener si las escena en la que se encuentra este master object est� siendo ejecutada o no
+    /// </summary>
+    /// <returns></returns>
     public bool getSceneIsPlaying()
     {
         return mySceneIsPlaying;
     }
-
-
 }
