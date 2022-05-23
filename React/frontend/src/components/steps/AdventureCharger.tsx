@@ -233,22 +233,29 @@ const mandarAplicacion = async() =>{
   //Le pasamos al server el APK que el usuario ha dado
   const formData = new FormData();
   formData.append("apk", aplicacionSubida as File, aplicacionSubida?.name);
-  Swal.fire({title: 'APK enviada',text: "El archivo ha sido enviado al servidor", icon: 'success'});
+
   let result = await axios.post('/apk-upload', formData);
   
   var jsonFinal = descripcionFinal;
   console.log("El nombre original es "+aplicacionSubida.name);
   console.log("El nombre cortado es  "+(aplicacionSubida.name).substring(0, (aplicacionSubida.name).indexOf('.')));
   console.log("Lo que voy a mandar es "+JSON.stringify({ json: jsonFinal , nombre: (aplicacionSubida.name).substring(0, (aplicacionSubida.name).indexOf('.'))}));
-  let result2 = await axios.post("./guardame-APK", { description: jsonFinal , nombre: (aplicacionSubida.name).substring(0, (aplicacionSubida.name).indexOf('.'))});
+  try{
+    let result2 = await axios.post("./guardame-APK", { description: jsonFinal , nombre: (aplicacionSubida.name).substring(0, (aplicacionSubida.name).indexOf('.'))});
+  }
+  catch(e){
+    console.log((e as Error).message)
+    Swal.fire({title: 'APK no guardada',text: "El archivo no se ha podido almacenar en el servidor", icon: 'error'});
+  }
+  
+  Swal.fire({title: 'APK guardada',text: "El archivo ha sido almacenado en el servidor", icon: 'success'});
   setRefresh(!refresh);
 }
 
   return (
     <div className = "App" id='id0'>
 
-      <h1 style={{color:"white"}}>Aplicaciones Hechas</h1>
-      <h4 style={{color:"white", fontSize:"120%"}}>Guardar aventura en el servidor</h4>
+      <h2 style={{color:"white", fontSize:"200%"}}>Guardar aventura en el servidor</h2>
 
       {/* Seccion descripción de la aventura */}
       {(aplicacionSubida!==null) && false ? 
@@ -265,6 +272,8 @@ const mandarAplicacion = async() =>{
 
       <br></br>
       <br></br>
+
+      <h1 style={{color:"white"}}>Aplicaciones disponibles para jugar</h1>
 
       <div>
           {

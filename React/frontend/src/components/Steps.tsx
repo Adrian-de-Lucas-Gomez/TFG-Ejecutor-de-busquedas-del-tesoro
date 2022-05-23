@@ -602,8 +602,8 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
         {/* Grid configurado para que tenga un hoizontal layout que contiene tanto el selector de dónde queremos que se pushee la siguiente fase como el selector de fases existente
       con el que podemos configurar una de las fases que ya tengamos */}
         {/* Esta es la seccion que permite configurar la posicion de la siguiente fase que vayamos a incluir */}
-        <div >
-          <h3  className="Titulo" style={{fontSize:'200%'}} >Posicion de la siguiente fase en la aventura</h3>
+        <div className="bodyTopBackGround">
+          <h2 className="Titulo" style={{fontSize:'200%', marginTop:'0.2%'}} >Posicion de la siguiente fase en la aventura</h2>
           <div className="center">
             <div>
               <div>

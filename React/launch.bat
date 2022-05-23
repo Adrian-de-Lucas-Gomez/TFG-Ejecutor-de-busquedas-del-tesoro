@@ -2,7 +2,7 @@
 
 echo Building react app...
 
-rmdir .\backend\build /s
+rmdir .\backend\build /s /q
 
 cd frontend
 call npm install

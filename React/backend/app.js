@@ -221,7 +221,7 @@ app.post('/guardame-APK', function (request, res) {
         if (file[i] !== "README.txt") 
           fs.copyFileSync('./AplicacionLista/' + file[i], "../AplicacionesListas/"+request.body.nombre+"/"+file[i]);
       }
-      catch { console.log("An error ocurred copying a file:" + file[i]); }
+      catch { throw new Error("An error ocurred copying a file:" + file[i]) }
     }
 
     var filesToRemove = fs.readdirSync("./AplicacionLista/");
@@ -234,7 +234,8 @@ app.post('/guardame-APK', function (request, res) {
       }
 
   }
-  catch { console.log("An error ocurred getting the adventure json") }
+  catch { 
+    throw new Error("An error ocurred getting the adventure json"); }
   console.log("The adventure description was succesfully recieved");
   res.json({ key: "value" });
 });
