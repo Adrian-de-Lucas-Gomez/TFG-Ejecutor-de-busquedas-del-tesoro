@@ -10,8 +10,10 @@ public class InputTextStage : Stage
 {
     InputTextInfo inputTextData;
 
+    [Tooltip("Campo de texto")]
     [SerializeField]
     TMP_InputField inputField;
+    [Tooltip("Texto de informacion de la fase")]
     [SerializeField]
     TextMeshProUGUI info;
 

@@ -9,6 +9,7 @@ public class StartAdventure : MonoBehaviour
     [SerializeField]
     MasterObject master;
 
+    [Tooltip("Timepo de espera para empezar")]
     [SerializeField]
     int tiempoEspera = 5;
 

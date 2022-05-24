@@ -9,8 +9,10 @@ public class QRStage : Stage
     [Tooltip("Escaner de QR")]
     [SerializeField] QRScanner scanner;
 
+    [Tooltip("Panel de escena completada")]
     [SerializeField] GameObject nextPanel;
 
+    [Tooltip("Texto de valor de QR")]
     [SerializeField] TextMeshProUGUI QRValueText;
 
     QRInfo qrData;

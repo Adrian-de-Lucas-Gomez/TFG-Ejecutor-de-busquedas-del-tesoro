@@ -6,12 +6,13 @@ using TMPro;
 
 public class HintController : MonoBehaviour
 {
-
+    [Tooltip("Texto de pista")]
     [SerializeField]
     TextMeshProUGUI hintText;
 
     Animator hintAnimator;
 
+    [Tooltip("Referencia a Logic Manager")]
     [SerializeField]
     LogicManager logicManager;
 

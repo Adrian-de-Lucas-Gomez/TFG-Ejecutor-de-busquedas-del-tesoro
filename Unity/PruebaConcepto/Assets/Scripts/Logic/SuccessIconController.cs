@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SuccessIconController : MonoBehaviour
 {
-
     Animator animator;
 
     [SerializeField]

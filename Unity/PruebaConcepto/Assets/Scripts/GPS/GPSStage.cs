@@ -11,9 +11,9 @@ public class GPSStage : Stage
     [Tooltip("Lector de coordenadas GPS")]
     [SerializeField] GPSScanner scanner;
 
-
     [SerializeField] TextMeshProUGUI description;
 
+    [Tooltip("Texto para mostrar la distancia al objetivo")]
     [SerializeField] TextMeshProUGUI PointsDistance;
 
     [SerializeField] Image point;
@@ -130,8 +130,14 @@ public class GPSStage : Stage
         return angleIn10thofaDegree * Mathf.PI / 180;
     }
 
-    //Metodo que calcula la distancia entre dos puntos definidos por latitud y logitud usando la 
-    //formula de Haversine y devolviendo el resultado en metros
+    /// <summary>
+    /// Metodo que calcula la distancia entre dos puntos definidos por latitud y logitud usando la formula de Haversine y devolviendo el resultado en metros
+    /// </summary>
+    /// <param name="lat1"></param>
+    /// <param name="lon1"></param>
+    /// <param name="lat2"></param>
+    /// <param name="lon2"></param>
+    /// <returns></returns>
     float distance(float lat1, float lon1, float lat2, float lon2)
     {
         float dlat = toRadian(lat2-lat1);

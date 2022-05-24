@@ -12,9 +12,10 @@ using UnityEngine;
 /// </summary>
 public class MasterObject : MonoBehaviour , Listener
 {
-
+    [Tooltip("Objeto padre de escena")]
     [SerializeField]
     GameObject sceneObjectsParent;
+    [Tooltip("Referencia a Stage actual")]
     [SerializeField]
     Stage myStage;
 

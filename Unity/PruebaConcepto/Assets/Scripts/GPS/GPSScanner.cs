@@ -5,9 +5,12 @@ public class GPSScanner : MonoBehaviour
 {
     private float ActualLongitude;
     private float ActualLatitude;
+
+    /// <summary>
+    /// Actualizamos los valores de latitud y longitud que ha registrado el GPS
+    /// </summary>
     private void UpdateCoordinates()
     {
-        //Actualizamos los valores de latitud y longitud que ha registrado el GPS
         ActualLongitude = Input.location.lastData.longitude;
         ActualLatitude = Input.location.lastData.latitude;
     }

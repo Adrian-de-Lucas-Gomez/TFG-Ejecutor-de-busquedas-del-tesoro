@@ -5,6 +5,7 @@ using TMPro;
 
 public class EndStage : MonoBehaviour
 {
+	[Tooltip("Texto que muestra fases completadas, saltadas...")]
 	[SerializeField]
 	TextMeshProUGUI endText;
 

@@ -8,6 +8,7 @@ public class ContinueButtonController : MonoBehaviour
     Button nextPhaseButton;
     Animator nextPhaseButtonAnimator;
 
+    [Tooltip("Referencia a Logic Manager")]
     [SerializeField]
     LogicManager logicManager;
 

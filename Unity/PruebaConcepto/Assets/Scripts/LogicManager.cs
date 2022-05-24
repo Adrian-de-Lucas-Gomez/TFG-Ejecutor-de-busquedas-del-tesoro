@@ -6,20 +6,23 @@ using UnityEngine.UI;
 
 public class LogicManager : MonoBehaviour
 {
-
+    [Tooltip("Boton de pista")]
     [SerializeField]
     Button hintButton;
 
+    [Tooltip("Controlador de boton continuar")]
     [SerializeField]
     ContinueButtonController continueButtonController;
 
+    [Tooltip("Controlador de pista")]
     [SerializeField]
     HintController hintController;
 
-
+    [Tooltip("Controlador de pantalla de carga")]
     [SerializeField]
     LoadScreenController loadScreenController;
 
+    [Tooltip("Controlador de icono de exito")]
     [SerializeField]
     SuccessIconController successIconController;
 
@@ -62,6 +65,9 @@ public class LogicManager : MonoBehaviour
         continueButtonController.Appear();
     }
 
+    /// <summary>
+    /// Oculta el boton de pasar de fase e inicia la animacion de transicion
+    /// </summary>
     public void StartSceneTransition()
     {
         continueButtonController.gameObject.SetActive(false);
