@@ -151,7 +151,6 @@ app.get("/reset", (req, res) => {
     for (var i = 0; i < filesToRemove.length; i++) {
       //Si no es el readme, lo elimino del directorio
       if (filesToRemove[i] !== "README.txt") {
-        console.log("Removed file from backend/"+directoriosDeTrabajo[j]+"/ directory: " + filesToRemove[i]);
         fs.unlinkSync("./"+directoriosDeTrabajo[j]+"/" + filesToRemove[i]);
       }
     }
@@ -161,7 +160,6 @@ app.get("/reset", (req, res) => {
   var apkToRemove = fs.readdirSync('./AplicacionLista/');
   for(let i  =0 ; i < apkToRemove.length; i++){
     if (apkToRemove[i] !== "README.txt") {
-      console.log("Removed file from backend/AplicacionLista/ directory: " + apkToRemove[i]);
       fs.unlinkSync('./AplicacionLista/' + apkToRemove[i]);
     }
   }
@@ -172,14 +170,12 @@ app.get("/reset", (req, res) => {
 app.get("/generate-zip", (req, res)=>{
   try{
     fs.unlinkSync('../Aventura.zip');
-    console.log("Deleted zip");
   }
-  catch {
-    console.log("Couldnt remove .zip from server");
-  }
+  catch { /*No hay zip que eliminar*/ }
+
   // Le paso al comando el nombre del directorio que hace falta crear y usar para almacenar la aventura
-  var command = "GeneraZip.bat";
-  //var command = "bash GeneraZip.sh";
+  //var command = "GeneraZip.bat";
+  var command = "bash GeneraZip.sh";
   const execProcess = exec(command, { 'encoding': 'utf8' }, (error, stdout) => {});
   execProcess.on('exit', () => {
     console.log('exec process exit');
@@ -197,7 +193,7 @@ app.post('/guardame-json', function (request, res) {
     //Creamos un fichero json en un directorio que no este bajo el control del server para evitar problemas
     fs.writeFileSync('../AdventureData.json', request.body.json);
   }
-  catch { console.log("An error ocurred getting the adventure json") }
+  catch { console.log("An error ocurred writting the adventure json") }
   console.log("The adventure json was succesfully recieved");
   res.json({ key: "value" });
 });
@@ -229,14 +225,12 @@ app.post('/guardame-APK', function (request, res) {
         //Si no es el readme, lo elimino del directorio
         if (filesToRemove[i] !== "README.txt") {
           fs.unlinkSync("./AplicacionLista/"+ filesToRemove[i]);
-          console.log("Removed file from /AplicacionLista/ directory: " + filesToRemove[i]);
         }
       }
 
   }
   catch { 
-    throw new Error("An error ocurred getting the adventure json"); }
-  console.log("The adventure description was succesfully recieved");
+    throw new Error("An error ocurred getting the adventure APK"); }
   res.json({ key: "value" });
 });
 //////////////////////////////////////////Peticiones para guardar una APK nueva en el servidor dada una descripción////////////////////////////////////////////////////
@@ -258,7 +252,6 @@ app.post('/guardame-aventura', function (req, res) {
         //Si no es el readme, lo elimino del directorio
         if (filesToRemove[i] !== "README.txt") {
           fs.unlinkSync(dir+"/"+ filesToRemove[i]);
-          console.log("Removed file from /BaseDeDatos/ directory: " + filesToRemove[i]);
         }
       }
     }
@@ -271,8 +264,6 @@ app.post('/guardame-aventura', function (req, res) {
     }
   }
   catch { console.log("An error ocurred creating the directory: " + dir); }
-  console.log("Directory created: " + dir);
-
   //Paso por todos los directorios de trabajo y copio todos los archivos existentes que interesen para la aventura en el directorio de BaseDeDatos para almacenar la configuracion
   for(let j = 0; j<directoriosDeTrabajo.length; j++){
     var filesToSave = fs.readdirSync("./"+directoriosDeTrabajo[j]+"/");
@@ -288,7 +279,6 @@ app.post('/guardame-aventura', function (req, res) {
     for (var i = 0; i < filesToRemove.length; i++) {
       //Si no es el readme, lo elimino del directorio
       if (filesToRemove[i] !== "README.txt") {
-        console.log("Removed file from backend/"+directoriosDeTrabajo[j]+"/ directory: " + filesToRemove[i]);
         fs.unlinkSync("./"+directoriosDeTrabajo[j]+"/" + filesToRemove[i]);
       }
     }
@@ -299,7 +289,7 @@ app.post('/guardame-aventura', function (req, res) {
     fs.copyFileSync('../AdventureData.json', '../BaseDeDatos/' + name + '/AdventureData.json');
   }
   catch {
-    console.log("An error ocurred copying AdventureData file to the DataBase");
+    console.log("An error ocurred copying AdventureData.json file to the DataBase");
   }
 
   res.json({ key: "value" });
@@ -313,7 +303,6 @@ app.post('/dame-aventura', function (request, response) {
 
   //Me hago con el nombre de la aventura que nos están pidiendo
   var name = JSON.parse(request.body.json).Nombre;
-  console.log("Aventura Solicitada para lectura: " + name);
   var content = fs.readFileSync('../BaseDeDatos/' + name + '/AdventureData.json', { encoding: 'utf8', flag: 'r' });
   response.json({ AventuraGuardada: content });
 });
@@ -328,8 +317,6 @@ app.get('/getFile/:fileName/:adventure', function (req, res, next) {
   //se encuentra en archivo se lo doy al usuario
   for(let i = 0; i<directoriosDeTrabajo.length; i++){
     let path = "../BaseDeDatos/"+req.params.adventure+"/"+directoriosDeTrabajo[i]+"/"+req.params.fileName;
-    console.log("El path del que se saca el archivo es "+path);
-    // req.params.adventure;
     if (fs.existsSync(path)) { 
       res.download(path, req.params.fileName, function (err) {});
       break;
