@@ -1,55 +1,63 @@
 {
   "Adventure": "aaaa",
   "VuforiaKey": "Ae95I1T/////AAABmcG2mBJb3UoFv6M4ZsPOEJKFswyU2T3hp757RDMwUtxtFGwZtB9JonqLEFaRvfjiQfsD+4B+ZdeDCQhvGLbqgE7j4gZ41WL4NPNs1z2YdQY91XMEEcp8JtrgdNLMzExZH9ECqXFvmOS6Mjzf5n9+3Sl/dfGdBy50S4ylNxfG2ThVq0Cu7ZDiOjhD4EndhZuBTENh0kXG350xUsEQDvEjlueXiiFGvQOUy81cZHNjvX2+gyOLAq852Aj05Ew0QSDqzd+wAyoCFvsmgtkqeNx1cVrE2JMB6xGTvRunUY+48uivzchMxS7MvIlPu8n5YtEzkq+R6TQNoJZunJ5GHI1UAsz0sDHHk3Cqjv/AXPzlf+ZS",
-  "fases": [
-    {
-      "tipo": "InputTextStage",
-      "Respuestas": [
-        "a"
-      ],
-      "description": "Mete la contraseña de FiDI para que podáis entrar en la facultad",
-      "Pista": " El QR decía “Soy todo un hacker”"
-    },
-    {
-      "tipo": "SoundStage",
-      "Sonido": "0.mp3",
-      "description": "Text",
-      "Pista": ""
-    },
-    {
-      "tipo": "ImageTargetStage",
-      "Target": "1.png",
-      "TargetType": "Text",
-      "Text": "Hola caracola que tal va esto cuando le meto 20 mil palabras",
-      "Pista": ""
-    },
-    {
-      "tipo": "ImageStage",
-      "Imagen": "0.png",
-      "description": " ¿Sabes? Me han dicho que hace poco se han hecho una nueva tanda de títulos universitarios sin nombre. Y también me han contado que a alguien se le han olvidado por algún lado de la facultad. Si nos llevamos uno no creo nadie se de cuenta, ¡¡¡RÁPIDO!!! vamos antes de que alguien los encuentre y te quedes sin tu título universitario.",
-      "Pista": ""
-    },
-    {
-      "tipo": "InputTextStage",
-      "Respuestas": [
-        "a"
-      ],
-      "description": "Mete la contraseña de FiDI para que podáis entrar en la facultad",
-      "Pista": " El QR decía “Soy todo un hacker”"
-    },
+    "fases": [
+        {
+            "tipo": "InputTextStage",
+            "Respuestas": [
+                "a"
+            ],
+            "description": "Mete la contraseña de FiDI para que podáis entrar en la facultad",
+            "Pista": " El QR decía “Soy todo un hacker”"
+        },
+        {
+            "tipo": "InputTextStage",
+            "Respuestas": [
+                "a"
+            ],
+            "description": "Mete la contraseña de FiDI para que podáis entrar en la facultad",
+            "Pista": " El QR decía “Soy todo un hacker”"
+        },
+        {
+            "tipo": "ImageTargetStage",
+            "Target": "1.png",
+            "TargetType": "Text",
+            "Text": "Hola caracola que tal va esto cuando le meto 20 mil palabras",
+            "Pista": ""
+        },
+        {
+            "tipo": "SoundStage",
+            "Sonido": "0.mp3",
+            "description": "Text",
+            "Pista": ""
+        },
+        {
+            "tipo": "ImageStage",
+            "Imagen": "0.png",
+            "description": " ¿Sabes? Me han dicho que hace poco se han hecho una nueva tanda de títulos universitarios sin nombre. Y también me han contado que a alguien se le han olvidado por algún lado de la facultad. Si nos llevamos uno no creo nadie se de cuenta, ¡¡¡RÁPIDO!!! vamos antes de que alguien los encuentre y te quedes sin tu título universitario.",
+            "Pista": ""
+        },
+        {
+            "tipo": "InputTextStage",
+            "Respuestas": [
+                "a"
+            ],
+            "description": "Mete la contraseña de FiDI para que podáis entrar en la facultad",
+            "Pista": " El QR decía “Soy todo un hacker”"
+        },
 
-    
-    {
-      "tipo": "QRStage",
-      "QRText": "Buenas tardes",
-      "Pista": "No se busca tio"
-    },
-    {
-      "tipo": "ImageTargetStage",
-      "Target": "0.png",
-      "TargetType": "Image",
-      "OverlappingImage": "0_overlapping.png",
-      "Pista": ""
-    }
-  ]
+
+        {
+            "tipo": "QRStage",
+            "QRText": "Buenas tardes",
+            "Pista": "No se busca tio"
+        },
+        {
+            "tipo": "ImageTargetStage",
+            "Target": "0.png",
+            "TargetType": "Image",
+            "OverlappingImage": "0_overlapping.png",
+            "Pista": ""
+        }
+    ]
 }

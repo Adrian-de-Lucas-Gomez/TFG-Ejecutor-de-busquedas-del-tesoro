@@ -63,6 +63,7 @@ public class LogicManager : MonoBehaviour
     {
         continueButtonController.gameObject.SetActive(true);
         continueButtonController.Appear();
+        hintController.ShowHintPanel(false);
     }
 
     /// <summary>
@@ -70,6 +71,7 @@ public class LogicManager : MonoBehaviour
     /// </summary>
     public void StartSceneTransition()
     {
+        hintController.ShowHintPanel(false);
         continueButtonController.gameObject.SetActive(false);
         loadScreenController.StartSceneTransition();
     }

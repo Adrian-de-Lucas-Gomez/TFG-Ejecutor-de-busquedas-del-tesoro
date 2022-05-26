@@ -29,8 +29,7 @@ public class HintController : MonoBehaviour
     {
         GameManager.GetInstance().PlaySound("ButtonPress3");
         hintText.text = GameManager.GetInstance().GetCurrentStage().hint;
-        hintAnimator.SetBool("Aparecer", true);
-        hintAnimator.SetBool("Desaparecer", false);
+        ShowHintPanel(true);
     }
 
     /// <summary>
@@ -39,8 +38,7 @@ public class HintController : MonoBehaviour
     public void HideHint()
     {
         GameManager.GetInstance().PlaySound("ButtonPress2");
-        hintAnimator.SetBool("Aparecer", false);
-        hintAnimator.SetBool("Desaparecer", true);
+        ShowHintPanel(false);
     }
 
     /// <summary>
@@ -52,5 +50,13 @@ public class HintController : MonoBehaviour
         GameManager.GetInstance().SkippedPhase();
         logicManager.StartSceneTransition();
         HideHint();
+    }
+
+
+    //MEtodo para controlar las variables involucradas en las transiciones del panel de pistas
+    public void ShowHintPanel(bool appear)
+    {
+        hintAnimator.SetBool("Aparecer", appear);
+        hintAnimator.SetBool("Desaparecer", !appear);
     }
 }

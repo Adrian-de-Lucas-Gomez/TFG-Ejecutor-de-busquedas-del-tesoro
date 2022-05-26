@@ -16,6 +16,9 @@ public class SoundStage : Stage
     [Tooltip("Texto que da una explicacion en la fase")]
     [SerializeField] TextMeshProUGUI descriptionText;
 
+    [Tooltip("Boton para reproducir el audio de la fase")]
+    [SerializeField]Toggle toggle;
+
     //Audio que se va a usar en la fase
     AudioClip audioClip;
 
@@ -35,20 +38,23 @@ public class SoundStage : Stage
     {
         //Hemos terminado de reproducir el audio
         if (audioStarted && !audioSource.isPlaying) {
-            audioStarted = false;
-            audioSource.Stop();
+            toggle.isOn = false;
             NextScene();
         }
     }
 
     public void ToggleSound()
 	{
-        audioStarted = !audioStarted;
-
-        if(audioStarted)
+        if (toggle.isOn)
+        {
+            audioStarted = true;
             audioSource.Play();
+        }
         else
+        {
+            audioStarted = false;
             audioSource.Pause();
+        }
     }
 
     public void NextScene()
@@ -57,7 +63,10 @@ public class SoundStage : Stage
     }
     public override void OnStageEnd()
     {
-
+        //Esto es necesario en caso de que se salte la fase antes de escuchar el audio entero
+        //Evita que avances de fase y continues escuchando el audio
+        audioSource.Stop();
+        toggle.isOn = false;
     }
 
 }

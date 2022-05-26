@@ -39,7 +39,9 @@ public class ImageStage : Stage
     }
     public override void OnStageEnd()
     {
-
+        //Por si se ha saltado esta fase nada más llegar a ella hay que cancelar la invocación para que no salga le botón
+        //De continuar de primeras en la fase siguiente
+        CancelInvoke("NextScene");
     }
 }
 
