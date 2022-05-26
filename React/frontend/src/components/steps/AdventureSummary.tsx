@@ -14,12 +14,17 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
   }, []);
 
+
+  //Metodo llamado por las cartas que representan las fases de la aventura, ocurre cuando se ha pulsado el boton de hacer cambios en una de estas fases
+  //Se mira cual ha sido la carta que ha llamado este metodo a traves del indice recibido y se salta al formulario que permita configurar la fase que representa
+  //dicha carta
   const configurarFase = (index: number) => {
     //Preparamos las variables que las fases necesitan para que puedan obtener los datos necesarios
     let new_state = props.getState<any>('DATA', []);
     props.setState('FaseConfigurable', index, 0);
     props.setState<boolean>('SobreEscribir', true, true);
 
+    //Saltamos al formulario que haga falta
     switch (new_state[index].tipo) {
       case "QRStage":
         props.jump(2);
@@ -45,6 +50,8 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     }
   }
 
+  //Metodo llamado por las cartas que representan las fases de la aventura para eliminar una fase concreta
+  //Se recibe el indice de la carta que ha llamado a este metodo para determinar qué fase eliminar
   const eliminarFase = (e: number) => {
     let new_state = props.getState<any>('DATA', []);
     new_state.splice(e, 1);
@@ -71,8 +78,41 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     props.setState<number>('WhereToPush', indicePushear, 0);
   }
 
+//MEtodo llamado por las cartas que representan las fases de la aventura para cambiar una de posición
+  //Recibe un indice para indicar qué fase se quiere mover y la dirección en la que se quiere hacer
+  const moverFase = (index: number, dir: number): void => {
+    let fases = props.getState<any>('DATA', []);
+    //Subimos la fase
+    let dest = 0;
+    if (dir === -1) {
+      dest = index - 1;
+      if (dest < 0) dest = 0;
+    }
+    else if (dir === 1) {
+      dest = index + 1;
+      if (dest === fases.length)
+        dest = fases.length - 1;
+    }
+
+    //Si no la hemos podido mover nos salimos
+    if (dest === index) return;
+
+    //Quito el elemento y lo pongo en una nueva posicion
+    var element = fases[index];
+    fases.splice(index, 1);
+    fases.splice(dest, 0, element);
+
+    //Actualizo el estado de las fases de la aventura
+    props.setState('DATA', fases, []);
+  }
+
+
+
   /*
-     Metodo auxiliar para mandar distintos tipos de archivo al servidor. Tiene como parametros
+     Metodo auxiliar para mandar distintos tipos de archivo al servidor. Tiene como parametros 
+     el archivo a mandar
+     la ruta a la que hacerlo
+     el nomber que se le quiere dar a dicho fichero 
    */
   const sendFileToServer = async (identifier: string, file: File, fileName: string, route: string) => {
     //Mandamos el archivo file al backend para que la trate de cara al proyecto
@@ -84,9 +124,8 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     return result;
   }
 
+  //MEtodo utilizado para enviar el json con los datos de la aventura al servidor
   const mandarJson = async () => {
-
-    console.log("Voy a intentar mandar el json");
     // //Una vez que tengo los datos de cada evento, preparo un JSON y lo descargo
     var datos = [];
     let fasesDeLaAventura = props.getState<any>('DATA', []);      
@@ -107,21 +146,24 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
         //El nombre de la imagen va a ser el orden de esta en la aventura mas su misma extension
         var finalImageName = fasesDeLaAventura[i].Imagen.name;
         finalImageName = (contadorImagenes.toString()) + (finalImageName.substring(finalImageName.indexOf('.')));
-        //Cambiamos la fase para que el json tenga la referencia a esta
+        //Cambiamos la fase para que el json tenga la referencia a la imagen de la fase
         faseActual.Imagen = finalImageName;
         contadorImagenes++;
       }
+      //En caso de que sea una fase de tipo Image Target
       else if (fasesDeLaAventura[i].tipo === "ImageTargetStage" && fasesDeLaAventura[i].Target instanceof File) {
         var finalTargetName = fasesDeLaAventura[i].Target.name;
         finalTargetName = (contadorTargets.toString())+"RA" + (finalTargetName.substring(finalTargetName.indexOf('.')));
-        //Cambiamos la fase para que el json tenga la referencia a esta
+        //Cambiamos la fase para que el json tenga la referencia a la imagene involucrada
         faseActual.Target = finalTargetName;
 
+        //Si se va a superponet otra imagen sobre el target se hace lo mismo con dicha imagen
         if (fasesDeLaAventura[i].TargetType === "Image" && fasesDeLaAventura[i].OverlappingImage instanceof File) {
           faseActual.OverlappingImage = contadorTargets.toString() + "_overlapping.png";
         }
         contadorTargets++;
       }
+      //En caso de que sea una fase de tipo Sonido
       else if (fasesDeLaAventura[i].tipo === "SoundStage" && fasesDeLaAventura[i].Sonido instanceof File) {
         var finalSoundName = fasesDeLaAventura[i].Sonido.name;
         finalSoundName = (contadorSonidos.toString()) + (finalSoundName.substring(finalSoundName.indexOf('.')));
@@ -130,21 +172,15 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
         contadorSonidos++;
       }
       datos.push(faseActual);
-      console.log("El json completo es "+JSON.stringify(fasesDeLaAventura));
-      console.log("Pero lo que estamos formando es  "+ JSON.stringify(datos));
-
     }
     var jsonFinal = { Adventure: props.getState('adventureName', "Nombre por defecto"), VuforiaKey: props.getState('vuforiaKey', ''), fases: datos }
-
     let result = await axios.post("./guardame-json", { json: JSON.stringify(jsonFinal, null, 2) });
-    console.log("JSON MANDADO");
   }
 
-  //Este método tiene como objetivo preparar cosas especificas de alguna fase, como por ejemplo mandar las imagenes 
-  //al backend para que las trate en el proyecto y poder preparar el json de la aventura datos que nos ayuden recurrir a dichas
-  //imagenes
+  //Este método tiene como objetivo madar todos los archivos involucrados en la aventura que no sean el JSON, como las imagenes o los audios de determinadas fases
+  //Adicionalmente se cambia le nombre de estos ficheros para evitar colisiones de nombres en el servidor
+  //La manera en la que se renombrean estos ficheros es utilizando indices para cada tipo de fase, adicionalmente en las fases de imagetarget se añaden sufijos al indice
   const operacionesPreDescargaProyecto = async () => {
-    console.log("Atencion operaciones antes de descargar el proyecto");
     //Tenemos que recorrer las posibles imagenes de la aventura y enviarlas al server para que haga algo con ellas
     var fasesAventura = props.getState<any>('DATA', []);
     var contadorImagenes = 0;
@@ -152,6 +188,7 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     var contadorSonidos = 0;
     for (var i = 0; i < fasesAventura.length; i++) {
 
+      //Se mandan los ficheros de las fases de imagen
       var faseActual = fasesAventura[i];
       if (faseActual.tipo === "ImageStage" && faseActual.Imagen instanceof File) {
         var finalImageName = faseActual.Imagen.name;
@@ -161,6 +198,8 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
         let result = await sendFileToServer('imageCharger', faseActual.Imagen, finalImageName, "./image-upload")
         contadorImagenes++
       }
+
+      //Se mandan los ficheros de las fases de image target
       else if (faseActual.tipo === "ImageTargetStage" && faseActual.Target instanceof File) {
         var finalTargetName = faseActual.Target.name;
         finalTargetName = (contadorTargets.toString())+ "RA" + (finalTargetName.substring(finalTargetName.indexOf('.')));
@@ -172,6 +211,8 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
         }
         contadorTargets++;
       }
+
+      //Se mandan los ficheros de las fases de sonido
       else if (faseActual.tipo === "SoundStage" && faseActual.Sonido instanceof File) {
         var finalSoundName = faseActual.Sonido.name;
         finalSoundName = (contadorSonidos.toString()) + (finalSoundName.substring(finalSoundName.indexOf('.')));
@@ -180,10 +221,9 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
         contadorSonidos++;
       }
     }
-    //props.setState('DATA', fasesAventura, []);
   }
 
-  //Metodo que comprueba si la key de vuforia es correcta
+  //Metodo que comprueba si la key de vuforia necesaria y además correcta
   //En caso de que no haya fases de AR o que si que las haya y la key tenga el numero de caracteres
   //requeridos devuelve true
   //en caso contrario devuelve false
@@ -312,41 +352,19 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     props.setState('adventureName', e, "Nombre por defecto");
   }
 
+  //MEtodo que devuelve el nombre de la aventura que se esta configurando
   const getAdventureName = (): string => {
     return props.getState('adventureName', "Nombre por defecto");
   }
 
+  //Metodo que devuelve la key de vuforia otorgada por el usuario
   const getVuforiaKey = (): string => {
     return props.getState('vuforiaKey', "");
   }
+
+  //Metodo que sierve para tratar la key de vuforia del usuario
   const modifyVuforiaKey = (e: string): void => {
     props.setState('vuforiaKey', e, "");
-  }
-  //Metodo que toma una posicion dentro del array de fases y una direccion y mueve la fase que se encuentre en dicha posicion hacia
-  //la dirección especificada si es posible
-  const moverFase = (index: number, dir: number): void => {
-    let fases = props.getState<any>('DATA', []);
-    //Subimos la fase
-    let dest = 0;
-    if (dir === -1) {
-      dest = index - 1;
-      if (dest < 0) dest = 0;
-    }
-    else if (dir === 1) {
-      dest = index + 1;
-      if (dest === fases.length)
-        dest = fases.length - 1;
-    }
-
-    //Si no la hemos podido mover nos salimos
-    if (dest === index) return;
-
-    //Quito el elemento y lo pongo en una nueva posicion
-    var element = fases[index];
-    fases.splice(index, 1);
-    fases.splice(dest, 0, element);
-
-    props.setState('DATA', fases, []);
   }
 
 

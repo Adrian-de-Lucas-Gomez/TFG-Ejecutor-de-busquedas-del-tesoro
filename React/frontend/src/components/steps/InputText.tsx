@@ -9,28 +9,9 @@ const InputText = (props: StepComponentProps): JSX.Element => {
     const [texts, setTexts] = useState<string[]>([]);
     const [description, setDescription] = useState<string>("");
     const [currText, setCurrText] = useState<string>("")
-    const [sobreEscribir, setSobreEscribir] = useState<boolean>(false);
 
     const [mostrarFormularioPista, setMostrarFormularioPista] = useState<boolean>(false);
     const [pista, setPista] = useState<string>("");
-
-    const addText = (text: string): void => {
-        const newTexts = [...texts, text];
-        setTexts(newTexts);
-    }
-
-
-    const removeText = (index: number): void => {
-        const newAnswers: string[] = [...texts];
-        newAnswers.splice(index, 1);
-        setTexts(newAnswers);
-    }
-
-    const handleNewText = (e: React.FormEvent<HTMLFormElement>): void => {
-        e.preventDefault();
-        addText(currText);
-        setCurrText("");
-    }
 
     useEffect(() => {
 
@@ -69,11 +50,32 @@ const InputText = (props: StepComponentProps): JSX.Element => {
     }, [pista, texts, description]);
 
 
+    //Metodo para añadir una nueva respuesta correcta
+    const addText = (text: string): void => {
+        const newTexts = [...texts, text];
+        setTexts(newTexts);
+    }
 
+    //Metodo para eliminar una respuesta de las ya existentes
+    const removeText = (index: number): void => {
+        const newAnswers: string[] = [...texts];
+        newAnswers.splice(index, 1);
+        setTexts(newAnswers);
+    }
+
+    //Metodo para tratar una nueva respuesta posible
+    const handleNewText = (e: React.FormEvent<HTMLFormElement>): void => {
+        e.preventDefault();
+        addText(currText);
+        setCurrText("");
+    }
+
+    //Metodo para actualizar la pista de esta fase
     const updatePista = (nuevaPista: string) => {
         setPista(antigua => antigua = nuevaPista);
     }
 
+    //Metodo que sirve para lanzar una alerta en la que se informa sobre cómo hay que rellenar el formulario para incluir una fase de este tipo
     const tutorialFase = () => {
         Swal.fire({title: 'InputText',text: "En esta fase puedes configurar una constraseña que el jugador tiene que introducir para pasar a la siguiente, también puedes configurar una descripción para hacerle preguntas al jugador y que escriba la respuesta o para ayudarle a buscar en su entorno para descifrarla.", icon: 'info'});
     }

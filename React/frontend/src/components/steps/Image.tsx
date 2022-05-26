@@ -11,10 +11,14 @@ const Image = (props: StepComponentProps): JSX.Element => {
     //Max bytes de las imagenes
     const maxBytesImg = 2097152;
 
+    //Imagen de la fase
     const [image, setImagen] = useState<File | null >(null);
+
+    //Descripcion que va a acompañar a la fase
     const [description, setdescription] = useState<string>("");
     type FormElement = React.FormEvent<HTMLFormElement>;
 
+    //Estado relacionado con la pista de la fase
     const [mostrarFormularioPista, setMostrarFormularioPista] =useState<boolean>(false);
     const [pista, setPista] = useState<string>("");
 
@@ -34,9 +38,8 @@ const Image = (props: StepComponentProps): JSX.Element => {
             if (estadoACargar.Imagen instanceof File){
                 setImagen(estadoACargar.Imagen);
             }
+
             setPista(estadoACargar.Pista);
-
-
             setdescription(estadoACargar.description);
         }
 
@@ -58,7 +61,7 @@ const Image = (props: StepComponentProps): JSX.Element => {
         //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
     }, [pista, image, description]);
 
-    //OBTENIENDO LA IMAGEN
+    //MEtodo que analiza el fichero dado por el usuario y en caso de que sea una imagen valida se la guarda en su estado
     const changeImagen = (e:React.ChangeEvent<HTMLInputElement>):void => {  
         //Comprobamos si lo que nos han introducido en el formulario ha sido un fichero
         //En principio el tipo del input debería garantizarlo 
@@ -68,8 +71,8 @@ const Image = (props: StepComponentProps): JSX.Element => {
             let filename: string[] = name.split('.') as string[]
             let extension: string = filename[filename?.length - 1]
 
+            //Tipos de imagenes permitidas 
             if ((extension === 'png' || extension === "jpg" || extension === "jpeg") && (file?.size ?? 0) <= maxBytesImg) {
-                console.log("Updated file")
                 setImagen(file)
             }
             else{
@@ -84,10 +87,12 @@ const Image = (props: StepComponentProps): JSX.Element => {
         }
     }
 
+    //Metodo para actualizar la pista de la fase
     const updatePista = (nuevaPista:string) =>{
         setPista(nuevaPista);
     }
 
+    //Metodo que sirve para lanzar una alerta en la que se informa sobre cómo hay que rellenar el formulario para incluir una fase de este tipo
     const tutorialFase = ()=>{
         Swal.fire({title: 'Imagen',text: "En esta fase puedes mostrarle al jugador una imagen junto con una descripción para informarle sobre algo en su entorno o para dar contexto en tu aventura.", icon: 'info'});
     }

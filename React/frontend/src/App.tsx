@@ -28,12 +28,13 @@ const App = (): JSX.Element => {
     }
   };
 
-
-
   return (
     <div className='steps_wrapper'>
       <h2 className='Titulo' style={{marginTop:'0.5%',marginBottom:'1%'}} >Configuración de Búsqueda del Tesoro</h2>
+
+      {/* Aqui se instancia el contenedor de los formularios */}
       <Steps config={config} genState={state} setGenState={setState}>
+        {/* Dentro de este contenedor hay un componente por cada formulario disponible */}
         <Step title='AdventureSummary' component={AdventureSummary} />
         <Step title='AdventureCharger' component={AdventureCharger} />
         <Step title='QR' component={QR} />
@@ -44,7 +45,6 @@ const App = (): JSX.Element => {
         <Step title='InputText' component={InputText} />
         <Step title='GPS' component={GPS}/>
       </Steps>
-
     </div>
   );
 };

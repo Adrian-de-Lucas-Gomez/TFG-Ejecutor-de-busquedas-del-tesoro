@@ -453,6 +453,7 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     }
   };
 
+  //Metodo que permite saltar a un formulario segun su nombre
   const jumpWithString = (s: string): void => {
     console.log(s);
     let destiny = 0;
@@ -513,7 +514,6 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     let current_state = getState<any>('DATA', []);
     if (value > current_state.length) value = current_state.length;
     setState<number>('WhereToPush', value, 0);
-    console.log(value);
   }
 
   //MEtodo que disminuye en 1 la siguiente posicion en la que vamos a añadir una nueva fase a la aventur
@@ -524,7 +524,9 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
     setState<number>('WhereToPush', value, 0);
   }
 
-
+//Metodo utilizado para tomar los datos que representan la fase que estamos configurando en cada momento y guardarlos en lo que llevamos de aventura
+//Dicha fase está acompañada de datos adicionales para saber si está completa o faltan datos por rellenar, en cuyo caso se hace una alerta indicando
+//el por qué nos e puede guardar
   const guardarFase = async () => {
     let new_state = getState<any>('DATA', []);
     let sobreEscribir = getState<boolean>('SobreEscribir', false);
@@ -631,13 +633,6 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
           {config?.navigation?.location === "after" && NavigationComponent(context)}
           {config?.after && AfterComponent(context)}
         </StepsContext.Provider>
-        
-        {/* Este boton tiene como objetivo descargar el proyecto generado */}
-        {/* <a href="ProyectoUnity.zip"  download={getState('adventureName',"Nombre por defecto")}>
-          <button  type="button" >
-          Descargar Aventura
-        </button>      
-      </a> */}
 
         {/* <!-- Option 1: Bootstrap Bundle with Popper --> */}
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossOrigin="anonymous"></script>

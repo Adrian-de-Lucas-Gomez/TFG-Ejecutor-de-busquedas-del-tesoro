@@ -2,58 +2,54 @@ import QRCode from "qrcode.react";
 import React, {useState, useRef, useEffect, forwardRef, useImperativeHandle} from "react"
 import { StepComponentProps } from '../Steps';
 import '../Styles/QR.css'
-import swal from "sweetalert";
 import Errorimage from "../../imgCards/Imagen.png"
 import Swal from "sweetalert2";
 
 
 const QR = (props: StepComponentProps): JSX.Element => {
+    type FormElement = React.FormEvent<HTMLFormElement>;
     //Referencia en el DOM al div que contiene el QR que renderizamos
     const qrRef = useRef(null);
     //Donde guardamos el texto a codificar en QR
     const [text, setText] = useState<string>("");
-    type FormElement = React.FormEvent<HTMLFormElement>;
-    const [sobreEscribir, setSobreEscribir] = useState<boolean>(false);
 
+    //Estado relacionado con la pista de la fase
     const [mostrarFormularioPista, setMostrarFormularioPista] =useState<boolean>(false);
     const [pista, setPista] = useState<string>("");
     
     useEffect(() => {
-    // let info = {Alert: true, MensageAlert: "Rellena bien el texto del QR", datosFase: {} };
-    // props.setState<any>('faseConfigurandose',info,{});
+        //En caso de que haya que sobreescribir algo, cargo los datos que ya había de esta fase      
+        if(props.getState<boolean>('SobreEscribir', false)){
 
-    //En caso de que haya que sobreescribir algo, me guardo que estamos sobreescribiendo y cargo 
-    //los datos que ya había de esta fase      
-    if(props.getState<boolean>('SobreEscribir', false)){
+            //Me quedo con lo que haya que sobreescribir
+            let new_state = props.getState<any>('DATA', []); 
+            let estadoACargar = new_state[props.getState<number>('FaseConfigurable',1)];
 
-        //Me quedo con lo que haya que sobreescribir
-        let new_state = props.getState<any>('DATA', []); 
-        let estadoACargar = new_state[props.getState<number>('FaseConfigurable',1)];
-        //Me guardo tando la pregunta como las respuestas que había configuradas
-        setText(estadoACargar.QRText);
-        setPista(estadoACargar.Pista);
+            //Cargo dichos datos en los elementos visuales
+            setText(estadoACargar.QRText);
+            setPista(estadoACargar.Pista);
 
-        //Nos aseguramos que lo que se esta configurando ahora es lo que nos hemos cargado
-        let myData = {Alert: false, MensageAlert: "", datosFase: estadoACargar };
+            //Al estar reconfigurando una fase, esta está como mínimo completa y se puede guardar de primeras
+            let myData = {Alert: false, MensageAlert: "", datosFase: estadoACargar };
+            props.setState<any>('faseConfigurandose',myData,{});
+        }
+        
+        //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
+        return () => {}
+    //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
+    }, [props.getState<boolean>('SobreEscribir', false)]);
+
+
+    //Hook que se llama cada vez que se modifica algo significativo de la fase para guardar lo que tengamos y que al darle a guardar los cambios se vean
+    useEffect(() => {
+        let jsonData = {tipo:"QRStage" ,QRText: text, Pista: pista};
+        let myData = {Alert: (text === ""), MensageAlert: "El código QR no puede estar vacío", datosFase: jsonData };
         props.setState<any>('faseConfigurandose',myData,{});
-    }
-    
-    //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
-    return () => {}
-    //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
-  }, [props.getState<boolean>('SobreEscribir', false)]);
 
-
-    //Hook que se llama cada vez que se modifica algo significativo de la fase para guardar lo que tengamos y que al darle a guardar los cambios se veab
-  useEffect(() => {
-    let jsonData = {tipo:"QRStage" ,QRText: text, Pista: pista};
-    let myData = {Alert: (text === ""), MensageAlert: "El código QR no puede estar vacío", datosFase: jsonData };
-    props.setState<any>('faseConfigurandose',myData,{});
-
-    //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
-    return () => {}
-    //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
-  }, [pista, text]);
+        //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
+        return () => {}
+        //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
+    }, [pista, text]);
 
 
     //Metodo que se encarga de convertir el qr a formato png y descargarlo
@@ -84,10 +80,12 @@ const QR = (props: StepComponentProps): JSX.Element => {
         document.body.removeChild(anchor);
       };
 
+    
+    //Método que sirve para actualizar la pista que tiene esta fase
     const updatePista = (nuevaPista:string) =>{
         setPista(nuevaPista);
     }
- 
+    //Metodo que sirve para lanzar una alerta en la que se informa sobre cómo hay que rellenar el formulario para incluir una fase de este tipo
     const tutorialFase = ()=>{
         Swal.fire({title: 'QR',text: "En esta fase puedes introducir un texto para generar un QR, el cual el jugador tendrá que buscar y escanear con su cámara para completar esta fase.", icon: 'info'});
     }
@@ -113,11 +111,6 @@ const QR = (props: StepComponentProps): JSX.Element => {
                     <button type="submit" className="my-btn btn-outline-dark2" style={{fontSize:'150%'}}>Descargar QR</button>
                 </form>
             </div>
-            {/* <div style={{marginLeft:'4%'}}>
-                <form style={{textAlign:'center'}} onSubmit= {()=>{}}>
-                    <button type="submit" className="my-btn btn-outline-pink" style={{fontSize:'150%'}}>Guardar fase</button>
-                </form>
-            </div> */}
         </div>
 
         {/* Seccion pista */}

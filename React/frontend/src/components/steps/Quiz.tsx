@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 
 const Quiz = (props: StepComponentProps): JSX.Element => {
 
+    //Estructura de las respuestas posibles en el quiz
     interface Answer {
         text: string;
         isCorrect: boolean;
@@ -23,13 +24,12 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
     //Respuesta en proceso
     const [currAnswer, setCurrAnswer] = useState<string>("");
     
+    //Estados relacionados con la pista de la fase
     const [mostrarFormularioPista, setMostrarFormularioPista] =useState<boolean>(false);
     const [pista, setPista] = useState<string>("");
 
 
     useEffect(() => {
-        // let info = {Alert: true, MensageAlert: "Quiz debe tener una pregunta y al menos 2 respuestas posibles", datosFase: {} };
-        // props.setState<any>('faseConfigurandose',info,{});
         //En caso de que haya que sobreescribir algo, me guardo que estamos sobreescribiendo y cargo 
         //los datos que ya había de esta fase      
         if(props.getState<boolean>('SobreEscribir', false)){
@@ -57,10 +57,11 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
         //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
         return () => {}
         //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
-      }, [props.getState<boolean>('SobreEscribir', false)]);
+    }, [props.getState<boolean>('SobreEscribir', false)]);
+
 
   //Hook que se llama cada vez que se modifica algo significativo de la fase para guardar lo que tengamos y que al darle a guardar los cambios se veab
-      useEffect(() => {
+    useEffect(() => {
         let jsonData = {tipo:"QuizStage" ,Pregunta: question, Respuestas: answers,Pista:pista};
         let myData = {Alert: ((question ==="")||(answers.length<2)), MensageAlert: "El quiz debe de tener una pregunta y al menos 2 respuestas", datosFase: jsonData };
         props.setState<any>('faseConfigurandose',myData,{});
@@ -68,47 +69,47 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
         //Este cógigo se ejecuta EXCLUSIVAMENTE cuando se va a desmontar el componente
         return () => {}
         //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
-      }, [pista, question,answers]);
+    }, [pista, question,answers]);
     
-    
-
-    
-    //const [quizAddFunction, setFuncion] = useState<Function>(props.funcion);
-    const [index, setIndex] = useState(props.order);
-
+    //MEtodo para almacenar los cambios realizados sobre la pregunta del quiz
     const modifyQuestion = (e:string):void =>{        
         setQuestion(e);
     }
 
+    //Metodo  encargado de añadir una nueva respuesta al quiz
     const handleNewQuestion = (e:FormElement):void =>{
         e.preventDefault();
         addAnswer(currAnswer);
         setCurrAnswer("");
     }
 
+    //Metodo que sirve para confirmar la respuesta escrita y añadirla al quiz
     const addAnswer = (text:string):void =>{
         console.log("Respuesta añadida");
         const newAnswers =[...answers, {text, isCorrect:false}];
         setAnswers(newAnswers);
     }
 
+    //Metodo para eliminar una de las respuestas del quiz
     const removeAnswer = (index:number): void =>{
         const newAnswers: Answer[] = [...answers];
         newAnswers.splice(index, 1);
         setAnswers(newAnswers);
     }
 
+    //Metodo para cambiar que una respuesta sea correcta y viceversa
     const setAnswerAsCorrect = (index:number):void =>{
         const newAnswers: Answer[] = [...answers];
         newAnswers[index].isCorrect = !newAnswers[index].isCorrect;
         setAnswers(newAnswers);
     }
 
+    //Metodo para actualizar la pista de la fase
     const updatePista = (nuevaPista:string) =>{
         setPista(nuevaPista);
     }
 
-
+    //Metodo que sirve para lanzar una alerta en la que se informa sobre cómo hay que rellenar el formulario para incluir una fase de este tipo
     const tutorialFase = ()=>{
         Swal.fire({title: 'Quiz',text: "En esta fase puedes configurar un quiz que el jugador debe responder correctamente para completarla, debes de introducir al menos 2 respuestas posibles y pueden haber múltiples respuestas correctas, en cuyo caso el jugador debe de responder a todas correctamente", icon: 'info'});
     }
@@ -144,6 +145,7 @@ const Quiz = (props: StepComponentProps): JSX.Element => {
                 </Fragment>
                 ))}
             </div>     
+
 
             {/* Sªeccion pista */}
             {/* Boton para desplegar elementos para añadir una pista */}

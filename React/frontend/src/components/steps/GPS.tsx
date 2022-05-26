@@ -7,23 +7,23 @@ import Errorimage from "../../imgCards/Imagen.png"
 import Swal from "sweetalert2";
 
 const GPS = (props: StepComponentProps): JSX.Element => {
-    //Donde guardamos el texto a codificar en GPS
+    type FormElement = React.FormEvent<HTMLFormElement>;
+
+    //Estados relacionados con las coordenadas del GPS
     const [GPSLongitude, setGPSLongitude] = useState<number>(40.453003);
     const [GPSLatitude, setGPSLatitude] = useState<number>(-3.733825);
     const [radius, setradius] = useState<number>(10.0);
-    const [description, setdescription] = useState<string>("");
     const [markers, setMarkers] = useState([40.453003, -3.733825]);
-    type FormElement = React.FormEvent<HTMLFormElement>;
-    const [sobreEscribir, setSobreEscribir] = useState<boolean>(false);
 
+    //Descripción que se le quiere dar a la fase
+    const [description, setdescription] = useState<string>("");
+
+    //Estados relacionados con la pista de la fase
     const [mostrarFormularioPista, setMostrarFormularioPista] =useState<boolean>(false);
     const [pista, setPista] = useState<string>("");
 
 
     useEffect(() => {
-        // let info = {Alert: true, MensageAlert: "Rellena bien el texto del GPS", datosFase: {} };
-        // props.setState<any>('faseConfigurandose',info,{});
-
         //En caso de que haya que sobreescribir algo, me guardo que estamos sobreescribiendo y cargo 
         //los datos que ya había de esta fase      
         if (props.getState<boolean>('SobreEscribir', false)) {
@@ -31,13 +31,13 @@ const GPS = (props: StepComponentProps): JSX.Element => {
             //Me quedo con lo que haya que sobreescribir
             let new_state = props.getState<any>('DATA', []);
             let estadoACargar = new_state[props.getState<number>('FaseConfigurable', 1)];
-            //Me guardo tando la pregunta como las respuestas que había configuradas
+
+            //Me guardo que había configurados en la fase a sobreescribir
             setGPSLongitude(estadoACargar.GPSLongitude);
             setGPSLatitude(estadoACargar.GPSLatitude);
             setradius(estadoACargar.radius);
             setdescription(estadoACargar.description);
             setMarkers([estadoACargar.GPSLatitude,estadoACargar.GPSLongitude])
-
             setPista(estadoACargar.Pista);
 
 
@@ -51,7 +51,8 @@ const GPS = (props: StepComponentProps): JSX.Element => {
         //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
     }, [props.getState<boolean>('SobreEscribir', false)]);
 
-    //Hook que se llama cada vez que se modifica algo significativo de la fase para guardar lo que tengamos y que al darle a guardar los cambios se veab
+
+    //Hook que se llama cada vez que se modifica algo significativo de la fase para guardar lo que tengamos y que al darle a guardar los cambios se vean
     useEffect(() => {
         let jsonData = { tipo: "GPSStage", GPSLongitude: GPSLongitude, GPSLatitude: GPSLatitude, radius: radius, description: description, Pista:pista };
         let myData = { Alert: ((description==="")||(radius<=0)), MensageAlert: "La fase de GPS debe tener una localización válida, un radio mayor a 0 y una descripción no vacía", datosFase: jsonData };
@@ -64,8 +65,15 @@ const GPS = (props: StepComponentProps): JSX.Element => {
       }, [pista, GPSLongitude,GPSLatitude,radius, description]);
     
 
+
+    //MEtodo utilizado para tratar la pista de la fase
     const updatePista = (nuevaPista:string) =>{
         setPista(nuevaPista);
+    }
+
+    //Metodo que sirve para lanzar una alerta en la que se informa sobre cómo hay que rellenar el formulario para incluir una fase de este tipo
+    const tutorialFase = ()=>{
+        Swal.fire({title: 'GPS',text: "En esta fase puedes introducir unas coordenadas en un mapa, a las que el jugador deberá llegar para completar esta fase, se puede configurar la distancia a la que se considera que el jugador ha llegado a su destino y una descripción para informar al jugador sobre el lugar al que tiene que llegar.", icon: 'info'});
     }
 
 
@@ -94,11 +102,6 @@ const GPS = (props: StepComponentProps): JSX.Element => {
             </>
         )
     }
-
-    const tutorialFase = ()=>{
-        Swal.fire({title: 'GPS',text: "En esta fase puedes introducir unas coordenadas en un mapa, a las que el jugador deberá llegar para completar esta fase, se puede configurar la distancia a la que se considera que el jugador ha llegado a su destino y una descripción para informar al jugador sobre el lugar al que tiene que llegar.", icon: 'info'});
-    }
-
 
     return (
         <div >

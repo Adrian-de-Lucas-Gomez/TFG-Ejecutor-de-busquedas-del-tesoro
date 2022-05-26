@@ -7,98 +7,46 @@ import Swal from 'sweetalert2'
 
 const AdventureCharger = (props: StepComponentProps): JSX.Element => {
 
-    //Indice de la aventtra que estamos seleccionando
-    const [indiceAventura, setIndiceAventura] = useState<number>(0);
     //Lista de las aventuras que el server nos ha informado que existen y que podemos seleccionar y cargar
     const [aventurasDisponibles, setAventurasDisponibles] = useState<any>([]);
     const [descripcionesAventurasDisponibles, setDescripcionesAventurasDisponibles] = useState<any>([]);
 
+    //Lista de aplicaciones almacenadas en el servidor que podemos descargar y lista de descripciones de las mismas
     const [aplicacionesDisponibles, setAplicacionesDisponibles] = useState<any>([]);
     const [descripcionesAplicacionesDisponibles, setDescripcionesAplicacionesDisponibles] = useState<any>([]);
 
 
+    //Estados encargados de tratar la aplicacion que el usuario puede subir al servidor para su almacenamiento junto a su descripción
     const [aplicacionSubida, setAplicacionSubida]= useState<File | null >(null);
-
     const [descripcionAventura, setDescripcionAventura] = useState<string >("");
 
+    //estado utilizado para actualizar la pagina cuando se guarda una aplicacion en el servidor y que se muestre que se encuentra entre las disponibles
     const [refresh , setRefresh] = useState<boolean >(false);
 
     //Nada más empezar lo que hago es pedirle al server las aventuras que tenemos disponibles para cargar 
     useEffect(() => {
-      console.log("Pantalla de opciones en ele server REFRESH")
+
+      //Obtenemos las configuraciones disponibles y las descripciones de las mismas
       axios.get("./aventuras-guardadas").then (response => {
         //Seteamos las aventuras que tenemos disponibles a lo que nos ha dicho el server
-        console.log("Las opciones son "+response.data.Opciones);
         setAventurasDisponibles(response.data.Opciones);
         setDescripcionesAventurasDisponibles(response.data.Descripciones);
-        
-        //Ponemos el texto a una cosa u otra para informar al jugador de lo que se está seleccionando
-        if(response.data.Opciones.length < 1){}
-        else {
-          setIndiceAventura(0);
-        }})
+      })
 
+      //Obtenemos las aplicaciones guardadas y las descripciones de las mismas
       axios.get("./aplicacionesListas-guardadas").then (response => {
         //Seteamos las aventuras que tenemos disponibles a lo que nos ha dicho el server
-        console.log("Las APKs son "+response.data.Opciones);
-        console.log("Las descripciones son "+response.data.Descripciones);
-
         setAplicacionesDisponibles(response.data.Opciones);
         setDescripcionesAplicacionesDisponibles(response.data.Descripciones);
-
-        //Ponemos el texto a una cosa u otra para informar al jugador de lo que se está seleccionando
-        if(response.data.Opciones.length < 1){}
-        else {
-          setIndiceAventura(0);
-        }})
+      })
 
         return () => {}
         //Si algo cambia en le tema de sobreescribir nos actualizamos para poder adquirir los datos de la fase a RECONFIGURAR
-      }, [refresh]);
+    }, [refresh]);
 
 
-  //Método que mira la aventura que estamos seleccionando en cada momento y le pide al server que nos la de
-  //en caso de que no exista alerta al usuario de que no hay nada que cargar
-  const cargarAventura = async () =>{       
-    if(aventurasDisponibles.length <1 ){
-      alert("No hay aventuras disponibles"); 
-      return;
-    }
-    //Le pido al server una aventura con un nombre que se le indica, y cuando nos llegue la cargamos en nuestro estado global de react
-    var jsonFinal = {Nombre: aventurasDisponibles[indiceAventura] }
-
-    //Solicito el json de la aventura en cuestion
-    const response = await axios.post("./dame-aventura", {json:JSON.stringify(jsonFinal, null, 2)});
-    props.setState('adventureName',JSON.parse(response.data.AventuraGuardada).Adventure, "Nombre por defecto");
-    
-    //Miro por el json para buscar las  imagenes que contiene la aventura
-    var fases = JSON.parse(response.data.AventuraGuardada).fases;
-    for(let i = 0; i < fases.length;i++){
-      var faseActual = fases[i];
-      //En caso de que sea una fase de tipo imagen
-      if(faseActual.tipo === "ImageStage"){   
-        //pido al server que me de una imagen que s ellame asi
-        var fileName=faseActual.Imagen;
-        let reset = await axios.get("./getFile/"+fileName, {responseType: 'arraybuffer',headers: {'Content-Type': 'application/json'},params: {json:"JSON.stringify(jsonFinal, null, 2)"}});
-        const type = reset.headers['content-type']
-        const blob = new Blob([reset.data], { type: type })
-
-        //Genero un archivo con dicho archivo que me han dado y me lo guardo
-        let myData = {tipo:"ImageStage" ,Imagen: new File([blob], fileName)};
-        fases.splice(i,1,myData);
-        console.log("Acabamos de recuperar una imagen: "+fileName);
-      }
-    }
-    
-    //Como hemos cargado cosas vamos a resetear los indices relacionados con la configuración de la aventura
-    props.setState<number>('WhereToPush',0,0);
-    props.setState<number>('FaseConfigurable',0,0);
-    props.setState<number>('FaseABorrar',0,0);
-
-    //Me guardo las fases que acabamos de conseguir tras cargar la aventura
-    props.setState('DATA',fases, []);
-  }
-
+  //Metodo llamado por las cartas que representan las configuraciones del servidor, recibe un indice indicando cual de todas se ha pulsado
+  //El objetivo de este método es cargar la configuración de dicha aventura con su JSON y los archivos adicionales involucrados
   const ponerACargar = async (index:number)=>{
     if(aventurasDisponibles.length <1 ){
       alert("No hay aventuras disponibles"); 
@@ -144,9 +92,7 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
             myData.OverlappingImage = new File([blob], fileName);
           }
         }
-        
         fases.splice(i,1,myData);
-        console.log("Acabamos de recuperar un fichero: "+fileName);
       }
   }
 
@@ -162,10 +108,13 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
     props.jump(0);
 }
 
+//Metodo llamado por las cartas que representan las aplicacions almacenadas en el servidor, recibe un indice indicando cual de todas se ha pulsado
 const descargarAventura = async (indice: number)=>{
+  //Se solicita una aplicacion llamada como la que tarjeta nos haya indicado
   let nombreAPK = aplicacionesDisponibles[indice];
-  console.log("vamos a solicitar algo llamado "+nombreAPK);
   let aplicacion = await axios.get("./getAPK/"+nombreAPK, {responseType: 'arraybuffer',headers: {'Content-Type': 'application/json'},params: {json:"JSON.stringify(jsonFinal, null, 2)"}});
+ 
+  //Se toma la respuesta del servidor y se descarga la aplicación que viene en ella
   const type = aplicacion.headers['content-type']
   const blob = new Blob([aplicacion.data], { type: type })
   const link = document.createElement('a')
@@ -177,6 +126,8 @@ const descargarAventura = async (indice: number)=>{
 
 
 
+  //Metodo que se llama cuando el usuario carga una aplicación 
+  //Comprueba que se puede cargar y en caso contrario le avisa al usuario de que hay un problema
 const guardarAPKHecha = async (e:React.ChangeEvent<HTMLInputElement>) => {  
   if (e.target.files?.item(0) instanceof File){
     let file: File | null = e.target.files?.item(0);
@@ -195,6 +146,9 @@ const guardarAPKHecha = async (e:React.ChangeEvent<HTMLInputElement>) => {
   else setAplicacionSubida(null);
 }
 
+//Metodo que se utiliza para mandar una aplicación cargada por el usuario para su almacenamiento en el servidor
+//Antes de hacer este envío se le solicita al usuario que de una descripción sobre la aventura que quiere guardar
+//Cuando la rellene se envía la aplicación, en caso de no hacerlo se cancela la operación
 const mandarAplicacion = async() =>{
   //SI no tenemos una apk lista para subir no hacemos nada
   if(!(aplicacionSubida instanceof File)) return;
@@ -237,9 +191,6 @@ const mandarAplicacion = async() =>{
   let result = await axios.post('/apk-upload', formData);
   
   var jsonFinal = descripcionFinal;
-  console.log("El nombre original es "+aplicacionSubida.name);
-  console.log("El nombre cortado es  "+(aplicacionSubida.name).substring(0, (aplicacionSubida.name).indexOf('.')));
-  console.log("Lo que voy a mandar es "+JSON.stringify({ json: jsonFinal , nombre: (aplicacionSubida.name).substring(0, (aplicacionSubida.name).indexOf('.'))}));
   try{
     let result2 = await axios.post("./guardame-APK", { description: jsonFinal , nombre: (aplicacionSubida.name).substring(0, (aplicacionSubida.name).indexOf('.'))});
   }

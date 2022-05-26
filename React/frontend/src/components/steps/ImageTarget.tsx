@@ -33,6 +33,7 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
     const [imageToAdd, setImageToAdd] = useState<File | null>(null);
     const [imageToAddSize, setImageToAddSize] = useState<ImageSize>({ width: 0, height: 0 });
 
+    //Estado relacionado con la pista de la fase
     const [mostrarFormularioPista, setMostrarFormularioPista] = useState<boolean>(false);
     const [pista, setPista] = useState<string>("");
 
@@ -102,10 +103,12 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
     }, [pista, imageTarget, textToShow, imageToAdd]);
 
 
+    //Metodo utilizado para actualizar la descripción de la fase
     const modifyDescription = (e: string): void => {
         setTextToShow(e);
     }
 
+    //MEtodo utilizado para especificar si se quiere superponer una imagen o un texto en esta fase
     const onSelectorChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         e.preventDefault();
         setSelectedItem(e.target.value);
@@ -192,10 +195,12 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
         setImageToAdd(imageFileResult)
     }
 
+    //Metodo para actualizar la pista de la fase
     const updatePista = (nuevaPista: string) => {
         setPista(nuevaPista);
     }
 
+    //Metodo que sirve para lanzar una alerta en la que se informa sobre cómo hay que rellenar el formulario para incluir una fase de este tipo
     const tutorialFase = ()=>{
         Swal.fire({title: 'ImageTarget',text: "En esta fase puedes configurar una imágen que el jugador va a tener que buscar y escanear con el móvil, también puedes configurar si quieres que se le muestre algún texto tras el escaneo.", icon: 'info'});
     }

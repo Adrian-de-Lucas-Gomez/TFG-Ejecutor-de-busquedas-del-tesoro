@@ -4,11 +4,10 @@ import "../Styles/MyCard.css"
 const AdventureCard = (props: {aventura:any, descripcion: any, textoBoton: any, funcionCargar: any , index:number }): JSX.Element => {
 
     const [indice, setIndice] = useState<number>(props.index);
-    const [miAventura, setMiAventura] = useState<any>(props.aventura);
 
   return (
     <div className="card">
-      <h1 className="card__title">{miAventura}</h1>
+      <h1 className="card__title">{props.aventura}</h1>
 
 
       {props.descripcion !== "" ? 
