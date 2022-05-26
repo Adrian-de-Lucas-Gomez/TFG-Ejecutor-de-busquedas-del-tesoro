@@ -51,7 +51,7 @@
     },
     {
       "tipo": "QRStage",
-      "QRText": "Soy todo un hacker",
+      "QRText": "Contraseña: Soy todo un hacker",
       "Pista": "La clave de acceso está en un QR que debes de encontrar en la parada del U"
     },
     {
@@ -84,7 +84,7 @@
     {
       "tipo": "ImageStage",
       "Imagen": "5.jpg",
-      "description": "Buff ahora me siento mejor… pero todavía percibo interferencias y no soy capaz de localizar los títulos. Deberíamos acabar con ellas, subamos a la cuarta planta que allí hay muchos cacharros antiguos, puede que alguno sea el causante del problema.",
+      "description": "Buff ahora me siento mejor… pero todavía percibo interferencias y no soy capaz de localizar los títulos. Deberíamos acabar con ellas, subamos a la tercera planta que allí hay muchos cacharros antiguos, puede que alguno sea el causante del problema.",
       "Pista": ""
     },
     {
@@ -148,7 +148,7 @@
       "tipo": "ImageTargetStage",
       "Target": "1RA.jpg",
       "TargetType": "Text",
-      "Text": "ABC",
+      "Text": "El fragmento de la llave está en el juego *Army Moves*",
       "Pista": "Usa la cámara para analizar las portadas de los videojuegos de Spectrum"
     },
     {
@@ -175,8 +175,8 @@
       "Respuestas": [
         "odqawbvtghy"
       ],
-      "description": "Mete el código secreto para obtener el fragmento de la llave. ",
-      "Pista": "Traduce los símbolos que están en las puertas de los laboratorios en el orden"
+      "description": "Mete el código secreto para obtener el fragmento de la llave en el orden: 5-4-9-7-10-2-1-3-6-8-11",
+      "Pista": "Traduce los símbolos que están en las puertas de los laboratorios"
     },
     {
       "tipo": "ImageStage",

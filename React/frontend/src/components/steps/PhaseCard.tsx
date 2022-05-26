@@ -5,6 +5,7 @@ import QRPic from "../../imgCards/QRStageImage.png";
 import QuizPic from "../../imgCards/QuizStageImage.png";
 import SoundPic from "../../imgCards/SoundStageImage.png";
 import GPSPic from "../../imgCards/GPSStageImage.png";
+import InputTextPic from "../../imgCards/InputTextImage.png"
 import Errorimage from "../../imgCards/Imagen.png"
 
 
@@ -23,6 +24,7 @@ const PhaseCard = (props: {fase:any,funcionMofify:any, funcionDelete: any,funcio
       if(miFase.tipo === "ImageStage")return window.URL.createObjectURL(miFase.Imagen);
       if(miFase.tipo === "ImageTargetStage") return window.URL.createObjectURL(miFase.Target);
       if(miFase.tipo === "SoundStage") return SoundPic;
+      if(miFase.tipo === "InputTextStage")return InputTextPic;
       if(miFase.tipo === "GPSStage")return GPSPic;
 
       return Errorimage;
