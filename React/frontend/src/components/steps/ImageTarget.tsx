@@ -84,7 +84,6 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
     useEffect(() => {
         let jsonData;
         let myData;
-
         if (selectedItem === "Image") {
             jsonData = { tipo: "ImageTargetStage", Target: imageTarget, TargetType: selectedItem, OverlappingImage: imageToAdd, Pista: pista };
             myData = { Alert: ((imageTarget === null || imageToAdd === null) || (imageTargetSize.width < minTargetWidth || imageTargetSize.width!=imageToAddSize.width || imageTargetSize.height!=imageToAddSize.height)), MensageAlert: "La fase debe tener una imagen target cargada de minimo "+minTargetWidth+" pixeles de ancho, y en caso de querer superponer una imagen sobre el target, esta debe tener el mismo tamaño en pixeles y no puede ser nula", datosFase: jsonData };
@@ -93,7 +92,6 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
             jsonData = { tipo: "ImageTargetStage", Target: imageTarget, TargetType: selectedItem, Text: textToShow, Pista: pista };
             myData = { Alert: ((imageTarget === null) || (textToShow === "")), MensageAlert: "La fase debe tener una imagen target cargada y en caso de mostrar un texto, este no puede estar vacío", datosFase: jsonData };
         }
-
         props.setState<any>('faseConfigurandose', myData, {});
         console.log("Ahora el estado es asi: " + JSON.stringify(jsonData));
 
@@ -152,7 +150,7 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
         let img = document.getElementById("imageTarget") as HTMLImageElement
         img.src = window.URL.createObjectURL(file as Blob)
         targetFileResult = file
-        setImageTarget(targetFileResult)
+
     }
 
     const changeImageToAddImage = (e: React.ChangeEvent<HTMLImageElement>): void => {
@@ -192,7 +190,7 @@ const ImageTarget = (props: StepComponentProps): JSX.Element => {
         let img = document.getElementById("imageToAdd") as HTMLImageElement
         img.src = window.URL.createObjectURL(file as Blob)
         imageFileResult = file
-        setImageToAdd(imageFileResult)
+
     }
 
     //Metodo para actualizar la pista de la fase
