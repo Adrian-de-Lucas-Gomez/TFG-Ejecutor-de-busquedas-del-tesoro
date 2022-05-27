@@ -163,6 +163,8 @@ const mandarAplicacion = async() =>{
   if(aplicacionesDisponibles.includes(filename[0])){
     let respuesta = await Swal.fire({ title: 'Alerta', text: "Ya existe una apk llamada "+filename[0]+", ¿deseas sobreescribirla?", icon: 'warning',
       showCancelButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
       cancelButtonText: 'Cancelar',
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -180,6 +182,8 @@ const mandarAplicacion = async() =>{
     inputAttributes: {
       autocapitalize: 'off'
     },
+    allowOutsideClick: false,
+    allowEscapeKey: false,
     text:  "Antes de guardar tu aventura debes de añadir una pequeña descripción sobre esta para que futuros jugadores sepan a qué van a jugar antes de descargarsela"
    });
    console.log(noHayDescripcion.value);

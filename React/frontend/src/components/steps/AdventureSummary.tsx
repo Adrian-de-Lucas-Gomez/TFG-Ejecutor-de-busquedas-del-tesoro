@@ -273,7 +273,10 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
       cancelButtonText: 'Cancelar',
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Sobreescribir'
+      confirmButtonText: 'Sobreescribir',
+      allowOutsideClick: false,
+      allowEscapeKey: false
+
     });
       //Si el usuario no desea sobreescribir la aventura dejamos de hacer cosas
       if (!respuesta.isConfirmed) return;
@@ -287,6 +290,8 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     inputAttributes: {
       autocapitalize: 'off'
     },
+    allowOutsideClick: false,
+    allowEscapeKey: false,
     text:  "Antes de guardar tu aventura debes de añadir una pequeña descripción sobre esta para que futuros jugadores sepan a qué van a jugar antes de descargarsela"
     });
     //Si aun avisandole no me ha dado ninguna descripcion cancelamos toda la operacion
@@ -295,8 +300,8 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
       return;
     }
     descripcionFinal = noHayDescripcion.value;
- 
- 
+
+
     Swal.showLoading();
     //Si no nos hemos ido del metodo lo que nos queda por hacer es limpiar el server, mandar todos los ficheros que componen nuestra aventura y solicitar el proyecto
     let reset = await axios.get("./reset");
