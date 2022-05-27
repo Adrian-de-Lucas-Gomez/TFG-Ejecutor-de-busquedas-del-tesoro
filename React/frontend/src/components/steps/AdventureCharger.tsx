@@ -55,11 +55,12 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
     //Le pido al server una aventura con un nombre que se le indica, y cuando nos llegue la cargamos en nuestro estado global de react
     var jsonFinal = {Nombre: aventurasDisponibles[index] }
 
+    Swal.showLoading();
     //Solicito el json de la aventura en cuestion
     const response = await axios.post("./dame-aventura", {json:JSON.stringify(jsonFinal, null, 2)});
     var nombreDeLaAventura = JSON.parse(response.data.AventuraGuardada).Adventure
     props.setState('adventureName',nombreDeLaAventura, "Nombre por defecto");
-    
+
     //Miro por el json para buscar las  imagenes que contiene la aventura
     var fases = JSON.parse(response.data.AventuraGuardada).fases;
     for(let i = 0; i < fases.length;i++){
@@ -96,6 +97,7 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
       }
   }
 
+    Swal.fire({title: 'Aventura cargada', icon: 'success'});
     //Como hemos cargado cosas vamos a resetear los indices relacionados con la configuración de la aventura
     props.setState<number>('WhereToPush',0,0);
     props.setState<number>('FaseConfigurable',0,0);
@@ -110,6 +112,8 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
 
 //Metodo llamado por las cartas que representan las aplicacions almacenadas en el servidor, recibe un indice indicando cual de todas se ha pulsado
 const descargarAventura = async (indice: number)=>{
+
+  Swal.showLoading();
   //Se solicita una aplicacion llamada como la que tarjeta nos haya indicado
   let nombreAPK = aplicacionesDisponibles[indice];
   let aplicacion = await axios.get("./getAPK/"+nombreAPK, {responseType: 'arraybuffer',headers: {'Content-Type': 'application/json'},params: {json:"JSON.stringify(jsonFinal, null, 2)"}});
@@ -122,6 +126,7 @@ const descargarAventura = async (indice: number)=>{
   link.download = nombreAPK;
   link.click();
   link.remove();
+  Swal.fire({title: 'Aplicación descargada', icon: 'success'});
 }
 
 
@@ -150,6 +155,7 @@ const guardarAPKHecha = async (e:React.ChangeEvent<HTMLInputElement>) => {
 //Antes de hacer este envío se le solicita al usuario que de una descripción sobre la aventura que quiere guardar
 //Cuando la rellene se envía la aplicación, en caso de no hacerlo se cancela la operación
 const mandarAplicacion = async() =>{
+
   //SI no tenemos una apk lista para subir no hacemos nada
   if(!(aplicacionSubida instanceof File)) return;
   let filename: string[] = aplicacionSubida.name.split('.') as string[]
@@ -184,12 +190,11 @@ const mandarAplicacion = async() =>{
    descripcionFinal = noHayDescripcion.value;
   }
   
+  Swal.showLoading();
   //Le pasamos al server el APK que el usuario ha dado
   const formData = new FormData();
   formData.append("apk", aplicacionSubida as File, aplicacionSubida?.name);
-
-  let result = await axios.post('/apk-upload', formData);
-  
+  let result = await axios.post('/apk-upload', formData);  
   var jsonFinal = descripcionFinal;
   try{
     let result2 = await axios.post("./guardame-APK", { description: jsonFinal , nombre: (aplicacionSubida.name).substring(0, (aplicacionSubida.name).indexOf('.'))});
@@ -199,7 +204,7 @@ const mandarAplicacion = async() =>{
     Swal.fire({title: 'APK no guardada',text: "El archivo no se ha podido almacenar en el servidor", icon: 'error'});
   }
   
-  Swal.fire({title: 'APK guardada',text: "El archivo ha sido almacenado en el servidor", icon: 'success'});
+  Swal.fire({title: 'Aplicación guardada',text: "El archivo ha sido almacenado en el servidor", icon: 'success'});
   setRefresh(!refresh);
 }
 

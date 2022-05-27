@@ -455,7 +455,6 @@ function Steps({ children, config, genState, setGenState }: StepsProps) {
 
   //Metodo que permite saltar a un formulario segun su nombre
   const jumpWithString = (s: string): void => {
-    console.log(s);
     let destiny = 0;
     if(s === "AdventureSummary") {destiny = 0;}
     if (s === "AdventureCharger") { destiny = 1; }

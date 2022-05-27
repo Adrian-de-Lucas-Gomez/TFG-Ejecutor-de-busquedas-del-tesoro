@@ -281,31 +281,29 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
 
 
     //En caso de que todo haya ido bien PERO el usuario no haya descrito su aventura le avisamos de esto porque es obligatorio para el servidor
-  let descripcionFinal ="";
-  let noHayDescripcion = await Swal.fire({ icon: 'info', title: 'Alerta', 
-  input: 'text',
-  inputAttributes: {
-    autocapitalize: 'off'
-  },
-  text:  "Antes de guardar tu aventura debes de añadir una pequeña descripción sobre esta para que futuros jugadores sepan a qué van a jugar antes de descargarsela"
-  });
-  console.log(noHayDescripcion.value);
-  //Si aun avisandole no me ha dado ninguna descripcion cancelamos toda la operacion
-  if(noHayDescripcion.value === ""){
-    let result = await Swal.fire({title: 'Guardado cancelado',text: "No se puede guardar una apk sin descripción", icon: 'error'});
-    return;
-  }
-  descripcionFinal = noHayDescripcion.value;
+    let descripcionFinal ="";
+    let noHayDescripcion = await Swal.fire({ icon: 'info', title: 'Alerta', 
+    input: 'text',
+    inputAttributes: {
+      autocapitalize: 'off'
+    },
+    text:  "Antes de guardar tu aventura debes de añadir una pequeña descripción sobre esta para que futuros jugadores sepan a qué van a jugar antes de descargarsela"
+    });
+    //Si aun avisandole no me ha dado ninguna descripcion cancelamos toda la operacion
+    if(noHayDescripcion.value === ""){
+      let result = await Swal.fire({title: 'Guardado cancelado',text: "No se puede guardar una apk sin descripción", icon: 'error'});
+      return;
+    }
+    descripcionFinal = noHayDescripcion.value;
  
  
- 
- //Si no nos hemos ido del metodo lo que nos queda por hacer es limpiar el server, mandar todos los ficheros que componen nuestra aventura y solicitar el proyecto
+    Swal.showLoading();
+    //Si no nos hemos ido del metodo lo que nos queda por hacer es limpiar el server, mandar todos los ficheros que componen nuestra aventura y solicitar el proyecto
     let reset = await axios.get("./reset");
     await operacionesPreDescargaProyecto();
     await mandarJson();
-
     await axios.post("./guardame-aventura", { descripcion: descripcionFinal, nombre: nombreAventura });    
-    Swal.fire({icon: 'success', title: 'Aventura guardada',})
+    Swal.fire({icon: 'success', title: 'Aventura guardada', text: "La configuración de su aventura se ha almacenado en el servidor."})
   }
 
 
@@ -324,12 +322,14 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
       return;
     }
 
+
+    Swal.showLoading();
     let reset = await axios.get("./reset");
     //Mando los archivos que tenga, como las imagenes
     await operacionesPreDescargaProyecto();
     //Mando el json
     await mandarJson();
-
+    
     //En este momento solo falta pedirle que me de un zip con todo lo que tenga
     let zip = await axios.get("./generate-zip", {
       responseType: 'arraybuffer',
@@ -344,6 +344,10 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     link.download = props.getState('adventureName', "Nombre por defecto") + '.zip';
     link.click();
     link.remove();
+    Swal.fire({
+      title: `Aventura generada`,
+      icon:'success'
+    })
   }
 
   //Metodo que toma el texto que se esté escribiendo en el form para indicar el nombre que queremos que tenga la aventura y lo
@@ -366,7 +370,6 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
   const modifyVuforiaKey = (e: string): void => {
     props.setState('vuforiaKey', e, "");
   }
-
 
   return (
     <div >
