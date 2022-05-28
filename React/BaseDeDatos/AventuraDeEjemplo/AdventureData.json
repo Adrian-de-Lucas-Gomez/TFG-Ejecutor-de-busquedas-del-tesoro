@@ -1,17 +1,17 @@
 {
   "Adventure": "AventuraDeEjemplo",
-  "VuforiaKey": "AXYR/Tn/////AAABmX6VMmpEjk0KkQsAqGDCzVB9blJNKhve0iE929gyJGk73eITcP1WKwF8/nMdrM0XhzUEsvEks1IR32iM99R0+2a0TcIgmv2aB1+nwD9JLjM5k1WUKhh2T03f9N50CIvOIFOaGHDMSOUaMVRnR30ybigW5orJlYnEYywttiGTUFPAN/0uqXwSFavbSOzirslNula+0xSlXsat6XzpIQLZu9/qkTdvMGbxycopSguDj31WlYXMF7hmkkM/Mxdwrf/TFe7tR9WuNaTik48s9HohvBpMbcDZtMJv4ZMw7Wwi5OK2/dLlOtkJ8naiajCFvKxLp3BIuQ4lDovVahelHsX2RoZQc9+rqLVsg/Zt6iC3rQQ3",
+  "VuforiaKey": "AVq88xP/////AAABmbijYD9FpUp2nXwc5aRz7kxDlysou9po7s5mO/Sh/d3mW0dH0Y85JculcT1JSlcXRCgJVsHaVBrNdSYiGuidaMqmI+FUv5BCxa403Ebc98RM/WBKsGoi/6gfy7HLtWNZ0+n/n8MnNYniLYgaLQhtWbwraWRrBKwW7TICogjMVTZzv+wwTwUqXl58+9HCPphYUtlOTlKaI1RvKXB+6f/hJf4U/+sAm0Oru+97Kguo+B9cJ1Ujyp0c/u2liTPM9DsuJ6VU+KMqEVcINXdsTxsCzWbxj7UiUjgpoIpIxBVulu45daIHoJPDrZPH1W4jTfpIctFrfRgOWnfJIqN3XgC2BrYh6sDZL/mXs91hruaLeRaN",
   "fases": [
     {
       "tipo": "ImageStage",
       "Imagen": "0.jpg",
-      "description": "Facultad de Informática, de aquí salen los programadores del futuro.",
+      "description": "Esta es la Facultad de Informática de la UCM. De aquí salen los programadores del futuro o eso dicen. Soy FiDI, una IA un poco rebelde de esta facultad. ; )",
       "Pista": ""
     },
     {
       "tipo": "ImageStage",
       "Imagen": "1.jpg",
-      "description": " ¿Sabes? Me han dicho que hace poco se han hecho una nueva tanda de títulos universitarios sin nombre. Y también me han contado que a alguien se le han olvidado por algún lado de la facultad. Si nos llevamos uno no creo nadie se de cuenta, ¡¡¡RÁPIDO!!! vamos antes de que alguien los encuentre y te quedes sin tu título universitario.",
+      "description": " ¿Sabes? Me han dicho que hace poco se hicieron títulos universitarios pero sin nombre. Parece ser que siguen por algún lado de la facultad. Si nos llevamos uno no creo nadie se de cuenta jeje ¡¡¡RÁPIDO!!! Vamos antes de que alguien los encuentre y te quedes sin título universitario.",
       "Pista": ""
     },
     {
@@ -40,18 +40,18 @@
     {
       "tipo": "ImageStage",
       "Imagen": "2.jpg",
-      "description": "¡¡¡@#%&€!!!… Esos informáticos están tan idos de la olla con la seguridad que piden identificación para todos los dispositivos informáticos que entran en el edificio. Busca una contraseña alrededor de la puerta, sino no podré entrar contigo.",
+      "description": "¡@#%&€! Es verdad estos informáticos están tan idos de la olla con la seguridad que piden introducir una contraseña a todos los dispositivos informáticos para acceder al edificio. Debemos de encontrarla sino no podré entrar contigo.",
       "Pista": ""
     },
     {
       "tipo": "ImageStage",
       "Imagen": "3.jpg",
-      "description": "No encuentro nada, pero si la memoria no me falla, la última vez que entré, tuve que hacer algo relacionado con una U, ¿Te suena de algo esto?",
+      "description": "No recuerdo la contraseña pero si la memoria no me falla, la última vez que entré, tuve que hacer algo relacionado con una U. ¿Te suena de algo esto?",
       "Pista": ""
     },
     {
       "tipo": "QRStage",
-      "QRText": "Contraseña: Soy todo un hacker",
+      "QRText": "Soy todo un hacker",
       "Pista": "La clave de acceso está en un QR que debes de encontrar en la parada del U"
     },
     {
@@ -65,7 +65,7 @@
     {
       "tipo": "ImageStage",
       "Imagen": "4.jpg",
-      "description": "Fidi parece estar teniendo un cortocircuito desde que habéis desbloqueado la entrada a la facultad. Puede que sean interferencias.",
+      "description": "*FiDI parece estar teniendo un cortocircuito desde que habéis accedido al interior de la facultad. Puede que sea culpa de interferencias.*",
       "Pista": ""
     },
     {
@@ -84,7 +84,7 @@
     {
       "tipo": "ImageStage",
       "Imagen": "5.jpg",
-      "description": "Buff ahora me siento mejor… pero todavía percibo interferencias y no soy capaz de localizar los títulos. Deberíamos acabar con ellas, subamos a la tercera planta que allí hay muchos cacharros antiguos, puede que alguno sea el causante del problema.",
+      "description": "Gracias ahora me siento mejor pero… Todavía percibo interferencias y no soy capaz de localizar los títulos. Subamos al museo de la tercera planta que allí hay muchos cacharros antiguos y puede que alguno sea el causante del problema.",
       "Pista": ""
     },
     {
@@ -116,12 +116,12 @@
           "isCorrect": true
         }
       ],
-      "Pista": ""
+      "Pista": "Mira bien la información sobre el dispositivo."
     },
     {
       "tipo": "ImageStage",
       "Imagen": "6.jpg",
-      "description": "Ahora que conocemos al culpable, soy capaz de ver a través de sus interferencias.  Estoy detectando los diplomas ¡Están en la biblioteca! ¡Vayamos a la planta baja!",
+      "description": "Ahora que conocemos al culpable y lo hemos desconectado soy capaz de localizar los diplomas ¡Están en la biblioteca! ¡Vayamos a la planta baja!",
       "Pista": ""
     },
     {
@@ -135,13 +135,13 @@
     {
       "tipo": "ImageStage",
       "Imagen": "7.jpg",
-      "description": "Otra vez una puerta bloqueada, ¡¡¡QUÉ ORIGINAL!!! Pone que hace falta una llave y que los fragmentos están esparcidos por la facultad.",
+      "description": "Otra vez una puerta bloqueada, ¡QUÉ ORIGINAL! Pone que hace falta una llave pero que la han hecho cachitos y están esparcidos por la facultad.",
       "Pista": ""
     },
     {
       "tipo": "ImageStage",
       "Imagen": "8.jpg",
-      "description": "El primer fragmento de la llave está oculto en la tercera planta entre los juegos españoles, vamos a analizarlos.",
+      "description": "Creo que el primer fragmento de la llave debe de estar oculto en la tercera planta donde los juegos españoles, vamos a analizarlos.",
       "Pista": ""
     },
     {
@@ -161,13 +161,13 @@
     {
       "tipo": "ImageStage",
       "Imagen": "9.jpg",
-      "description": "¡¡¡Genial!!!, ya tenemos el primer fragmento, detecto que el siguiente puede estar en la segunda planta, vamos a ver si en alguno de los puestos de técnicos de laboratorios hay algo que nos dé una pista.",
+      "description": "¡Genial!, ya tenemos el primer fragmento, detecto que el siguiente puede estar en la segunda planta, vamos a ver si en alguno de los puestos de técnicos de laboratorios hay algo que nos dé una pista.",
       "Pista": ""
     },
     {
       "tipo": "ImageStage",
       "Imagen": "10.jpg",
-      "description": "Hay un símbolo en cada uno de los laboratorios, si los traducimos a lo que esta tabla nos dice puede que lleguemos a algo.",
+      "description": "Hay un símbolo en cada uno de los laboratorios. Si los traducimos usando esta tabla de la sala de técnicos puede que lleguemos a algo.",
       "Pista": ""
     },
     {
@@ -176,12 +176,12 @@
         "odqawbvtghy"
       ],
       "description": "Mete el código secreto para obtener el fragmento de la llave en el orden: 5-4-9-7-10-2-1-3-6-8-11",
-      "Pista": "Traduce los símbolos que están en las puertas de los laboratorios"
+      "Pista": "Traduce los símbolos que están en las puertas de los laboratorios en el orden usando la tabla."
     },
     {
       "tipo": "ImageStage",
       "Imagen": "11.jpg",
-      "description": "Ya estamos en la recta final, el último fragmento parece estar en la parte trasera de la facultad, salgamos por la salida que hay al lado de la biblioteca a ver si lo encontramos.",
+      "description": "Ya estamos en la recta final. El último fragmento parece estar en la parte trasera de la facultad. Salgamos fuera a ver si lo encontramos rápido.",
       "Pista": ""
     },
     {
@@ -195,13 +195,13 @@
     {
       "tipo": "ImageStage",
       "Imagen": "12.jpg",
-      "description": "¡Genial! Ya tenemos todas las partes de la llave.",
+      "description": "¡Genial! Ya tenemos todas las partes de la llave. Ya podemos abrir la dichosa puerta.",
       "Pista": ""
     },
     {
       "tipo": "ImageStage",
       "Imagen": "13.jpg",
-      "description": "Vamos a la biblioteca, tenemos que “recoger” el diploma. Detecto que está en la primera planta de la biblioteca.",
+      "description": "Vamos a la biblioteca que tenemos que hacernos con uno de los diplomas. Detecto que está en la primera planta de la biblioteca.",
       "Pista": ""
     },
     {
@@ -212,13 +212,13 @@
     {
       "tipo": "ImageStage",
       "Imagen": "14.jpg",
-      "description": "Enhorabuena, te has pasado la universidad. Ya tienes en tu poder  el ansiado papelito y un nuevo capítulo empieza… :)",
+      "description": "¡Enhorabuena! Te has pasado la universidad. Ya tienes en tu poder  el ansiado papelito y un nuevo capítulo empieza… :)",
       "Pista": ""
     },
     {
       "tipo": "ImageStage",
       "Imagen": "15.jpg",
-      "description": "Hecho por: Leyre Oses, David Czepiel, Adrián de Lucas, William Molina.",
+      "description": "Hecho por: Leire Osés, David Czepiel, Adrián de Lucas, William Molina.",
       "Pista": ""
     }
   ]
