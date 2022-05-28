@@ -19,6 +19,8 @@ public class QRStage : Stage
     string qrValue;
     bool changeSceneRequest = false;
 
+    private string lastValueRead = "...";
+
     private Color correct = new Color(0.0f, 1.0f, 0.0f, 1.0f);
     private Color error = new Color(1.0f, 0.0f, 0.0f, 1.0f);
     private Color neutral = new Color(1.0f, 1.0f, 1.0f, 1.0f);
@@ -36,7 +38,11 @@ public class QRStage : Stage
         //Si se ha detectado un codigo QR pasamos a comprobar si es el nuestro
         if (scanner.GetIsValueRead()) checkQR(scanner.GetValueRead());
 
-        else SetQRTextValue("...", neutral);
+        else
+        {
+            lastValueRead = "...";
+            SetQRTextValue("...", neutral);
+        }
     }
 
     public void MoveToNextPhase()
@@ -60,18 +66,20 @@ public class QRStage : Stage
     public void checkQR(string qrMsg)
 	{
 
-        if (qrValue == qrMsg)
+        if (qrValue.ToLower() == qrMsg.ToLower() && lastValueRead != qrMsg.ToLower())
 		{
             Debug.Log("Well Done");
             GameManager.GetInstance().PlaySound("Correct");
             SetQRTextValue(qrMsg , correct);
             changeSceneRequest = true;
         }
-        else
+        else if (qrValue.ToLower() != qrMsg.ToLower() && lastValueRead != qrMsg.ToLower())
         {
             GameManager.GetInstance().PlaySound("Incorrect");
             SetQRTextValue(qrMsg, error);
         }
+
+        lastValueRead = qrMsg.ToLower();
 	}
 
     private void SetQRTextValue(string value, Color color)
