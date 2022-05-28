@@ -55,7 +55,18 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
     //Le pido al server una aventura con un nombre que se le indica, y cuando nos llegue la cargamos en nuestro estado global de react
     var jsonFinal = {Nombre: aventurasDisponibles[index] }
 
-    Swal.showLoading();
+    //Se muestra una alerta indicando que se está intentando guardar la aventura en el servidor
+    Swal.fire({
+      title: 'Cargando configuración de la aventura',
+      html: 'Este proceso puede tardar un poco...',
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading()
+      }
+    });
+
+
     //Solicito el json de la aventura en cuestion
     const response = await axios.post("./dame-aventura", {json:JSON.stringify(jsonFinal, null, 2)});
     var nombreDeLaAventura = JSON.parse(response.data.AventuraGuardada).Adventure
@@ -113,7 +124,17 @@ const AdventureCharger = (props: StepComponentProps): JSX.Element => {
 //Metodo llamado por las cartas que representan las aplicacions almacenadas en el servidor, recibe un indice indicando cual de todas se ha pulsado
 const descargarAventura = async (indice: number)=>{
 
-  Swal.showLoading();
+  //Se muestra una alerta indicando que se está intentando guardar la aventura en el servidor
+  Swal.fire({
+    title: 'Descargando aplicación',
+    html: 'Este proceso puede tardar un poco...',
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading()
+    }
+  });
+
   //Se solicita una aplicacion llamada como la que tarjeta nos haya indicado
   let nombreAPK = aplicacionesDisponibles[indice];
   let aplicacion = await axios.get("./getAPK/"+nombreAPK, {responseType: 'arraybuffer',headers: {'Content-Type': 'application/json'},params: {json:"JSON.stringify(jsonFinal, null, 2)"}});
@@ -194,7 +215,17 @@ const mandarAplicacion = async() =>{
    descripcionFinal = noHayDescripcion.value;
   }
   
-  Swal.showLoading();
+  //Se muestra una alerta indicando que se está intentando guardar la aventura en el servidor
+  Swal.fire({
+    title: 'Guardando aplicación en el servidor',
+    html: 'Este proceso puede tardar un poco...',
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading()
+    }
+  });
+
   //Le pasamos al server el APK que el usuario ha dado
   const formData = new FormData();
   formData.append("apk", aplicacionSubida as File, aplicacionSubida?.name);

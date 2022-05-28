@@ -99,32 +99,32 @@ let directoriosDeTrabajo = ["Images", "Packages", "Sounds", "OverlappingImages"]
 app.post('/image-upload', imageUpload.array("imageCharger"), (req, res) => {
   console.log(req.headers)
   console.log("POST REQUEST recieved in: /image-upload")
-  res.json({ key: "value" });
+  res.json({ result: "correct" });
 })
 
 app.post('/package-upload', packageUpload.array("unityPackage"), (req, res) => {
   console.log(req.headers)
   console.log("POST REQUEST recieved in: /package-upload")
-  res.json({ key: "value" });
+  res.json({ result: "correct" });
 })
 
 app.post('/overlapping_upload', overlapingUpload.array("overlap"), (req, res) => {
   console.log(req.headers)
   console.log("POST REQUEST recieved in: /overlapping_upload")
-  res.json({ key: "value" });
+  res.json({ result: "correct" });
 })
 
 app.post('/sound-upload', soundUpload.array("sound"), (req, res) => {
   console.log(req.headers)
   console.log("POST REQUEST recieved in: /sound-upload")
-  res.json({ key: "value" });
+  res.json({ result: "correct" });
 })
 
 //Request para almacenar en el server una apk junto con las demas hechas por los usuarios
 app.post('/apk-upload', apkUpload.array("apk"), (req, res) => {
   console.log(req.headers);
   console.log("POST REQUEST recieved in: /apk-upload");
-  res.json({ key: "value" });
+  res.json({ result: "correct" });
 })
 
 //////////////////////////////////////////Peticiones para recibir ficheros////////////////////////////////////////////////////
@@ -164,7 +164,7 @@ app.get("/reset", (req, res) => {
     }
   }
 
-  res.json({ key: "value" });
+  res.json({ result: "correct" });
 });
 
 app.get("/generate-zip", (req, res)=>{
@@ -195,7 +195,7 @@ app.post('/guardame-json', function (request, res) {
   }
   catch { console.log("An error ocurred writting the adventure json") }
   console.log("The adventure json was succesfully recieved");
-  res.json({ key: "value" });
+  res.json({ result: "correct" });
 });
 //////////////////////////////////////////Peticiones para solicitar la creacion del proyecto que permite crear la aventura////////////////////////////////////////////////////
 
@@ -231,7 +231,7 @@ app.post('/guardame-APK', function (request, res) {
   }
   catch { 
     throw new Error("An error ocurred getting the adventure APK"); }
-  res.json({ key: "value" });
+  res.json({ result: "correct" });
 });
 //////////////////////////////////////////Peticiones para guardar una APK nueva en el servidor dada una descripción////////////////////////////////////////////////////
 
@@ -292,7 +292,7 @@ app.post('/guardame-aventura', function (req, res) {
     console.log("An error ocurred copying AdventureData.json file to the DataBase");
   }
 
-  res.json({ key: "value" });
+  res.json({ result: "correct" });
 });
 //////////////////////////////////////////Peticiones para guardar la configuración de una aventura nueva en el servidor ////////////////////////////////////////////////////
 

@@ -193,7 +193,6 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
       if (faseActual.tipo === "ImageStage" && faseActual.Imagen instanceof File) {
         var finalImageName = faseActual.Imagen.name;
         finalImageName = (contadorImagenes.toString()) + (finalImageName.substring(finalImageName.indexOf('.')));
-        console.log("El nombre de la imagen es " + finalImageName);
 
         let result = await sendFileToServer('imageCharger', faseActual.Imagen, finalImageName, "./image-upload")
         contadorImagenes++
@@ -206,7 +205,6 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
         let result = await sendFileToServer('unityPackage', faseActual.Target, finalTargetName, "./package-upload")
 
         if (faseActual.TargetType === "Image" && faseActual.OverlappingImage instanceof File) {
-          console.log("Enviando una Overlapping Image");
           result = await sendFileToServer("overlap", faseActual.OverlappingImage, contadorTargets.toString() + "_overlapping.png", "./overlapping_upload")
         }
         contadorTargets++;
@@ -258,6 +256,14 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
       return;
     }
 
+    //Se comprueba que no se está tratando con una aventura vacía
+    let fases = props.getState<any>('DATA', []);
+    if(fases.length === 0){
+      let respuesta = await Swal.fire({icon: 'error', title: 'Aventura vacía', text: "No se puede guardar una aventura que no tenga ninguna fase.", allowEscapeKey: false, allowOutsideClick: false});
+      return;
+    }
+
+
     //En caso de que tengamos problemas con la clave de vuforia avisamos al usuario de esto
     let keyVuforiaValida = await checkVuforiaKey();
     if (keyVuforiaValida !== true) {
@@ -301,24 +307,44 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     }
     descripcionFinal = noHayDescripcion.value;
 
+  
+    //Se muestra una alerta indicando que se está intentando guardar la aventura en el servidor
+    Swal.fire({
+      title: 'Guardando configuración en el servidor',
+      html: 'Este proceso puede tardar un poco...',
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading()
+      }
+    });
 
-    Swal.showLoading();
+
     //Si no nos hemos ido del metodo lo que nos queda por hacer es limpiar el server, mandar todos los ficheros que componen nuestra aventura y solicitar el proyecto
     let reset = await axios.get("./reset");
     await operacionesPreDescargaProyecto();
     await mandarJson();
     await axios.post("./guardame-aventura", { descripcion: descripcionFinal, nombre: nombreAventura });    
-    Swal.fire({icon: 'success', title: 'Aventura guardada', text: "La configuración de su aventura se ha almacenado en el servidor."})
+    Swal.fire({icon: 'success', title: 'Aventura guardada', text: "La configuración de su aventura se ha almacenado en el servidor.", allowEscapeKey: false, allowOutsideClick: false})
   }
 
 
   const generateZip = async () => {
+
     //En caso de que la aventura todavia tenga el nombre por defecto avisamos al usuario de que esto debe de cambiarlo
     let nombreAventura = props.getState('adventureName', "Nombre por defecto");
     if (nombreAventura === "Nombre por defecto") {
       let respuesta = await Swal.fire({title: "Nombre de la aventura sin asignar",text: "Ponle un nombre a tu aventura para poder generar el proyecto", icon: 'error'});
       return;
     }
+
+    //Se comprueba que no se está tratando con una aventura vacía
+    let fases = props.getState<any>('DATA', []);
+    if(fases.length === 0){
+      Swal.fire({icon: 'error', title: 'Aventura vacía', text: "No se puede generar una aventura que no tenga ninguna fase.", allowEscapeKey: false, allowOutsideClick: false});
+      return;
+    }
+
 
     //En caso de que tengamos problemas con la clave de vuforia avisamos al usuario de esto
     let keyVuforiaValida = await checkVuforiaKey();
@@ -328,7 +354,17 @@ const AdventureSummary = (props: StepComponentProps): JSX.Element => {
     }
 
 
-    Swal.showLoading();
+    //Se muestra una alerta indicando que se está intentando guardar la aventura en el servidor
+    Swal.fire({
+      title: 'Preparando aventura',
+      html: 'Este proceso puede tardar un poco...',
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading()
+      }
+    });
+
     let reset = await axios.get("./reset");
     //Mando los archivos que tenga, como las imagenes
     await operacionesPreDescargaProyecto();
