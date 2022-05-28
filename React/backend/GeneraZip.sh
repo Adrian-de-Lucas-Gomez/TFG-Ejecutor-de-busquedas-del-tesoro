@@ -5,9 +5,9 @@ echo Generando Zip...
 mkdir ../tmp
 
 # Se añaden los directorios que componen el proyecto de Unity
-cp -r -u -f ../../Unity/PruebaConcepto/Assets/ ../tmp/Assets/
-cp -r -u -f ../../Unity/PruebaConcepto/Packages/ ../tmp/Packages/
-cp -r -u -f ../../Unity/PruebaConcepto/ProjectSettings/ ../tmp/ProjectSettings/
+cp -r -u -f ../../Unity/EjecutorDeBusquedasDelTesoro/Assets/ ../tmp/Assets/
+cp -r -u -f ../../Unity/EjecutorDeBusquedasDelTesoro/Packages/ ../tmp/Packages/
+cp -r -u -f ../../Unity/EjecutorDeBusquedasDelTesoro/ProjectSettings/ ../tmp/ProjectSettings/
 
 # Copiamos las imagenes que hayan en el servidor en la carpeta de resources para el futuro acceso del proyecto
 cp -r -u -f ./Images/. ../tmp/Assets/Resources/AdventureImages/
@@ -27,7 +27,7 @@ rm -f ../tmp/Assets/AdventureData.json
 cp -u -f ../AdventureData.json ../tmp/Assets/AdventureData.json
 
 #  Muevo el bat que sirve para lanzar la build desde consola (Para windows por ahora)
-cp -u -f  ../../Unity/PruebaConcepto/autoBuild.bat ../tmp/autoBuild.bat
+cp -u -f  ../../Unity/EjecutorDeBusquedasDelTesoro/autoBuild.bat ../tmp/autoBuild.bat
 
 zip -r ../Aventura.zip ../tmp
 rm -rf ../tmp

@@ -5,10 +5,8 @@ import swal from "sweetalert";
 import Errorimage from "../../imgCards/Imagen.png"
 
 //@ts-ignore
-import ejemplo from "../../escopeta.mp3"
+import ejemplo from "../../resources/sounds/NoSound.mp3"
 import Swal from "sweetalert2";
-
-let path = "../../escopeta.mp3"
 
 const Sound = (props: StepComponentProps): JSX.Element => {
 

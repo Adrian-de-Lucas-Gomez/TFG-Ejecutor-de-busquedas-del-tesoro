@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
 import { StepComponentProps } from '../Steps'
 import axios from "axios"
-import pic from "../../imgCards/Imagen.png";
+import pic from "../../resources/imgCards/Imagen.png";
 import swal from "sweetalert";
 import Errorimage from "../../imgCards/Imagen.png"
 import Swal from "sweetalert2";

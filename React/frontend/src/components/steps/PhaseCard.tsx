@@ -1,12 +1,12 @@
 import React, {useState} from "react"
 import "../Styles/MyCard.css"
 
-import QRPic from "../../imgCards/QRStageImage.png";
-import QuizPic from "../../imgCards/QuizStageImage.png";
-import SoundPic from "../../imgCards/SoundStageImage.png";
-import GPSPic from "../../imgCards/GPSStageImage.png";
-import InputTextPic from "../../imgCards/InputTextImage.png"
-import Errorimage from "../../imgCards/Imagen.png"
+import QRPic from "../../resources/imgCards/QRStageImage.png";
+import QuizPic from "../../resources/imgCards/QuizStageImage.png";
+import SoundPic from "../../resources/imgCards/SoundStageImage.png";
+import GPSPic from "../../resources/imgCards/GPSStageImage.png";
+import InputTextPic from "../../resources/imgCards/InputTextImage.png"
+import Errorimage from "../../resources/imgCards/Imagen.png"
 
 
 const PhaseCard = (props: {fase:any,funcionMofify:any, funcionDelete: any,funcionMover: any , index:number }): JSX.Element => {
