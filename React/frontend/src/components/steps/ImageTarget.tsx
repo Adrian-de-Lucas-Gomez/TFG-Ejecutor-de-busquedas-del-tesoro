@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle } from "react"
 import { StepComponentProps } from '../Steps';
-import pic from "../../imgCards/Imagen.png";
+import pic from "../../resources/imgCards/Imagen.png";
 import swal from "sweetalert";
-import Errorimage from "../../imgCards/Imagen.png"
+import Errorimage from "../../resources/imgCards/Imagen.png";
 import Swal from "sweetalert2";
 import { fileURLToPath } from "url";
 
