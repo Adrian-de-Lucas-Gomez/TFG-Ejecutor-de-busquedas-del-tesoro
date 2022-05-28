@@ -1,11 +1,5 @@
 {
-  "Adventure": "QR",
+  "Adventure": "nada",
   "VuforiaKey": "AXYR/Tn/////AAABmX6VMmpEjk0KkQsAqGDCzVB9blJNKhve0iE929gyJGk73eITcP1WKwF8/nMdrM0XhzUEsvEks1IR32iM99R0+2a0TcIgmv2aB1+nwD9JLjM5k1WUKhh2T03f9N50CIvOIFOaGHDMSOUaMVRnR30ybigW5orJlYnEYywttiGTUFPAN/0uqXwSFavbSOzirslNula+0xSlXsat6XzpIQLZu9/qkTdvMGbxycopSguDj31WlYXMF7hmkkM/Mxdwrf/TFe7tR9WuNaTik48s9HohvBpMbcDZtMJv4ZMw7Wwi5OK2/dLlOtkJ8naiajCFvKxLp3BIuQ4lDovVahelHsX2RoZQc9+rqLVsg/Zt6iC3rQQ3",
-  "fases": [
-    {
-      "tipo": "QRStage",
-      "QRText": "asdf",
-      "Pista": ""
-    }
-  ]
+  "fases": []
 }
